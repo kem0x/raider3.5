@@ -22,6 +22,7 @@ namespace Game
         Pawn->ServerChoosePart(EFortCustomPartType::Head, UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1"));
         Pawn->ServerChoosePart(EFortCustomPartType::Body, UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01"));
         PlayerState->OnRep_CharacterParts();
+        PlayerController->CheatManager->God();
 
         PlayerController->bReadyToStartMatch = true;
         PlayerController->bHasServerFinishedLoading = true;

@@ -37,12 +37,18 @@ namespace Hooks
         PlayerState->SetOwner(PlayerController);
 
         auto Pawn = (APlayerPawn_Athena_C*)SpawnActor<APlayerPawn_Athena_C>({ 0, 0, 10000 }, PlayerController);
+        Pawn->bCanBeDamaged = false;
+        Pawn->bIsInvulnerable = true;
+        Pawn->SetHealth(59000);
 
         PlayerController->Pawn = Pawn;
         Pawn->Owner = PlayerController;
         Pawn->OnRep_Owner();
         PlayerController->OnRep_Pawn();
         PlayerController->Possess(Pawn);
+
+        //PlayerController->CheatManager = SpawnActor<UCheatManager>({ -230, 430, 3030 }, PlayerController);
+        //PlayerController->CheatManager->God();
 
         PlayerController->bHasClientFinishedLoading = true;
         PlayerController->bHasServerFinishedLoading = true;
