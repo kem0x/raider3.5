@@ -36,9 +36,7 @@ namespace Hooks
         auto PlayerState = (AFortPlayerState*)NewPlayer->PlayerController->PlayerState;
         PlayerState->SetOwner(PlayerController);
 
-        auto Pawn = (APlayerPawn_Athena_C*)SpawnActor<APlayerPawn_Athena_C>({ 0, 0, 0 }, PlayerController);
-
-        Pawn->bAlwaysRelevant = true;
+        auto Pawn = (APlayerPawn_Athena_C*)SpawnActor<APlayerPawn_Athena_C>({ 0, 0, 10000 }, PlayerController);
 
         PlayerController->Pawn = Pawn;
         Pawn->Owner = PlayerController;
@@ -55,13 +53,34 @@ namespace Hooks
         PlayerState->OnRep_bHasStartedPlaying();
         PlayerState->OnRep_HeroType();
 
+	    auto QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
+        PlayerController->QuickBars = QuickBars;
+        PlayerController->OnRep_QuickBar();
+
+        auto Pickaxe = UObject::FindObject<UFortWeaponMeleeItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
+        auto Inventory = SpawnActor<AFortInventory>({ -281, 401, 3001 }, PlayerController);
+        PlayerController->WorldInventory = Inventory;
+		
+        auto Item = Pickaxe->CreateTemporaryItemInstanceBP(1, 0);
+        auto WorldItem = reinterpret_cast<SDK::UFortWorldItem*>(Item);
+        WorldItem->ItemEntry.Count = 1;
+        WorldItem->SetOwningControllerForTemporaryItem(PlayerController);
+        PlayerController->WorldInventory->Inventory.ReplicatedEntries.Add(WorldItem->ItemEntry);
+        PlayerController->WorldInventory->Inventory.ItemInstances.Add(WorldItem);
+        PlayerController->WorldInventory->HandleInventoryLocalUpdate();
+        PlayerController->HandleWorldInventoryLocalUpdate();
+        
+        PlayerController->QuickBars = QuickBars;
+        PlayerController->OnRep_QuickBar();
+        
+        PlayerController->AddItemToQuickBars(Pickaxe, EFortQuickBars::Primary, 0);
+        PlayerController->ForceUpdateQuickbar(EFortQuickBars::Primary);
+        PlayerController->QuickBars->OnRep_PrimaryQuickBar();
+        PlayerController->QuickBars->OnRep_SecondaryQuickBar();
+
         Pawn->ServerChoosePart(EFortCustomPartType::Head, UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1"));
         Pawn->ServerChoosePart(EFortCustomPartType::Body, UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01"));
         PlayerState->OnRep_CharacterParts();
-
-        PlayerController->QuickBars = SpawnActor<AFortQuickBars>({ 0, 0, 0 }, {});
-        PlayerController->QuickBars->SetOwner(PlayerController);
-        PlayerController->QuickBars->OnRep_Owner();
 
         return PlayerController;
     }

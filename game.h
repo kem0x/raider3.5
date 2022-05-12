@@ -32,6 +32,11 @@ namespace Game
         PlayerState->bHasFinishedLoading = true;
         PlayerState->bIsReadyToContinue = true;
         PlayerState->OnRep_bHasStartedPlaying();
+		
+	
+        reinterpret_cast<AFortGameStateAthena*>(GetWorld()->GameState)->bGameModeWillSkipAircraft = true;
+        reinterpret_cast<AFortGameStateAthena*>(GetWorld()->GameState)->AircraftStartTime = 99999.0f;
+        reinterpret_cast<AFortGameStateAthena*>(GetWorld()->GameState)->WarmupCountdownEndTime = 99999.0f;
 
         reinterpret_cast<AFortGameStateAthena*>(GetWorld()->GameState)->GamePhase = EAthenaGamePhase::Aircraft;
         reinterpret_cast<AFortGameStateAthena*>(GetWorld()->GameState)->OnRep_GamePhase(EAthenaGamePhase::None);
@@ -41,6 +46,8 @@ namespace Game
         reinterpret_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode)->K2_OnSetMatchState(a);
 
         reinterpret_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode)->StartPlay();
+        ((AAthena_GameState_C*)GetWorld()->GameState)->bReplicatedHasBegunPlay = true;
+        ((AAthena_GameState_C*)GetWorld()->GameState)->OnRep_ReplicatedHasBegunPlay();
         reinterpret_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode)->StartMatch();
     }
 }
