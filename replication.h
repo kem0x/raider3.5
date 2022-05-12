@@ -3,178 +3,171 @@
 
 namespace Replication
 {
-    int PrepConnections(UNetDriver* NetDriver)
-    {
-        int32 NumClientsToTick = NetDriver->ClientConnections.Num();
+	int PrepConnections(UNetDriver* NetDriver)
+	{
+		int ReadyConnections = 0;
 
-        bool bFoundReadyConnection = false;
+		for (int ConnIdx = 0; ConnIdx < NetDriver->ClientConnections.Num(); ConnIdx++)
+		{
+			UNetConnection* Connection = NetDriver->ClientConnections[ConnIdx];
+			if (!Connection) continue;
 
-        for (int32 ConnIdx = 0; ConnIdx < NetDriver->ClientConnections.Num(); ConnIdx++)
-        {
-            UNetConnection* Connection = NetDriver->ClientConnections[ConnIdx];
+			AActor* OwningActor = Connection->OwningActor;
 
-            AActor* OwningActor = Connection->OwningActor;
-            if (OwningActor != NULL && (Connection->Driver->Time - Connection->LastReceiveTime < 1.5f))
-            {
-                bFoundReadyConnection = true;
+			if (OwningActor)
+			{
+				ReadyConnections++;
+				AActor* DesiredViewTarget = OwningActor;
 
-                Connection->ViewTarget = Connection->PlayerController ? Connection->PlayerController->GetViewTarget() : OwningActor;
+				if (Connection->PlayerController)
+				{
+					if (AActor* ViewTarget = Connection->PlayerController->GetViewTarget())
+					{
+						DesiredViewTarget = ViewTarget;
+					}
+				}
 
-                for (int32 ChildIdx = 0; ChildIdx < Connection->Children.Num(); ChildIdx++)
-                {
-                    UNetConnection* Child = Connection->Children[ChildIdx];
-                    APlayerController* ChildPlayerController = Child->PlayerController;
-                    if (ChildPlayerController != NULL)
-                    {
-                        Child->ViewTarget = ChildPlayerController->GetViewTarget();
-                    }
-                    else
-                    {
-                        Child->ViewTarget = NULL;
-                    }
-                }
-            }
-            else
-            {
-                Connection->ViewTarget = NULL;
-                for (int32 ChildIdx = 0; ChildIdx < Connection->Children.Num(); ChildIdx++)
-                {
-                    Connection->Children[ChildIdx]->ViewTarget = NULL;
-                }
-            }
-        }
+				Connection->ViewTarget = DesiredViewTarget;
 
-        return bFoundReadyConnection ? NumClientsToTick : 0;
-    }
+				for (int ChildIdx = 0; ChildIdx < Connection->Children.Num(); ++ChildIdx)
+				{
+					UNetConnection* ChildConnection = Connection->Children[ChildIdx];
+					if (ChildConnection && ChildConnection->PlayerController && ChildConnection->ViewTarget)
+					{
+						ChildConnection->ViewTarget = DesiredViewTarget;
+					}
+				}
+			}
+			else
+			{
+				Connection->ViewTarget = nullptr;
 
-    template <typename T = UActorChannel>
-    T* FindChannel(AActor* Actor, UNetConnection* Connection)
-    {
-        for (int i = 0; i < Connection->OpenChannels.Num(); i++)
-        {
-            auto Channel = Connection->OpenChannels[i];
+				for (int ChildIdx = 0; ChildIdx < Connection->Children.Num(); ++ChildIdx)
+				{
+					UNetConnection* ChildConnection = Connection->Children[ChildIdx];
+					if (ChildConnection && ChildConnection->PlayerController && ChildConnection->ViewTarget)
+					{
+						ChildConnection->ViewTarget = nullptr;
+					}
+				}
+			}
+		}
 
-            if (Channel && Channel->Class)
-            {
-                if (Channel->Class == T::StaticClass())
-                {
-                    if (((T*)Channel)->Actor == Actor)
-                    {
-                        return ((T*)Channel);
-                    }
-                }
-            }
-        }
+		return ReadyConnections;
+	}
 
-        return nullptr;
-    }
+	UActorChannel* FindChannel(AActor* Actor, UNetConnection* Connection)
+	{
+		for (int i = 0; i < Connection->OpenChannels.Num(); i++)
+		{
+			auto Channel = Connection->OpenChannels[i];
 
-    auto GetOwner = [](AActor* Actor) -> UNetConnection*
-    {
-        for (auto Owner = Actor; Actor; Actor = Actor->GetOwner())
-        {
-            if (Actor->IsA(APlayerController::StaticClass()))
-            {
-                return ((APlayerController*)Actor)->NetConnection;
-            }
-        }
+			if (Channel && Channel->Class)
+			{
+				if (Channel->Class == UActorChannel::StaticClass())
+				{
+					if (((UActorChannel*)Channel)->Actor == Actor)
+						return ((UActorChannel*)Channel);
+				}
+			}
+		}
 
-        return nullptr;
-    };
+		return NULL;
+	}
 
-    void ServerReplicateActors(UNetDriver* NetDriver, float Delta)
-    {
-        GetReplicationFrame(NetDriver)++;
-        auto NumClientsToTick = PrepConnections(NetDriver);
+	UNetConnection* GetOwningConnection(AActor* Actor)
+	{
+		for (auto Owner = Actor; Actor; Actor = Actor->GetOwner())
+		{
+			if (Actor->IsA(APlayerController::StaticClass()))
+			{
+				return ((APlayerController*)Actor)->NetConnection;
+			}
+		}
+	}
 
-        if (NumClientsToTick == 0)
-            return;
+	void BuildConsiderList(UNetDriver* NetDriver, std::vector<AActor*>& OutConsiderList)
+	{
+		auto World = NetDriver->World;
 
-        for (int i = 0; i < NetDriver->ClientConnections.Num(); i++)
-        {
-            auto NetConnection = NetDriver->ClientConnections[i];
-            auto Controller = NetConnection->PlayerController;
+		if (!World)
+			return;
 
-            if (Controller && NetConnection->ViewTarget)
-            {
-                Functions::PlayerController::SendClientAdjustment(Controller);
+		TArray<AActor*> Actors;
+		GetGameplayStatics()->STATIC_GetAllActorsOfClass(NetDriver->World, AActor::StaticClass(), &Actors);
 
-                for (int ChildIdx = 0; ChildIdx < NetConnection->Children.Num(); ChildIdx++)
-                {
-                    if (NetConnection->Children[ChildIdx]->PlayerController != NULL)
-                    {
-                        Functions::PlayerController::SendClientAdjustment(NetConnection->Children[ChildIdx]->PlayerController);
-                    }
-                }
+		for (int i = 0; i < Actors.Num(); i++)
+		{
+			auto Actor = Actors[i];
 
-                auto Channel = FindChannel(Controller, NetConnection);
+			if (!Actor)
+			{
+				continue;
+			}
 
-                if (Channel != NULL)
-                {
-                    Functions::Actor::CallPreReplication(Controller, NetConnection->Driver);
-                    Functions::ActorChannel::ReplicateActor(Channel);
-                }
+			if (Actor->bActorIsBeingDestroyed)
+			{
+				continue;
+			}
 
-                if (Controller->Pawn)
-                {
-                    Channel = FindChannel(Controller->Pawn, NetConnection);
+			if (Actor->RemoteRole == ENetRole::ROLE_None)
+			{
+				continue;
+			}
 
-                    if (Channel != NULL)
-                    {
-                        Functions::Actor::CallPreReplication(Controller->Pawn, NetConnection->Driver);
-                        Functions::ActorChannel::ReplicateActor(Channel);
-                    }
-                }
-            }
-            else
-            {
-                continue;
-            }
+			if (Actor->NetDormancy == ENetDormancy::DORM_Initial && Actor->bNetStartup)
+			{
+				continue;
+			}
 
-            //auto List = GetNetworkObjectList(NetDriver).ActiveNetworkObjects;
-            SDK::TArray<AActor*> List;
-            GetGameplayStatics()->STATIC_GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), &List);
-            for (int j = 0; j < List.Num(); j++)
-            {
-                auto Actor = List[j];
+			if (Actor && NetDriver && &OutConsiderList && Actor->Name.ComparisonIndex != 0)
+			{
+				Functions::Actor::CallPreReplication(Actor, NetDriver);
+				OutConsiderList.push_back(Actor);
+			}
+		}
+	}
 
-                if (Actor->IsA(AController::StaticClass()) && Actor != Controller)
-                    continue;
+	void ServerReplicateActors(UNetDriver* NetDriver)
+	{
+		++* (DWORD*)(__int64(NetDriver) + 816);
 
-                if ((Actor->bNetStartup && Actor->NetDormancy == ENetDormancy::DORM_Initial))
-                    continue;
+		auto NumClientsToTick = PrepConnections(NetDriver);
 
-                if (!Actor->bReplicates)
-                    continue;
+		if (NumClientsToTick == 0)
+			return;
 
-                if (Actor->bOnlyRelevantToOwner && GetOwner(Actor) != NetConnection)
-                    continue;
+		std::vector<AActor*> ConsiderList;
+		BuildConsiderList(NetDriver, ConsiderList);
 
-                if (Actor->Name.ComparisonIndex == 0)
-                    continue;
+		for (int i = 0; i < NetDriver->ClientConnections.Num(); i++)
+		{
+			auto Connection = NetDriver->ClientConnections[i];
 
-                auto Channel = FindChannel(Actor, NetConnection);
+			if (!Connection)
+				continue;
 
-                if (!Channel)
-                {
-                    Channel = (UActorChannel*)(Functions::NetConnection::CreateChannel(NetConnection, 2, true, -1));
+			if (i >= NumClientsToTick)
+				break; // Only tick on ready connections
 
-                    if (Channel)
-                    {
-                        Functions::ActorChannel::SetChannelActor(Channel, Actor);
-                        Channel->Connection = NetConnection;
-                    }
-                }
+			if (Connection->PlayerController)
+				Functions::PlayerController::SendClientAdjustment(Connection->PlayerController);
 
-                if (Channel)
-                {
-                    Functions::Actor::CallPreReplication(Actor, NetConnection->Driver);
-                    Functions::ActorChannel::ReplicateActor(Channel);
-                }
+			for (auto Actor : ConsiderList)
+			{
+				auto Channel = FindChannel(Actor, Connection);
 
-                /*if (Actor->bReplicates)
-                    Actor->OnRep_ReplicatedMovement();*/
-            }
-        }
-    }
+				if (!Channel)
+				{
+					Channel = (UActorChannel*)(Functions::NetConnection::CreateChannel(Connection, 2, true, -1));
+					Functions::ActorChannel::SetChannelActor(Channel, Actor);
+				}
+
+				if (Channel)
+				{
+					Functions::ActorChannel::ReplicateActor(Channel);
+				}
+			}
+		}
+	}
 }
