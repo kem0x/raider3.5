@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+sdk/
+SDK/
+SDK\
+SDK/
+bin/
+.vs/
+
+SDK\
