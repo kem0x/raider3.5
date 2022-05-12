@@ -128,7 +128,7 @@ namespace Replication
 		}
 	}
 
-	void ServerReplicateActors(UNetDriver* NetDriver)
+	void ServerReplicateActors(UNetDriver* NetDriver, int DeltaSeconds)
 	{
 		++* (DWORD*)(__int64(NetDriver) + 816);
 
@@ -155,6 +155,9 @@ namespace Replication
 
 			for (auto Actor : ConsiderList)
 			{
+				if (Actor->IsA(APlayerController::StaticClass()) && Actor != Connection->PlayerController)
+					continue;
+				
 				auto Channel = FindChannel(Actor, Connection);
 
 				if (!Channel)

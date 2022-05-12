@@ -31,11 +31,16 @@
 *.out
 *.app
 
-sdk/
-SDK/
-SDK\
 SDK/
 bin/
+obj/
 .vs/
 
-SDK\
+SDK.hpp
+
+*.tlog
+*.ipch
+*.db-wal
+*.db
+*.opendb
+*.db-shm

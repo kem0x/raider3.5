@@ -22,6 +22,11 @@ namespace Hooks
     {
         Functions::World::WelcomePlayer(GetWorld(), IncomingConnection);
     }
+   
+    char KickPlayer(__int64 a1, __int64 a2, __int64 a3)
+    {
+        return 0;
+    }
 
     void World_NotifyControlMessage(UWorld* World, UNetConnection* Connection, uint8 MessageType, void* Bunch)
     {
@@ -38,14 +43,17 @@ namespace Hooks
 
         auto Pawn = (APlayerPawn_Athena_C*)SpawnActor<APlayerPawn_Athena_C>({ 0, 0, 10000 }, PlayerController);
         Pawn->bCanBeDamaged = false;
-        Pawn->bIsInvulnerable = true;
-        Pawn->SetHealth(59000);
-
+		
         PlayerController->Pawn = Pawn;
         Pawn->Owner = PlayerController;
         Pawn->OnRep_Owner();
         PlayerController->OnRep_Pawn();
         PlayerController->Possess(Pawn);
+
+        PlayerState = (AFortPlayerState*)PlayerController->Pawn->PlayerState;
+        PlayerState->CharacterParts[0] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
+        PlayerState->CharacterParts[1] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
+        PlayerState->OnRep_CharacterParts();
 
         //PlayerController->CheatManager = SpawnActor<UCheatManager>({ -230, 430, 3030 }, PlayerController);
         //PlayerController->CheatManager->God();
@@ -64,7 +72,25 @@ namespace Hooks
         PlayerController->OnRep_QuickBar();
 
         auto Pickaxe = UObject::FindObject<UFortWeaponMeleeItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
-        auto Inventory = SpawnActor<AFortInventory>({ -281, 401, 3001 }, PlayerController);
+       
+        static auto Def = UObject::FindObject<UFortWeaponItemDefinition>("WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
+        auto TempItemInstance = Def->CreateTemporaryItemInstanceBP(1, 1);
+        TempItemInstance->SetOwningControllerForTemporaryItem(PlayerController);
+
+        ((UFortWorldItem*)TempItemInstance)->ItemEntry.Count = 1;
+
+        auto ItemEntry = ((UFortWorldItem*)TempItemInstance)->ItemEntry;
+        PlayerController->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
+        PlayerController->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, EFortQuickBars::Primary, 0);
+
+        PlayerController->WorldInventory->HandleInventoryLocalUpdate();
+        PlayerController->HandleWorldInventoryLocalUpdate();
+        PlayerController->OnRep_QuickBar();
+        PlayerController->QuickBars->OnRep_PrimaryQuickBar();
+        PlayerController->QuickBars->OnRep_SecondaryQuickBar();
+
+        Pawn->EquipWeaponDefinition(Def, ItemEntry.ItemGuid);
+        /* auto Inventory = SpawnActor<AFortInventory>({ -281, 401, 3001 }, PlayerController);
         PlayerController->WorldInventory = Inventory;
 		
         auto Item = Pickaxe->CreateTemporaryItemInstanceBP(1, 0);
@@ -82,11 +108,19 @@ namespace Hooks
         PlayerController->AddItemToQuickBars(Pickaxe, EFortQuickBars::Primary, 0);
         PlayerController->ForceUpdateQuickbar(EFortQuickBars::Primary);
         PlayerController->QuickBars->OnRep_PrimaryQuickBar();
-        PlayerController->QuickBars->OnRep_SecondaryQuickBar();
+        PlayerController->QuickBars->OnRep_SecondaryQuickBar();*/
 
-        Pawn->ServerChoosePart(EFortCustomPartType::Head, UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1"));
-        Pawn->ServerChoosePart(EFortCustomPartType::Body, UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01"));
-        PlayerState->OnRep_CharacterParts();
+		if (PlayerController->Pawn)
+        {
+            if (PlayerController->Pawn->PlayerState)
+            {
+                auto PlayerState = (AFortPlayerStateAthena*)PlayerController->Pawn->PlayerState;
+                PlayerState->TeamIndex = EFortTeam::HumanPvP_Team10;
+                PlayerState->OnRep_PlayerTeam();
+                PlayerState->SquadId = 1;
+                PlayerState->OnRep_SquadId();
+            }
+        }
 
         return PlayerController;
     }
@@ -161,14 +195,20 @@ namespace Hooks
         DetourAttachE(Functions::World::NotifyControlMessage, World_NotifyControlMessage);
         DetourAttachE(Functions::World::SpawnPlayActor, SpawnPlayActor);
         DetourAttachE(Functions::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage);
+        DetourAttachE(Functions::OnlineSession::KickPlayer, Hooks::KickPlayer);
         DETOUR_END
         return;
     }
 
-    void ProcessEvent(UObject* Object, UObject* Function, void* Parameters)
+    void ProcessEvent(UObject* Object, UFunction* Function, void* Parameters)
     {
         auto ObjectName = Object->GetFullName();
         auto FunctionName = Function->GetFullName();
+
+		if (Function->FunctionFlags & 0x00200000)
+        {
+            std::cout << "RPC Called: " << FunctionName << std::endl;
+        }
 
         if (bTraveled && FunctionName.find("ReadyToStartMatch") != -1)
         {

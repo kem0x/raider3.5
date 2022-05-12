@@ -19,8 +19,8 @@ namespace Game
         PlayerController->Possess(Pawn);
 
         auto PlayerState = reinterpret_cast<AFortPlayerState*>(Pawn->PlayerState);
-        Pawn->ServerChoosePart(EFortCustomPartType::Head, UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1"));
-        Pawn->ServerChoosePart(EFortCustomPartType::Body, UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01"));
+        PlayerState->CharacterParts[0] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
+        PlayerState->CharacterParts[1] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
         PlayerState->OnRep_CharacterParts();
         PlayerController->CheatManager->God();
 
@@ -33,8 +33,7 @@ namespace Game
         PlayerState->bHasFinishedLoading = true;
         PlayerState->bIsReadyToContinue = true;
         PlayerState->OnRep_bHasStartedPlaying();
-		
-	
+
         reinterpret_cast<AFortGameStateAthena*>(GetWorld()->GameState)->bGameModeWillSkipAircraft = true;
         reinterpret_cast<AFortGameStateAthena*>(GetWorld()->GameState)->AircraftStartTime = 99999.0f;
         reinterpret_cast<AFortGameStateAthena*>(GetWorld()->GameState)->WarmupCountdownEndTime = 99999.0f;
@@ -50,5 +49,17 @@ namespace Game
         ((AAthena_GameState_C*)GetWorld()->GameState)->bReplicatedHasBegunPlay = true;
         ((AAthena_GameState_C*)GetWorld()->GameState)->OnRep_ReplicatedHasBegunPlay();
         reinterpret_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode)->StartMatch();
+
+        if (PlayerController->Pawn)
+        {
+            if (PlayerController->Pawn->PlayerState)
+            {
+                auto PlayerState = (AFortPlayerStateAthena*)PlayerController->Pawn->PlayerState;
+                PlayerState->TeamIndex = EFortTeam::HumanPvP_Team10;
+                PlayerState->OnRep_PlayerTeam();
+                PlayerState->SquadId = 1;
+                PlayerState->OnRep_SquadId();
+            }
+        }
     }
 }

@@ -100,6 +100,11 @@ namespace Functions
         inline void (*StartBecomingDormant)(UActorChannel* ActorChannel);
     }
 
+    namespace OnlineSession
+    {
+        inline char (*KickPlayer)(__int64 a1, __int64 a2, __int64 a3);
+    }
+
     namespace OnlineBeacon
     {
         inline void (*PauseBeaconRequest)(AOnlineBeacon* Beacon, bool bPause);
@@ -208,6 +213,11 @@ namespace Functions
         Address = Utils::FindPattern(Patterns::ReceiveFString);
         CheckNullFatal(Address, "Failed to find ReceiveFString");
         AddressToFunction(Address, NetConnection::ReceiveFString);
+
+        Address = Utils::FindPattern(Patterns::KickPlayer);
+        CheckNullFatal(Address, "Failed to find KickPlayer");
+        AddressToFunction(Address, OnlineSession::KickPlayer);
+
         return;
     }
 

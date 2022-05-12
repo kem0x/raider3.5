@@ -17,7 +17,7 @@ DWORD WINAPI Main(LPVOID lpParam)
     DETOUR_START
     DetourAttachE(PEOriginal, Hooks::ProcessEvent);
     DetourAttachE(Functions::NetDriver::TickFlush, Hooks::TickFlush);
-    
+
     void* (*NetDebug)(void* _this) = (void* (*)(void* _this))(Offsets::Imagebase + 0x5CDAD0);
     DetourAttachE(NetDebug, Hooks::NetDebug);
     DETOUR_END

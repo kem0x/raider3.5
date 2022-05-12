@@ -1,0 +1,7 @@
+﻿---
+BasedOnStyle: WebKit
+AlignAfterOpenBracket: AlwaysBreak
+BreakBeforeBraces: Allman
+NamespaceIndentation: All
+
+...
