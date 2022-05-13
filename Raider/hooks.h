@@ -39,19 +39,10 @@ namespace Hooks
         NewPlayer->PlayerController = PlayerController;
         PlayerController->SetOwner((AActor*)NewPlayer);
 
-        // PlayerController->Role = (ENetRole)2;
-        // PlayerController->RemoteRole = (ENetRole)3;
-
         AFortPlayerState* PlayerState = (AFortPlayerState*)PlayerController->PlayerState;
         PlayerState->SetOwner(PlayerController);
 
         auto Pawn = (APlayerPawn_Athena_C*)SpawnActor<APlayerPawn_Athena_C>(GetPlayerController()->Pawn->K2_GetActorLocation(), PlayerController);
-
-        if (Pawn)
-        {
-            // Pawn->Role = (ENetRole)2;
-            // Pawn->RemoteRole = (ENetRole)3;
-        }
 
         Pawn->bCanBeDamaged = false;
 
@@ -60,11 +51,6 @@ namespace Hooks
         Pawn->OnRep_Owner();
         PlayerController->OnRep_Pawn();
         PlayerController->Possess(Pawn);
-
-        // PlayerController->CheatManager->God();
-
-        // PlayerController->CheatManager = SpawnActor<UCheatManager>({ -230, 430, 3030 }, PlayerController);
-        // PlayerController->CheatManager->God();
 
         PlayerController->bHasClientFinishedLoading = true;
         PlayerController->bHasServerFinishedLoading = true;
@@ -99,29 +85,6 @@ namespace Hooks
         PlayerController->OnRep_QuickBar();
         PlayerController->QuickBars->OnRep_PrimaryQuickBar();
         PlayerController->QuickBars->OnRep_SecondaryQuickBar();
-
-        // Pawn->EquipWeaponDefinition(Def, ItemEntry.ItemGuid);
-        // Pawn->OnRep_CurrentWeapon();
-
-        /* auto Inventory = SpawnActor<AFortInventory>({ -281, 401, 3001 }, PlayerController);
-        PlayerController->WorldInventory = Inventory;
-
-        auto Item = Pickaxe->CreateTemporaryItemInstanceBP(1, 0);
-        auto WorldItem = reinterpret_cast<SDK::UFortWorldItem*>(Item);
-        WorldItem->ItemEntry.Count = 1;
-        WorldItem->SetOwningControllerForTemporaryItem(PlayerController);
-        PlayerController->WorldInventory->Inventory.ReplicatedEntries.Add(WorldItem->ItemEntry);
-        PlayerController->WorldInventory->Inventory.ItemInstances.Add(WorldItem);
-        PlayerController->WorldInventory->HandleInventoryLocalUpdate();
-        PlayerController->HandleWorldInventoryLocalUpdate();
-
-        PlayerController->QuickBars = QuickBars;
-        PlayerController->OnRep_QuickBar();
-
-        PlayerController->AddItemToQuickBars(Pickaxe, EFortQuickBars::Primary, 0);
-        PlayerController->ForceUpdateQuickbar(EFortQuickBars::Primary);
-        PlayerController->QuickBars->OnRep_PrimaryQuickBar();
-        PlayerController->QuickBars->OnRep_SecondaryQuickBar();*/
 
         if (PlayerController->Pawn)
         {
@@ -218,11 +181,6 @@ namespace Hooks
     {
         auto ObjectName = Object->GetFullName();
         auto FunctionName = Function->GetFullName();
-
-        if (Function->FunctionFlags & 0x00200000)
-        {
-            std::cout << "RPC Called: " << FunctionName << std::endl;
-        }
 
         if (bTraveled && FunctionName.find("ReadyToStartMatch") != -1)
         {

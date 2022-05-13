@@ -9,11 +9,6 @@ namespace Game
         bTraveled = true;
     }
 
-    void InitConsole()
-    {
-        
-    }
-
     void OnReadyToStartMatch()
     {
         auto Pawn = SpawnActor<APlayerPawn_Athena_C>({ 0, 0, 10000 }, {});
@@ -37,21 +32,26 @@ namespace Game
         PlayerState->bIsReadyToContinue = true;
         PlayerState->OnRep_bHasStartedPlaying();
 
-        reinterpret_cast<AFortGameStateAthena*>(GetWorld()->GameState)->bGameModeWillSkipAircraft = true;
-        reinterpret_cast<AFortGameStateAthena*>(GetWorld()->GameState)->AircraftStartTime = 99999.0f;
-        reinterpret_cast<AFortGameStateAthena*>(GetWorld()->GameState)->WarmupCountdownEndTime = 99999.0f;
+        auto world = GetWorld();
+        auto gameState = reinterpret_cast<AAthena_GameState_C*>(world->GameState);
 
-        reinterpret_cast<AFortGameStateAthena*>(GetWorld()->GameState)->GamePhase = EAthenaGamePhase::Aircraft;
-        reinterpret_cast<AFortGameStateAthena*>(GetWorld()->GameState)->OnRep_GamePhase(EAthenaGamePhase::None);
+        gameState->bGameModeWillSkipAircraft = true;
+        gameState->AircraftStartTime = 99999.0f;
+        gameState->WarmupCountdownEndTime = 99999.0f;
 
-        auto a = reinterpret_cast<UKismetStringLibrary*>(UKismetStringLibrary::StaticClass())->STATIC_Conv_StringToName(L"InProgress");
-        reinterpret_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode)->MatchState = a;
-        reinterpret_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode)->K2_OnSetMatchState(a);
+        gameState->GamePhase = EAthenaGamePhase::Aircraft;
+        gameState->OnRep_GamePhase(EAthenaGamePhase::None);
 
-        reinterpret_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode)->StartPlay();
-        ((AAthena_GameState_C*)GetWorld()->GameState)->bReplicatedHasBegunPlay = true;
-        ((AAthena_GameState_C*)GetWorld()->GameState)->OnRep_ReplicatedHasBegunPlay();
-        reinterpret_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode)->StartMatch();
+        auto authGameMode = reinterpret_cast<AFortGameModeAthena*>(world->AuthorityGameMode);
+
+        auto stateF = reinterpret_cast<UKismetStringLibrary*>(UKismetStringLibrary::StaticClass())->STATIC_Conv_StringToName(L"InProgress");
+        authGameMode->MatchState = stateF;
+        authGameMode->K2_OnSetMatchState(stateF);
+
+        authGameMode->StartPlay();
+        gameState->bReplicatedHasBegunPlay = true;
+        gameState->OnRep_ReplicatedHasBegunPlay();
+        authGameMode->StartMatch();
 
         if (PlayerController->Pawn)
         {

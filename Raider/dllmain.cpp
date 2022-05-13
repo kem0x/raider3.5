@@ -24,7 +24,6 @@ DWORD WINAPI Main(LPVOID lpParam)
 
     printf("[+] Hooked ProcessEvent\n");
 
-    Game::InitConsole();
     Game::Start();
 
     printf("[Game::Start] Done\n");
