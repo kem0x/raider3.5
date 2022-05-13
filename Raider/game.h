@@ -13,13 +13,22 @@ namespace Game
     {
         auto Pawn = SpawnActor<APlayerPawn_Athena_C>({ 0, 0, 10000 }, {});
         Pawn->bCanBeDamaged = false;
-        auto PlayerController = (AFortPlayerControllerAthena*)GetEngine()->GameInstance->LocalPlayers[0]->PlayerController;
+		
+        auto PlayerController = GetPlayerController();
         PlayerController->Possess(Pawn);
 
-        auto PlayerState = reinterpret_cast<AFortPlayerState*>(Pawn->PlayerState);
-        PlayerState->CharacterParts[0] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
-        PlayerState->CharacterParts[1] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
-        PlayerState->OnRep_CharacterParts();
+        auto PlayerState = reinterpret_cast<AFortPlayerStateAthena*>(Pawn->PlayerState);
+
+        for (int i = 0; i < PlayerController->StrongMyHero->CharacterParts.Num(); i++)
+        {
+            auto Part = PlayerController->StrongMyHero->CharacterParts[i];
+
+            if (!Part)
+                continue;
+			
+            Pawn->ServerChoosePart((EFortCustomPartType)i, Part);
+        }
+
         PlayerController->CheatManager->God();
 
         PlayerController->bReadyToStartMatch = true;
@@ -57,8 +66,7 @@ namespace Game
         {
             if (PlayerController->Pawn->PlayerState)
             {
-                auto PlayerState = (AFortPlayerStateAthena*)PlayerController->Pawn->PlayerState;
-                PlayerState->TeamIndex = EFortTeam::HumanPvP_Team10;
+                PlayerState->TeamIndex = EFortTeam::HumanPvP_Team2;
                 PlayerState->OnRep_PlayerTeam();
                 PlayerState->SquadId = 1;
                 PlayerState->OnRep_SquadId();

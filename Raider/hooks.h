@@ -39,10 +39,10 @@ namespace Hooks
         NewPlayer->PlayerController = PlayerController;
         PlayerController->SetOwner((AActor*)NewPlayer);
 
-        AFortPlayerState* PlayerState = (AFortPlayerState*)PlayerController->PlayerState;
+        AFortPlayerStateAthena* PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
         PlayerState->SetOwner(PlayerController);
 
-        auto Pawn = (APlayerPawn_Athena_C*)SpawnActor<APlayerPawn_Athena_C>(GetPlayerController()->Pawn->K2_GetActorLocation(), PlayerController);
+        auto Pawn = SpawnActor<APlayerPawn_Athena_C>(GetPlayerController()->Pawn->K2_GetActorLocation(), PlayerController);
 
         Pawn->bCanBeDamaged = false;
 
@@ -62,7 +62,8 @@ namespace Hooks
 
         PlayerState->CharacterParts[0] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
         PlayerState->CharacterParts[1] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
-        PlayerState->OnRep_CharacterParts();
+        // PlayerState->OnRep_CharacterParts();
+        Functions::PlayerState::OnRep_CharacterParts(PlayerState);
 
         PlayerState->OnRep_HeroType();
 
@@ -90,8 +91,7 @@ namespace Hooks
         {
             if (PlayerController->Pawn->PlayerState)
             {
-                auto PlayerState = (AFortPlayerStateAthena*)PlayerController->Pawn->PlayerState;
-                PlayerState->TeamIndex = EFortTeam::HumanPvP_Team10;
+                PlayerState->TeamIndex = EFortTeam::HumanPvP_Team2;
                 PlayerState->OnRep_PlayerTeam();
                 PlayerState->SquadId = 1;
                 PlayerState->OnRep_SquadId();
@@ -154,7 +154,7 @@ namespace Hooks
         printf("[UWorld::Listen]\n");
 
         AFortOnlineBeaconHost* HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
-
+        HostBeacon->ListenPort = 7777;
         Functions::OnlineBeaconHost::InitHost(HostBeacon);
 
         HostBeacon->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
@@ -165,7 +165,7 @@ namespace Hooks
         GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;
         GetWorld()->LevelCollections[1].NetDriver = HostBeacon->NetDriver;
 
-        Functions::OnlineBeacon::PauseBeaconRequest(HostBeacon, false);
+        Functions::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
 
         DETOUR_START
         DetourAttachE(Functions::World::WelcomePlayer, WelcomePlayer);
@@ -174,6 +174,7 @@ namespace Hooks
         DetourAttachE(Functions::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage);
         DetourAttachE(Functions::OnlineSession::KickPlayer, Hooks::KickPlayer);
         DETOUR_END
+			
         return;
     }
 
@@ -182,15 +183,33 @@ namespace Hooks
         auto ObjectName = Object->GetFullName();
         auto FunctionName = Function->GetFullName();
 
+		if (!bPlayButton && FunctionName.find("BP_PlayButton") != -1)
+        {
+            bPlayButton = true;
+            Game::Start();
+            printf("[Game::Start] Done\n");
+        }
+
         if (bTraveled && FunctionName.find("ReadyToStartMatch") != -1)
         {
             EXECUTE_ONE_TIME
             {
-                printf("[UWorld::ProcessEvent]\n\n\n\n\n\n\n\n");
                 Game::OnReadyToStartMatch();
                 Listen();
             }
         }
+
+        /* // Crashes
+
+        if (FunctionName.find("ServerReturnToMainMenu") != - 1)
+        {
+            GetPlayerController()->SwitchLevel(L"Frontend");
+			
+            bPlayButton = false;
+            bTraveled = false;
+        }
+
+		*/
 
         return PEOriginal(Object, Function, Parameters);
     }

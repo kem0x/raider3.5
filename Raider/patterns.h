@@ -20,7 +20,7 @@ namespace Patterns {
 	constexpr const char* CreateChannel = "40 56 57 41 54 41 55 41 57 48 83 EC 60 48 8B 01 41 8B F9 45 0F B6 E0 4C 63 FA 48 8B F1";
 	constexpr const char* ReplicateActor = "48 8B C4 48 89 48 08 55 53 48 8D A8 ? ? ? ? 48 81 EC ? ? ? ? 0F 29 70 A8 0F 29 78 98 48 89 70 E8 4C 89 60 D8 4C 8D 61 68 4C 89 68 D0 4C 8B E9 49 8B 0C 24 4C 89 70 C8 4C 89 64 24 ? 48 8B 01 FF 90 ? ? ? ? 48 8B D8 48 85 C0 74 16 49 8B 55 28 4C 8B 42 58 4C 39 80 ? ? ? ?";
 	constexpr const char* SetChannelActor = "48 8B C4 55 53 48 8D A8 ? ? ? ? 48 81 EC ? ? ? ? 48 89 70 10 48 8B D9 48 89 78 18 48 8D 35 ? ? ? ? 4C 89 60 E8 48 8B FA 45 33 E4 4C 89 78 D8 44 89 A5 ? ? ? ? 45 8B FC 48 8B 41 28 48 8B 48 58 48 85 C9 0F 84 ? ? ? ? 4C 39 A1 ? ? ? ? 0F 84 ? ? ? ? 48 85 D2 0F 84 ? ? ? ? 48 8B CA E8 ? ? ? ? 48 85 C0";
-	constexpr const char* PauseBeaconRequest = "40 53 48 83 EC 30 48 8B D9 84 D2 74 68 80 3D ? ? ? ? ? 72 2C 48 8B 05 ? ? ? ? 4C 8D 44 24 ? 48 89 44 24 ?";
+	constexpr const char* PauseBeaconRequests = "40 53 48 83 EC 30 48 8B D9 84 D2 74 68 80 3D ? ? ? ? ? 72 2C 48 8B 05 ? ? ? ? 4C 8D 44 24 ? 48 89 44 24 ?";
 	constexpr const char* Beacon_NotifyAcceptingConnection = "48 83 EC 48 48 8B 41 10 48 83 78 ? ?";
 	constexpr const char* InitHost = "48 8B C4 48 81 EC ? ? ? ? 48 89 58 18 4C 8D 05 ? ? ? ?";
 	constexpr const char* Beacon_NotifyControlMessage = "40 55 53 56 57 41 54 41 56 41 57 48 8D AC 24 ? ? ? ? 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 85 ? ? ? ? 33 FF 48 89 4C 24 ? 89 7C 24 60 49 8B F1 48 8B 41 10 45 0F B6 E0 4C 8B F2 48 8B D9 44 8B FF 48 39 78 78 0F 85 ? ? ? ? 80 3D ? ? ? ? ?";
@@ -28,5 +28,6 @@ namespace Patterns {
 	constexpr const char* World_NotifyControlMessage = "40 55 53 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 ? ? ? ? 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 85 ? ? ? ? 45 33 F6 49 8B D9 44 89 74 24 ? 45 8B E6 48 8B 41 10 45 0F B6 F8 48 8B FA 4C 8B E9 4C 39 60 78";
 	constexpr const char* SpawnPlayActor = "44 89 44 24 ? 48 89 54 24 ? 48 89 4C 24 ? 55 53 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 ? 48 81 EC ? ? ? ? 33 F6 48 8D 05 ? ? ? ? 89 75 67 4D 8B E9 4C 8B 65 77 49 39 04 24 74 2A 41 89 74 24 ? 41 39 74 24 ?";
     constexpr const char* World_NotifyAcceptingConnection = "40 55 48 83 EC 50 48 8B 41 10 48 8B E9 48 83 78 ? ? 74 45 80 3D ? ? ? ? ? 72 34 48 8B 05 ? ? ? ? 4C 8D 44 24 ? 48 89 44 24 ? 48 8D 0D ? ? ? ? 48 8D 05 ? ? ? ? 41 B9 ? ? ? ? BA ? ? ? ? 48 89 44 24 ?";
+    constexpr const char* OnRep_CharacterParts = "40 53 48 83 EC 60 F6 81 ? ? ? ? ? 48 8B D9 0F 85 ? ? ? ? 48 8B 81 ? ? ? ? 48 89 81 ? ? ? ? 48 8B 81 ? ? ? ?";
 	//constexpr const char* SeamlessTravelHandlerForWorld = "48 83 EC 28 48 8B 81 ? ? ? ? 48 63 89 ? ? ? ? 48 8D 0C C8 48 3B C1 74 1A 0F 1F 44 00 ? 4C 8B 00 49 39 90 ? ? ? ? 74 17 48 83 C0 08 48 3B C1 75 EB E8 ? ? ? ?"; // broken
 }

@@ -1,14 +1,17 @@
 #pragma once
+
 #include "SDK.hpp"
-#include "classes.h"
+
 #include "patterns.h"
 #include "util.h"
 
 inline bool bTraveled = false;
+inline bool bPlayButton = false;
 
 inline UFortEngine* GetEngine()
 {
-    return *(UFortEngine**)(Offsets::Imagebase + Offsets::GEngineOffset);
+    static auto engine = UObject::FindObject<UFortEngine>("FortEngine_");
+    return engine;
 }
 
 inline UWorld* GetWorld()
@@ -21,7 +24,7 @@ inline AAthena_PlayerController_C* GetPlayerController(int32 Index = 0)
 {
     if (Index > GetWorld()->OwningGameInstance->LocalPlayers.Num())
     {
-        std::cout << "WARNING! PlayerController out of range! (" << Index << " out of " << GetWorld()->OwningGameInstance->LocalPlayers.Num() << ")" << std::endl;
+        std::cout << "WARNING! PlayerController out of range! (" << Index << " out of " << GetWorld()->OwningGameInstance->LocalPlayers.Num() << ")" << '\n';
 
         return (AAthena_PlayerController_C*)GetWorld()->OwningGameInstance->LocalPlayers[0]->PlayerController;
     }
@@ -31,7 +34,7 @@ inline AAthena_PlayerController_C* GetPlayerController(int32 Index = 0)
 
 FORCEINLINE int32& GetReplicationFrame(UNetDriver* Driver)
 {
-    return *(int32*)(int64(Driver) + Offsets::Net::ReplicationFrame);
+    return *(int32*)(int64(Driver) + 816); // Offsets::Net::ReplicationFrame);
 }
 
 FORCEINLINE UGameplayStatics* GetGameplayStatics()
@@ -63,6 +66,11 @@ inline RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor*
     return nullptr;
 }
 
+inline void CreateConsole()
+{
+    GetEngine()->GameViewport->ViewportConsole = (UConsole*)GetGameplayStatics()->STATIC_SpawnObject(UConsole::StaticClass(), GetEngine()->GameViewport);
+}
+
 namespace Functions
 {
     namespace Actor
@@ -75,6 +83,11 @@ namespace Functions
     namespace PlayerController
     {
         inline bool (*SendClientAdjustment)(APlayerController* Controller);
+    }
+
+	namespace PlayerState
+    {
+            inline void (*OnRep_CharacterParts)(AFortPlayerState* State);
     }
 
     namespace NetDriver
@@ -107,7 +120,7 @@ namespace Functions
 
     namespace OnlineBeacon
     {
-        inline void (*PauseBeaconRequest)(AOnlineBeacon* Beacon, bool bPause);
+        inline void (*PauseBeaconRequests)(AOnlineBeacon* Beacon, bool bPause);
         inline uint8 (*NotifyAcceptingConnection)(AOnlineBeacon* Beacon);
     }
 
@@ -134,9 +147,7 @@ namespace Functions
 
     void InitializeAll()
     {
-
         Offsets::Imagebase = (uintptr_t)GetModuleHandleA(0);
-        PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
 
         uintptr_t Address = Utils::FindPattern(Patterns::GObjects, true, 3);
         CheckNullFatal(Address, "Failed to find GObjects");
@@ -144,7 +155,7 @@ namespace Functions
 		
         Address = Utils::FindPattern(Patterns::Free);
         CheckNullFatal(Address, "Failed to find Free");
-        AddressToFunction(Address, FreeInternal );
+        AddressToFunction(Address, FreeInternal);
 
 		Address = Utils::FindPattern(Patterns::Realloc);
         CheckNullFatal(Address, "Failed to find Realloc");
@@ -182,9 +193,9 @@ namespace Functions
         CheckNullFatal(Address, "Failed to find SetChannelActor");
         AddressToFunction(Address, ActorChannel::SetChannelActor);
 
-        Address = Utils::FindPattern(Patterns::PauseBeaconRequest);
-        CheckNullFatal(Address, "Failed to find PauseBeaconRequest");
-        AddressToFunction(Address, OnlineBeacon::PauseBeaconRequest);
+        Address = Utils::FindPattern(Patterns::PauseBeaconRequests);
+        CheckNullFatal(Address, "Failed to find PauseBeaconRequests");
+        AddressToFunction(Address, OnlineBeacon::PauseBeaconRequests);
 
         Address = Utils::FindPattern(Patterns::InitHost);
         CheckNullFatal(Address, "Failed to find InitHost");
@@ -218,6 +229,12 @@ namespace Functions
         CheckNullFatal(Address, "Failed to find KickPlayer");
         AddressToFunction(Address, OnlineSession::KickPlayer);
 
+        Address = Utils::FindPattern(Patterns::OnRep_CharacterParts);
+        CheckNullFatal(Address, "Failed to find OnRep_CharacterParts");
+        AddressToFunction(Address, PlayerState::OnRep_CharacterParts);
+
+        PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
+		
         return;
     }
 

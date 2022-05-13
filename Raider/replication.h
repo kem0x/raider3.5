@@ -91,7 +91,7 @@ namespace Replication
     {
         auto World = NetDriver->World;
 
-        if (!World)
+        if (!World || !&OutConsiderList || !NetDriver)
             return;
 
         TArray<AActor*> Actors;
@@ -101,27 +101,13 @@ namespace Replication
         {
             auto Actor = Actors[i];
 
-            if (!Actor)
-            {
+            if (!Actor || Actor->RemoteRole == ENetRole::ROLE_None || Actor->bActorIsBeingDestroyed)
                 continue;
-            }
-
-            if (Actor->bActorIsBeingDestroyed)
-            {
-                continue;
-            }
-
-            if (Actor->RemoteRole == ENetRole::ROLE_None)
-            {
-                continue;
-            }
 
             if (Actor->NetDormancy == ENetDormancy::DORM_Initial && Actor->bNetStartup)
-            {
                 continue;
-            }
 
-            if (Actor && NetDriver && &OutConsiderList && Actor->Name.ComparisonIndex != 0)
+            if (Actor->Name.ComparisonIndex != 0)
             {
                 Functions::Actor::CallPreReplication(Actor, NetDriver);
                 OutConsiderList.push_back(Actor);
@@ -131,7 +117,7 @@ namespace Replication
 
     void ServerReplicateActors(UNetDriver* NetDriver, int DeltaSeconds)
     {
-        ++*(DWORD*)(__int64(NetDriver) + 816);
+        ++GetReplicationFrame(NetDriver);
 
         auto NumClientsToTick = PrepConnections(NetDriver);
 

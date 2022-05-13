@@ -42,9 +42,6 @@
     <ClInclude Include="SDK.hpp">
       <Filter>SDK</Filter>
     </ClInclude>
-    <ClInclude Include="containers.h">
-      <Filter>UE4</Filter>
-    </ClInclude>
     <ClInclude Include="ue4.h">
       <Filter>UE4</Filter>
     </ClInclude>
@@ -57,9 +54,6 @@
     </ClInclude>
     <ClInclude Include="game.h" />
     <ClInclude Include="replication.h">
-      <Filter>UE4</Filter>
-    </ClInclude>
-    <ClInclude Include="classes.h">
       <Filter>UE4</Filter>
     </ClInclude>
   </ItemGroup>
