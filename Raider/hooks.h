@@ -22,7 +22,7 @@ namespace Hooks
     {
         Functions::World::WelcomePlayer(GetWorld(), IncomingConnection);
     }
-   
+
     char KickPlayer(__int64 a1, __int64 a2, __int64 a3)
     {
         return 0;
@@ -37,26 +37,34 @@ namespace Hooks
     {
         auto PlayerController = (AFortPlayerControllerAthena*)Functions::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex);
         NewPlayer->PlayerController = PlayerController;
+        PlayerController->SetOwner((AActor*)NewPlayer);
 
-        auto PlayerState = (AFortPlayerState*)NewPlayer->PlayerController->PlayerState;
+        // PlayerController->Role = (ENetRole)2;
+        // PlayerController->RemoteRole = (ENetRole)3;
+
+        AFortPlayerState* PlayerState = (AFortPlayerState*)PlayerController->PlayerState;
         PlayerState->SetOwner(PlayerController);
 
-        auto Pawn = (APlayerPawn_Athena_C*)SpawnActor<APlayerPawn_Athena_C>({ 0, 0, 10000 }, PlayerController);
+        auto Pawn = (APlayerPawn_Athena_C*)SpawnActor<APlayerPawn_Athena_C>(GetPlayerController()->Pawn->K2_GetActorLocation(), PlayerController);
+
+        if (Pawn)
+        {
+            // Pawn->Role = (ENetRole)2;
+            // Pawn->RemoteRole = (ENetRole)3;
+        }
+
         Pawn->bCanBeDamaged = false;
-		
+
         PlayerController->Pawn = Pawn;
         Pawn->Owner = PlayerController;
         Pawn->OnRep_Owner();
         PlayerController->OnRep_Pawn();
         PlayerController->Possess(Pawn);
 
-        PlayerState = (AFortPlayerState*)PlayerController->Pawn->PlayerState;
-        PlayerState->CharacterParts[0] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
-        PlayerState->CharacterParts[1] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
-        PlayerState->OnRep_CharacterParts();
+        // PlayerController->CheatManager->God();
 
-        //PlayerController->CheatManager = SpawnActor<UCheatManager>({ -230, 430, 3030 }, PlayerController);
-        //PlayerController->CheatManager->God();
+        // PlayerController->CheatManager = SpawnActor<UCheatManager>({ -230, 430, 3030 }, PlayerController);
+        // PlayerController->CheatManager->God();
 
         PlayerController->bHasClientFinishedLoading = true;
         PlayerController->bHasServerFinishedLoading = true;
@@ -65,14 +73,17 @@ namespace Hooks
         PlayerState->bHasFinishedLoading = true;
         PlayerState->bHasStartedPlaying = true;
         PlayerState->OnRep_bHasStartedPlaying();
+
+        PlayerState->CharacterParts[0] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
+        PlayerState->CharacterParts[1] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
+        PlayerState->OnRep_CharacterParts();
+
         PlayerState->OnRep_HeroType();
 
-	    auto QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
+        auto QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
         PlayerController->QuickBars = QuickBars;
         PlayerController->OnRep_QuickBar();
 
-        auto Pickaxe = UObject::FindObject<UFortWeaponMeleeItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
-       
         static auto Def = UObject::FindObject<UFortWeaponItemDefinition>("WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
         auto TempItemInstance = Def->CreateTemporaryItemInstanceBP(1, 1);
         TempItemInstance->SetOwningControllerForTemporaryItem(PlayerController);
@@ -89,10 +100,12 @@ namespace Hooks
         PlayerController->QuickBars->OnRep_PrimaryQuickBar();
         PlayerController->QuickBars->OnRep_SecondaryQuickBar();
 
-        Pawn->EquipWeaponDefinition(Def, ItemEntry.ItemGuid);
+        // Pawn->EquipWeaponDefinition(Def, ItemEntry.ItemGuid);
+        // Pawn->OnRep_CurrentWeapon();
+
         /* auto Inventory = SpawnActor<AFortInventory>({ -281, 401, 3001 }, PlayerController);
         PlayerController->WorldInventory = Inventory;
-		
+
         auto Item = Pickaxe->CreateTemporaryItemInstanceBP(1, 0);
         auto WorldItem = reinterpret_cast<SDK::UFortWorldItem*>(Item);
         WorldItem->ItemEntry.Count = 1;
@@ -101,16 +114,16 @@ namespace Hooks
         PlayerController->WorldInventory->Inventory.ItemInstances.Add(WorldItem);
         PlayerController->WorldInventory->HandleInventoryLocalUpdate();
         PlayerController->HandleWorldInventoryLocalUpdate();
-        
+
         PlayerController->QuickBars = QuickBars;
         PlayerController->OnRep_QuickBar();
-        
+
         PlayerController->AddItemToQuickBars(Pickaxe, EFortQuickBars::Primary, 0);
         PlayerController->ForceUpdateQuickbar(EFortQuickBars::Primary);
         PlayerController->QuickBars->OnRep_PrimaryQuickBar();
         PlayerController->QuickBars->OnRep_SecondaryQuickBar();*/
 
-		if (PlayerController->Pawn)
+        if (PlayerController->Pawn)
         {
             if (PlayerController->Pawn->PlayerState)
             {
@@ -133,6 +146,7 @@ namespace Hooks
     void Beacon_NotifyControlMessage(AOnlineBeaconHost* Beacon, UNetConnection* Connection, uint8 MessageType, void* Bunch)
     {
         printf("Recieved control message %i\n", MessageType);
+
         if (MessageType == 15)
             return; // PCSwap no thx
 
@@ -205,7 +219,7 @@ namespace Hooks
         auto ObjectName = Object->GetFullName();
         auto FunctionName = Function->GetFullName();
 
-		if (Function->FunctionFlags & 0x00200000)
+        if (Function->FunctionFlags & 0x00200000)
         {
             std::cout << "RPC Called: " << FunctionName << std::endl;
         }

@@ -5,10 +5,13 @@ namespace Game
 {
     void Start()
     {
-		UKismetSystemLibrary* Kismet = reinterpret_cast<UKismetSystemLibrary*>(UKismetSystemLibrary::StaticClass());
-		//Kismet->STATIC_ExecuteConsoleCommand(GetWorld(), L"open Athena_Faceoff", GetPlayerController());
         GetPlayerController()->SwitchLevel(L"Athena_Terrain?game=/Game/Athena/Athena_GameMode.Athena_GameMode_C");
         bTraveled = true;
+    }
+
+    void InitConsole()
+    {
+        
     }
 
     void OnReadyToStartMatch()
