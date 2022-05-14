@@ -25,6 +25,8 @@ DWORD WINAPI Main(LPVOID lpParam)
     printf("[+] Hooked ProcessEvent\n");
 
     CreateConsole();
+    DumpObjects();
+	
     return 1;
 }
 

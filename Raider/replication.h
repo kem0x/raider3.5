@@ -115,7 +115,7 @@ namespace Replication
         }
     }
 
-    void ServerReplicateActors(UNetDriver* NetDriver, int DeltaSeconds)
+    void ServerReplicateActors(UNetDriver* NetDriver)
     {
         ++GetReplicationFrame(NetDriver);
 
@@ -144,7 +144,7 @@ namespace Replication
             {
                 if (Connection->Children[ChildIdx]->PlayerController != NULL)
                 {
-                    auto ChildPC = Connection->Children[ChildIdx]->PlayerController;                    
+                    auto ChildPC = Connection->Children[ChildIdx]->PlayerController;
                     Functions::PlayerController::SendClientAdjustment(ChildPC);
                 }
             }
@@ -160,7 +160,10 @@ namespace Replication
                 {
                     Channel = (UActorChannel*)(Functions::NetConnection::CreateChannel(Connection, 2, true, -1));
                     Functions::ActorChannel::SetChannelActor(Channel, Actor);
-                } else {
+                }
+
+                if (Channel)
+                {
                     Functions::ActorChannel::ReplicateActor(Channel);
                 }
             }

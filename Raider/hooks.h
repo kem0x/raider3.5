@@ -17,7 +17,7 @@ namespace Hooks
 
         if (NetDriver->IsA(UIpNetDriver::StaticClass()) && NetDriver->ClientConnections.Num() > 0 && NetDriver->ClientConnections[0]->InternalAck == false)
         {
-            Replication::ServerReplicateActors(NetDriver, DeltaSeconds);
+            Replication::ServerReplicateActors(NetDriver);
         }
 
         Functions::NetDriver::TickFlush(NetDriver, DeltaSeconds);
@@ -43,18 +43,15 @@ namespace Hooks
         auto PlayerController = (AFortPlayerControllerAthena*)Functions::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex);
         NewPlayer->PlayerController = PlayerController;
         PlayerController->SetOwner((AActor*)NewPlayer);
-        PlayerController->OnRep_Owner();
-		
+
         AFortPlayerStateAthena* PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
         PlayerState->SetOwner(PlayerController);
-        PlayerState->OnRep_Owner();
-		
-        auto Pawn = SpawnActor<APlayerPawn_Athena_C>(GetPlayerController()->Pawn->K2_GetActorLocation(), PlayerController);
+
+        auto Pawn = SpawnActor<APlayerPawn_Athena_C>({ 1250, 1818, 3284 }, PlayerController);
 
         Pawn->bCanBeDamaged = false;
 
         PlayerController->Pawn = Pawn;
-        Pawn->SetOwner(PlayerController);
         Pawn->Owner = PlayerController;
         Pawn->OnRep_Owner();
         PlayerController->OnRep_Pawn();
@@ -68,24 +65,18 @@ namespace Hooks
         PlayerState->bHasStartedPlaying = true;
         PlayerState->OnRep_bHasStartedPlaying();
 
-        PlayerState->CharacterBodyType = EFortCustomBodyType::LargeAndMedium;
-        PlayerState->LocalCharacterBodyType = EFortCustomBodyType::LargeAndMedium;
-        PlayerState->OnRep_CharacterBodyType();
-        PlayerState->CharacterGender = EFortCustomGender::Female;
-        PlayerState->LocalCharacterGender = EFortCustomGender::Female;
-        PlayerState->OnRep_CharacterGender();
-				
-        PlayerState->LocalCharacterParts[0] = UObject::FindObject<UCustomCharacterPart>("F_Med_Head1.F_Med_Head1");
-        PlayerState->LocalCharacterParts[1] = UObject::FindObject<UCustomCharacterPart>("F_Med_Soldier_01.F_Med_Soldier_01");
-        
-        PlayerState->CharacterParts[0] = UObject::FindObject<UCustomCharacterPart>("F_Med_Head1.F_Med_Head1");
-        PlayerState->CharacterParts[1] = UObject::FindObject<UCustomCharacterPart>("F_Med_Soldier_01.F_Med_Soldier_01");
-        
-        Functions::PlayerState::OnRep_CharacterParts(PlayerState);
+        auto pSkeletalMesh = UObject::FindObject<USkeletalMesh>("SkeletalMesh F_SML_Starter_Epic.F_SML_Starter_Epic");
+        Pawn->Mesh->SetSkeletalMesh(pSkeletalMesh, true);
+        Pawn->OnRep_AttachmentReplication();
+        Pawn->OnRep_AttachmentMesh();
 
-        //Pawn->PlayerState = PlayerState;
-        //Pawn->OnRep_PlayerState();
-        //Functions::PlayerState::OnRep_CharacterParts((AFortPlayerState*)Pawn->PlayerState);
+        static auto Head = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1_ATH.F_Med_Head1_ATH");
+
+        // PlayerState->CharacterParts[0] = Head;
+
+        // PlayerState->OnRep_CharacterParts();
+        // Functions::PlayerState::OnRep_CharacterParts(PlayerState);
+        Pawn->OnRep_CustomizationLoadout();
 
         PlayerState->OnRep_HeroType();
 
@@ -93,21 +84,48 @@ namespace Hooks
         PlayerController->QuickBars = QuickBars;
         PlayerController->OnRep_QuickBar();
 
-        static auto Def = UObject::FindObject<UFortWeaponItemDefinition>("WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
-        auto TempItemInstance = Def->CreateTemporaryItemInstanceBP(1, 1);
-        TempItemInstance->SetOwningControllerForTemporaryItem(PlayerController);
+        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 0);
+        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 1);
+        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 2);
+        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 3);
+        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 4);
+        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 5);
+        QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 1);
+        QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 2);
 
-        ((UFortWorldItem*)TempItemInstance)->ItemEntry.Count = 1;
+        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall"), 0, EFortQuickBars::Secondary, 999);
+        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Floor.BuildingItemData_Floor"), 0, EFortQuickBars::Secondary, 999);
 
-        auto ItemEntry = ((UFortWorldItem*)TempItemInstance)->ItemEntry;
-        PlayerController->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
-        PlayerController->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, EFortQuickBars::Primary, 0);
+        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition WoodItemData.WoodItemData"), 0, EFortQuickBars::Max_None, 999);
+        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition StoneItemData.StoneItemData"), 0, EFortQuickBars::Max_None, 999);
+        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition MetalItemData.MetalItemData"), 0, EFortQuickBars::Max_None, 999);
 
-        PlayerController->WorldInventory->HandleInventoryLocalUpdate();
-        PlayerController->HandleWorldInventoryLocalUpdate();
-        PlayerController->OnRep_QuickBar();
-        PlayerController->QuickBars->OnRep_PrimaryQuickBar();
-        PlayerController->QuickBars->OnRep_SecondaryQuickBar();
+        auto Def = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition /Game/Athena/Items/Weapons/WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
+
+        FFortItemEntry ItemEntry;
+
+        if (Def)
+        {
+            ItemEntry = AddItemWithUpdate(PlayerController, Def, 0);
+            EquipWeaponDefinition(Pawn, Def, ItemEntry.ItemGuid);
+        }
+
+        Def = UObject::FindObject<UFortWeaponItemDefinition>("WID_Assault_AutoHigh_Athena_SR_Ore_T03.WID_Assault_AutoHigh_Athena_SR_Ore_T03");
+
+        if (Def)
+        {
+            ItemEntry = AddItemWithUpdate(PlayerController, Def, 1);
+            EquipWeaponDefinition(Pawn, Def, ItemEntry.ItemGuid);
+        }
+
+        QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
+        QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 1, 0, true);
+
+        auto CheatManager = (UFortCheatManager*)CreateCheatManager(PlayerController, true);
+        CheatManager->ToggleInfiniteAmmo();
+        CheatManager->ToggleInfiniteDurability();
+
+        Pawn->OnRep_CurrentWeapon();
 
         if (PlayerController->Pawn)
         {
@@ -119,6 +137,11 @@ namespace Hooks
                 PlayerState->OnRep_SquadId();
             }
         }
+
+        GrantGameplayAbility(Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint"));
+        GrantGameplayAbility(Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Reload"));
+        GrantGameplayAbility(Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_RangedWeapon"));
+        GrantGameplayAbility(Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Jump"));
 
         return PlayerController;
     }
@@ -197,6 +220,8 @@ namespace Hooks
         DetourAttachE(Functions::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage);
         DetourAttachE(Functions::OnlineSession::KickPlayer, Hooks::KickPlayer);
         DETOUR_END
+
+        GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = 100;
 			
         return;
     }
@@ -213,12 +238,53 @@ namespace Hooks
             printf("[Game::Start] Done\n");
         }
 
-        if (bTraveled && FunctionName.find("ReadyToStartMatch") != -1)
+        if (bTraveled)
         {
-            EXECUTE_ONE_TIME
+            if (FunctionName.find("ReadyToStartMatch") != -1)
             {
-                Game::OnReadyToStartMatch();
+                EXECUTE_ONE_TIME
+                {
+                    Game::OnReadyToStartMatch();
+                }
+            }
+		
+            else if (FunctionName.find("ServerPlayEmoteItem") != -1)
+            {
+                auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
+
+                if (EmoteParams->EmoteAsset)
+                {
+                    auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(EFortCustomBodyType::All, EFortCustomGender::Both);
+
+                    if (Montage)
+                    {
+                        auto CurrentPawn = (AFortPlayerPawnAthena*)((AFortPlayerController*)Object)->Pawn;
+                        auto AnimInstance = CurrentPawn->Mesh->GetAnimInstance();
+
+                        // AnimInstance->Montage_Play(Montage, 1, EMontagePlayReturnType::Duration, 0, true);
+
+                        // CurrentPawn->OnRep_CharPartAnimMontageInfo();
+                        CurrentPawn->PlayAnimMontage(Montage, 1, FName());
+                        CurrentPawn->OnRep_ReplicatedAnimMontage();
+                    }
+                }
+            }
+
+            else if (FunctionName.find("ServerLoadingScreenDropped") != -1)
+            {
+                GetPlayerController()->CheatManager->DestroyAll(AFortHLODSMActor::StaticClass());
                 Listen();
+
+                GrantGameplayAbility((APlayerPawn_Athena_C*)GetPlayerController()->Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint"));
+                GrantGameplayAbility((APlayerPawn_Athena_C*)GetPlayerController()->Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Reload"));
+                GrantGameplayAbility((APlayerPawn_Athena_C*)GetPlayerController()->Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_RangedWeapon"));
+                GrantGameplayAbility((APlayerPawn_Athena_C*)GetPlayerController()->Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Jump"));
+            }
+
+            else if (FunctionName.find("ServerExecuteInventoryItem") != -1)
+            {
+                auto PC = (AFortPlayerControllerAthena*)Object;
+                EquipInventoryItem(PC, *(FGuid*)Parameters);
             }
         }
 

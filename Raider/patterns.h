@@ -30,5 +30,7 @@ namespace Patterns {
     constexpr const char* World_NotifyAcceptingConnection = "40 55 48 83 EC 50 48 8B 41 10 48 8B E9 48 83 78 ? ? 74 45 80 3D ? ? ? ? ? 72 34 48 8B 05 ? ? ? ? 4C 8D 44 24 ? 48 89 44 24 ? 48 8D 0D ? ? ? ? 48 8D 05 ? ? ? ? 41 B9 ? ? ? ? BA ? ? ? ? 48 89 44 24 ?";
     constexpr const char* OnRep_CharacterParts = "40 53 48 83 EC 60 F6 81 ? ? ? ? ? 48 8B D9 0F 85 ? ? ? ? 48 8B 81 ? ? ? ? 48 89 81 ? ? ? ? 48 8B 81 ? ? ? ?";
     constexpr const char* GetNetMode = "48 89 5C 24 ? 57 48 83 EC 20 48 8B 01 48 8B D9 FF 90 ? ? ? ? 4C 8B 83 ? ? ? ? 48 8B F8 33 C0 48 C7 44 24";
+    constexpr const char* AddNetworkActor = "48 85 D2 0F 84 ? ? ? ? 48 89 5C 24 ? 56 48 83 EC 20 48 63 42 0C 48 8B F2 3B 05 ? ? ? ?";
+    constexpr const char* IsNetRelevantFor = "48 89 5C 24 ? 56 57 41 56 48 83 EC 70 48 8B FA 4D 8B F1 0F B6 91 ? ? ? ? 49 8B D8 48 8B F1 F6 C2";
 	//constexpr const char* SeamlessTravelHandlerForWorld = "48 83 EC 28 48 8B 81 ? ? ? ? 48 63 89 ? ? ? ? 48 8D 0C C8 48 3B C1 74 1A 0F 1F 44 00 ? 4C 8B 00 49 39 90 ? ? ? ? 74 17 48 83 C0 08 48 3B C1 75 EB E8 ? ? ? ?"; // broken
 }

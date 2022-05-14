@@ -10,7 +10,8 @@ inline bool bPlayButton = false;
 
 inline UFortEngine* GetEngine()
 {
-    return UObject::FindObject<UFortEngine>("FortEngine_");
+    static auto engine = UObject::FindObject<UFortEngine>("FortEngine_");
+    return engine;
 }
 
 inline UWorld* GetWorld()
@@ -33,7 +34,7 @@ inline AAthena_PlayerController_C* GetPlayerController(int32 Index = 0)
 
 FORCEINLINE int32& GetReplicationFrame(UNetDriver* Driver)
 {
-    return *(int32*)(int64(Driver) + Offsets::Net::ReplicationFrame);
+    return *(int32*)(int64(Driver) + 816); // Offsets::Net::ReplicationFrame);
 }
 
 FORCEINLINE UGameplayStatics* GetGameplayStatics()
@@ -41,9 +42,9 @@ FORCEINLINE UGameplayStatics* GetGameplayStatics()
     return reinterpret_cast<UGameplayStatics*>(UGameplayStatics::StaticClass());
 }
 
-FORCEINLINE UKismetStringLibrary* GetStringLibrary()
+FORCEINLINE auto GetMath()
 {
-    return reinterpret_cast<UKismetStringLibrary*>(UKismetStringLibrary::StaticClass());
+    return reinterpret_cast<UKismetMathLibrary*>(UKismetMathLibrary::StaticClass());
 }
 
 template <typename RetActorType = AActor>
@@ -75,6 +76,136 @@ inline void CreateConsole()
     GetEngine()->GameViewport->ViewportConsole = (UConsole*)GetGameplayStatics()->STATIC_SpawnObject(UConsole::StaticClass(), GetEngine()->GameViewport);
 }
 
+inline auto CreateCheatManager(APlayerController* Controller, bool bFortCheatManager = false)
+{
+    if (!Controller->CheatManager)
+    {
+        if (bFortCheatManager)
+            Controller->CheatManager = (UCheatManager*)GetGameplayStatics()->STATIC_SpawnObject(UCheatManager::StaticClass(), Controller);
+        else
+            Controller->CheatManager = (UCheatManager*)GetGameplayStatics()->STATIC_SpawnObject(UFortCheatManager::StaticClass(), Controller);
+    }
+
+    return Controller->CheatManager;
+}
+
+inline bool IsMatchingGuid(FGuid A, FGuid B)
+{
+    return A.A == B.A && A.B == B.B && A.C == B.C && A.D == B.D;
+}
+
+inline void UpdateInventory(AFortPlayerController* PlayerController)
+{
+    PlayerController->WorldInventory->HandleInventoryLocalUpdate();
+    PlayerController->HandleWorldInventoryLocalUpdate();
+    PlayerController->OnRep_QuickBar();
+    PlayerController->QuickBars->OnRep_PrimaryQuickBar();
+    PlayerController->QuickBars->OnRep_SecondaryQuickBar();
+}
+
+inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinition* Def, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1)
+{
+    auto TempItemInstance = Def->CreateTemporaryItemInstanceBP(Count, 1);
+    TempItemInstance->SetOwningControllerForTemporaryItem(PC);
+
+    ((UFortWorldItem*)TempItemInstance)->ItemEntry.Count = Count;
+
+    auto ItemEntry = ((UFortWorldItem*)TempItemInstance)->ItemEntry;
+    PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
+    PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
+    UpdateInventory(PC);
+    return ItemEntry;
+}
+
+inline void EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeaponItemDefinition* Definition, FGuid& Guid)
+{
+    AFortWeapon* weap = Pawn->EquipWeaponDefinition(Definition, Guid);
+    weap->AmmoCount = 1;
+    weap->OnRep_ReplicatedWeaponData();
+    weap->ClientGivenTo(Pawn);
+    Pawn->ClientInternalEquipWeapon(weap);
+}
+
+inline void EquipInventoryItem(AFortPlayerController* PC, FGuid& Guid)
+{
+    auto ItemInstances = PC->WorldInventory->Inventory.ItemInstances;
+
+    for (int i = 0; i < ItemInstances.Num(); i++)
+    {
+        auto CurrentItemInstance = ItemInstances[i];
+
+        if (IsMatchingGuid(CurrentItemInstance->GetItemGuid(), Guid))
+        {
+            EquipWeaponDefinition((APlayerPawn_Athena_C*)PC->Pawn, (UFortWeaponItemDefinition*)CurrentItemInstance->GetItemDefinitionBP(), Guid);
+        }
+    }
+}
+
+inline void DumpObjects()
+{
+    std::ofstream objects("ObjectsDump.txt");
+
+    if (objects)
+    {
+        for (int i = 0; i < UObject::GObjects->Num(); i++)
+        {
+            auto Object = UObject::GObjects->GetByIndex(i);
+
+            if (!Object)
+                continue;
+
+            objects << '[' + std::to_string(Object->InternalIndex) + "] " + Object->GetFullName() << '\n';
+        }
+    }
+
+    objects.close();
+
+    std::cout << "Finished dumping objects!\n";
+}
+
+static auto BP_ApplyGameplayEffectToSelf(UAbilitySystemComponent* AbilitySystemComponent, UClass* GameplayEffectClass)
+{
+    static auto handle = FGameplayEffectContextHandle();
+    UAbilitySystemComponent_BP_ApplyGameplayEffectToSelf_Params params;
+    params.GameplayEffectClass = GameplayEffectClass;
+    params.Level = 1.0f;
+    params.EffectContext = handle;
+    static auto fn = UObject::FindObject<UFunction>("Function GameplayAbilities.AbilitySystemComponent.BP_ApplyGameplayEffectToSelf");
+    std::cout << "fn: " << fn->GetFullName() << '\n';
+
+    // if (fn)
+        //AbilitySystemComponent->ProcessEvent(fn, &params);
+
+    std::cout << "done\n";
+
+    // AbilitySystemComponent->BP_ApplyGameplayEffectToSelf(GameplayEffectClass, 1.0f, handle);
+}
+
+static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* GameplayAbilityClass)
+{
+    auto AbilitySystemComponent = TargetPawn->AbilitySystemComponent;
+    std::cout << "abilitycomponent: " << AbilitySystemComponent->GetFullName() << '\n';
+    static UGameplayEffect* DefaultGameplayEffect = UObject::FindObject<UGameplayEffect>("GE_Athena_PurpleStuff_C GE_Athena_PurpleStuff.Default__GE_Athena_PurpleStuff_C");
+
+    std::cout << "dge: " << DefaultGameplayEffect->GetFullName() << '\n';
+
+    TArray<FGameplayAbilitySpecDef> GrantedAbilities = DefaultGameplayEffect->GrantedAbilities;
+
+    std::cout << "abiltuy 1: " << GrantedAbilities[0].Ability->GetFullName() << '\n';
+
+    // overwrite current gameplay ability with the one we want to activate
+    GrantedAbilities[0].Ability = GameplayAbilityClass;
+
+    // give this gameplay effect an infinite duration
+    DefaultGameplayEffect->DurationPolicy = EGameplayEffectDurationType::Infinite;
+
+    static auto GameplayEffectClass = UObject::FindObject<UClass>("BlueprintGeneratedClass GE_Athena_PurpleStuff.GE_Athena_PurpleStuff_C");
+
+    std::cout << "gec: " << GameplayEffectClass->GetFullName() << '\n';
+
+    BP_ApplyGameplayEffectToSelf(AbilitySystemComponent, GameplayEffectClass);
+}
+
 namespace Functions
 {
     namespace Actor
@@ -82,7 +213,7 @@ namespace Functions
         inline void (*CallPreReplication)(AActor* Actor, UObject* NetDriver);
         inline void (*ForceNetUpdate)(AActor* Actor);
         inline bool (*IsNetRelevantFor)(AActor* _this, const AActor* RealViewer, const AActor* ViewTarget, const FVector& SrcLocation);
-        inline uint64 (*GetNetMode)(UWorld* WorldContext);
+        inline __int64 (*GetNetMode)(__int64* a1);
     }
 
     namespace PlayerController
@@ -92,7 +223,7 @@ namespace Functions
 
 	namespace PlayerState
     {
-            inline void (*OnRep_CharacterParts)(AFortPlayerState* PlayerState);
+        inline void (*OnRep_CharacterParts)(AFortPlayerState* State);
     }
 
     namespace NetDriver
@@ -143,6 +274,7 @@ namespace Functions
         inline APlayerController* (*SpawnPlayActor)(UWorld* World, UPlayer* NewPlayer, ENetRole RemoteRole, FURL& URL, void* UniqueId, SDK::FString& Error, uint8 NetPlayerIndex);
         inline uint8 (*NotifyAcceptingConnection)(UWorld* World);
         inline bool (*DestroySwappedPC)(UWorld* World, UNetConnection* Connection);
+        inline void* (*AddNetworkActor)(UWorld*, AActor*);
     }
 
     namespace Engine
@@ -239,8 +371,16 @@ namespace Functions
         AddressToFunction(Address, PlayerState::OnRep_CharacterParts);
 
         Address = Utils::FindPattern(Patterns::GetNetMode);
-		CheckNullFatal(Address, "Failed to find GetNetMode");
-		AddressToFunction(Address, Actor::GetNetMode);
+		CheckNullFatal(Address, "Failed to find InternalGetNetMode");
+        AddressToFunction(Address, Actor::GetNetMode);
+
+		Address = Utils::FindPattern(Patterns::AddNetworkActor);
+        CheckNullFatal(Address, "Failed to find AddNetworkActor");
+        AddressToFunction(Address, World::AddNetworkActor);
+
+        Address = Utils::FindPattern(Patterns::IsNetRelevantFor);
+        CheckNullFatal(Address, "Failed to find IsNetRelevantFor");
+        AddressToFunction(Address, Actor::IsNetRelevantFor);
 
         PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
 		
