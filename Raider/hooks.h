@@ -7,7 +7,7 @@ namespace Hooks
 {
     uint64 GetNetMode(UWorld* World)
     {
-        return 2; //ENetMode::NM_ListenServer;
+        return 2; // ENetMode::NM_ListenServer;
     }
 
     void TickFlush(UNetDriver* NetDriver, float DeltaSeconds)
@@ -52,6 +52,7 @@ namespace Hooks
         Pawn->bCanBeDamaged = false;
 
         PlayerController->Pawn = Pawn;
+        PlayerController->AcknowledgedPawn = Pawn;
         Pawn->Owner = PlayerController;
         Pawn->OnRep_Owner();
         PlayerController->OnRep_Pawn();
@@ -65,10 +66,12 @@ namespace Hooks
         PlayerState->bHasStartedPlaying = true;
         PlayerState->OnRep_bHasStartedPlaying();
 
+        /*
         auto pSkeletalMesh = UObject::FindObject<USkeletalMesh>("SkeletalMesh F_SML_Starter_Epic.F_SML_Starter_Epic");
         Pawn->Mesh->SetSkeletalMesh(pSkeletalMesh, true);
         Pawn->OnRep_AttachmentReplication();
         Pawn->OnRep_AttachmentMesh();
+        */
 
         static auto Head = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1_ATH.F_Med_Head1_ATH");
 
@@ -202,8 +205,8 @@ namespace Hooks
         HostBeacon->ListenPort = 7777;
         Functions::OnlineBeaconHost::InitHost(HostBeacon);
 
-        HostBeacon->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
-        HostBeacon->NetDriver->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
+        // HostBeacon->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
+        // HostBeacon->NetDriver->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
         HostBeacon->NetDriver->World = GetWorld();
 
         GetWorld()->NetDriver = HostBeacon->NetDriver;
@@ -222,7 +225,7 @@ namespace Hooks
         DETOUR_END
 
         GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = 100;
-			
+
         return;
     }
 
@@ -231,7 +234,7 @@ namespace Hooks
         auto ObjectName = Object->GetFullName();
         auto FunctionName = Function->GetFullName();
 
-		if (!bPlayButton && FunctionName.find("BP_PlayButton") != -1)
+        if (!bPlayButton && FunctionName.find("BP_PlayButton") != -1)
         {
             bPlayButton = true;
             Game::Start();
@@ -247,7 +250,7 @@ namespace Hooks
                     Game::OnReadyToStartMatch();
                 }
             }
-		
+
             else if (FunctionName.find("ServerPlayEmoteItem") != -1)
             {
                 auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
@@ -293,12 +296,12 @@ namespace Hooks
         if (FunctionName.find("ServerReturnToMainMenu") != - 1)
         {
             GetPlayerController()->SwitchLevel(L"Frontend");
-			
+
             bPlayButton = false;
             bTraveled = false;
         }
 
-		*/
+                */
 
         return PEOriginal(Object, Function, Parameters);
     }

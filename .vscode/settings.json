@@ -83,5 +83,6 @@
         "xtree": "cpp",
         "xutility": "cpp",
         "random": "cpp"
-    }
+    },
+    "search.useIgnoreFiles": false
 }
