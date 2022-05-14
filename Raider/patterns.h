@@ -29,6 +29,6 @@ namespace Patterns {
 	constexpr const char* SpawnPlayActor = "44 89 44 24 ? 48 89 54 24 ? 48 89 4C 24 ? 55 53 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 ? 48 81 EC ? ? ? ? 33 F6 48 8D 05 ? ? ? ? 89 75 67 4D 8B E9 4C 8B 65 77 49 39 04 24 74 2A 41 89 74 24 ? 41 39 74 24 ?";
     constexpr const char* World_NotifyAcceptingConnection = "40 55 48 83 EC 50 48 8B 41 10 48 8B E9 48 83 78 ? ? 74 45 80 3D ? ? ? ? ? 72 34 48 8B 05 ? ? ? ? 4C 8D 44 24 ? 48 89 44 24 ? 48 8D 0D ? ? ? ? 48 8D 05 ? ? ? ? 41 B9 ? ? ? ? BA ? ? ? ? 48 89 44 24 ?";
     constexpr const char* OnRep_CharacterParts = "40 53 48 83 EC 60 F6 81 ? ? ? ? ? 48 8B D9 0F 85 ? ? ? ? 48 8B 81 ? ? ? ? 48 89 81 ? ? ? ? 48 8B 81 ? ? ? ?";
-    constexpr const char* InternalGetNetMode = "48 89 5C 24 ? 57 48 83 EC 20 48 8B 01 48 8B D9 FF 90 ? ? ? ? 4C 8B 83 ? ? ? ? 48 8B F8 33 C0 48 C7 44 24";
+    constexpr const char* GetNetMode = "48 89 5C 24 ? 57 48 83 EC 20 48 8B 01 48 8B D9 FF 90 ? ? ? ? 4C 8B 83 ? ? ? ? 48 8B F8 33 C0 48 C7 44 24";
 	//constexpr const char* SeamlessTravelHandlerForWorld = "48 83 EC 28 48 8B 81 ? ? ? ? 48 63 89 ? ? ? ? 48 8D 0C C8 48 3B C1 74 1A 0F 1F 44 00 ? 4C 8B 00 49 39 90 ? ? ? ? 74 17 48 83 C0 08 48 3B C1 75 EB E8 ? ? ? ?"; // broken
 }

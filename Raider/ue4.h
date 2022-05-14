@@ -10,8 +10,7 @@ inline bool bPlayButton = false;
 
 inline UFortEngine* GetEngine()
 {
-    static auto engine = UObject::FindObject<UFortEngine>("FortEngine_");
-    return engine;
+    return UObject::FindObject<UFortEngine>("FortEngine_");
 }
 
 inline UWorld* GetWorld()
@@ -34,7 +33,7 @@ inline AAthena_PlayerController_C* GetPlayerController(int32 Index = 0)
 
 FORCEINLINE int32& GetReplicationFrame(UNetDriver* Driver)
 {
-    return *(int32*)(int64(Driver) + 816); // Offsets::Net::ReplicationFrame);
+    return *(int32*)(int64(Driver) + Offsets::Net::ReplicationFrame);
 }
 
 FORCEINLINE UGameplayStatics* GetGameplayStatics()
@@ -78,7 +77,7 @@ namespace Functions
         inline void (*CallPreReplication)(AActor* Actor, UObject* NetDriver);
         inline void (*ForceNetUpdate)(AActor* Actor);
         inline bool (*IsNetRelevantFor)(AActor* _this, const AActor* RealViewer, const AActor* ViewTarget, const FVector& SrcLocation);
-        inline __int64 (*InternalGetNetMode)(__int64* a1);
+        inline uint64 (*GetNetMode)(UWorld* WorldContext);
     }
 
     namespace PlayerController
@@ -88,7 +87,7 @@ namespace Functions
 
 	namespace PlayerState
     {
-            inline void (*OnRep_CharacterParts)(AFortPlayerState* State);
+            inline void (*OnRep_CharacterParts)(AFortPlayerState* PlayerState);
     }
 
     namespace NetDriver
@@ -234,9 +233,9 @@ namespace Functions
         CheckNullFatal(Address, "Failed to find OnRep_CharacterParts");
         AddressToFunction(Address, PlayerState::OnRep_CharacterParts);
 
-        Address = Utils::FindPattern(Patterns::InternalGetNetMode);
-		CheckNullFatal(Address, "Failed to find InternalGetNetMode");
-		AddressToFunction(Address, Actor::InternalGetNetMode);
+        Address = Utils::FindPattern(Patterns::GetNetMode);
+		CheckNullFatal(Address, "Failed to find GetNetMode");
+		AddressToFunction(Address, Actor::GetNetMode);
 
         PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
 		

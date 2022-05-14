@@ -5,9 +5,9 @@
 
 namespace Hooks
 {
-    __int64 InternalGetNetMode(__int64* a1)
+    uint64 GetNetMode(UWorld* World)
     {
-        return ENetMode::NM_ListenServer;
+        return 2; //ENetMode::NM_ListenServer;
     }
 
     void TickFlush(UNetDriver* NetDriver, float DeltaSeconds)
@@ -174,7 +174,7 @@ namespace Hooks
 
         DETOUR_START
         DetourAttachE(Functions::World::WelcomePlayer, WelcomePlayer);
-        DetourAttachE(Functions::Actor::InternalGetNetMode, Hooks::InternalGetNetMode);
+        DetourAttachE(Functions::Actor::GetNetMode, Hooks::GetNetMode);
         DetourAttachE(Functions::World::NotifyControlMessage, World_NotifyControlMessage);
         DetourAttachE(Functions::World::SpawnPlayActor, SpawnPlayActor);
         DetourAttachE(Functions::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage);
