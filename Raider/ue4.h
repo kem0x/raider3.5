@@ -78,6 +78,7 @@ namespace Functions
         inline void (*CallPreReplication)(AActor* Actor, UObject* NetDriver);
         inline void (*ForceNetUpdate)(AActor* Actor);
         inline bool (*IsNetRelevantFor)(AActor* _this, const AActor* RealViewer, const AActor* ViewTarget, const FVector& SrcLocation);
+        inline __int64 (*InternalGetNetMode)(__int64* a1);
     }
 
     namespace PlayerController
@@ -232,6 +233,10 @@ namespace Functions
         Address = Utils::FindPattern(Patterns::OnRep_CharacterParts);
         CheckNullFatal(Address, "Failed to find OnRep_CharacterParts");
         AddressToFunction(Address, PlayerState::OnRep_CharacterParts);
+
+        Address = Utils::FindPattern(Patterns::InternalGetNetMode);
+		CheckNullFatal(Address, "Failed to find InternalGetNetMode");
+		AddressToFunction(Address, Actor::InternalGetNetMode);
 
         PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
 		

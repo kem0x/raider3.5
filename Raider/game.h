@@ -18,17 +18,25 @@ namespace Game
         PlayerController->Possess(Pawn);
 
         auto PlayerState = reinterpret_cast<AFortPlayerStateAthena*>(Pawn->PlayerState);
-
-        for (int i = 0; i < PlayerController->StrongMyHero->CharacterParts.Num(); i++)
+        auto HeroParts = PlayerController->StrongMyHero->CharacterParts;
+		
+        for (int i = 0; i < HeroParts.Num(); i++)
         {
-            auto Part = PlayerController->StrongMyHero->CharacterParts[i];
+            auto Part = HeroParts[i];
 
             if (!Part)
                 continue;
-			
-            Pawn->ServerChoosePart((EFortCustomPartType)i, Part);
+
+            PlayerState->CharacterParts[i] = Part;
         }
 
+        if (!HeroParts[0])
+            PlayerState->CharacterParts[0] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
+		
+        if (!HeroParts[1])
+            PlayerState->CharacterParts[1] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
+
+        PlayerState->OnRep_CharacterParts();
         PlayerController->CheatManager->God();
 
         PlayerController->bReadyToStartMatch = true;
