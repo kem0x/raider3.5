@@ -49,26 +49,26 @@ namespace Game
         PlayerState->bIsReadyToContinue = true;
         PlayerState->OnRep_bHasStartedPlaying();
 
-        auto world = GetWorld();
-        auto gameState = reinterpret_cast<AAthena_GameState_C*>(world->GameState);
+        auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+        GameState->bGameModeWillSkipAircraft = true;
+        GameState->AircraftStartTime = 99999.0f;
+        GameState->WarmupCountdownEndTime = 99999.0f;
 
-        gameState->bGameModeWillSkipAircraft = true;
-        gameState->AircraftStartTime = 99999.0f;
-        gameState->WarmupCountdownEndTime = 99999.0f;
+        GameState->GamePhase = EAthenaGamePhase::Aircraft;
+        GameState->OnRep_GamePhase(EAthenaGamePhase::None);
 
-        gameState->GamePhase = EAthenaGamePhase::Aircraft;
-        gameState->OnRep_GamePhase(EAthenaGamePhase::None);
+        auto GameMode = reinterpret_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode);
+        auto State = GetStringLibrary()->STATIC_Conv_StringToName(L"InProgress");
+		
+        GameMode->MatchState = State;
+        GameMode->K2_OnSetMatchState(State);
 
-        auto authGameMode = reinterpret_cast<AFortGameModeAthena*>(world->AuthorityGameMode);
+        GameMode->StartPlay();
+        GameState->bReplicatedHasBegunPlay = true;
+        GameState->OnRep_ReplicatedHasBegunPlay();
+        GameMode->StartMatch();
 
-        auto stateF = reinterpret_cast<UKismetStringLibrary*>(UKismetStringLibrary::StaticClass())->STATIC_Conv_StringToName(L"InProgress");
-        authGameMode->MatchState = stateF;
-        authGameMode->K2_OnSetMatchState(stateF);
-
-        authGameMode->StartPlay();
-        gameState->bReplicatedHasBegunPlay = true;
-        gameState->OnRep_ReplicatedHasBegunPlay();
-        authGameMode->StartMatch();
+		
 
         if (PlayerController->Pawn)
         {

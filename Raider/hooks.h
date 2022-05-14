@@ -43,15 +43,18 @@ namespace Hooks
         auto PlayerController = (AFortPlayerControllerAthena*)Functions::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex);
         NewPlayer->PlayerController = PlayerController;
         PlayerController->SetOwner((AActor*)NewPlayer);
-
+        PlayerController->OnRep_Owner();
+		
         AFortPlayerStateAthena* PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
         PlayerState->SetOwner(PlayerController);
-
+        PlayerState->OnRep_Owner();
+		
         auto Pawn = SpawnActor<APlayerPawn_Athena_C>(GetPlayerController()->Pawn->K2_GetActorLocation(), PlayerController);
 
         Pawn->bCanBeDamaged = false;
 
         PlayerController->Pawn = Pawn;
+        Pawn->SetOwner(PlayerController);
         Pawn->Owner = PlayerController;
         Pawn->OnRep_Owner();
         PlayerController->OnRep_Pawn();
@@ -65,10 +68,24 @@ namespace Hooks
         PlayerState->bHasStartedPlaying = true;
         PlayerState->OnRep_bHasStartedPlaying();
 
-        PlayerState->CharacterParts[0] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
-        PlayerState->CharacterParts[1] = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
-        // PlayerState->OnRep_CharacterParts();
+        PlayerState->CharacterBodyType = EFortCustomBodyType::LargeAndMedium;
+        PlayerState->LocalCharacterBodyType = EFortCustomBodyType::LargeAndMedium;
+        PlayerState->OnRep_CharacterBodyType();
+        PlayerState->CharacterGender = EFortCustomGender::Female;
+        PlayerState->LocalCharacterGender = EFortCustomGender::Female;
+        PlayerState->OnRep_CharacterGender();
+				
+        PlayerState->LocalCharacterParts[0] = UObject::FindObject<UCustomCharacterPart>("F_Med_Head1.F_Med_Head1");
+        PlayerState->LocalCharacterParts[1] = UObject::FindObject<UCustomCharacterPart>("F_Med_Soldier_01.F_Med_Soldier_01");
+        
+        PlayerState->CharacterParts[0] = UObject::FindObject<UCustomCharacterPart>("F_Med_Head1.F_Med_Head1");
+        PlayerState->CharacterParts[1] = UObject::FindObject<UCustomCharacterPart>("F_Med_Soldier_01.F_Med_Soldier_01");
+        
         Functions::PlayerState::OnRep_CharacterParts(PlayerState);
+
+        //Pawn->PlayerState = PlayerState;
+        //Pawn->OnRep_PlayerState();
+        //Functions::PlayerState::OnRep_CharacterParts((AFortPlayerState*)Pawn->PlayerState);
 
         PlayerState->OnRep_HeroType();
 

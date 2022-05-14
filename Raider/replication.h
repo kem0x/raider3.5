@@ -140,6 +140,15 @@ namespace Replication
             if (Connection->PlayerController)
                 Functions::PlayerController::SendClientAdjustment(Connection->PlayerController);
 
+            for (int32 ChildIdx = 0; ChildIdx < Connection->Children.Num(); ChildIdx++)
+            {
+                if (Connection->Children[ChildIdx]->PlayerController != NULL)
+                {
+                    auto ChildPC = Connection->Children[ChildIdx]->PlayerController;                    
+                    Functions::PlayerController::SendClientAdjustment(ChildPC);
+                }
+            }
+
             for (auto Actor : ConsiderList)
             {
                 if (Actor->IsA(APlayerController::StaticClass()) && Actor != Connection->PlayerController)
@@ -151,10 +160,7 @@ namespace Replication
                 {
                     Channel = (UActorChannel*)(Functions::NetConnection::CreateChannel(Connection, 2, true, -1));
                     Functions::ActorChannel::SetChannelActor(Channel, Actor);
-                }
-
-                if (Channel)
-                {
+                } else {
                     Functions::ActorChannel::ReplicateActor(Channel);
                 }
             }

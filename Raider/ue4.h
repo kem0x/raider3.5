@@ -41,6 +41,11 @@ FORCEINLINE UGameplayStatics* GetGameplayStatics()
     return reinterpret_cast<UGameplayStatics*>(UGameplayStatics::StaticClass());
 }
 
+FORCEINLINE UKismetStringLibrary* GetStringLibrary()
+{
+    return reinterpret_cast<UKismetStringLibrary*>(UKismetStringLibrary::StaticClass());
+}
+
 template <typename RetActorType = AActor>
 inline RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor* Owner = nullptr)
 {
