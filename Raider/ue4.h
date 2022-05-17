@@ -351,8 +351,19 @@ static void InitInventory(AFortPlayerController* PlayerController)
     PlayerController->QuickBars = QuickBars;
     PlayerController->OnRep_QuickBar();
 
-    // not sure if this enable stuff is acutally needed
+    auto WorldInventory = SpawnActor<AFortInventory>({}, PlayerController);
+    WorldInventory->bReplicates = true;
+    WorldInventory->InventoryType = EFortInventoryType::World;
+    PlayerController->WorldInventory = WorldInventory;
+    PlayerController->HandleWorldInventoryLocalUpdate();
+    
+    auto OutpostInventory = SpawnActor<AFortInventory>({}, PlayerController);
+    OutpostInventory->bReplicates = true;
+    OutpostInventory->InventoryType = EFortInventoryType::Outpost;
+    PlayerController->OutpostInventory = OutpostInventory;
+    PlayerController->HandleOutpostInventoryLocalUpdate();
 
+    // not sure if this enable stuff is acutally needed
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 0);
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 1);
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 2);
