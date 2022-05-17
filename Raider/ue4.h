@@ -111,6 +111,7 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
     ((UFortWorldItem*)TempItemInstance)->ItemEntry.Count = Count;
 
     auto ItemEntry = ((UFortWorldItem*)TempItemInstance)->ItemEntry;
+    ItemEntry.bIsDirty = true;
     PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
     PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
     UpdateInventory(PC);
@@ -163,47 +164,33 @@ inline void DumpObjects()
     std::cout << "Finished dumping objects!\n";
 }
 
-static auto BP_ApplyGameplayEffectToSelf(UAbilitySystemComponent* AbilitySystemComponent, UClass* GameplayEffectClass)
-{
-    static auto handle = FGameplayEffectContextHandle();
-    UAbilitySystemComponent_BP_ApplyGameplayEffectToSelf_Params params;
-    params.GameplayEffectClass = GameplayEffectClass;
-    params.Level = 1.0f;
-    params.EffectContext = handle;
-    static auto fn = UObject::FindObject<UFunction>("Function GameplayAbilities.AbilitySystemComponent.BP_ApplyGameplayEffectToSelf");
-    std::cout << "fn: " << fn->GetFullName() << '\n';
-
-    // if (fn)
-        //AbilitySystemComponent->ProcessEvent(fn, &params);
-
-    std::cout << "done\n";
-
-    // AbilitySystemComponent->BP_ApplyGameplayEffectToSelf(GameplayEffectClass, 1.0f, handle);
-}
-
 static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* GameplayAbilityClass)
 {
     auto AbilitySystemComponent = TargetPawn->AbilitySystemComponent;
-    std::cout << "abilitycomponent: " << AbilitySystemComponent->GetFullName() << '\n';
-    static UGameplayEffect* DefaultGameplayEffect = UObject::FindObject<UGameplayEffect>("GE_Athena_PurpleStuff_C GE_Athena_PurpleStuff.Default__GE_Athena_PurpleStuff_C");
+    static UGameplayEffect* DefaultGameplayEffect = UObject::FindObject<UGameplayEffect>("GE_Constructor_ContainmentUnit_Applied_C GE_Constructor_ContainmentUnit_Applied.Default__GE_Constructor_ContainmentUnit_Applied_C");
 
-    std::cout << "dge: " << DefaultGameplayEffect->GetFullName() << '\n';
+    if (!DefaultGameplayEffect)
+        return;
 
     TArray<FGameplayAbilitySpecDef> GrantedAbilities = DefaultGameplayEffect->GrantedAbilities;
 
-    std::cout << "abiltuy 1: " << GrantedAbilities[0].Ability->GetFullName() << '\n';
+    printf("Granted abilities: %i\n", GrantedAbilities.Num());
 
     // overwrite current gameplay ability with the one we want to activate
     GrantedAbilities[0].Ability = GameplayAbilityClass;
+    GrantedAbilities[0].Level = 1.0f;
 
     // give this gameplay effect an infinite duration
     DefaultGameplayEffect->DurationPolicy = EGameplayEffectDurationType::Infinite;
 
-    static auto GameplayEffectClass = UObject::FindObject<UClass>("BlueprintGeneratedClass GE_Athena_PurpleStuff.GE_Athena_PurpleStuff_C");
+    static auto GameplayEffectClass = UObject::FindObject<UClass>("BlueprintGeneratedClass GE_Constructor_ContainmentUnit_Applied.GE_Constructor_ContainmentUnit_Applied_C");
 
-    std::cout << "gec: " << GameplayEffectClass->GetFullName() << '\n';
+    if (!GameplayEffectClass)
+        return;
 
-    BP_ApplyGameplayEffectToSelf(AbilitySystemComponent, GameplayEffectClass);
+    auto handle = FGameplayEffectContextHandle();
+
+    AbilitySystemComponent->BP_ApplyGameplayEffectToTarget(GameplayEffectClass, AbilitySystemComponent, 1.f, handle);
 }
 
 namespace Functions

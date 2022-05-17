@@ -108,6 +108,7 @@
     <ClCompile Include="SDK\FN_CoreUObject_functions.cpp" />
     <ClCompile Include="SDK\FN_Engine_functions.cpp" />
     <ClCompile Include="SDK\FN_FortniteGame_functions.cpp" />
+    <ClCompile Include="SDK\FN_GameplayAbilities_functions.cpp" />
     <ClCompile Include="SDK\FN_PlayerPawn_Athena_functions.cpp" />
     <ClCompile Include="SDK\FN_PlayerPawn_Athena_Generic_functions.cpp" />
     <ClCompile Include="SDK\FN_SlateCore_functions.cpp" />

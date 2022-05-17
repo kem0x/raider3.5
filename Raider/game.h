@@ -12,7 +12,6 @@ namespace Game
     void OnReadyToStartMatch()
     {
         auto Pawn = SpawnActor<APlayerPawn_Athena_C>({ 0, 0, 10000 }, {});
-        Pawn->bCanBeDamaged = false;
 
         auto PlayerController = GetPlayerController();
         PlayerController->Possess(Pawn);

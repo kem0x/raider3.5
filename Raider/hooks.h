@@ -49,8 +49,6 @@ namespace Hooks
 
         auto Pawn = SpawnActor<APlayerPawn_Athena_C>({ 1250, 1818, 3284 }, PlayerController);
 
-        Pawn->bCanBeDamaged = false;
-
         PlayerController->Pawn = Pawn;
         PlayerController->AcknowledgedPawn = Pawn;
         Pawn->Owner = PlayerController;
@@ -60,28 +58,39 @@ namespace Hooks
 
         PlayerController->bHasClientFinishedLoading = true;
         PlayerController->bHasServerFinishedLoading = true;
+        PlayerController->bHasInitiallySpawned = true;
         PlayerController->OnRep_bHasServerFinishedLoading();
 
         PlayerState->bHasFinishedLoading = true;
         PlayerState->bHasStartedPlaying = true;
         PlayerState->OnRep_bHasStartedPlaying();
 
-        /*
-        auto pSkeletalMesh = UObject::FindObject<USkeletalMesh>("SkeletalMesh F_SML_Starter_Epic.F_SML_Starter_Epic");
-        Pawn->Mesh->SetSkeletalMesh(pSkeletalMesh, true);
-        Pawn->OnRep_AttachmentReplication();
-        Pawn->OnRep_AttachmentMesh();
-        */
+        Pawn->bReplicateMovement = true;
+        Pawn->OnRep_ReplicateMovement();
 
-        static auto Head = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1_ATH.F_Med_Head1_ATH");
+        auto Hero = GetPlayerController()->StrongMyHero; // set the Hero to the servers Hero, temporary work around.
 
-        // PlayerState->CharacterParts[0] = Head;
+        PlayerController->StrongMyHero = Hero;
 
-        // PlayerState->OnRep_CharacterParts();
-        // Functions::PlayerState::OnRep_CharacterParts(PlayerState);
-        Pawn->OnRep_CustomizationLoadout();
-
+        PlayerState->HeroType = Hero->GetHeroTypeBP();
         PlayerState->OnRep_HeroType();
+
+        for (auto i = 0; i < Hero->CharacterParts.Num(); i++)
+        {
+            if (Hero->CharacterParts[i]->AdditionalData->IsA(UCustomCharacterHeadData::StaticClass()))
+                Pawn->ServerChoosePart(EFortCustomPartType::Head, Hero->CharacterParts[i]);
+
+            else if (Hero->CharacterParts[i]->AdditionalData->IsA(UCustomCharacterBodyPartData::StaticClass()))
+                Pawn->ServerChoosePart(EFortCustomPartType::Body, Hero->CharacterParts[i]);
+
+            else if (Hero->CharacterParts[i]->AdditionalData->IsA(UCustomCharacterHatData::StaticClass()))
+                Pawn->ServerChoosePart(EFortCustomPartType::Hat, Hero->CharacterParts[i]);
+
+            else if (Hero->CharacterParts[i]->AdditionalData->IsA(UCustomCharacterBackpackData::StaticClass()))
+                Pawn->ServerChoosePart(EFortCustomPartType::Backpack, Hero->CharacterParts[i]);
+        }
+
+        PlayerState->OnRep_CharacterParts();
 
         auto QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
         PlayerController->QuickBars = QuickBars;
@@ -161,6 +170,12 @@ namespace Hooks
         if (MessageType == 15)
             return; // PCSwap no thx
 
+        if (MessageType == 4)
+        {
+            Connection->CurrentNetSpeed = 30000;
+            return;
+        }
+
         if (MessageType == 5) // PreLogin isnt really needed so we can just use this
         {
             auto _Bunch = reinterpret_cast<int64*>(Bunch);
@@ -234,6 +249,11 @@ namespace Hooks
         auto ObjectName = Object->GetFullName();
         auto FunctionName = Function->GetFullName();
 
+        if (Function->FunctionFlags & 0x00200000)
+        {
+            std::cout << "RPC Called: " << FunctionName << std::endl;
+        }
+
         if (!bPlayButton && FunctionName.find("BP_PlayButton") != -1)
         {
             bPlayButton = true;
@@ -277,11 +297,7 @@ namespace Hooks
             {
                 GetPlayerController()->CheatManager->DestroyAll(AFortHLODSMActor::StaticClass());
                 Listen();
-
-                GrantGameplayAbility((APlayerPawn_Athena_C*)GetPlayerController()->Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint"));
-                GrantGameplayAbility((APlayerPawn_Athena_C*)GetPlayerController()->Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Reload"));
-                GrantGameplayAbility((APlayerPawn_Athena_C*)GetPlayerController()->Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_RangedWeapon"));
-                GrantGameplayAbility((APlayerPawn_Athena_C*)GetPlayerController()->Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Jump"));
+                
             }
 
             else if (FunctionName.find("ServerExecuteInventoryItem") != -1)
