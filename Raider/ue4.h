@@ -194,25 +194,30 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
     return ItemEntry;
 }
 
-inline AFortWeapon* EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeaponItemDefinition* Definition, FGuid& Guid)
+inline AFortWeapon* EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeaponItemDefinition* Definition, FGuid& Guid, int Ammo = 0)
 {
-    // AFortWeapon* Weapon = Pawn->EquipWeaponDefinition(Definition, Guid);
-    /* auto weaponClass = Definition->GetWeaponActorClass();
+    // auto weaponClass = Definition->GetWeaponActorClass();
 
-    if (weaponClass)
+    // if (weaponClass)
     {
-        auto Weapon = (AFortWeapon*)SpawnActorTrans(weaponClass, {}, Pawn);
-    */
-    AFortWeapon* Weapon = Pawn->EquipWeaponDefinition(Definition, Guid);
+        // auto Weapon = (AFortWeapon*)SpawnActorTrans(weaponClass, {}, Pawn);
+        auto Weapon = Pawn->EquipWeaponDefinition(Definition, Guid);
 
-    if (Weapon)
-    {
-        Weapon->OnRep_ReplicatedWeaponData();
-        Weapon->ClientGivenTo(Pawn);
-        Pawn->ClientInternalEquipWeapon(Weapon);
+        if (Weapon)
+        {
+            /* Weapon->ItemEntryGuid = Guid;
+            Weapon->WeaponData = Definition; */
+            Weapon->AmmoCount = Ammo;
+            Weapon->OnRep_ReplicatedWeaponData();
+            Weapon->ClientGivenTo(Pawn);
+            Pawn->ClientInternalEquipWeapon(Weapon);
+            Pawn->OnRep_CurrentWeapon();
+        }
+
+        return Weapon;
     }
 
-    return Weapon;
+    return nullptr;
 }
 
 inline void EquipInventoryItem(AFortPlayerController* PC, FGuid& Guid)
@@ -413,7 +418,7 @@ static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
 
     auto handle = FGameplayEffectContextHandle();
 
-    AbilitySystemComponent->BP_ApplyGameplayEffectToTarget(GameplayEffectClass, AbilitySystemComponent, 1.f, handle);
+    // AbilitySystemComponent->BP_ApplyGameplayEffectToTarget(GameplayEffectClass, AbilitySystemComponent, 1.f, handle);
 }
 
 static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)

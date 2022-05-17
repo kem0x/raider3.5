@@ -100,7 +100,7 @@ namespace Game
         if (Def)
         {
             ItemEntry = AddItemWithUpdate(PlayerController, Def, 1);
-            EquipWeaponDefinition(Pawn, Def, ItemEntry.ItemGuid);
+            EquipWeaponDefinition(Pawn, Def, ItemEntry.ItemGuid, 30);
         }
 
         auto CheatManager = (UFortCheatManager*)CreateCheatManager(PlayerController, true);
