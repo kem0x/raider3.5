@@ -5,6 +5,10 @@
 #include "patterns.h"
 #include "util.h"
 
+constexpr auto PI = 3.1415926535897932f;
+constexpr auto INV_PI = 0.31830988618f;
+constexpr auto HALF_PI = 1.57079632679f;
+
 inline bool bTraveled = false;
 inline bool bPlayButton = false;
 inline bool bDroppedLS = false;
@@ -48,15 +52,61 @@ FORCEINLINE auto GetMath()
     return reinterpret_cast<UKismetMathLibrary*>(UKismetMathLibrary::StaticClass());
 }
 
+static FORCEINLINE void sinCos(float* ScalarSin, float* ScalarCos, float Value)
+{
+    float quotient = (INV_PI * 0.5f) * Value;
+    if (Value >= 0.0f)
+    {
+        quotient = (float)((int)(quotient + 0.5f));
+    }
+    else
+    {
+        quotient = (float)((int)(quotient - 0.5f));
+    }
+    float y = Value - (2.0f * PI) * quotient;
+
+    float sign;
+    if (y > HALF_PI)
+    {
+        y = PI - y;
+        sign = -1.0f;
+    }
+    else if (y < -HALF_PI)
+    {
+        y = -PI - y;
+        sign = -1.0f;
+    }
+    else
+    {
+        sign = +1.0f;
+    }
+
+    float y2 = y * y;
+
+    *ScalarSin = (((((-2.3889859e-08f * y2 + 2.7525562e-06f) * y2 - 0.00019840874f) * y2 + 0.0083333310f) * y2 - 0.16666667f) * y2 + 1.0f) * y;
+
+    float p = ((((-2.6051615e-07f * y2 + 2.4760495e-05f) * y2 - 0.0013888378f) * y2 + 0.041666638f) * y2 - 0.5f) * y2 + 1.0f;
+    *ScalarCos = sign * p;
+}
+
 FORCEINLINE auto RotToQuat(FRotator& Rotator)
 {
-    FQuat quat;
-    quat.X = Rotator.Pitch;
-    quat.Y = Rotator.Roll;
-    quat.Z = Rotator.Yaw;
-    quat.W = 0;
+    const float DEG_TO_RAD = PI / (180.f);
+    const float DIVIDE_BY_2 = DEG_TO_RAD / 2.f;
+    float SP, SY, SR;
+    float CP, CY, CR;
 
-    return quat;
+    sinCos(&SP, &CP, Rotator.Pitch * DIVIDE_BY_2);
+    sinCos(&SY, &CY, Rotator.Yaw * DIVIDE_BY_2);
+    sinCos(&SR, &CR, Rotator.Roll * DIVIDE_BY_2);
+
+    FQuat RotationQuat;
+    RotationQuat.X = CR * SP * SY - SR * CP * CY;
+    RotationQuat.Y = -CR * SP * CY - SR * CP * SY;
+    RotationQuat.Z = CR * CP * SY - SR * SP * CY;
+    RotationQuat.W = CR * CP * CY + SR * SP * SY;
+
+    return RotationQuat;
 }
 
 inline AActor* SpawnActorTrans(UClass* StaticClass, FTransform SpawnTransform, AActor* Owner = nullptr)
@@ -138,7 +188,7 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
     PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
     PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
     UpdateInventory(PC);
-	
+
     return ItemEntry;
 }
 
@@ -282,7 +332,7 @@ static void InitInventory(AFortPlayerController* PlayerController)
     PlayerController->QuickBars = QuickBars;
     PlayerController->OnRep_QuickBar();
 
-	// not sure if this enable stuff is acutally needed
+    // not sure if this enable stuff is acutally needed
 
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 0);
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 1);
@@ -292,7 +342,7 @@ static void InitInventory(AFortPlayerController* PlayerController)
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 5);
     QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 1);
     QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 2);
-	
+
     QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
     QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 1, 0, true);
     QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 2, 0, true);
@@ -300,7 +350,7 @@ static void InitInventory(AFortPlayerController* PlayerController)
     QuickBars->ServerActivateSlotInternal(EFortQuickBars::Secondary, 0, 0, true);
     QuickBars->ServerActivateSlotInternal(EFortQuickBars::Secondary, 1, 0, true);
     QuickBars->ServerActivateSlotInternal(EFortQuickBars::Secondary, 2, 0, true);
-	
+
     static auto Wall = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall");
     static auto Stair = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W");
     static auto Cone = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_RoofS.BuildingItemData_RoofS");
@@ -405,7 +455,7 @@ namespace Functions
         inline bool (*SendClientAdjustment)(APlayerController* Controller);
     }
 
-	namespace PlayerState
+    namespace PlayerState
     {
         inline void (*OnRep_CharacterParts)(AFortPlayerState* State);
     }
@@ -420,7 +470,7 @@ namespace Functions
     {
         inline UChannel* (*CreateChannel)(UNetConnection* NetConnection, int32 ChType, bool bOpenedLocally, int32_t ChIndex);
         inline void (*HandleClientPlayer)(UNetConnection* This, APlayerController* PC, UNetConnection* NetConnection);
-    
+
         inline void (*ReceiveFString)(void* Bunch, FString& Str);
         inline void (*ReceiveUniqueIdRepl)(void* Bunch, FUniqueNetIdRepl& Str);
     }
@@ -473,12 +523,12 @@ namespace Functions
         uintptr_t Address = Utils::FindPattern(Patterns::GObjects, true, 3);
         CheckNullFatal(Address, "Failed to find GObjects");
         AddressToFunction(Address, UObject::GObjects);
-		
+
         Address = Utils::FindPattern(Patterns::Free);
         CheckNullFatal(Address, "Failed to find Free");
         AddressToFunction(Address, FreeInternal);
 
-		Address = Utils::FindPattern(Patterns::Realloc);
+        Address = Utils::FindPattern(Patterns::Realloc);
         CheckNullFatal(Address, "Failed to find Realloc");
         AddressToFunction(Address, FMemory_Realloc);
 
@@ -541,7 +591,7 @@ namespace Functions
         Address = Utils::FindPattern(Patterns::ReceiveUniqueIdRepl);
         CheckNullFatal(Address, "Failed to find ReceiveUniqueIdRepl");
         AddressToFunction(Address, NetConnection::ReceiveUniqueIdRepl);
-		
+
         Address = Utils::FindPattern(Patterns::ReceiveFString);
         CheckNullFatal(Address, "Failed to find ReceiveFString");
         AddressToFunction(Address, NetConnection::ReceiveFString);
@@ -555,10 +605,10 @@ namespace Functions
         AddressToFunction(Address, PlayerState::OnRep_CharacterParts);
 
         Address = Utils::FindPattern(Patterns::GetNetMode);
-		CheckNullFatal(Address, "Failed to find InternalGetNetMode");
+        CheckNullFatal(Address, "Failed to find InternalGetNetMode");
         AddressToFunction(Address, Actor::GetNetMode);
 
-		Address = Utils::FindPattern(Patterns::AddNetworkActor);
+        Address = Utils::FindPattern(Patterns::AddNetworkActor);
         CheckNullFatal(Address, "Failed to find AddNetworkActor");
         AddressToFunction(Address, World::AddNetworkActor);
 
@@ -567,7 +617,7 @@ namespace Functions
         AddressToFunction(Address, Actor::IsNetRelevantFor);
 
         PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
-		
+
         return;
     }
 
