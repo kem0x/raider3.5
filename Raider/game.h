@@ -1,4 +1,5 @@
 #pragma once
+
 #include "ue4.h"
 
 namespace Game
@@ -80,41 +81,20 @@ namespace Game
             }
         }
 
-        auto QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
-        PlayerController->QuickBars = QuickBars;
-        PlayerController->OnRep_QuickBar();
-
-        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 0);
-        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 1);
-        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 2);
-        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 3);
-        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 4);
-        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 5);
-        QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 1);
-        QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 2);
-
-        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall"), 0, EFortQuickBars::Secondary, 999);
-        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Floor.BuildingItemData_Floor"), 0, EFortQuickBars::Secondary, 999);
-        
-        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition WoodItemData.WoodItemData"), 0, EFortQuickBars::Max_None, 999);
-        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition StoneItemData.StoneItemData"), 0, EFortQuickBars::Max_None, 999);
-        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition MetalItemData.MetalItemData"), 0, EFortQuickBars::Max_None, 999);
+        InitInventory(PlayerController);
 
         auto pickName = "WID_Harvest_" + Pawn->CustomizationLoadout.Pickaxe->GetName() + "_Athena_C_T01.WID_Harvest_" + Pawn->CustomizationLoadout.Pickaxe->GetName() + "_Athena_C_T01";
-        
+
         auto Def = UObject::FindObject<UFortWeaponItemDefinition>(pickName);
-		
+
         if (!Def)
-            Def = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition /Game/Athena/Items/Weapons/WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
-        
+            Def = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
+
         FFortItemEntry ItemEntry;
 
         if (Def)
-        {
             ItemEntry = AddItemWithUpdate(PlayerController, Def, 0);
-            EquipWeaponDefinition(Pawn, Def, ItemEntry.ItemGuid);
-        }
-
+        
         Def = UObject::FindObject<UFortWeaponItemDefinition>("WID_Assault_AutoHigh_Athena_SR_Ore_T03.WID_Assault_AutoHigh_Athena_SR_Ore_T03");
 
         if (Def)
@@ -123,12 +103,7 @@ namespace Game
             EquipWeaponDefinition(Pawn, Def, ItemEntry.ItemGuid);
         }
 
-        QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
-        QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 1, 0, true);
-
         auto CheatManager = (UFortCheatManager*)CreateCheatManager(PlayerController, true);
         CheatManager->ToggleInfiniteAmmo();
-
-		
     }
 }

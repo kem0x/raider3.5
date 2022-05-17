@@ -5,7 +5,7 @@
 
 namespace Hooks
 {
-    uint64 GetNetMode(UWorld* World)
+    uint64 GetNetMode(UWorld* World) // PlayerController::SendClientAdjustment checks if the netmode is not client
     {
         return 2; // ENetMode::NM_ListenServer;
     }
@@ -77,61 +77,25 @@ namespace Hooks
 
         for (auto i = 0; i < Hero->CharacterParts.Num(); i++)
         {
-            if (Hero->CharacterParts[i]->AdditionalData->IsA(UCustomCharacterHeadData::StaticClass()))
-                Pawn->ServerChoosePart(EFortCustomPartType::Head, Hero->CharacterParts[i]);
+            auto Part = Hero->CharacterParts[i];
 
-            else if (Hero->CharacterParts[i]->AdditionalData->IsA(UCustomCharacterBodyPartData::StaticClass()))
-                Pawn->ServerChoosePart(EFortCustomPartType::Body, Hero->CharacterParts[i]);
+            if (!Part)
+                continue;
 
-            else if (Hero->CharacterParts[i]->AdditionalData->IsA(UCustomCharacterHatData::StaticClass()))
-                Pawn->ServerChoosePart(EFortCustomPartType::Hat, Hero->CharacterParts[i]);
-
-            else if (Hero->CharacterParts[i]->AdditionalData->IsA(UCustomCharacterBackpackData::StaticClass()))
-                Pawn->ServerChoosePart(EFortCustomPartType::Backpack, Hero->CharacterParts[i]);
+            PlayerState->CharacterParts[i] = Part;
         }
 
         PlayerState->OnRep_CharacterParts();
 
-        auto QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
-        PlayerController->QuickBars = QuickBars;
-        PlayerController->OnRep_QuickBar();
+		InitInventory(PlayerController);
 
-        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 0);
-        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 1);
-        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 2);
-        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 3);
-        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 4);
-        QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 5);
-        QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 1);
-        QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 2);
-
-        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall"), 0, EFortQuickBars::Secondary, 999);
-        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Floor.BuildingItemData_Floor"), 0, EFortQuickBars::Secondary, 999);
-
-        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition WoodItemData.WoodItemData"), 0, EFortQuickBars::Max_None, 999);
-        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition StoneItemData.StoneItemData"), 0, EFortQuickBars::Max_None, 999);
-        AddItemWithUpdate(PlayerController, UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition MetalItemData.MetalItemData"), 0, EFortQuickBars::Max_None, 999);
-
-        auto Def = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition /Game/Athena/Items/Weapons/WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
-
-        FFortItemEntry ItemEntry;
+        static auto Def = UObject::FindObject<UFortWeaponItemDefinition>("WID_Assault_AutoHigh_Athena_SR_Ore_T03.WID_Assault_AutoHigh_Athena_SR_Ore_T03");
 
         if (Def)
         {
-            ItemEntry = AddItemWithUpdate(PlayerController, Def, 0);
+            auto ItemEntry = AddItemWithUpdate(PlayerController, Def, 1);
             EquipWeaponDefinition(Pawn, Def, ItemEntry.ItemGuid);
         }
-
-        Def = UObject::FindObject<UFortWeaponItemDefinition>("WID_Assault_AutoHigh_Athena_SR_Ore_T03.WID_Assault_AutoHigh_Athena_SR_Ore_T03");
-
-        if (Def)
-        {
-            ItemEntry = AddItemWithUpdate(PlayerController, Def, 1);
-            EquipWeaponDefinition(Pawn, Def, ItemEntry.ItemGuid);
-        }
-
-        QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
-        QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 1, 0, true);
 
         auto CheatManager = (UFortCheatManager*)CreateCheatManager(PlayerController, true);
         CheatManager->ToggleInfiniteAmmo();
@@ -150,11 +114,6 @@ namespace Hooks
             }
         }
 
-        GrantGameplayAbility(Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint"));
-        GrantGameplayAbility(Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Reload"));
-        GrantGameplayAbility(Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_RangedWeapon"));
-        GrantGameplayAbility(Pawn, UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Jump"));
-
         return PlayerController;
     }
 
@@ -163,23 +122,18 @@ namespace Hooks
         return Functions::World::DestroySwappedPC(GetWorld(), Connection);
     }
 
-    void Beacon_NotifyControlMessage(AOnlineBeaconHost* Beacon, UNetConnection* Connection, uint8 MessageType, void* Bunch)
+    void Beacon_NotifyControlMessage(AOnlineBeaconHost* Beacon, UNetConnection* Connection, uint8 MessageType, int64* Bunch)
     {
         printf("Recieved control message %i\n", MessageType);
 
-        if (MessageType == 15)
-            return; // PCSwap no thx
-
-        if (MessageType == 4)
+		switch (MessageType)
         {
+        case 4: // NMT_Netspeed
             Connection->CurrentNetSpeed = 30000;
             return;
-        }
-
-        if (MessageType == 5) // PreLogin isnt really needed so we can just use this
+        case 5: // NMT_Login
         {
-            auto _Bunch = reinterpret_cast<int64*>(Bunch);
-            _Bunch[7] += (16 * 1024 * 1024);
+            Bunch[7] += (16 * 1024 * 1024);
 
             FString OnlinePlatformName = FString(L"");
 
@@ -188,9 +142,12 @@ namespace Hooks
             Functions::NetConnection::ReceiveUniqueIdRepl(Bunch, Connection->PlayerID);
             Functions::NetConnection::ReceiveFString(Bunch, OnlinePlatformName);
 
-            _Bunch[7] -= (16 * 1024 * 1024);
+            Bunch[7] -= (16 * 1024 * 1024);
 
             Functions::World::WelcomePlayer(GetWorld(), Connection);
+            return;
+        }
+        case 15: // NMT_PCSwap
             return;
         }
 
@@ -218,10 +175,9 @@ namespace Hooks
 
         AFortOnlineBeaconHost* HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
         HostBeacon->ListenPort = 7777;
-        Functions::OnlineBeaconHost::InitHost(HostBeacon);
+        auto bInitBeacon = Functions::OnlineBeaconHost::InitHost(HostBeacon);
+        CheckNullFatal(bInitBeacon, "Failed to init beacon!");
 
-        // HostBeacon->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
-        // HostBeacon->NetDriver->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
         HostBeacon->NetDriver->World = GetWorld();
 
         GetWorld()->NetDriver = HostBeacon->NetDriver;
@@ -249,12 +205,7 @@ namespace Hooks
         auto ObjectName = Object->GetFullName();
         auto FunctionName = Function->GetFullName();
 
-        if (Function->FunctionFlags & 0x00200000)
-        {
-            std::cout << "RPC Called: " << FunctionName << std::endl;
-        }
-
-        if (!bPlayButton && FunctionName.find("BP_PlayButton") != -1)
+        if (!bPlayButton && FunctionName.contains("BP_PlayButton"))
         {
             bPlayButton = true;
             Game::Start();
@@ -263,7 +214,7 @@ namespace Hooks
 
         if (bTraveled)
         {
-            if (FunctionName.find("ReadyToStartMatch") != -1)
+            if (FunctionName.contains("ReadyToStartMatch"))
             {
                 EXECUTE_ONE_TIME
                 {
@@ -271,53 +222,177 @@ namespace Hooks
                 }
             }
 
-            else if (FunctionName.find("ServerPlayEmoteItem") != -1)
+            else if (FunctionName.contains("ServerLoadingScreenDropped"))
             {
-                auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
+                auto Pawn = (APlayerPawn_Athena_C*)((AFortPlayerController*)Object)->Pawn;
 
-                if (EmoteParams->EmoteAsset)
+                if (!bDroppedLS)
                 {
-                    auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(EFortCustomBodyType::All, EFortCustomGender::Both);
+                    GetPlayerController()->CheatManager->DestroyAll(AFortHLODSMActor::StaticClass());
+                    SummonPickup(Pawn, UObject::FindObject<UFortWeaponRangedItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_HalloweenScythe_Athena_C_T01.WID_Harvest_HalloweenScythe_Athena_C_T01"), 1, ((APlayerPawn_Athena_C*)GetPlayerController()->Pawn)->K2_GetActorLocation());
+                    Listen();
 
-                    if (Montage)
+                    bDroppedLS = true;
+                }
+
+                if (Pawn && Pawn->AbilitySystemComponent)
+                {
+                    static auto AbilitySet = UObject::FindObject<UFortAbilitySet>("FortAbilitySet GAS_DefaultPlayer.GAS_DefaultPlayer");
+
+                    for (int i = 0; i < AbilitySet->GameplayAbilities.Num(); i++)
                     {
-                        auto CurrentPawn = (AFortPlayerPawnAthena*)((AFortPlayerController*)Object)->Pawn;
-                        auto AnimInstance = CurrentPawn->Mesh->GetAnimInstance();
+                        auto Ability = AbilitySet->GameplayAbilities[i];
 
-                        // AnimInstance->Montage_Play(Montage, 1, EMontagePlayReturnType::Duration, 0, true);
+                        if (!Ability)
+                            continue;
 
-                        // CurrentPawn->OnRep_CharPartAnimMontageInfo();
-                        CurrentPawn->PlayAnimMontage(Montage, 1, FName());
-                        CurrentPawn->OnRep_ReplicatedAnimMontage();
+                        GrantGameplayAbility(Pawn, Ability);
                     }
                 }
             }
 
-            else if (FunctionName.find("ServerLoadingScreenDropped") != -1)
+            if (bDroppedLS)
             {
-                GetPlayerController()->CheatManager->DestroyAll(AFortHLODSMActor::StaticClass());
-                Listen();
-                
-            }
+                if (Function->FunctionFlags & 0x00200000)
+                {
+                    std::cout << "RPC Called: " << FunctionName << '\n';
+                }
 
-            else if (FunctionName.find("ServerExecuteInventoryItem") != -1)
-            {
-                auto PC = (AFortPlayerControllerAthena*)Object;
-                EquipInventoryItem(PC, *(FGuid*)Parameters);
+                if (FunctionName.contains("ServerHandlePickup"))
+                {
+                    // HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
+                }
+
+                else if (FunctionName.contains("ServerCreateBuilding"))
+                {
+                    auto PC = (AFortPlayerControllerAthena*)Object;
+
+                    auto Params = (AFortPlayerController_ServerCreateBuildingActor_Params*)Parameters;
+                    auto CurrentBuildClass = PC->CurrentBuildableClass;
+
+                    FTransform Transform;
+                    Transform.Rotation = RotToQuat(Params->BuildRot);
+                    Transform.Translation = Params->BuildLoc;
+                    Transform.Scale3D = { 1, 1, 1 };
+
+                    auto BuildingActor = SpawnActorTrans(CurrentBuildClass, Transform, PC);
+                    ((ABuildingActor*)BuildingActor)->InitializeKismetSpawnedBuildingActor((ABuildingActor*)BuildingActor, PC);
+                }
+
+                else if (FunctionName.contains("ServerAttemptInventoryDrop"))
+                {
+                    auto PC = (AFortPlayerController*)Object;
+                    auto Pawn = (APlayerPawn_Athena_C*)PC->Pawn;
+                    HandleInventoryDrop(Pawn, Parameters);
+                }
+
+                else if (FunctionName.contains("ServerExecuteInventoryItem"))
+                {
+                    auto PC = (AFortPlayerControllerAthena*)Object;
+                    EquipInventoryItem(PC, *(FGuid*)Parameters);
+                }
+
+                else if (FunctionName.contains("ServerReturnToMainMenu"))
+                {
+                    if (Object != GetPlayerController())
+                    {
+                        ((AFortPlayerController*)Object)->ClientTravel(L"Frontend", ETravelType::TRAVEL_Absolute, false, FGuid());
+                    }
+
+                    else
+                    {
+                        GetPlayerController()->SwitchLevel(L"Frontend");
+                        bPlayButton = false;
+                        bTraveled = false;
+                        bDroppedLS = false;
+                    }
+                }
+
+                else if (FunctionName.contains("ServerPlayEmoteItem"))
+                {
+                    auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
+
+                    if (EmoteParams->EmoteAsset)
+                    {
+                        auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(EFortCustomBodyType::All, EFortCustomGender::Both);
+
+                        if (Montage)
+                        {
+                            auto CurrentPawn = (AFortPlayerPawnAthena*)((AFortPlayerController*)Object)->Pawn;
+                            auto AnimInstance = CurrentPawn->Mesh->GetAnimInstance();
+
+                            // AnimInstance->Montage_Play(Montage, 1, EMontagePlayReturnType::Duration, 0, true);
+
+                            // CurrentPawn->OnRep_CharPartAnimMontageInfo();
+                            CurrentPawn->PlayAnimMontage(Montage, 1, FName());
+                            CurrentPawn->OnRep_ReplicatedAnimMontage();
+                        }
+                    }
+                }
+
+                else if (FunctionName.contains("ServerAttemptInteract"))
+                {
+                    auto Params = (AFortPlayerController_ServerAttemptInteract_Params*)Parameters;
+                    auto PC = (AFortPlayerController*)Object;
+
+                    if (Params->ReceivingActor)
+                    {
+                        auto InteractingActorName = Params->ReceivingActor->GetFullName();
+
+                        // std::cout << PC->GetFullName() << " interacting with: " << InteractingActorName << '\n';
+
+                        if (InteractingActorName.starts_with("Tiered_"))
+                        {
+                            auto Actor = (ABuildingContainer*)Params->ReceivingActor;
+                            auto ActorLocation = Params->ReceivingActor->K2_GetActorLocation();
+
+                            Actor->bAlreadySearched = true;
+                            Actor->OnRep_bAlreadySearched();
+
+                            if (InteractingActorName.starts_with("Tiered_Chest"))
+                            {
+                                // PC->ClientPlaySoundAtLocation
+                                static auto def = UObject::FindObject<UFortWorldItemDefinition>("FortWeaponRangedItemDefinition WID_Assault_AutoHigh_Athena_SR_Ore_T03.WID_Assault_AutoHigh_Athena_SR_Ore_T03");
+
+                                SummonPickupFromChest(def, 1, Params->ReceivingActor->K2_GetActorLocation());
+                            }
+
+                            else if (InteractingActorName.contains("Ammo"))
+                            {
+                                // PC->ClientPlaySoundAtLocation
+                                static auto Medium = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsMedium.AthenaAmmoDataBulletsMedium");
+                                SummonPickupFromChest(Medium, 15, ActorLocation);
+                            }
+                        }
+
+                        else if (InteractingActorName.contains("Wall") || InteractingActorName.contains("Door"))
+                        {
+                            auto Actor = (ABuildingWall*)Params->ReceivingActor;
+
+                            Actor->bDoorOpen = ~Actor->bDoorOpen;
+                            Actor->OnRep_bDoorOpen();
+                            // Actor->DoorClosingSound
+                        }
+
+                        else if (InteractingActorName.contains("VendingMachine"))
+                        {
+                        }
+                    }
+                }
+
+                else if (FunctionName.contains("ServerAttemptExitVehicle"))
+                {
+                    auto PC = (AFortPlayerControllerAthena*)Object;
+
+                    if (PC && PC->Pawn)
+                    {
+                        auto Vehicle = ((AFortPlayerPawnAthena*)PC->Pawn)->GetVehicle();
+                        PC->Pawn->Role = ENetRole::ROLE_Authority;
+                        Vehicle->Role = ENetRole::ROLE_Authority;
+                    }
+                }
             }
         }
-
-        /* // Crashes
-
-        if (FunctionName.find("ServerReturnToMainMenu") != - 1)
-        {
-            GetPlayerController()->SwitchLevel(L"Frontend");
-
-            bPlayButton = false;
-            bTraveled = false;
-        }
-
-                */
 
         return PEOriginal(Object, Function, Parameters);
     }

@@ -7,6 +7,7 @@
 
 inline bool bTraveled = false;
 inline bool bPlayButton = false;
+inline bool bDroppedLS = false;
 
 inline UFortEngine* GetEngine()
 {
@@ -47,6 +48,39 @@ FORCEINLINE auto GetMath()
     return reinterpret_cast<UKismetMathLibrary*>(UKismetMathLibrary::StaticClass());
 }
 
+FORCEINLINE auto RotToQuat(FRotator& Rotator)
+{
+    FQuat quat;
+    quat.X = Rotator.Pitch;
+    quat.Y = Rotator.Roll;
+    quat.Z = Rotator.Yaw;
+    quat.W = 0;
+
+    return quat;
+}
+
+inline AActor* SpawnActorTrans(UClass* StaticClass, FTransform SpawnTransform, AActor* Owner = nullptr)
+{
+    AActor* FirstActor = GetGameplayStatics()->STATIC_BeginDeferredActorSpawnFromClass(GetWorld(), StaticClass, SpawnTransform, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn, Owner);
+
+    if (FirstActor)
+    {
+        AActor* FinalActor = GetGameplayStatics()->STATIC_FinishSpawningActor(FirstActor, SpawnTransform);
+
+        if (FinalActor)
+        {
+            return FinalActor;
+        }
+    }
+
+    return nullptr;
+}
+
+inline auto GetItemInstances(AFortPlayerController* PC)
+{
+    return PC->WorldInventory->Inventory.ItemInstances;
+}
+
 template <typename RetActorType = AActor>
 inline RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor* Owner = nullptr)
 {
@@ -56,19 +90,7 @@ inline RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor*
     SpawnTransform.Scale3D = FVector { 1, 1, 1 };
     SpawnTransform.Rotation = FQuat { 0, 0, 0 };
 
-    AActor* FirstActor = GetGameplayStatics()->STATIC_BeginDeferredActorSpawnFromClass(GetWorld(), RetActorType::StaticClass(), SpawnTransform, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn, Owner);
-
-    if (FirstActor)
-    {
-        AActor* FinalActor = GetGameplayStatics()->STATIC_FinishSpawningActor(FirstActor, SpawnTransform);
-
-        if (FinalActor)
-        {
-            return reinterpret_cast<RetActorType*>(FinalActor);
-        }
-    }
-
-    return nullptr;
+    return (RetActorType*)SpawnActorTrans(RetActorType::StaticClass(), SpawnTransform, Owner);
 }
 
 inline void CreateConsole()
@@ -113,8 +135,10 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
     auto ItemEntry = ((UFortWorldItem*)TempItemInstance)->ItemEntry;
     ItemEntry.bIsDirty = true;
     PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
+    PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
     PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
     UpdateInventory(PC);
+	
     return ItemEntry;
 }
 
@@ -164,6 +188,143 @@ inline void DumpObjects()
     std::cout << "Finished dumping objects!\n";
 }
 
+static void SummonPickup(AFortPlayerPawn* Pawn, auto ItemDef, int Count, FVector Location)
+{
+    auto FortPickup = SpawnActor<AFortPickupAthena>(Location, Pawn);
+
+    FortPickup->bReplicates = true; // should be autmoatic but eh
+
+    FortPickup->PrimaryPickupItemEntry.Count = Count;
+    FortPickup->PrimaryPickupItemEntry.ItemDefinition = ItemDef;
+
+    FortPickup->OnRep_PrimaryPickupItemEntry();
+    FortPickup->TossPickup(Location, Pawn, 6, true);
+}
+
+static void SummonPickupFromChest(auto ItemDef, int Count, FVector Location)
+{
+    auto FortPickup = SpawnActor<AFortPickupAthena>(Location);
+
+    FortPickup->bReplicates = true; // should be autmoatic but eh
+    FortPickup->bTossedFromContainer = true;
+
+    FortPickup->PrimaryPickupItemEntry.Count = Count;
+    FortPickup->PrimaryPickupItemEntry.ItemDefinition = ItemDef;
+
+    FortPickup->OnRep_PrimaryPickupItemEntry();
+    FortPickup->OnRep_TossedFromContainer();
+}
+
+static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = false)
+{
+    auto Params = (AFortPlayerPawn_ServerHandlePickup_Params*)params;
+
+    auto ItemInstances = ((AFortPlayerController*)Pawn->Controller)->WorldInventory->Inventory.ItemInstances;
+
+    if (Params->Pickup)
+    {
+        if (!Params->Pickup->PrimaryPickupItemEntry.ItemDefinition->IsA(UFortWeaponItemDefinition::StaticClass()))
+            bEquip = false;
+
+        auto WorldItemDefinition = (UFortWorldItemDefinition*)Params->Pickup->PrimaryPickupItemEntry.ItemDefinition;
+        auto Controller = (AFortPlayerControllerAthena*)Pawn->Controller;
+        auto QuickBarSlots = Controller->QuickBars->PrimaryQuickBar.Slots;
+
+        for (int i = 0; i < QuickBarSlots.Num(); i++)
+        {
+            if (QuickBarSlots[i].Items.Data == 0) // if u are getting error then just make vars public in tarray
+            {
+                if (i >= 6)
+                {
+                    auto QuickBars = Controller->QuickBars;
+
+                    auto FocusedSlot = QuickBars->PrimaryQuickBar.CurrentFocusedSlot;
+
+                    if (FocusedSlot == 0)
+                        continue;
+
+                    i = FocusedSlot;
+
+                    FGuid& FocusedGuid = QuickBarSlots[FocusedSlot].Items[0];
+
+                    for (int j = 0; i < ItemInstances.Num(); j++)
+                    {
+                        auto ItemInstance = ItemInstances[j];
+
+                        if (!ItemInstance)
+                            return;
+
+                        auto Def = ItemInstance->ItemEntry.ItemDefinition;
+                        auto Guid = ItemInstance->ItemEntry.ItemGuid;
+
+                        if (IsMatchingGuid(FocusedGuid, Guid))
+                            SummonPickup((APlayerPawn_Athena_C*)Pawn, Def, 1, Pawn->K2_GetActorLocation());
+                    }
+
+                    QuickBars->EmptySlot(EFortQuickBars::Primary, FocusedSlot);
+
+                    // return;
+                }
+
+                auto entry = AddItemWithUpdate((AFortPlayerController*)Pawn->Controller, WorldItemDefinition, i, EFortQuickBars::Primary, Params->Pickup->PrimaryPickupItemEntry.Count);
+                Params->Pickup->K2_DestroyActor(); // this does not work I have no idea why
+
+                if (bEquip)
+                    EquipWeaponDefinition((APlayerPawn_Athena_C*)Pawn, (UFortWeaponItemDefinition*)WorldItemDefinition, entry.ItemGuid);
+            }
+        }
+    }
+}
+
+static void InitInventory(AFortPlayerController* PlayerController)
+{
+    auto QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
+    PlayerController->QuickBars = QuickBars;
+    PlayerController->OnRep_QuickBar();
+
+	// not sure if this enable stuff is acutally needed
+
+    QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 0);
+    QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 1);
+    QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 2);
+    QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 3);
+    QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 4);
+    QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 5);
+    QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 1);
+    QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 2);
+	
+    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
+    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 1, 0, true);
+    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 2, 0, true);
+
+    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Secondary, 0, 0, true);
+    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Secondary, 1, 0, true);
+    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Secondary, 2, 0, true);
+	
+    static auto Wall = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall");
+    static auto Stair = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W");
+    static auto Cone = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_RoofS.BuildingItemData_RoofS");
+    static auto Floor = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Floor.BuildingItemData_Floor");
+    static auto Wood = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition WoodItemData.WoodItemData");
+    static auto Stone = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition StoneItemData.StoneItemData");
+    static auto Metal = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition MetalItemData.MetalItemData");
+    static auto Medium = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsMedium.AthenaAmmoDataBulletsMedium");
+    static auto Light = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsLight.AthenaAmmoDataBulletsLight");
+    static auto Heavy = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsHeavy.AthenaAmmoDataBulletsHeavy");
+
+    AddItemWithUpdate(PlayerController, Wall, 0, EFortQuickBars::Secondary, 1);
+    AddItemWithUpdate(PlayerController, Floor, 1, EFortQuickBars::Secondary, 1);
+    AddItemWithUpdate(PlayerController, Stair, 2, EFortQuickBars::Secondary, 1);
+    AddItemWithUpdate(PlayerController, Cone, 3, EFortQuickBars::Secondary, 1);
+
+    AddItemWithUpdate(PlayerController, Wood, 0, EFortQuickBars::Secondary, 999);
+    AddItemWithUpdate(PlayerController, Stone, 0, EFortQuickBars::Secondary, 999);
+    AddItemWithUpdate(PlayerController, Metal, 0, EFortQuickBars::Secondary, 999);
+    AddItemWithUpdate(PlayerController, Medium, 0, EFortQuickBars::Secondary, 999);
+    AddItemWithUpdate(PlayerController, Light, 0, EFortQuickBars::Secondary, 999);
+    AddItemWithUpdate(PlayerController, Heavy, 0, EFortQuickBars::Secondary, 999);
+}
+
 static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* GameplayAbilityClass)
 {
     auto AbilitySystemComponent = TargetPawn->AbilitySystemComponent;
@@ -191,6 +352,42 @@ static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
     auto handle = FGameplayEffectContextHandle();
 
     AbilitySystemComponent->BP_ApplyGameplayEffectToTarget(GameplayEffectClass, AbilitySystemComponent, 1.f, handle);
+}
+
+static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
+{
+    auto Params = (AFortPlayerController_ServerAttemptInventoryDrop_Params*)params;
+
+    auto ItemInstances = GetItemInstances((AFortPlayerControllerAthena*)Pawn->Controller);
+    auto Controller = (AFortPlayerControllerAthena*)Pawn->Controller;
+    auto QuickBars = Controller->QuickBars;
+    auto QuickBarSlots = QuickBars->PrimaryQuickBar.Slots;
+
+    for (int i = 0; i < QuickBarSlots.Num(); i++)
+    {
+        if (QuickBarSlots[i].Items.Data)
+        {
+            if (IsMatchingGuid(QuickBarSlots[i].Items[0], Params->ItemGuid))
+            {
+                QuickBars->EmptySlot(EFortQuickBars::Primary, i);
+                UpdateInventory(Controller);
+            }
+        }
+    }
+
+    for (int i = 0; i < ItemInstances.Num(); i++)
+    {
+        auto ItemInstance = ItemInstances[i];
+        auto Guid = ItemInstance->GetItemGuid();
+
+        if (IsMatchingGuid(Guid, Params->ItemGuid))
+        {
+            auto def = ItemInstance->ItemEntry.ItemDefinition;
+
+            if (def)
+                SummonPickup(Pawn, def, 1, Pawn->K2_GetActorLocation());
+        }
+    }
 }
 
 namespace Functions

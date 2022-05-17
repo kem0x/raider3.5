@@ -1,4 +1,5 @@
 #pragma once
+
 #include "SDK.hpp"
 #include "game.h"
 #include "hooks.h"
