@@ -346,7 +346,7 @@ static void InitInventory(AFortPlayerController* PlayerController)
     PlayerController->QuickBars = QuickBars;
     PlayerController->OnRep_QuickBar();
 
-	// not sure if this enable stuff is acutally needed
+    // not sure if this enable stuff is acutally needed
 
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 0);
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 1);
@@ -356,7 +356,7 @@ static void InitInventory(AFortPlayerController* PlayerController)
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 5);
     QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 1);
     QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 2);
-	
+
     QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
     QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 1, 0, true);
     QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 2, 0, true);
@@ -364,7 +364,7 @@ static void InitInventory(AFortPlayerController* PlayerController)
     QuickBars->ServerActivateSlotInternal(EFortQuickBars::Secondary, 0, 0, true);
     QuickBars->ServerActivateSlotInternal(EFortQuickBars::Secondary, 1, 0, true);
     QuickBars->ServerActivateSlotInternal(EFortQuickBars::Secondary, 2, 0, true);
-	
+
     static auto Wall = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall");
     static auto Stair = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W");
     static auto Cone = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_RoofS.BuildingItemData_RoofS");
