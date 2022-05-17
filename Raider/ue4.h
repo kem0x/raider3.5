@@ -5,6 +5,10 @@
 #include "patterns.h"
 #include "util.h"
 
+constexpr auto PI = 3.1415926535897932f;
+constexpr auto INV_PI = 0.31830988618f;
+constexpr auto HALF_PI = 1.57079632679f;
+
 inline bool bTraveled = false;
 inline bool bPlayButton = false;
 inline bool bDroppedLS = false;
@@ -48,20 +52,66 @@ FORCEINLINE auto GetMath()
     return reinterpret_cast<UKismetMathLibrary*>(UKismetMathLibrary::StaticClass());
 }
 
-FORCEINLINE auto RotToQuat(FRotator& Rotator)
+static FORCEINLINE void sinCos(float* ScalarSin, float* ScalarCos, float Value)
 {
-    FQuat quat;
-    quat.X = Rotator.Pitch;
-    quat.Y = Rotator.Roll;
-    quat.Z = Rotator.Yaw;
-    quat.W = 0;
+    float quotient = (INV_PI * 0.5f) * Value;
+    if (Value >= 0.0f)
+    {
+        quotient = (float)((int)(quotient + 0.5f));
+    }
+    else
+    {
+        quotient = (float)((int)(quotient - 0.5f));
+    }
+    float y = Value - (2.0f * PI) * quotient;
 
-    return quat;
+    float sign;
+    if (y > HALF_PI)
+    {
+        y = PI - y;
+        sign = -1.0f;
+    }
+    else if (y < -HALF_PI)
+    {
+        y = -PI - y;
+        sign = -1.0f;
+    }
+    else
+    {
+        sign = +1.0f;
+    }
+
+    float y2 = y * y;
+
+    *ScalarSin = (((((-2.3889859e-08f * y2 + 2.7525562e-06f) * y2 - 0.00019840874f) * y2 + 0.0083333310f) * y2 - 0.16666667f) * y2 + 1.0f) * y;
+
+    float p = ((((-2.6051615e-07f * y2 + 2.4760495e-05f) * y2 - 0.0013888378f) * y2 + 0.041666638f) * y2 - 0.5f) * y2 + 1.0f;
+    *ScalarCos = sign * p;
 }
 
-inline AActor* SpawnActorTrans(UClass* StaticClass, FTransform SpawnTransform, AActor* Owner = nullptr)
+FORCEINLINE auto RotToQuat(FRotator& Rotator)
 {
-    AActor* FirstActor = GetGameplayStatics()->STATIC_BeginDeferredActorSpawnFromClass(GetWorld(), StaticClass, SpawnTransform, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn, Owner);
+    const float DEG_TO_RAD = PI / (180.f);
+    const float DIVIDE_BY_2 = DEG_TO_RAD / 2.f;
+    float SP, SY, SR;
+    float CP, CY, CR;
+
+    sinCos(&SP, &CP, Rotator.Pitch * DIVIDE_BY_2);
+    sinCos(&SY, &CY, Rotator.Yaw * DIVIDE_BY_2);
+    sinCos(&SR, &CR, Rotator.Roll * DIVIDE_BY_2);
+
+    FQuat RotationQuat;
+    RotationQuat.X = CR * SP * SY - SR * CP * CY;
+    RotationQuat.Y = -CR * SP * CY - SR * CP * SY;
+    RotationQuat.Z = CR * CP * SY - SR * SP * CY;
+    RotationQuat.W = CR * CP * CY + SR * SP * SY;
+
+    return RotationQuat;
+}
+
+inline AActor* SpawnActorTrans(UClass* StaticClass, FTransform SpawnTransform, AActor* Owner = nullptr, ESpawnActorCollisionHandlingMethod Flags = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn)
+{
+    AActor* FirstActor = GetGameplayStatics()->STATIC_BeginDeferredActorSpawnFromClass(GetWorld(), StaticClass, SpawnTransform, Flags, Owner);
 
     if (FirstActor)
     {
@@ -134,21 +184,35 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
 
     auto ItemEntry = ((UFortWorldItem*)TempItemInstance)->ItemEntry;
     ItemEntry.bIsDirty = true;
+	
     PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
     PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
     PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
-    UpdateInventory(PC);
 	
+    UpdateInventory(PC);
+
     return ItemEntry;
 }
 
-inline void EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeaponItemDefinition* Definition, FGuid& Guid)
+inline AFortWeapon* EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeaponItemDefinition* Definition, FGuid& Guid)
 {
-    AFortWeapon* weap = Pawn->EquipWeaponDefinition(Definition, Guid);
-    weap->AmmoCount = 1;
-    weap->OnRep_ReplicatedWeaponData();
-    weap->ClientGivenTo(Pawn);
-    Pawn->ClientInternalEquipWeapon(weap);
+    // AFortWeapon* Weapon = Pawn->EquipWeaponDefinition(Definition, Guid);
+    /* auto weaponClass = Definition->GetWeaponActorClass();
+
+    if (weaponClass)
+    {
+        auto Weapon = (AFortWeapon*)SpawnActorTrans(weaponClass, {}, Pawn);
+    */
+    AFortWeapon* Weapon = Pawn->EquipWeaponDefinition(Definition, Guid);
+	
+    if (Weapon)
+    {
+        Weapon->OnRep_ReplicatedWeaponData();
+        Weapon->ClientGivenTo(Pawn);
+        Pawn->ClientInternalEquipWeapon(Weapon);
+    }
+
+    return Weapon;
 }
 
 inline void EquipInventoryItem(AFortPlayerController* PC, FGuid& Guid)
@@ -335,8 +399,6 @@ static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
 
     TArray<FGameplayAbilitySpecDef> GrantedAbilities = DefaultGameplayEffect->GrantedAbilities;
 
-    printf("Granted abilities: %i\n", GrantedAbilities.Num());
-
     // overwrite current gameplay ability with the one we want to activate
     GrantedAbilities[0].Ability = GameplayAbilityClass;
     GrantedAbilities[0].Level = 1.0f;
@@ -405,7 +467,7 @@ namespace Functions
         inline bool (*SendClientAdjustment)(APlayerController* Controller);
     }
 
-	namespace PlayerState
+    namespace PlayerState
     {
         inline void (*OnRep_CharacterParts)(AFortPlayerState* State);
     }
@@ -420,7 +482,7 @@ namespace Functions
     {
         inline UChannel* (*CreateChannel)(UNetConnection* NetConnection, int32 ChType, bool bOpenedLocally, int32_t ChIndex);
         inline void (*HandleClientPlayer)(UNetConnection* This, APlayerController* PC, UNetConnection* NetConnection);
-    
+
         inline void (*ReceiveFString)(void* Bunch, FString& Str);
         inline void (*ReceiveUniqueIdRepl)(void* Bunch, FUniqueNetIdRepl& Str);
     }
@@ -473,12 +535,12 @@ namespace Functions
         uintptr_t Address = Utils::FindPattern(Patterns::GObjects, true, 3);
         CheckNullFatal(Address, "Failed to find GObjects");
         AddressToFunction(Address, UObject::GObjects);
-		
+
         Address = Utils::FindPattern(Patterns::Free);
         CheckNullFatal(Address, "Failed to find Free");
         AddressToFunction(Address, FreeInternal);
 
-		Address = Utils::FindPattern(Patterns::Realloc);
+        Address = Utils::FindPattern(Patterns::Realloc);
         CheckNullFatal(Address, "Failed to find Realloc");
         AddressToFunction(Address, FMemory_Realloc);
 
@@ -541,7 +603,7 @@ namespace Functions
         Address = Utils::FindPattern(Patterns::ReceiveUniqueIdRepl);
         CheckNullFatal(Address, "Failed to find ReceiveUniqueIdRepl");
         AddressToFunction(Address, NetConnection::ReceiveUniqueIdRepl);
-		
+
         Address = Utils::FindPattern(Patterns::ReceiveFString);
         CheckNullFatal(Address, "Failed to find ReceiveFString");
         AddressToFunction(Address, NetConnection::ReceiveFString);
@@ -555,10 +617,10 @@ namespace Functions
         AddressToFunction(Address, PlayerState::OnRep_CharacterParts);
 
         Address = Utils::FindPattern(Patterns::GetNetMode);
-		CheckNullFatal(Address, "Failed to find InternalGetNetMode");
+        CheckNullFatal(Address, "Failed to find InternalGetNetMode");
         AddressToFunction(Address, Actor::GetNetMode);
 
-		Address = Utils::FindPattern(Patterns::AddNetworkActor);
+        Address = Utils::FindPattern(Patterns::AddNetworkActor);
         CheckNullFatal(Address, "Failed to find AddNetworkActor");
         AddressToFunction(Address, World::AddNetworkActor);
 
@@ -567,7 +629,7 @@ namespace Functions
         AddressToFunction(Address, Actor::IsNetRelevantFor);
 
         PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
-		
+
         return;
     }
 

@@ -205,7 +205,7 @@ namespace Hooks
         auto ObjectName = Object->GetFullName();
         auto FunctionName = Function->GetFullName();
 
-        if (!bPlayButton && FunctionName.contains("BP_PlayButton"))
+        if (!bPlayButton && FunctionName.find("BP_PlayButton") != -1)
         {
             bPlayButton = true;
             Game::Start();
@@ -214,7 +214,7 @@ namespace Hooks
 
         if (bTraveled)
         {
-            if (FunctionName.contains("ReadyToStartMatch"))
+            if (FunctionName.find("ReadyToStartMatch") != -1)
             {
                 EXECUTE_ONE_TIME
                 {
@@ -222,7 +222,7 @@ namespace Hooks
                 }
             }
 
-            else if (FunctionName.contains("ServerLoadingScreenDropped"))
+            else if (FunctionName.find("ServerLoadingScreenDropped") != -1)
             {
                 auto Pawn = (APlayerPawn_Athena_C*)((AFortPlayerController*)Object)->Pawn;
 
@@ -255,15 +255,18 @@ namespace Hooks
             {
                 if (Function->FunctionFlags & 0x00200000)
                 {
-                    std::cout << "RPC Called: " << FunctionName << '\n';
+                    if (FunctionName.find("ServerUpdateCamera") == -1 && FunctionName.find("ServerMove") == -1)
+                    {
+                        std::cout << "RPC Called: " << FunctionName << '\n';						
+                    }
                 }
 
-                if (FunctionName.contains("ServerHandlePickup"))
+                if (FunctionName.find("ServerHandlePickup") != -1)
                 {
                     // HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
                 }
 
-                else if (FunctionName.contains("ServerCreateBuilding"))
+                else if (FunctionName.find("ServerCreateBuilding") != -1)
                 {
                     auto PC = (AFortPlayerControllerAthena*)Object;
 
@@ -275,24 +278,24 @@ namespace Hooks
                     Transform.Translation = Params->BuildLoc;
                     Transform.Scale3D = { 1, 1, 1 };
 
-                    auto BuildingActor = SpawnActorTrans(CurrentBuildClass, Transform, PC);
+                    auto BuildingActor = SpawnActorTrans(CurrentBuildClass, Transform, PC); //, ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding);
                     ((ABuildingActor*)BuildingActor)->InitializeKismetSpawnedBuildingActor((ABuildingActor*)BuildingActor, PC);
                 }
 
-                else if (FunctionName.contains("ServerAttemptInventoryDrop"))
+                else if (FunctionName.find("ServerAttemptInventoryDrop") != -1)
                 {
                     auto PC = (AFortPlayerController*)Object;
                     auto Pawn = (APlayerPawn_Athena_C*)PC->Pawn;
                     HandleInventoryDrop(Pawn, Parameters);
                 }
 
-                else if (FunctionName.contains("ServerExecuteInventoryItem"))
+                else if (FunctionName.find("ServerExecuteInventoryItem") != -1)
                 {
                     auto PC = (AFortPlayerControllerAthena*)Object;
                     EquipInventoryItem(PC, *(FGuid*)Parameters);
                 }
 
-                else if (FunctionName.contains("ServerReturnToMainMenu"))
+                else if (FunctionName.find("ServerReturnToMainMenu") != -1)
                 {
                     if (Object != GetPlayerController())
                     {
@@ -308,29 +311,34 @@ namespace Hooks
                     }
                 }
 
-                else if (FunctionName.contains("ServerPlayEmoteItem"))
+                else if (FunctionName.find("ServerPlayEmoteItem") != -1)
                 {
+                    auto CurrentPawn = (AFortPlayerPawnAthena*)((AFortPlayerController*)Object)->Pawn;
                     auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
 
                     if (EmoteParams->EmoteAsset)
                     {
-                        auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(EFortCustomBodyType::All, EFortCustomGender::Both);
+                        auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(CurrentPawn->CharacterBodyType, CurrentPawn->CharacterGender);
 
                         if (Montage)
                         {
-                            auto CurrentPawn = (AFortPlayerPawnAthena*)((AFortPlayerController*)Object)->Pawn;
                             auto AnimInstance = CurrentPawn->Mesh->GetAnimInstance();
-
-                            // AnimInstance->Montage_Play(Montage, 1, EMontagePlayReturnType::Duration, 0, true);
-
-                            // CurrentPawn->OnRep_CharPartAnimMontageInfo();
-                            CurrentPawn->PlayAnimMontage(Montage, 1, FName());
+                            CurrentPawn->PlayAnimMontage(Montage, 1, Montage->CompositeSections[0].SectionName);
                             CurrentPawn->OnRep_ReplicatedAnimMontage();
                         }
+						
+                        else
+                        {
+                            std::cout << "Failed to find Montage!\n";
+                        }
+                    }
+                    else
+                    {
+                        std::cout << "Failed to find EmoteAsset!\n";
                     }
                 }
 
-                else if (FunctionName.contains("ServerAttemptInteract"))
+                else if (FunctionName.find("ServerAttemptInteract") != -1)
                 {
                     auto Params = (AFortPlayerController_ServerAttemptInteract_Params*)Parameters;
                     auto PC = (AFortPlayerController*)Object;
@@ -357,7 +365,7 @@ namespace Hooks
                                 SummonPickupFromChest(def, 1, Params->ReceivingActor->K2_GetActorLocation());
                             }
 
-                            else if (InteractingActorName.contains("Ammo"))
+                            else if (InteractingActorName.find("Ammo") != -1)
                             {
                                 // PC->ClientPlaySoundAtLocation
                                 static auto Medium = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsMedium.AthenaAmmoDataBulletsMedium");
@@ -365,7 +373,7 @@ namespace Hooks
                             }
                         }
 
-                        else if (InteractingActorName.contains("Wall") || InteractingActorName.contains("Door"))
+                        else if (InteractingActorName.find("Wall") != -1 || InteractingActorName.find("Door") != -1)
                         {
                             auto Actor = (ABuildingWall*)Params->ReceivingActor;
 
@@ -374,13 +382,13 @@ namespace Hooks
                             // Actor->DoorClosingSound
                         }
 
-                        else if (InteractingActorName.contains("VendingMachine"))
+                        else if (InteractingActorName.find("VendingMachine") != -1)
                         {
                         }
                     }
                 }
 
-                else if (FunctionName.contains("ServerAttemptExitVehicle"))
+                else if (FunctionName.find("ServerAttemptExitVehicle") != -1)
                 {
                     auto PC = (AFortPlayerControllerAthena*)Object;
 
