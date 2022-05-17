@@ -184,11 +184,11 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
 
     auto ItemEntry = ((UFortWorldItem*)TempItemInstance)->ItemEntry;
     ItemEntry.bIsDirty = true;
-	
+
     PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
     PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
     PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
-	
+
     UpdateInventory(PC);
 
     return ItemEntry;
@@ -204,7 +204,7 @@ inline AFortWeapon* EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeapo
         auto Weapon = (AFortWeapon*)SpawnActorTrans(weaponClass, {}, Pawn);
     */
     AFortWeapon* Weapon = Pawn->EquipWeaponDefinition(Definition, Guid);
-	
+
     if (Weapon)
     {
         Weapon->OnRep_ReplicatedWeaponData();
@@ -611,10 +611,6 @@ namespace Functions
         Address = Utils::FindPattern(Patterns::KickPlayer);
         CheckNullFatal(Address, "Failed to find KickPlayer");
         AddressToFunction(Address, OnlineSession::KickPlayer);
-
-        Address = Utils::FindPattern(Patterns::OnRep_CharacterParts);
-        CheckNullFatal(Address, "Failed to find OnRep_CharacterParts");
-        AddressToFunction(Address, PlayerState::OnRep_CharacterParts);
 
         Address = Utils::FindPattern(Patterns::GetNetMode);
         CheckNullFatal(Address, "Failed to find InternalGetNetMode");
