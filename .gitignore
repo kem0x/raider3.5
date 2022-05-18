@@ -31,12 +31,9 @@
 *.out
 *.app
 
-SDK/
 bin/
 obj/
 .vs/
-
-SDK.hpp
 
 *.tlog
 *.ipch

@@ -1,0 +1,102 @@
+#pragma once
+
+// Fortnite (3.1) SDK
+
+#ifdef _MSC_VER
+	#pragma pack(push, 0x8)
+#endif
+
+#include "../SDK.hpp"
+
+namespace SDK
+{
+//---------------------------------------------------------------------------
+//Parameters
+//---------------------------------------------------------------------------
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_D06D743D425B7D3C8406EFBD08A68E63
+struct USmasherVimBlueprint_C_EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_D06D743D425B7D3C8406EFBD08A68E63_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_57C1753D42DBAD4187C85AAE4603F95B
+struct USmasherVimBlueprint_C_EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_57C1753D42DBAD4187C85AAE4603F95B_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_36707A12499C230B89B08282F69A2E71
+struct USmasherVimBlueprint_C_EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_36707A12499C230B89B08282F69A2E71_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_2C0EA83E4DB1BC60C7AC4B90DFE6D5B6
+struct USmasherVimBlueprint_C_EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_2C0EA83E4DB1BC60C7AC4B90DFE6D5B6_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_854F7DBB41A386B898E3D9B5031F823F
+struct USmasherVimBlueprint_C_EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_854F7DBB41A386B898E3D9B5031F823F_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_9CEC73804ACDA2E1261690879C9C187C
+struct USmasherVimBlueprint_C_EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_9CEC73804ACDA2E1261690879C9C187C_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_6FC4F6E34980671B8CA4B4B2CD6FD910
+struct USmasherVimBlueprint_C_EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_6FC4F6E34980671B8CA4B4B2CD6FD910_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_B689746C43A09BADCA561E824233D6DB
+struct USmasherVimBlueprint_C_EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_B689746C43A09BADCA561E824233D6DB_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_FBAC1AEB479405046F3E4AB17CDECB34
+struct USmasherVimBlueprint_C_EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_TransitionResult_FBAC1AEB479405046F3E4AB17CDECB34_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_SequencePlayer_55B330D54A9EB1F611FA37934D427BCA
+struct USmasherVimBlueprint_C_EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_SequencePlayer_55B330D54A9EB1F611FA37934D427BCA_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_BlendSpacePlayer_7A978E3A445354F73A1E51A3CCB88471
+struct USmasherVimBlueprint_C_EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_BlendSpacePlayer_7A978E3A445354F73A1E51A3CCB88471_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_LayeredBoneBlend_44CA33F44D1BFA86AD3745BC5E17198B
+struct USmasherVimBlueprint_C_EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_LayeredBoneBlend_44CA33F44D1BFA86AD3745BC5E17198B_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_RotationOffsetBlendSpace_ABD899E4436A06324E298FBF07E6E243
+struct USmasherVimBlueprint_C_EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_RotationOffsetBlendSpace_ABD899E4436A06324E298FBF07E6E243_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_BlendListByBool_94E77D9E46EF25EEFD76A89B797C291C
+struct USmasherVimBlueprint_C_EvaluateGraphExposedInputs_ExecuteUbergraph_SmasherVimBlueprint_AnimGraphNode_BlendListByBool_94E77D9E46EF25EEFD76A89B797C291C_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.AnimNotify_SleepingFullyBlended
+struct USmasherVimBlueprint_C_AnimNotify_SleepingFullyBlended_Params
+{
+};
+
+// Function SmasherVimBlueprint.SmasherVimBlueprint_C.ExecuteUbergraph_SmasherVimBlueprint
+struct USmasherVimBlueprint_C_ExecuteUbergraph_SmasherVimBlueprint_Params
+{
+	int                                                EntryPoint;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+}
+
+#ifdef _MSC_VER
+	#pragma pack(pop)
+#endif
