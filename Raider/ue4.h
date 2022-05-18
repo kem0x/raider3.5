@@ -47,6 +47,11 @@ FORCEINLINE UGameplayStatics* GetGameplayStatics()
     return reinterpret_cast<UGameplayStatics*>(UGameplayStatics::StaticClass());
 }
 
+FORCEINLINE UKismetStringLibrary* GetKismetString()
+{
+    return (UKismetStringLibrary*)UKismetStringLibrary::StaticClass();
+}
+
 FORCEINLINE auto GetMath()
 {
     return reinterpret_cast<UKismetMathLibrary*>(UKismetMathLibrary::StaticClass());
@@ -350,11 +355,27 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
     }
 }
 
-static void InitInventory(AFortPlayerController* PlayerController)
+static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnInventory = true)
 {
     PlayerController->QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
     auto QuickBars = PlayerController->QuickBars;
     PlayerController->OnRep_QuickBar();
+
+	if (bSpawnInventory)
+    {
+        PlayerController->WorldInventory = SpawnActor<AFortInventory>({ -280, 400, 3000 }, PlayerController);
+        PlayerController->WorldInventory->InventoryType = EFortInventoryType::World;
+        PlayerController->WorldInventory->Inventory = FFortItemList();
+
+        PlayerController->WorldInventory->bReplicates = true;
+        PlayerController->bHasInitializedWorldInventory = true;
+
+        auto OutpostInventory = SpawnActor<AFortInventory>({}, PlayerController);
+        OutpostInventory->bReplicates = true;
+        OutpostInventory->InventoryType = EFortInventoryType::Outpost;
+        PlayerController->OutpostInventory = OutpostInventory;
+        PlayerController->HandleOutpostInventoryLocalUpdate();
+    }
 
     // not sure if this enable stuff is acutally needed
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 0);
@@ -666,4 +687,11 @@ namespace Functions
         return;
     }
 
+}
+
+static bool KickPlayer(AFortPlayerControllerAthena* PC, FString Message)
+{
+    // FText text = GetKismetString()->Conv
+    // return Functions::OnlineSession::KickPlayer(GetWorld()->AuthorityGameMode->GameSession, PC, text);
+    return false;
 }

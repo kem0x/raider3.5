@@ -47,6 +47,8 @@ namespace Hooks
         AFortPlayerStateAthena* PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
         PlayerState->SetOwner(PlayerController);
 
+		InitInventory(PlayerController);
+
         auto Pawn = SpawnActor<APlayerPawn_Athena_C>({ 1250, 1818, 3284 }, PlayerController);
 
         PlayerController->Pawn = Pawn;
@@ -86,8 +88,6 @@ namespace Hooks
         }
 
         PlayerState->OnRep_CharacterParts();
-
-		InitInventory(PlayerController);
 
 		static UFortWeaponItemDefinition* Def = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
 
@@ -274,7 +274,7 @@ namespace Hooks
                     }
                 }
 
-                if (FunctionName.find("ServerHandlePickup") != -1)
+                else if (FunctionName.find("ServerHandlePickup") != -1)
                 {
                     HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
                 }
