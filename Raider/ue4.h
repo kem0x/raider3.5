@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SDK.hpp"
-
 #include "patterns.h"
 #include "util.h"
 
@@ -107,7 +105,7 @@ namespace Functions
 
         Address = Utils::FindPattern(Patterns::Free);
         CheckNullFatal(Address, "Failed to find Free");
-        AddressToFunction(Address, FreeInternal);
+        AddressToFunction(Address, FMemory_Free);
 
         Address = Utils::FindPattern(Patterns::Realloc);
         CheckNullFatal(Address, "Failed to find Realloc");
@@ -230,9 +228,49 @@ inline AAthena_PlayerController_C* GetPlayerController(int32 Index = 0)
     return (AAthena_PlayerController_C*)GetWorld()->OwningGameInstance->LocalPlayers[Index]->PlayerController;
 }
 
+struct FNetworkObjectInfo
+{
+    AActor* Actor;
+
+    TWeakObjectPtr<AActor> WeakActor;
+
+    double NextUpdateTime;
+
+    double LastNetReplicateTime;
+
+    float OptimalNetUpdateDelta;
+
+    float LastNetUpdateTime;
+
+    uint32 bPendingNetUpdate : 1;
+
+    uint32 bForceRelevantNextUpdate : 1;
+
+    TSet<TWeakObjectPtr<UNetConnection>> DormantConnections;
+
+    TSet<TWeakObjectPtr<UNetConnection>> RecentlyDormantConnections;
+};
+
+class FNetworkObjectList
+{
+public:
+    typedef TSet<TSharedPtr<FNetworkObjectInfo>> FNetworkObjectSet;
+
+    FNetworkObjectSet AllNetworkObjects;
+    FNetworkObjectSet ActiveNetworkObjects;
+    FNetworkObjectSet ObjectsDormantOnAllConnections;
+
+    TMap<TWeakObjectPtr<UObject>, int32> NumDormantObjectsPerConnection;
+};
+
 FORCEINLINE int32& GetReplicationFrame(UNetDriver* Driver)
 {
     return *(int32*)(int64(Driver) + 816); // Offsets::Net::ReplicationFrame);
+}
+
+FORCEINLINE auto& GetNetworkObjectList(UObject* NetDriver)
+{
+    return *(*(TSharedPtr<FNetworkObjectList>*)(int64(NetDriver) + 0x508));
 }
 
 FORCEINLINE UGameplayStatics* GetGameplayStatics()
@@ -243,11 +281,6 @@ FORCEINLINE UGameplayStatics* GetGameplayStatics()
 FORCEINLINE UKismetStringLibrary* GetKismetString()
 {
     return (UKismetStringLibrary*)UKismetStringLibrary::StaticClass();
-}
-
-FORCEINLINE auto GetMath()
-{
-    return reinterpret_cast<UKismetMathLibrary*>(UKismetMathLibrary::StaticClass());
 }
 
 static FORCEINLINE void sinCos(float* ScalarSin, float* ScalarCos, float Value)
@@ -634,6 +667,28 @@ FGameplayAbilitySpec* UAbilitySystemComponent_FindAbilitySpecFromHandle(UAbility
     return nullptr;
 }
 
+void UAbilitySystemComponent_ConsumeAllReplicatedData(UAbilitySystemComponent* AbilitySystemComponent, FGameplayAbilitySpecHandle AbilityHandle, FPredictionKey AbilityOriginalPredictionKey)
+{
+    FGameplayAbilitySpecHandleAndPredictionKey toFind { AbilityHandle, AbilityOriginalPredictionKey.Current };
+
+    auto MapPairsData = AbilitySystemComponent->AbilityTargetDataMap.Pairs.GetElements().Data;
+
+    for (int i = 0; i < MapPairsData.Num(); i++)
+    {
+        auto Pair = MapPairsData[i].ElementData.Value;
+
+        printf("[AbilityHandle] Pair.Key(): %i, toFind: %i\n", Pair.Key().AbilityHandle.Handle, toFind.AbilityHandle.Handle);
+        printf("[PredictionKeyAtCreation] Pair.Key(): %i, toFind: %i\n", Pair.Key().PredictionKeyAtCreation, toFind.PredictionKeyAtCreation);
+
+        if (Pair.Key().AbilityHandle.Handle == toFind.AbilityHandle.Handle && Pair.Key().PredictionKeyAtCreation == toFind.PredictionKeyAtCreation)
+        {
+            auto CachedData = Pair.Value();
+            CachedData.Reset();
+            printf("ConsumeAllReplicatedData!\n");
+        }
+    }
+}
+
 auto TryActivateAbility(UAbilitySystemComponent* AbilitySystemComponent, FGameplayAbilitySpecHandle AbilityToActivate, bool InputPressed, FPredictionKey* PredictionKey, FGameplayEventData* TriggerEventData)
 {
     auto Spec = UAbilitySystemComponent_FindAbilitySpecFromHandle(AbilitySystemComponent, AbilityToActivate);
@@ -645,7 +700,7 @@ auto TryActivateAbility(UAbilitySystemComponent* AbilitySystemComponent, FGamepl
         return;
     }
 
-    // ConsumeAllReplicatedData(Handle, PredictionKey);
+    UAbilitySystemComponent_ConsumeAllReplicatedData(AbilitySystemComponent, AbilityToActivate, *PredictionKey);
 
     UGameplayAbility* InstancedAbility = nullptr;
     Spec->InputPressed = true;
@@ -672,11 +727,9 @@ static auto GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
     if (!AbilitySystemComponent)
         return;
 
-    static auto GHandle = 69;
-
     auto GenerateNewSpec = [&]() -> FGameplayAbilitySpec
     {
-        FGameplayAbilitySpecHandle Handle {GHandle++};
+        FGameplayAbilitySpecHandle Handle { rand() };
 
         FGameplayAbilitySpec Spec { -1, -1, -1, Handle, (UGameplayAbility*)GameplayAbilityClass->CreateDefaultObject(), 1, -1, nullptr, 0, false, false, false };
 

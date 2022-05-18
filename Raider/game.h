@@ -23,7 +23,6 @@ namespace Game
         for (int i = 0; i < HeroParts.Num(); i++)
         {
             auto Part = HeroParts[i];
-            
 
             if (!Part)
                 continue;
@@ -56,6 +55,8 @@ namespace Game
         gameState->bGameModeWillSkipAircraft = true;
         gameState->AircraftStartTime = 99999.0f;
         gameState->WarmupCountdownEndTime = 99999.0f;
+        gameState->CurrentPlaylistData = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_Playground.Playlist_Playground");
+        gameState->OnRep_CurrentPlaylistData();
 
         gameState->GamePhase = EAthenaGamePhase::Aircraft;
         gameState->OnRep_GamePhase(EAthenaGamePhase::None);
@@ -83,26 +84,6 @@ namespace Game
         }
 
         InitInventory(PlayerController, false);
-
-        auto pickName = "FortWeaponMeleeItemDefinition WID_Harvest_" + Pawn->CustomizationLoadout.Pickaxe->GetName() + "_Athena_C_T01.WID_Harvest_" + Pawn->CustomizationLoadout.Pickaxe->GetName() + "_Athena_C_T01";
-
-        auto Def = UObject::FindObject<UFortWeaponItemDefinition>(pickName);
-
-        if (!Def)
-            Def = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
-
-        FFortItemEntry ItemEntry;
-
-        if (Def)
-            ItemEntry = AddItemWithUpdate(PlayerController, Def, 0);
-
-        Def = UObject::FindObject<UFortWeaponItemDefinition>("WID_Assault_AutoHigh_Athena_SR_Ore_T03.WID_Assault_AutoHigh_Athena_SR_Ore_T03");
-
-        if (Def)
-        {
-            ItemEntry = AddItemWithUpdate(PlayerController, Def, 1);
-            EquipWeaponDefinition(Pawn, Def, ItemEntry.ItemGuid);
-        }
 
         auto CheatManager = (UFortCheatManager*)CreateCheatManager(PlayerController, true);
         CheatManager->ToggleInfiniteAmmo();

@@ -3,6 +3,8 @@
 #include "replication.h"
 #include "ue4.h"
 
+
+
 namespace Hooks
 {
     uint64 GetNetMode(UWorld* World) // PlayerController::SendClientAdjustment checks if the netmode is not client
@@ -58,6 +60,9 @@ namespace Hooks
         PlayerController->OnRep_Pawn();
         PlayerController->Possess(Pawn);
 
+        Pawn->SetMaxHealth(100);
+        Pawn->SetMaxShield(100);
+
         PlayerController->bHasClientFinishedLoading = true;
         PlayerController->bHasServerFinishedLoading = true;
         PlayerController->bHasInitiallySpawned = true;
@@ -89,20 +94,23 @@ namespace Hooks
 
         PlayerState->OnRep_CharacterParts();
 
-        static UFortWeaponItemDefinition* Def = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
 
-        FFortItemEntry ItemEntry;
+        static auto pickaxe = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_HalloweenScythe_Athena_C_T01.WID_Harvest_HalloweenScythe_Athena_C_T01");
+        static auto primary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
+        //static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Pistol_Scavenger_Athena_R_Ore_T03.WID_Pistol_Scavenger_Athena_R_Ore_T03");
+        static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
+        static auto forth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Assault_Auto_Athena_R_Ore_T03.WID_Assault_Auto_Athena_R_Ore_T03");
+        static auto fifth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition Athena_Bandage.Athena_Bandage");
+        static auto sixth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition Athena_ShieldSmall.Athena_ShieldSmall");
 
-        if (Def)
-            ItemEntry = AddItemWithUpdate(PlayerController, Def, 0);
-
-        Def = UObject::FindObject<UFortWeaponItemDefinition>("WID_Assault_AutoHigh_Athena_SR_Ore_T03.WID_Assault_AutoHigh_Athena_SR_Ore_T03");
-
-        if (Def)
-        {
-            auto ItemEntry = AddItemWithUpdate(PlayerController, Def, 1);
-            EquipWeaponDefinition(Pawn, Def, ItemEntry.ItemGuid);
-        }
+        auto pickaxeEntry = AddItemWithUpdate(PlayerController, pickaxe, 0);
+        auto primaryEntry = AddItemWithUpdate(PlayerController, primary, 1);
+        auto secondaryEntry = AddItemWithUpdate(PlayerController, secondary, 2);
+        auto forthEntry = AddItemWithUpdate(PlayerController, forth, 3);
+        auto fifthEntry = AddItemWithUpdate(PlayerController, fifth, 4);
+        auto sixthEntry = AddItemWithUpdate(PlayerController, sixth, 5);
+        
+        EquipWeaponDefinition(Pawn, pickaxe, pickaxeEntry.ItemGuid);
 
         auto CheatManager = (UFortCheatManager*)CreateCheatManager(PlayerController, true);
         CheatManager->ToggleInfiniteAmmo();

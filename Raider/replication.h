@@ -113,6 +113,8 @@ namespace Replication
                 OutConsiderList.push_back(Actor);
             }
         }
+
+        Actors.FreeArray();
     }
 
     void ServerReplicateActors(UNetDriver* NetDriver)
