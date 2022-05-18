@@ -215,7 +215,7 @@ inline AFortWeapon* EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeapo
             Weapon->WeaponData = Definition; */
             if (Ammo == 0)
                 Ammo = Weapon->GetMagazineAmmoCount();
-			
+
             Weapon->AmmoCount = Ammo;
             Weapon->OnRep_ReplicatedWeaponData();
             Weapon->ClientGivenTo(Pawn);
@@ -400,7 +400,7 @@ static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnIn
     static auto Heavy = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsHeavy.AthenaAmmoDataBulletsHeavy");
     static auto EditTool = UObject::FindObject<UFortEditToolItemDefinition>("FortEditToolItemDefinition EditTool.EditTool");
 
-	// we should probably only update once
+    // we should probably only update once
 
     AddItemWithUpdate(PlayerController, Wall, 0, EFortQuickBars::Secondary, 1);
     AddItemWithUpdate(PlayerController, Floor, 1, EFortQuickBars::Secondary, 1);
@@ -426,57 +426,17 @@ static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
     if (!AbilitySystemComponent)
         return;
 
-    AbilitySystemComponent->OwnerActor = TargetPawn;
+    static auto GHandle = *(int32_t*)Utils::FindPattern(Patterns::GameplayAbilitySpecGHandle, true, 2);
 
-    static UGameplayEffect* DefaultGameplayEffect = UObject::FindObject<UGameplayEffect>("GE_Constructor_ContainmentUnit_Applied_C GE_Constructor_ContainmentUnit_Applied.Default__GE_Constructor_ContainmentUnit_Applied_C");
-
-    if (!DefaultGameplayEffect)
+    if (!GHandle)
         return;
 
-    TArray<FGameplayAbilitySpecDef> GrantedAbilities = DefaultGameplayEffect->GrantedAbilities;
-
-	if (GrantedAbilities.Num() == 0)
-        return;
-    
-    // overwrite current gameplay ability with the one we want to activate
-    GrantedAbilities[0].Ability = GameplayAbilityClass;
-    GrantedAbilities[0].Level = 1.0f;
-
-    // give this gameplay effect an infinite duration
-    DefaultGameplayEffect->DurationPolicy = EGameplayEffectDurationType::Infinite;
-
-    static auto GameplayEffectClass = UObject::FindObject<UClass>("BlueprintGeneratedClass GE_Constructor_ContainmentUnit_Applied.GE_Constructor_ContainmentUnit_Applied_C");
-
-    if (!GameplayEffectClass)
-        return;
-
-	auto ActivatableAbilities = AbilitySystemComponent->ActivatableAbilities.Items;
-
-    for (int i = 0; i < ActivatableAbilities.Num(); i++)
+    auto GenerateNewSpec = [&]() -> FGameplayAbilitySpec
     {
-        auto& Spec = ActivatableAbilities[i];
-        auto Ability = ActivatableAbilities[i].Ability;
-		
-        if (!Ability)
-			continue;
+        FGameplayAbilitySpecHandle Handle(GHandle++);
 
-        // AbilitySystemComponent->(AbilitySystemComponent, &Spec.Handle);
-    }
-
-    auto context = FGameplayEffectContextHandle(); // AbilitySystemComponent->MakeEffectContext();
-
-    // AbilitySystemComponent->BP_ApplyGameplayEffectToTarget(GameplayEffectClass, AbilitySystemComponent, GrantedAbilities[0].Level, context);
-    std::cout << "Applied!\n";
-
-    // auto spec = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClass, 1.0f /* GrantedAbilities[0].Level */, context);
-    // K2_ApplyGameplayEffectSpecToTarget
-    // ((UAbilitySystemBlueprintLibrary*)UAbilitySystemBlueprintLibrary::StaticClass())->STATIC_MakeSpecHandle(DefaultGameplayEffect, TargetPawn, nullptr, 1.0f);
-    // AbilitySystemComponent->BP_ApplyGameplayEffectSpecToTarget(AbilitySystemComponent, &spec);
-
-	// std::cout << "ActivatableAbilities[0] Name: " << AbilitySystemComponent->ActivatableAbilities.Items[0].Ability->GetFullName() << '\n';
-
-    AbilitySystemComponent->OnRep_ActivateAbilities();
-    AbilitySystemComponent->OnRep_OwningActor();
+        //FGameplayAbilitySpec Spec(-1, -1, -1, Handle, (UGameplayAbility*)GameplayAbilityClass->CreateDefaultObject(), 1, -1, nullptr);
+    };
 }
 
 static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
