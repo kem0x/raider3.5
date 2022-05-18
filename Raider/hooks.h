@@ -258,11 +258,6 @@ namespace Hooks
 
             if (bDroppedLS)
             {
-                // if (GetPlayerController() && GetPlayerController()->Pawn)
-                {
-                    ((APlayerPawn_Athena_C*)GetPlayerController()->Pawn)->CurrentMovementStyle = EFortMovementStyle::Sprinting; // autosprint
-                }
-
                 if (Function->FunctionFlags & 0x00200000)
                 {
                     if (FunctionName.find("ServerUpdateCamera") == -1 && FunctionName.find("ServerMove") == -1)

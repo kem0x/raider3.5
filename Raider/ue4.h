@@ -358,24 +358,19 @@ static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnIn
     auto QuickBars = PlayerController->QuickBars;
     PlayerController->OnRep_QuickBar();
 
-	if (bSpawnInventory)
-    {
-        PlayerController->WorldInventory = SpawnActor<AFortInventory>({ -280, 400, 3000 }, PlayerController);
-        PlayerController->WorldInventory->InventoryType = EFortInventoryType::World;
-        PlayerController->WorldInventory->Inventory = FFortItemList();
-		
-        PlayerController->WorldInventory->bReplicates = true;
-		PlayerController->bHasInitializedWorldInventory = true;
-
-        auto OutpostInventory = SpawnActor<AFortInventory>({}, PlayerController);
-        OutpostInventory->bReplicates = true;
-        OutpostInventory->InventoryType = EFortInventoryType::Outpost;
-        PlayerController->OutpostInventory = OutpostInventory;
-        PlayerController->HandleOutpostInventoryLocalUpdate();
-    }
+    auto WorldInventory = SpawnActor<AFortInventory>({}, PlayerController);
+    WorldInventory->bReplicates = true;
+    WorldInventory->InventoryType = EFortInventoryType::World;
+    PlayerController->WorldInventory = WorldInventory;
+    PlayerController->HandleWorldInventoryLocalUpdate();
+    
+    auto OutpostInventory = SpawnActor<AFortInventory>({}, PlayerController);
+    OutpostInventory->bReplicates = true;
+    OutpostInventory->InventoryType = EFortInventoryType::Outpost;
+    PlayerController->OutpostInventory = OutpostInventory;
+    PlayerController->HandleOutpostInventoryLocalUpdate();
 
     // not sure if this enable stuff is acutally needed
-
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 0);
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 1);
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 2);
