@@ -352,23 +352,11 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
     }
 }
 
-static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnInventory = false)
+static void InitInventory(AFortPlayerController* PlayerController)
 {
     PlayerController->QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
     auto QuickBars = PlayerController->QuickBars;
     PlayerController->OnRep_QuickBar();
-
-    auto WorldInventory = SpawnActor<AFortInventory>({}, PlayerController);
-    WorldInventory->bReplicates = true;
-    WorldInventory->InventoryType = EFortInventoryType::World;
-    PlayerController->WorldInventory = WorldInventory;
-    PlayerController->HandleWorldInventoryLocalUpdate();
-    
-    auto OutpostInventory = SpawnActor<AFortInventory>({}, PlayerController);
-    OutpostInventory->bReplicates = true;
-    OutpostInventory->InventoryType = EFortInventoryType::Outpost;
-    PlayerController->OutpostInventory = OutpostInventory;
-    PlayerController->HandleOutpostInventoryLocalUpdate();
 
     // not sure if this enable stuff is acutally needed
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 0);
