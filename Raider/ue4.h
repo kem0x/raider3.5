@@ -308,7 +308,7 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
 
         for (int i = 0; i < QuickBarSlots.Num(); i++)
         {
-            if (QuickBarSlots[i].Items.Data == 0) // if u are getting error then just make vars public in tarray
+            if (QuickBarSlots[i].Items.Data)
             {
                 if (i >= 6)
                 {
@@ -338,8 +338,6 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
                     }
 
                     QuickBars->EmptySlot(EFortQuickBars::Primary, FocusedSlot);
-
-                    // return;
                 }
 
                 auto entry = AddItemWithUpdate((AFortPlayerController*)Pawn->Controller, WorldItemDefinition, i, EFortQuickBars::Primary, Params->Pickup->PrimaryPickupItemEntry.Count);
@@ -367,6 +365,7 @@ static void InitInventory(AFortPlayerController* PlayerController)
     QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 5);
     QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 1);
     QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 2);
+    QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 3);
 
     static auto Wall = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall");
     static auto Stair = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W");
@@ -401,7 +400,13 @@ static void InitInventory(AFortPlayerController* PlayerController)
 
 static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* GameplayAbilityClass)
 {
-    auto AbilitySystemComponent = TargetPawn->AbilitySystemComponent;
+    auto AbilitySystemComponent = TargetPawn->AbilitySystemComponent; // ((AFortPlayerStateAthena*)TargetPawn->PlayerState)->AbilitySystemComponent;
+
+    if (!AbilitySystemComponent)
+        return;
+
+    AbilitySystemComponent->OwnerActor = TargetPawn;
+
     static UGameplayEffect* DefaultGameplayEffect = UObject::FindObject<UGameplayEffect>("GE_Constructor_ContainmentUnit_Applied_C GE_Constructor_ContainmentUnit_Applied.Default__GE_Constructor_ContainmentUnit_Applied_C");
 
     if (!DefaultGameplayEffect)
@@ -409,6 +414,9 @@ static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
 
     TArray<FGameplayAbilitySpecDef> GrantedAbilities = DefaultGameplayEffect->GrantedAbilities;
 
+	if (GrantedAbilities.Num() == 0)
+        return;
+    
     // overwrite current gameplay ability with the one we want to activate
     GrantedAbilities[0].Ability = GameplayAbilityClass;
     GrantedAbilities[0].Level = 1.0f;
@@ -421,9 +429,33 @@ static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
     if (!GameplayEffectClass)
         return;
 
-    auto handle = FGameplayEffectContextHandle();
+	auto ActivatableAbilities = AbilitySystemComponent->ActivatableAbilities.Items;
 
-    // AbilitySystemComponent->BP_ApplyGameplayEffectToTarget(GameplayEffectClass, AbilitySystemComponent, 1.f, handle);
+    for (int i = 0; i < ActivatableAbilities.Num(); i++)
+    {
+        auto& Spec = ActivatableAbilities[i];
+        auto Ability = ActivatableAbilities[i].Ability;
+		
+        if (!Ability)
+			continue;
+
+        // AbilitySystemComponent->(AbilitySystemComponent, &Spec.Handle);
+    }
+
+    auto context = FGameplayEffectContextHandle(); // AbilitySystemComponent->MakeEffectContext();
+
+    // AbilitySystemComponent->BP_ApplyGameplayEffectToTarget(GameplayEffectClass, AbilitySystemComponent, GrantedAbilities[0].Level, context);
+    std::cout << "Applied!\n";
+
+    // auto spec = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClass, 1.0f /* GrantedAbilities[0].Level */, context);
+    // K2_ApplyGameplayEffectSpecToTarget
+    // ((UAbilitySystemBlueprintLibrary*)UAbilitySystemBlueprintLibrary::StaticClass())->STATIC_MakeSpecHandle(DefaultGameplayEffect, TargetPawn, nullptr, 1.0f);
+    // AbilitySystemComponent->BP_ApplyGameplayEffectSpecToTarget(AbilitySystemComponent, &spec);
+
+	// std::cout << "ActivatableAbilities[0] Name: " << AbilitySystemComponent->ActivatableAbilities.Items[0].Ability->GetFullName() << '\n';
+
+    AbilitySystemComponent->OnRep_ActivateAbilities();
+    AbilitySystemComponent->OnRep_OwningActor();
 }
 
 static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)

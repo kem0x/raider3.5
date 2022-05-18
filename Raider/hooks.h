@@ -223,6 +223,9 @@ namespace Hooks
             {
                 EXECUTE_ONE_TIME
                 {
+                    GetWorld()->AuthorityGameMode->PlayerControllerClass = AFortPlayerControllerAthena::StaticClass();
+				    GetWorld()->AuthorityGameMode->DefaultPawnClass = APlayerPawn_Athena_C::StaticClass();
+
                     Game::OnReadyToStartMatch();
                 }
             }
@@ -271,9 +274,9 @@ namespace Hooks
                     }
                 }
 
-                else if (FunctionName.find("ServerHandlePickup") != -1)
+                if (FunctionName.find("ServerHandlePickup") != -1)
                 {
-                    // HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
+                    HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
                 }
 
                 else if (FunctionName.find("ServerCreateBuilding") != -1)
