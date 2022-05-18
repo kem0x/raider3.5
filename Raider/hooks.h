@@ -47,8 +47,6 @@ namespace Hooks
         AFortPlayerStateAthena* PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
         PlayerState->SetOwner(PlayerController);
 
-		InitInventory(PlayerController, false);
-
         auto Pawn = SpawnActor<APlayerPawn_Athena_C>({ 1250, 1818, 3284 }, PlayerController);
 
         PlayerController->Pawn = Pawn;
@@ -89,7 +87,9 @@ namespace Hooks
 
         PlayerState->OnRep_CharacterParts();
 
-		static UFortWeaponItemDefinition* Def = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
+        InitInventory(PlayerController);
+
+        static UFortWeaponItemDefinition* Def = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
 
         FFortItemEntry ItemEntry;
 
@@ -131,7 +131,7 @@ namespace Hooks
     {
         printf("Recieved control message %i\n", MessageType);
 
-		switch (MessageType)
+        switch (MessageType)
         {
         case 4: // NMT_Netspeed
             Connection->CurrentNetSpeed = 30000;
@@ -267,7 +267,7 @@ namespace Hooks
                 {
                     if (FunctionName.find("ServerUpdateCamera") == -1 && FunctionName.find("ServerMove") == -1)
                     {
-                        std::cout << "RPC Called: " << FunctionName << '\n';						
+                        std::cout << "RPC Called: " << FunctionName << '\n';
                     }
                 }
 
@@ -283,16 +283,13 @@ namespace Hooks
                     auto Params = (AFortPlayerController_ServerCreateBuildingActor_Params*)Parameters;
                     auto CurrentBuildClass = PC->CurrentBuildableClass;
 
-                    if (CurrentBuildClass)
-                    {
-                        FTransform Transform;
-                        Transform.Rotation = RotToQuat(Params->BuildRot);
-                        Transform.Translation = Params->BuildLoc;
-                        Transform.Scale3D = { 1, 1, 1 };
+                    FTransform Transform;
+                    Transform.Rotation = RotToQuat(Params->BuildRot);
+                    Transform.Translation = Params->BuildLoc;
+                    Transform.Scale3D = { 1, 1, 1 };
 
-                        auto BuildingActor = SpawnActorTrans(CurrentBuildClass, Transform, PC); //, ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding);
-                        ((ABuildingActor*)BuildingActor)->InitializeKismetSpawnedBuildingActor((ABuildingActor*)BuildingActor, PC);
-                    }
+                    auto BuildingActor = SpawnActorTrans(CurrentBuildClass, Transform, PC); //, ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding);
+                    ((ABuildingActor*)BuildingActor)->InitializeKismetSpawnedBuildingActor((ABuildingActor*)BuildingActor, PC);
                 }
 
                 else if (FunctionName.find("ServerAttemptInventoryDrop") != -1)
@@ -340,7 +337,7 @@ namespace Hooks
                             CurrentPawn->PlayAnimMontage(Montage, 1, Montage->CompositeSections[0].SectionName);
                             CurrentPawn->OnRep_ReplicatedAnimMontage();
                         }
-						
+
                         else
                         {
                             std::cout << "Failed to find Montage!\n";
@@ -422,10 +419,10 @@ namespace Hooks
                     auto Pawn = (APlayerPawn_Athena_C*)Controller->Pawn;
 
                     if (Controller && Pawn && Params->BuildingActorToEdit)
-					{
+                    {
                         Params->BuildingActorToEdit->OnRep_EditingPlayer();
-						// OnRep_EditTool();
-					}
+                        // OnRep_EditTool();
+                    }
                 }
             }
         }

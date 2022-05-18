@@ -31,5 +31,6 @@ namespace Patterns {
     constexpr const char* GetNetMode = "48 89 5C 24 ? 57 48 83 EC 20 48 8B 01 48 8B D9 FF 90 ? ? ? ? 4C 8B 83 ? ? ? ? 48 8B F8 33 C0 48 C7 44 24";
     constexpr const char* AddNetworkActor = "48 85 D2 0F 84 ? ? ? ? 48 89 5C 24 ? 56 48 83 EC 20 48 63 42 0C 48 8B F2 3B 05 ? ? ? ?";
     constexpr const char* IsNetRelevantFor = "48 89 5C 24 ? 56 57 41 56 48 83 EC 70 48 8B FA 4D 8B F1 0F B6 91 ? ? ? ? 49 8B D8 48 8B F1 F6 C2";
-	//constexpr const char* SeamlessTravelHandlerForWorld = "48 83 EC 28 48 8B 81 ? ? ? ? 48 63 89 ? ? ? ? 48 8D 0C C8 48 3B C1 74 1A 0F 1F 44 00 ? 4C 8B 00 49 39 90 ? ? ? ? 74 17 48 83 C0 08 48 3B C1 75 EB E8 ? ? ? ?"; // broken
+    constexpr const char* GameplayAbilitySpecGHandle = "8B 05 ? ? ? ? 89 43 ? FF 05";
+	
 }

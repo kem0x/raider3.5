@@ -81,7 +81,7 @@ namespace Game
             }
         }
 
-        InitInventory(PlayerController);
+        InitInventory(PlayerController, false);
 
         auto pickName = "FortWeaponMeleeItemDefinition WID_Harvest_" + Pawn->CustomizationLoadout.Pickaxe->GetName() + "_Athena_C_T01.WID_Harvest_" + Pawn->CustomizationLoadout.Pickaxe->GetName() + "_Athena_C_T01";
 
