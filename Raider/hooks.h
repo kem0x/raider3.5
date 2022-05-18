@@ -47,7 +47,7 @@ namespace Hooks
         AFortPlayerStateAthena* PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
         PlayerState->SetOwner(PlayerController);
 
-		InitInventory(PlayerController);
+		InitInventory(PlayerController, false);
 
         auto Pawn = SpawnActor<APlayerPawn_Athena_C>({ 1250, 1818, 3284 }, PlayerController);
 
@@ -223,9 +223,6 @@ namespace Hooks
             {
                 EXECUTE_ONE_TIME
                 {
-                    GetWorld()->AuthorityGameMode->PlayerControllerClass = AFortPlayerControllerAthena::StaticClass();
-				    GetWorld()->AuthorityGameMode->DefaultPawnClass = APlayerPawn_Athena_C::StaticClass();
-
                     Game::OnReadyToStartMatch();
                 }
             }
@@ -274,9 +271,9 @@ namespace Hooks
                     }
                 }
 
-                else if (FunctionName.find("ServerHandlePickup") != -1)
+                if (FunctionName.find("ServerHandlePickup") != -1)
                 {
-                    HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
+                    // HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
                 }
 
                 else if (FunctionName.find("ServerCreateBuilding") != -1)
@@ -286,13 +283,16 @@ namespace Hooks
                     auto Params = (AFortPlayerController_ServerCreateBuildingActor_Params*)Parameters;
                     auto CurrentBuildClass = PC->CurrentBuildableClass;
 
-                    FTransform Transform;
-                    Transform.Rotation = RotToQuat(Params->BuildRot);
-                    Transform.Translation = Params->BuildLoc;
-                    Transform.Scale3D = { 1, 1, 1 };
+                    if (CurrentBuildClass)
+                    {
+                        FTransform Transform;
+                        Transform.Rotation = RotToQuat(Params->BuildRot);
+                        Transform.Translation = Params->BuildLoc;
+                        Transform.Scale3D = { 1, 1, 1 };
 
-                    auto BuildingActor = SpawnActorTrans(CurrentBuildClass, Transform, PC); //, ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding);
-                    ((ABuildingActor*)BuildingActor)->InitializeKismetSpawnedBuildingActor((ABuildingActor*)BuildingActor, PC);
+                        auto BuildingActor = SpawnActorTrans(CurrentBuildClass, Transform, PC); //, ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding);
+                        ((ABuildingActor*)BuildingActor)->InitializeKismetSpawnedBuildingActor((ABuildingActor*)BuildingActor, PC);
+                    }
                 }
 
                 else if (FunctionName.find("ServerAttemptInventoryDrop") != -1)
