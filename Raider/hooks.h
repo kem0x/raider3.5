@@ -207,8 +207,8 @@ namespace Hooks
 
     void ProcessEvent(UObject* Object, UFunction* Function, void* Parameters)
     {
-        auto ObjectName = Object->GetFullName();
-        auto FunctionName = Function->GetFullName();
+        auto ObjectName = Object->GetName();
+        auto FunctionName = Function->GetName();
 
         if (!bPlayButton && FunctionName.find("BP_PlayButton") != -1)
         {
@@ -242,17 +242,15 @@ namespace Hooks
 
                 if (Pawn && Pawn->AbilitySystemComponent)
                 {
-                    static auto AbilitySet = UObject::FindObject<UFortAbilitySet>("FortAbilitySet GAS_DefaultPlayer.GAS_DefaultPlayer");
+                    static auto SprintAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint");
+                    static auto ReloadAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Reload");
+                    static auto RangedWeaponAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_RangedWeapon");
+                    static auto JumpAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Jump");
 
-                    for (int i = 0; i < AbilitySet->GameplayAbilities.Num(); i++)
-                    {
-                        auto Ability = AbilitySet->GameplayAbilities[i];
-
-                        if (!Ability)
-                            continue;
-
-                        GrantGameplayAbility(Pawn, Ability);
-                    }
+                    GrantGameplayAbility(Pawn, SprintAbility);
+                    GrantGameplayAbility(Pawn, ReloadAbility);
+                    GrantGameplayAbility(Pawn, RangedWeaponAbility);
+                    GrantGameplayAbility(Pawn, JumpAbility);
                 }
             }
 
@@ -295,6 +293,30 @@ namespace Hooks
                     auto PC = (AFortPlayerController*)Object;
                     auto Pawn = (APlayerPawn_Athena_C*)PC->Pawn;
                     HandleInventoryDrop(Pawn, Parameters);
+                }
+
+                else if (FunctionName == "ServerTryActivateAbility")
+                {
+                    auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
+                    auto Params = (UAbilitySystemComponent_ServerTryActivateAbility_Params*)Parameters;
+
+                    TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, nullptr);
+                }
+
+                else if (FunctionName == "ServerTryActivateAbilityWithEventData")
+                {
+                    auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
+                    auto Params = (UAbilitySystemComponent_ServerTryActivateAbilityWithEventData_Params*)Parameters;
+
+                    TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, &Params->TriggerEventData);
+                }
+
+                else if (FunctionName == "ServerAbilityRPCBatch")
+                {
+                    auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
+                    auto Params = (UAbilitySystemComponent_ServerAbilityRPCBatch_Params*)Parameters;
+
+                    TryActivateAbility(AbilitySystemComponent, Params->BatchInfo.AbilitySpecHandle, Params->BatchInfo.InputPressed, &(Params->BatchInfo.PredictionKey), nullptr);
                 }
 
                 else if (FunctionName.find("ServerExecuteInventoryItem") != -1)

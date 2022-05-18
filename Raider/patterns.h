@@ -31,6 +31,8 @@ namespace Patterns {
     constexpr const char* GetNetMode = "48 89 5C 24 ? 57 48 83 EC 20 48 8B 01 48 8B D9 FF 90 ? ? ? ? 4C 8B 83 ? ? ? ? 48 8B F8 33 C0 48 C7 44 24";
     constexpr const char* AddNetworkActor = "48 85 D2 0F 84 ? ? ? ? 48 89 5C 24 ? 56 48 83 EC 20 48 63 42 0C 48 8B F2 3B 05 ? ? ? ?";
     constexpr const char* IsNetRelevantFor = "48 89 5C 24 ? 56 57 41 56 48 83 EC 70 48 8B FA 4D 8B F1 0F B6 91 ? ? ? ? 49 8B D8 48 8B F1 F6 C2";
-    constexpr const char* GameplayAbilitySpecGHandle = "8B 05 ? ? ? ? 89 43 ? FF 05";
-	
+	constexpr const char* GiveAbility = "48 89 5C 24 ? 56 57 41 56 48 83 EC 20 83 B9 ? ? ? ? ? 49 8B F0 4C 8B F2 48 8B D9 7E 61";
+	constexpr const char* InternalTryActivateAbility = "4C 89 4C 24 ? 4C 89 44 24 ? 89 54 24 10 55 53 56 57 41 54 41 57 48 8D AC 24";
+	constexpr const char* MarkAbilitySpecDirty = "48 89 5C 24 ? 57 48 83 EC 20 80 B9 ? ? ? ? ? 48 8B FA 48 8B D9 75 4A C6 81";
+
 }
