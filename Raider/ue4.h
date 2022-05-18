@@ -361,7 +361,7 @@ static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnIn
     auto QuickBars = PlayerController->QuickBars;
     PlayerController->OnRep_QuickBar();
 
-	if (bSpawnInventory)
+    if (bSpawnInventory)
     {
         PlayerController->WorldInventory = SpawnActor<AFortInventory>({ -280, 400, 3000 }, PlayerController);
         PlayerController->WorldInventory->InventoryType = EFortInventoryType::World;
@@ -440,7 +440,7 @@ static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
     {
         FGameplayAbilitySpecHandle Handle(GHandle++);
 
-        //FGameplayAbilitySpec Spec(-1, -1, -1, Handle, (UGameplayAbility*)GameplayAbilityClass->CreateDefaultObject(), 1, -1, nullptr);
+        // FGameplayAbilitySpec Spec(-1, -1, -1, Handle, (UGameplayAbility*)GameplayAbilityClass->CreateDefaultObject(), 1, -1, nullptr, 0, false, false, false);
     };
 }
 

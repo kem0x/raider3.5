@@ -276,7 +276,7 @@ namespace Hooks
                     auto PC = (AFortPlayerControllerAthena*)Object;
 
                     auto Params = (AFortPlayerController_ServerCreateBuildingActor_Params*)Parameters;
-                    auto CurrentBuildClass = PC->CurrentBuildableClass;
+                    auto CurrentBuildClass = Params->BuildingClassData.BuildingClass;
 
                     if (CurrentBuildClass)
                     {

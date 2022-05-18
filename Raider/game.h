@@ -23,6 +23,7 @@ namespace Game
         for (int i = 0; i < HeroParts.Num(); i++)
         {
             auto Part = HeroParts[i];
+            
 
             if (!Part)
                 continue;
@@ -94,7 +95,7 @@ namespace Game
 
         if (Def)
             ItemEntry = AddItemWithUpdate(PlayerController, Def, 0);
-        
+
         Def = UObject::FindObject<UFortWeaponItemDefinition>("WID_Assault_AutoHigh_Athena_SR_Ore_T03.WID_Assault_AutoHigh_Athena_SR_Ore_T03");
 
         if (Def)
