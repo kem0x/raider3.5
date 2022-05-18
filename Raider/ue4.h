@@ -419,6 +419,11 @@ static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnIn
     QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
 }
 
+static void GetEditTool()
+{
+    // todo: loop through the players item instances and return the edit tool
+}
+
 static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* GameplayAbilityClass)
 {
     auto AbilitySystemComponent = TargetPawn->AbilitySystemComponent; // ((AFortPlayerStateAthena*)TargetPawn->PlayerState)->AbilitySystemComponent;
