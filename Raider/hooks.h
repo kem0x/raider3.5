@@ -89,7 +89,14 @@ namespace Hooks
 
 		InitInventory(PlayerController);
 
-        static auto Def = UObject::FindObject<UFortWeaponItemDefinition>("WID_Assault_AutoHigh_Athena_SR_Ore_T03.WID_Assault_AutoHigh_Athena_SR_Ore_T03");
+		static UFortWeaponItemDefinition* Def = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_Athena_C_T01.WID_Harvest_Pickaxe_Athena_C_T01");
+
+        FFortItemEntry ItemEntry;
+
+        if (Def)
+            ItemEntry = AddItemWithUpdate(PlayerController, Def, 0);
+
+        Def = UObject::FindObject<UFortWeaponItemDefinition>("WID_Assault_AutoHigh_Athena_SR_Ore_T03.WID_Assault_AutoHigh_Athena_SR_Ore_T03");
 
         if (Def)
         {
@@ -101,15 +108,13 @@ namespace Hooks
         CheatManager->ToggleInfiniteAmmo();
         CheatManager->ToggleInfiniteDurability();
 
-        Pawn->OnRep_CurrentWeapon();
-
         if (PlayerController->Pawn)
         {
             if (PlayerController->Pawn->PlayerState)
             {
                 PlayerState->TeamIndex = EFortTeam::HumanPvP_Team2;
                 PlayerState->OnRep_PlayerTeam();
-                PlayerState->SquadId = 1;
+                PlayerState->SquadId = PlayerState->PlayerTeam->TeamMembers.Num() + 1;
                 PlayerState->OnRep_SquadId();
             }
         }
@@ -266,7 +271,7 @@ namespace Hooks
                     }
                 }
 
-                if (FunctionName.find("ServerHandlePickup") != -1)
+                else if (FunctionName.find("ServerHandlePickup") != -1)
                 {
                     // HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
                 }
@@ -328,6 +333,7 @@ namespace Hooks
                         if (Montage)
                         {
                             auto AnimInstance = CurrentPawn->Mesh->GetAnimInstance();
+                            CurrentPawn->PlayLocalAnimMontage(Montage, 1, Montage->CompositeSections[0].SectionName);
                             CurrentPawn->PlayAnimMontage(Montage, 1, Montage->CompositeSections[0].SectionName);
                             CurrentPawn->OnRep_ReplicatedAnimMontage();
                         }
@@ -403,6 +409,19 @@ namespace Hooks
                         PC->Pawn->Role = ENetRole::ROLE_Authority;
                         Vehicle->Role = ENetRole::ROLE_Authority;
                     }
+                }
+
+                else if (FunctionName.find("ServerBeginEditingBuildingActor") != -1)
+                {
+                    std::cout << "Attempting to edit a building!\n";
+                    auto Params = (AFortPlayerController_ServerBeginEditingBuildingActor_Params*)Parameters;
+                    auto Controller = (AFortPlayerControllerAthena*)Object;
+                    auto Pawn = (APlayerPawn_Athena_C*)Controller->Pawn;
+
+                    if (Controller && Pawn && Params->BuildingActorToEdit)
+					{
+                        Params->BuildingActorToEdit->OnRep_EditingPlayer();
+					}
                 }
             }
         }

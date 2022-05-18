@@ -76,14 +76,14 @@ namespace Game
             {
                 PlayerState->TeamIndex = EFortTeam::HumanPvP_Team2;
                 PlayerState->OnRep_PlayerTeam();
-                PlayerState->SquadId = 1;
+                PlayerState->SquadId = PlayerState->PlayerTeam->TeamMembers.Num() + 1;
                 PlayerState->OnRep_SquadId();
             }
         }
 
         InitInventory(PlayerController);
 
-        auto pickName = "WID_Harvest_" + Pawn->CustomizationLoadout.Pickaxe->GetName() + "_Athena_C_T01.WID_Harvest_" + Pawn->CustomizationLoadout.Pickaxe->GetName() + "_Athena_C_T01";
+        auto pickName = "FortWeaponMeleeItemDefinition WID_Harvest_" + Pawn->CustomizationLoadout.Pickaxe->GetName() + "_Athena_C_T01.WID_Harvest_" + Pawn->CustomizationLoadout.Pickaxe->GetName() + "_Athena_C_T01";
 
         auto Def = UObject::FindObject<UFortWeaponItemDefinition>(pickName);
 
@@ -100,7 +100,7 @@ namespace Game
         if (Def)
         {
             ItemEntry = AddItemWithUpdate(PlayerController, Def, 1);
-            EquipWeaponDefinition(Pawn, Def, ItemEntry.ItemGuid, 30);
+            EquipWeaponDefinition(Pawn, Def, ItemEntry.ItemGuid);
         }
 
         auto CheatManager = (UFortCheatManager*)CreateCheatManager(PlayerController, true);

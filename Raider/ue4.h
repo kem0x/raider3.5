@@ -186,8 +186,11 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
     ItemEntry.bIsDirty = true;
 
     PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
-    PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
+    auto Idx = PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
     PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
+
+    PC->WorldInventory->bRequiresLocalUpdate = true;
+    PC->WorldInventory->Inventory.MarkItemDirty(PC->WorldInventory->Inventory.ReplicatedEntries[Idx]);
 
     UpdateInventory(PC);
 
@@ -197,16 +200,17 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
 inline AFortWeapon* EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeaponItemDefinition* Definition, FGuid& Guid, int Ammo = 0)
 {
     // auto weaponClass = Definition->GetWeaponActorClass();
-
     // if (weaponClass)
     {
         // auto Weapon = (AFortWeapon*)SpawnActorTrans(weaponClass, {}, Pawn);
         auto Weapon = Pawn->EquipWeaponDefinition(Definition, Guid);
-
         if (Weapon)
         {
             /* Weapon->ItemEntryGuid = Guid;
             Weapon->WeaponData = Definition; */
+            if (Ammo == 0)
+                Ammo = Weapon->GetMagazineAmmoCount();
+			
             Weapon->AmmoCount = Ammo;
             Weapon->OnRep_ReplicatedWeaponData();
             Weapon->ClientGivenTo(Pawn);
@@ -227,6 +231,9 @@ inline void EquipInventoryItem(AFortPlayerController* PC, FGuid& Guid)
     for (int i = 0; i < ItemInstances.Num(); i++)
     {
         auto CurrentItemInstance = ItemInstances[i];
+
+        if (!CurrentItemInstance)
+            continue;
 
         if (IsMatchingGuid(CurrentItemInstance->GetItemGuid(), Guid))
         {
@@ -321,7 +328,7 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
                         auto ItemInstance = ItemInstances[j];
 
                         if (!ItemInstance)
-                            return;
+                            continue;
 
                         auto Def = ItemInstance->ItemEntry.ItemDefinition;
                         auto Guid = ItemInstance->ItemEntry.ItemGuid;
@@ -345,11 +352,27 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
     }
 }
 
-static void InitInventory(AFortPlayerController* PlayerController)
+static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnInventory = false)
 {
-    auto QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
-    PlayerController->QuickBars = QuickBars;
+    PlayerController->QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
+    auto QuickBars = PlayerController->QuickBars;
     PlayerController->OnRep_QuickBar();
+
+	if (bSpawnInventory)
+    {
+        PlayerController->WorldInventory = SpawnActor<AFortInventory>({ -280, 400, 3000 }, PlayerController);
+        PlayerController->WorldInventory->InventoryType = EFortInventoryType::World;
+        PlayerController->WorldInventory->Inventory = FFortItemList();
+		
+        PlayerController->WorldInventory->bReplicates = true;
+		PlayerController->bHasInitializedWorldInventory = true;
+
+        auto OutpostInventory = SpawnActor<AFortInventory>({}, PlayerController);
+        OutpostInventory->bReplicates = true;
+        OutpostInventory->InventoryType = EFortInventoryType::Outpost;
+        PlayerController->OutpostInventory = OutpostInventory;
+        PlayerController->HandleOutpostInventoryLocalUpdate();
+    }
 
     // not sure if this enable stuff is acutally needed
 
@@ -362,14 +385,6 @@ static void InitInventory(AFortPlayerController* PlayerController)
     QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 1);
     QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 2);
 
-    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
-    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 1, 0, true);
-    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 2, 0, true);
-
-    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Secondary, 0, 0, true);
-    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Secondary, 1, 0, true);
-    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Secondary, 2, 0, true);
-
     static auto Wall = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall");
     static auto Stair = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W");
     static auto Cone = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_RoofS.BuildingItemData_RoofS");
@@ -380,6 +395,9 @@ static void InitInventory(AFortPlayerController* PlayerController)
     static auto Medium = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsMedium.AthenaAmmoDataBulletsMedium");
     static auto Light = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsLight.AthenaAmmoDataBulletsLight");
     static auto Heavy = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsHeavy.AthenaAmmoDataBulletsHeavy");
+    static auto EditTool = UObject::FindObject<UFortEditToolItemDefinition>("FortEditToolItemDefinition EditTool.EditTool");
+
+	// we should probably only update once
 
     AddItemWithUpdate(PlayerController, Wall, 0, EFortQuickBars::Secondary, 1);
     AddItemWithUpdate(PlayerController, Floor, 1, EFortQuickBars::Secondary, 1);
@@ -392,6 +410,10 @@ static void InitInventory(AFortPlayerController* PlayerController)
     AddItemWithUpdate(PlayerController, Medium, 0, EFortQuickBars::Secondary, 999);
     AddItemWithUpdate(PlayerController, Light, 0, EFortQuickBars::Secondary, 999);
     AddItemWithUpdate(PlayerController, Heavy, 0, EFortQuickBars::Secondary, 999);
+
+    AddItemWithUpdate(PlayerController, EditTool, 0, EFortQuickBars::Primary, 1);
+
+    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
 }
 
 static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* GameplayAbilityClass)
@@ -470,11 +492,6 @@ namespace Functions
     namespace PlayerController
     {
         inline bool (*SendClientAdjustment)(APlayerController* Controller);
-    }
-
-    namespace PlayerState
-    {
-        inline void (*OnRep_CharacterParts)(AFortPlayerState* State);
     }
 
     namespace NetDriver
