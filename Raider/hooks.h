@@ -112,7 +112,8 @@ namespace Hooks
         {
             if (PlayerController->Pawn->PlayerState)
             {
-                PlayerState->TeamIndex = EFortTeam::HumanPvP_Team2;
+                static int Idx = 2;
+                PlayerState->TeamIndex = EFortTeam(Idx++);
                 PlayerState->OnRep_PlayerTeam();
                 PlayerState->SquadId = PlayerState->PlayerTeam->TeamMembers.Num() + 1;
                 PlayerState->OnRep_SquadId();
