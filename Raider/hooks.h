@@ -424,6 +424,7 @@ namespace Hooks
                     if (Controller && Pawn && Params->BuildingActorToEdit)
 					{
                         Params->BuildingActorToEdit->OnRep_EditingPlayer();
+						// OnRep_EditTool();
 					}
                 }
             }
