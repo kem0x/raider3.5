@@ -27,6 +27,11 @@ namespace Functions
         inline __int64 (*GetNetMode)(__int64* a1);
     }
 
+    namespace LocalPlayer
+    {
+        bool (*SpawnPlayActor)(ULocalPlayer* Player, const FString& URL, FString& OutError, UWorld* World);
+    }
+
     namespace PlayerController
     {
         inline bool (*SendClientAdjustment)(APlayerController* Controller);
@@ -64,7 +69,7 @@ namespace Functions
 
     namespace OnlineSession
     {
-        inline char (*KickPlayer)(__int64 a1, __int64 a2, __int64 a3);
+        inline char (*KickPlayer)(AGameSession* a1, APlayerController*, FText a3);
     }
 
     namespace OnlineBeacon
@@ -202,6 +207,10 @@ namespace Functions
         Address = Utils::FindPattern(Patterns::MarkAbilitySpecDirty);
         CheckNullFatal(Address, "Failed to find MarkAbilitySpecDirty");
         AddressToFunction(Address, AbilitySystemComponent::MarkAbilitySpecDirty);
+
+        Address = Utils::FindPattern(Patterns::LocalPlayerSpawnPlayActor);
+        CheckNullFatal(Address, "Failed to find LocalPlayerSpawnPlayActor");
+        AddressToFunction(Address, LocalPlayer::SpawnPlayActor);
 
         PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
 
@@ -432,9 +441,11 @@ inline AFortWeapon* EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeapo
 {
     // auto weaponClass = Definition->GetWeaponActorClass();
     // if (weaponClass)
+    if (Pawn && Definition)
     {
         // auto Weapon = (AFortWeapon*)SpawnActorTrans(weaponClass, {}, Pawn);
         auto Weapon = Pawn->EquipWeaponDefinition(Definition, Guid);
+		
         if (Weapon)
         {
             /* Weapon->ItemEntryGuid = Guid;
@@ -466,9 +477,11 @@ inline void EquipInventoryItem(AFortPlayerController* PC, FGuid& Guid)
         if (!CurrentItemInstance)
             continue;
 
-        if (IsMatchingGuid(CurrentItemInstance->GetItemGuid(), Guid))
+        auto Def = (UFortWeaponItemDefinition*)CurrentItemInstance->GetItemDefinitionBP();
+
+        if (IsMatchingGuid(CurrentItemInstance->GetItemGuid(), Guid) && Def)
         {
-            EquipWeaponDefinition((APlayerPawn_Athena_C*)PC->Pawn, (UFortWeaponItemDefinition*)CurrentItemInstance->GetItemDefinitionBP(), Guid);
+            EquipWeaponDefinition((APlayerPawn_Athena_C*)PC->Pawn, Def, Guid);
         }
     }
 }
@@ -645,9 +658,27 @@ static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnIn
     QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
 }
 
-static void GetEditTool()
+template <typename Class>
+static Class* FindItemInInventory(AFortPlayerControllerAthena* PC)
 {
-    // todo: loop through the players item instances and return the edit tool
+    auto ItemInstances = PC->WorldInventory->Inventory.ItemInstances;
+
+    for (int i = 0; i < ItemInstances.Num(); i++)
+    {
+        auto ItemInstance = ItemInstances[i];
+
+        if (!ItemInstance)
+            continue;
+
+        auto Def = ItemInstance->ItemEntry.ItemDefinition;
+
+        if (Def->IsA(Class::StaticClass()))
+        {
+            return (Class*)ItemInstance;
+        }
+    }
+
+    return nullptr;
 }
 
 FGameplayAbilitySpec* UAbilitySystemComponent_FindAbilitySpecFromHandle(UAbilitySystemComponent* AbilitySystemComponent, FGameplayAbilitySpecHandle Handle)
@@ -778,7 +809,6 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
 
 static bool KickPlayer(AFortPlayerControllerAthena* PC, FString Message)
 {
-    // FText text = GetKismetString()->Conv
-    // return Functions::OnlineSession::KickPlayer(GetWorld()->AuthorityGameMode->GameSession, PC, text);
-    return false;
+    FText text = reinterpret_cast<UKismetTextLibrary*>(UKismetTextLibrary::StaticClass())->STATIC_Conv_StringToText(Message);
+    return Functions::OnlineSession::KickPlayer(GetWorld()->AuthorityGameMode->GameSession, PC, text);
 }

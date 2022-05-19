@@ -1,12 +1,20 @@
 #pragma once
+
 #include "game.h"
 #include "replication.h"
 #include "ue4.h"
 
-
-
 namespace Hooks
 {
+    bool LocalPlayerSpawnPlayActor(ULocalPlayer* Player, const FString& URL, FString& OutError, UWorld* World) // prevent server's pc from spawning
+    {
+        if (bTraveled)
+            return true;
+
+        else
+            return Functions::LocalPlayer::SpawnPlayActor(Player, URL, OutError, World);
+    }
+	
     uint64 GetNetMode(UWorld* World) // PlayerController::SendClientAdjustment checks if the netmode is not client
     {
         return 2; // ENetMode::NM_ListenServer;
@@ -60,7 +68,7 @@ namespace Hooks
         PlayerController->OnRep_Pawn();
         PlayerController->Possess(Pawn);
 
-        Pawn->SetMaxHealth(100);
+        Pawn->SetMaxHealth(200);
         Pawn->SetMaxShield(100);
 
         PlayerController->bHasClientFinishedLoading = true;
@@ -75,7 +83,7 @@ namespace Hooks
         Pawn->bReplicateMovement = true;
         Pawn->OnRep_ReplicateMovement();
 
-        auto Hero = GetPlayerController()->StrongMyHero; // set the Hero to the servers Hero, temporary work around.
+        /* auto Hero = GetPlayerController()->StrongMyHero; // set the Hero to the servers Hero, temporary work around.
 
         PlayerController->StrongMyHero = Hero;
 
@@ -92,8 +100,7 @@ namespace Hooks
             PlayerState->CharacterParts[i] = Part;
         }
 
-        PlayerState->OnRep_CharacterParts();
-
+        PlayerState->OnRep_CharacterParts(); */
 
         static auto pickaxe = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_HalloweenScythe_Athena_C_T01.WID_Harvest_HalloweenScythe_Athena_C_T01");
         static auto primary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
@@ -228,6 +235,14 @@ namespace Hooks
 
         if (bTraveled)
         {
+            if (FunctionName.find("Tick") != -1)
+            {
+                if (GetAsyncKeyState(VK_F1) & 1) // TEMPORARY
+                {
+                    Listen();
+                }
+            }
+
             if (FunctionName.find("ReadyToStartMatch") != -1)
             {
                 EXECUTE_ONE_TIME
@@ -236,18 +251,11 @@ namespace Hooks
                 }
             }
 
-            else if (FunctionName.find("ServerLoadingScreenDropped") != -1)
+            else if (FunctionName == "ServerLoadingScreenDropped")
             {
+                bDroppedLS = true;
+
                 auto Pawn = (APlayerPawn_Athena_C*)((AFortPlayerController*)Object)->Pawn;
-
-                if (!bDroppedLS)
-                {
-                    GetPlayerController()->CheatManager->DestroyAll(AFortHLODSMActor::StaticClass());
-                    SummonPickup(Pawn, UObject::FindObject<UFortWeaponRangedItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_HalloweenScythe_Athena_C_T01.WID_Harvest_HalloweenScythe_Athena_C_T01"), 1, ((APlayerPawn_Athena_C*)GetPlayerController()->Pawn)->K2_GetActorLocation());
-                    Listen();
-
-                    bDroppedLS = true;
-                }
 
                 if (Pawn && Pawn->AbilitySystemComponent)
                 {
@@ -336,18 +344,7 @@ namespace Hooks
 
                 else if (FunctionName.find("ServerReturnToMainMenu") != -1)
                 {
-                    if (Object != GetPlayerController())
-                    {
-                        ((AFortPlayerController*)Object)->ClientTravel(L"Frontend", ETravelType::TRAVEL_Absolute, false, FGuid());
-                    }
-
-                    else
-                    {
-                        GetPlayerController()->SwitchLevel(L"Frontend");
-                        bPlayButton = false;
-                        bTraveled = false;
-                        bDroppedLS = false;
-                    }
+                    ((AFortPlayerController*)Object)->ClientTravel(L"Frontend", ETravelType::TRAVEL_Absolute, false, FGuid());
                 }
 
                 else if (FunctionName.find("ServerPlayEmoteItem") != -1)
@@ -440,18 +437,27 @@ namespace Hooks
                     }
                 }
 
-                else if (FunctionName.find("ServerBeginEditingBuildingActor") != -1)
+                else if (FunctionName == "ServerBeginEditingBuildingActor")
                 {
                     std::cout << "Attempting to edit a building!\n";
                     auto Params = (AFortPlayerController_ServerBeginEditingBuildingActor_Params*)Parameters;
                     auto Controller = (AFortPlayerControllerAthena*)Object;
                     auto Pawn = (APlayerPawn_Athena_C*)Controller->Pawn;
+                    auto EditTool = FindItemInInventory<UFortEditToolItemDefinition>(Controller);
 
-                    if (Controller && Pawn && Params->BuildingActorToEdit)
+                    if (Controller && Pawn && Params->BuildingActorToEdit && EditTool)
                     {
+                        // EditTool->EditActor = Params->BuildingActorToEdit;
+
+                        Params->BuildingActorToEdit->EditingPlayer = (AFortPlayerStateZone*)Controller->PlayerState;
                         Params->BuildingActorToEdit->OnRep_EditingPlayer();
-                        // OnRep_EditTool();
+                        // EditTool->OnRep_EditActor();
+                        //  (AFortWeap_EditingTool*)
                     }
+                }
+
+                else if (FunctionName == "ServerRepairBuildingActor")
+                {
                 }
             }
         }

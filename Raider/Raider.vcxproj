@@ -115,7 +115,6 @@
     <ClCompile Include="SDK\FN_UMG_functions.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="containers.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="hooks.h" />
     <ClInclude Include="patterns.h" />

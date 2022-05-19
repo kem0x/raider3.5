@@ -59,9 +59,6 @@
     <ClInclude Include="replication.h">
       <Filter>UE4</Filter>
     </ClInclude>
-    <ClInclude Include="containers.h">
-      <Filter>UE4</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
