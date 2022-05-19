@@ -27,12 +27,18 @@ namespace Game
         auto stateF = reinterpret_cast<UKismetStringLibrary*>(UKismetStringLibrary::StaticClass())->STATIC_Conv_StringToName(L"InProgress");
         authGameMode->MatchState = stateF;
         authGameMode->K2_OnSetMatchState(stateF);
-        gameState->CurrentPlaylistData = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");
+
+        auto playlist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");
+
+        playlist->bNoDBNO = false;
+        gameState->CurrentPlaylistData = playlist;
         gameState->OnRep_CurrentPlaylistData();
+
 
         authGameMode->StartPlay();
         gameState->bReplicatedHasBegunPlay = true;
         gameState->OnRep_ReplicatedHasBegunPlay();
         authGameMode->StartMatch();
+        authGameMode->bAlwaysDBNO = true;
     }
 }
