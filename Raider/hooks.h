@@ -14,7 +14,7 @@ namespace Hooks
         else
             return Functions::LocalPlayer::SpawnPlayActor(Player, URL, OutError, World);
     }
-	
+
     uint64 GetNetMode(UWorld* World) // PlayerController::SendClientAdjustment checks if the netmode is not client
     {
         return 2; // ENetMode::NM_ListenServer;
@@ -102,11 +102,11 @@ namespace Hooks
             PlayerState->CharacterParts[i] = Part;
         }
 
-        PlayerState->OnRep_CharacterParts(); 
+        PlayerState->OnRep_CharacterParts();
 
         static auto pickaxe = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_HalloweenScythe_Athena_C_T01.WID_Harvest_HalloweenScythe_Athena_C_T01");
         static auto primary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
-        //static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Pistol_Scavenger_Athena_R_Ore_T03.WID_Pistol_Scavenger_Athena_R_Ore_T03");
+        // static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Pistol_Scavenger_Athena_R_Ore_T03.WID_Pistol_Scavenger_Athena_R_Ore_T03");
         static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
         static auto forth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Assault_Auto_Athena_R_Ore_T03.WID_Assault_Auto_Athena_R_Ore_T03");
         static auto fifth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition Athena_Bandage.Athena_Bandage");
@@ -118,7 +118,7 @@ namespace Hooks
         auto forthEntry = AddItemWithUpdate(PlayerController, forth, 3);
         auto fifthEntry = AddItemWithUpdate(PlayerController, fifth, 4);
         auto sixthEntry = AddItemWithUpdate(PlayerController, sixth, 5);
-        
+
         EquipWeaponDefinition(Pawn, pickaxe, pickaxeEntry.ItemGuid);
 
         auto CheatManager = (UFortCheatManager*)CreateCheatManager(PlayerController, true);
@@ -130,7 +130,7 @@ namespace Hooks
             if (PlayerController->Pawn->PlayerState)
             {
                 static int Idx = 2;
-                PlayerState->TeamIndex = EFortTeam(Idx++);
+                PlayerState->TeamIndex = EFortTeam(Idx);
                 PlayerState->OnRep_PlayerTeam();
                 PlayerState->SquadId = PlayerState->PlayerTeam->TeamMembers.Num() + 1;
                 PlayerState->OnRep_SquadId();
@@ -294,6 +294,17 @@ namespace Hooks
                     // HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
                 }
 
+                else if (FunctionName == "ServerDBNOReviveInterrupted")
+                {
+                    auto Params = (AFortPlayerControllerAthena_ServerDBNOReviveInterrupted_Params*)Parameters;
+                    Params->DBNOPawn->bIsDBNO = false;
+                    Params->DBNOPawn->OnRep_IsDBNO();
+
+                    Params->DBNOPawn->SetHealth(100);
+
+                    printf("[ServerDBNOReviveInterrupted] %i\n", Params->DBNOPawn->DBNOStartTime);
+                }
+
                 else if (FunctionName.find("ServerCreateBuilding") != -1)
                 {
                     auto PC = (AFortPlayerControllerAthena*)Object;
@@ -325,7 +336,10 @@ namespace Hooks
                     auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
                     auto Params = (UAbilitySystemComponent_ServerTryActivateAbility_Params*)Parameters;
 
-                    TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, nullptr);
+                    if (!reinterpret_cast<AFortPlayerPawnAthena*>(AbilitySystemComponent->OwnerActor)->bIsDBNO)
+                    {
+                        TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, nullptr);
+                    }
                 }
 
                 else if (FunctionName == "ServerTryActivateAbilityWithEventData")
@@ -333,7 +347,10 @@ namespace Hooks
                     auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
                     auto Params = (UAbilitySystemComponent_ServerTryActivateAbilityWithEventData_Params*)Parameters;
 
-                    TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, &Params->TriggerEventData);
+                    if (!reinterpret_cast<AFortPlayerPawnAthena*>(AbilitySystemComponent->OwnerActor)->bIsDBNO)
+                    {
+                        TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, &Params->TriggerEventData);
+                    }
                 }
 
                 else if (FunctionName == "ServerAbilityRPCBatch")
@@ -341,7 +358,10 @@ namespace Hooks
                     auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
                     auto Params = (UAbilitySystemComponent_ServerAbilityRPCBatch_Params*)Parameters;
 
-                    TryActivateAbility(AbilitySystemComponent, Params->BatchInfo.AbilitySpecHandle, Params->BatchInfo.InputPressed, &(Params->BatchInfo.PredictionKey), nullptr);
+                    if (!reinterpret_cast<AFortPlayerPawnAthena*>(AbilitySystemComponent->OwnerActor)->bIsDBNO)
+                    {
+                        TryActivateAbility(AbilitySystemComponent, Params->BatchInfo.AbilitySpecHandle, Params->BatchInfo.InputPressed, &(Params->BatchInfo.PredictionKey), nullptr);
+                    }
                 }
 
                 else if (FunctionName == "ServerExecuteInventoryItem")
@@ -460,7 +480,6 @@ namespace Hooks
 
                     if (Controller && Pawn && Params->BuildingActorToRepair)
                     {
-                    
                     }
                 }
             }

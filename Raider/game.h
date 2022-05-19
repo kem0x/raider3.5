@@ -31,6 +31,8 @@ namespace Game
         auto playlist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");
 
         playlist->bNoDBNO = false;
+        playlist->FriendlyFireType = EFriendlyFireType::On;
+        authGameMode->FriendlyFireType = EFriendlyFireType::On;
         gameState->CurrentPlaylistData = playlist;
         gameState->OnRep_CurrentPlaylistData();
 
