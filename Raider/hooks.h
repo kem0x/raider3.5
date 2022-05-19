@@ -106,11 +106,10 @@ namespace Hooks
 
         static auto pickaxe = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_HalloweenScythe_Athena_C_T01.WID_Harvest_HalloweenScythe_Athena_C_T01");
         static auto primary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
-        // static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Pistol_Scavenger_Athena_R_Ore_T03.WID_Pistol_Scavenger_Athena_R_Ore_T03");
-        static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
+        static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Launcher_Rocket_Athena_R_Ore_T03.WID_Launcher_Rocket_Athena_R_Ore_T03");
         static auto forth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Assault_Auto_Athena_R_Ore_T03.WID_Assault_Auto_Athena_R_Ore_T03");
-        static auto fifth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition Athena_Bandage.Athena_Bandage");
-        static auto sixth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition Athena_ShieldSmall.Athena_ShieldSmall");
+        static auto fifth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03.WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03");
+        static auto sixth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition Athena_PurpleStuff.Athena_PurpleStuff");
 
         auto pickaxeEntry = AddItemWithUpdate(PlayerController, pickaxe, 0);
         auto primaryEntry = AddItemWithUpdate(PlayerController, primary, 1);
@@ -201,6 +200,8 @@ namespace Hooks
         auto bInitBeacon = Functions::OnlineBeaconHost::InitHost(HostBeacon);
         CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");
 
+        HostBeacon->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
+        HostBeacon->NetDriver->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
         HostBeacon->NetDriver->World = GetWorld();
 
         GetWorld()->NetDriver = HostBeacon->NetDriver;
@@ -302,7 +303,7 @@ namespace Hooks
 
                     Params->DBNOPawn->SetHealth(100);
 
-                    printf("[ServerDBNOReviveInterrupted] %i\n", Params->DBNOPawn->DBNOStartTime);
+                    printf("[ServerDBNOReviveInterrupted] %i\n", Params->DBNOPawn->ReviveFromDBNOTime);
                 }
 
                 else if (FunctionName.find("ServerCreateBuilding") != -1)
@@ -400,47 +401,6 @@ namespace Hooks
                     }
                 }
 
-                else if (FunctionName == "ServerAttemptInteract")
-                {
-                    auto Params = (AFortPlayerController_ServerAttemptInteract_Params*)Parameters;
-                    auto PC = (AFortPlayerController*)Object;
-
-                    if (Params->ReceivingActor)
-                    {
-                        auto InteractingActorName = Params->ReceivingActor->GetFullName();
-
-                        // std::cout << PC->GetFullName() << " interacting with: " << InteractingActorName << '\n';
-
-                        if (InteractingActorName.starts_with("Tiered_"))
-                        {
-                            auto Actor = (ABuildingContainer*)Params->ReceivingActor;
-                            auto ActorLocation = Params->ReceivingActor->K2_GetActorLocation();
-
-                            Actor->bAlreadySearched = true;
-                            Actor->OnRep_bAlreadySearched();
-
-                            if (InteractingActorName.starts_with("Tiered_Chest"))
-                            {
-                                // PC->ClientPlaySoundAtLocation
-                                static auto def = UObject::FindObject<UFortWorldItemDefinition>("FortWeaponRangedItemDefinition WID_Assault_AutoHigh_Athena_SR_Ore_T03.WID_Assault_AutoHigh_Athena_SR_Ore_T03");
-
-                                SummonPickupFromChest(def, 1, Params->ReceivingActor->K2_GetActorLocation());
-                            }
-
-                            else if (InteractingActorName.find("Ammo") != -1)
-                            {
-                                // PC->ClientPlaySoundAtLocation
-                                static auto Medium = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsMedium.AthenaAmmoDataBulletsMedium");
-                                SummonPickupFromChest(Medium, 15, ActorLocation);
-                            }
-                        }
-
-                        else if (InteractingActorName.find("VendingMachine") != -1)
-                        {
-                        }
-                    }
-                }
-
                 else if (FunctionName == "ServerAttemptExitVehicle") // is this even needed
                 {
                     auto PC = (AFortPlayerControllerAthena*)Object;
@@ -463,12 +423,8 @@ namespace Hooks
 
                     if (Controller && Pawn && Params->BuildingActorToEdit && EditTool)
                     {
-                        // EditTool->EditActor = Params->BuildingActorToEdit;
-
-                        Params->BuildingActorToEdit->EditingPlayer = (AFortPlayerStateZone*)Controller->PlayerState;
+                        Params->BuildingActorToEdit->EditingPlayer = (AFortPlayerStateZone*)Pawn->PlayerState;
                         Params->BuildingActorToEdit->OnRep_EditingPlayer();
-                        // EditTool->OnRep_EditActor();
-                        //  (AFortWeap_EditingTool*)
                     }
                 }
 

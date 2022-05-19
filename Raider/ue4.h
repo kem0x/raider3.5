@@ -700,24 +700,11 @@ FGameplayAbilitySpec* UAbilitySystemComponent_FindAbilitySpecFromHandle(UAbility
 
 void UAbilitySystemComponent_ConsumeAllReplicatedData(UAbilitySystemComponent* AbilitySystemComponent, FGameplayAbilitySpecHandle AbilityHandle, FPredictionKey AbilityOriginalPredictionKey)
 {
+    /*
     FGameplayAbilitySpecHandleAndPredictionKey toFind { AbilityHandle, AbilityOriginalPredictionKey.Current };
 
-    auto MapPairsData = AbilitySystemComponent->AbilityTargetDataMap.Pairs.GetElements().Data;
-
-    for (int i = 0; i < MapPairsData.Num(); i++)
-    {
-        auto Pair = MapPairsData[i].ElementData.Value;
-
-        printf("[AbilityHandle] Pair.Key(): %i, toFind: %i\n", Pair.Key().AbilityHandle.Handle, toFind.AbilityHandle.Handle);
-        printf("[PredictionKeyAtCreation] Pair.Key(): %i, toFind: %i\n", Pair.Key().PredictionKeyAtCreation, toFind.PredictionKeyAtCreation);
-
-        if (Pair.Key().AbilityHandle.Handle == toFind.AbilityHandle.Handle && Pair.Key().PredictionKeyAtCreation == toFind.PredictionKeyAtCreation)
-        {
-            auto CachedData = Pair.Value();
-            CachedData.Reset();
-            printf("ConsumeAllReplicatedData!\n");
-        }
-    }
+    auto MapPairsData = AbilitySystemComponent->AbilityTargetDataMap;
+    */
 }
 
 auto TryActivateAbility(UAbilitySystemComponent* AbilitySystemComponent, FGameplayAbilitySpecHandle AbilityToActivate, bool InputPressed, FPredictionKey* PredictionKey, FGameplayEventData* TriggerEventData)
