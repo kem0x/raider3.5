@@ -94,6 +94,7 @@ namespace Replication
         if (!World || !&OutConsiderList || !NetDriver)
             return;
 
+        /*
         auto List = GetNetworkObjectList(NetDriver).ActiveNetworkObjects;
         for (auto& Entry : List)
         {
@@ -115,6 +116,29 @@ namespace Replication
                 }
             }
         }
+        */
+
+        TArray<AActor*> Actors;
+        GetGameplayStatics()->STATIC_GetAllActorsOfClass(World, AActor::StaticClass(), &Actors);
+
+        for (int i = 0; i < Actors.Num(); i++)
+        {
+            auto Actor = Actors[i];
+
+            if (!Actor || Actor->RemoteRole == ENetRole::ROLE_None || Actor->bActorIsBeingDestroyed)
+                continue;
+
+            if (Actor->NetDormancy == ENetDormancy::DORM_Initial && Actor->bNetStartup)
+                continue;
+
+            if (Actor->Name.ComparisonIndex != 0)
+            {
+                Functions::Actor::CallPreReplication(Actor, NetDriver);
+                OutConsiderList.push_back(Actor);
+            }
+        }
+
+        Actors.FreeArray();
     }
 
     void ServerReplicateActors(UNetDriver* NetDriver)
@@ -127,6 +151,7 @@ namespace Replication
             return;
 
         std::vector<AActor*> ConsiderList;
+        // ConsiderList.reserve(GetNetworkObjectList(NetDriver).ActiveNetworkObjects.Num());
         BuildConsiderList(NetDriver, ConsiderList);
 
         for (int i = 0; i < NetDriver->ClientConnections.Num(); i++)
