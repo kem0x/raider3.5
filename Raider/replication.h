@@ -94,27 +94,27 @@ namespace Replication
         if (!World || !&OutConsiderList || !NetDriver)
             return;
 
-        auto List = GetNetworkObjectList(NetDriver).ActiveNetworkObjects;
-        for (auto& Entry : List)
+        TArray<AActor*> Actors;
+        GetGameplayStatics()->STATIC_GetAllActorsOfClass(World, AActor::StaticClass(), &Actors);
+
+        for (int i = 0; i < Actors.Num(); i++)
         {
-            if (auto ActorInfo = Entry.Get())
+            auto Actor = Actors[i];
+
+            if (!Actor || Actor->RemoteRole == ENetRole::ROLE_None || Actor->bActorIsBeingDestroyed)
+                continue;
+
+            if (Actor->NetDormancy == ENetDormancy::DORM_Initial && Actor->bNetStartup)
+                continue;
+
+            if (Actor->Name.ComparisonIndex != 0)
             {
-                if (auto Actor = ActorInfo->Actor)
-                {
-                    if (!Actor || Actor->RemoteRole == ENetRole::ROLE_None || Actor->bActorIsBeingDestroyed)
-                        continue;
-
-                    if (Actor->NetDormancy == ENetDormancy::DORM_Initial && Actor->bNetStartup)
-                        continue;
-
-                    if (Actor->Name.ComparisonIndex != 0)
-                    {
-                        Functions::Actor::CallPreReplication(Actor, NetDriver);
-                        OutConsiderList.push_back(Actor);
-                    }
-                }
+                Functions::Actor::CallPreReplication(Actor, NetDriver);
+                OutConsiderList.push_back(Actor);
             }
         }
+
+        Actors.FreeArray();
     }
 
     void ServerReplicateActors(UNetDriver* NetDriver)
