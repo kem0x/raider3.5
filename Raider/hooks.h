@@ -238,19 +238,12 @@ namespace Hooks
 
         if (bTraveled)
         {
-            if (FunctionName.find("Tick") != -1)
-            {
-                if (GetAsyncKeyState(VK_F1) & 1) // TEMPORARY todo: put this on WaitingToStart or something
-                {
-                    Listen();
-                }
-            }
-
             if (FunctionName.find("ReadyToStartMatch") != -1)
             {
                 EXECUTE_ONE_TIME
                 {
                     Game::OnReadyToStartMatch();
+                    Listen();
                 }
             }
 
@@ -293,17 +286,6 @@ namespace Hooks
                 if (FunctionName.find("ServerHandlePickup") != -1)
                 {
                     // HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
-                }
-
-                else if (FunctionName == "ServerDBNOReviveInterrupted")
-                {
-                    auto Params = (AFortPlayerControllerAthena_ServerDBNOReviveInterrupted_Params*)Parameters;
-                    Params->DBNOPawn->bIsDBNO = false;
-                    Params->DBNOPawn->OnRep_IsDBNO();
-
-                    Params->DBNOPawn->SetHealth(100);
-
-                    printf("[ServerDBNOReviveInterrupted] %i\n", Params->DBNOPawn->ReviveFromDBNOTime);
                 }
 
                 else if (FunctionName.find("ServerCreateBuilding") != -1)
@@ -425,6 +407,44 @@ namespace Hooks
                     {
                         Params->BuildingActorToEdit->EditingPlayer = (AFortPlayerStateZone*)Pawn->PlayerState;
                         Params->BuildingActorToEdit->OnRep_EditingPlayer();
+                    }
+                }
+
+                else if (FunctionName == "ServerAttemptInteract")
+                {
+                    auto Params = (AFortPlayerController_ServerAttemptInteract_Params*)Parameters;
+                    auto PC = (AFortPlayerControllerAthena*)Object;
+
+					if (Params->ReceivingActor)
+                    {
+                        auto InteractingActorName = Params->ReceivingActor->GetFullName();
+
+                        if (InteractingActorName.find("PlayerPawn_Athena_C_") != -1) // is this even needed
+                        {
+                            auto DBNOPawn = (APlayerPawn_Athena_C*)Params->ReceivingActor;
+                            auto DBNOPC = (AFortPlayerControllerAthena*)DBNOPawn->Controller;
+
+                            if (DBNOPawn && DBNOPC && DBNOPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
+                            {
+                                DBNOPawn->ReviveFromDBNO(PC);
+                            }
+                        }
+                    }
+                }
+
+                else if (FunctionName == "ServerReviveFromDBNO")
+                {
+                    auto Params = (AFortPlayerPawn_ServerReviveFromDBNO_Params*)Parameters;
+                    auto DBNOPawn = (APlayerPawn_Athena_C*)Object;
+                    auto DBNOPC = (AFortPlayerControllerAthena*)DBNOPawn->Controller;
+                    auto InstigatorPC = (AFortPlayerControllerAthena*)Params->EventInstigator;
+
+                    if (InstigatorPC && DBNOPawn && DBNOPC)
+                    {
+                        DBNOPawn->bIsDBNO = false;
+                        DBNOPawn->OnRep_IsDBNO();
+                        DBNOPC->ClientOnPawnRevived(InstigatorPC);
+                        DBNOPawn->SetHealth(100);
                     }
                 }
 
