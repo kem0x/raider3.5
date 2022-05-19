@@ -68,7 +68,7 @@ namespace Hooks
         PlayerController->OnRep_Pawn();
         PlayerController->Possess(Pawn);
 
-        Pawn->SetMaxHealth(200);
+        Pawn->SetMaxHealth(100);
         Pawn->SetMaxShield(100);
 
         PlayerController->bHasClientFinishedLoading = true;
@@ -197,7 +197,7 @@ namespace Hooks
         AFortOnlineBeaconHost* HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
         HostBeacon->ListenPort = 7777;
         auto bInitBeacon = Functions::OnlineBeaconHost::InitHost(HostBeacon);
-        CheckNullFatal(bInitBeacon, "Failed to init beacon!");
+        CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");
 
         HostBeacon->NetDriver->World = GetWorld();
 
@@ -237,7 +237,7 @@ namespace Hooks
         {
             if (FunctionName.find("Tick") != -1)
             {
-                if (GetAsyncKeyState(VK_F1) & 1) // TEMPORARY
+                if (GetAsyncKeyState(VK_F1) & 1) // TEMPORARY todo: put this on WaitingToStart or something
                 {
                     Listen();
                 }
@@ -271,7 +271,7 @@ namespace Hooks
                 }
             }
 
-            if (bDroppedLS)
+            if (bDroppedLS) // change this
             {
                 if (Function->FunctionFlags & 0x00200000)
                 {
@@ -305,7 +305,7 @@ namespace Hooks
                     }
                 }
 
-                else if (FunctionName.find("ServerAttemptInventoryDrop") != -1)
+                else if (FunctionName == "ServerAttemptInventoryDrop")
                 {
                     auto PC = (AFortPlayerController*)Object;
                     auto Pawn = (APlayerPawn_Athena_C*)PC->Pawn;
@@ -336,18 +336,18 @@ namespace Hooks
                     TryActivateAbility(AbilitySystemComponent, Params->BatchInfo.AbilitySpecHandle, Params->BatchInfo.InputPressed, &(Params->BatchInfo.PredictionKey), nullptr);
                 }
 
-                else if (FunctionName.find("ServerExecuteInventoryItem") != -1)
+                else if (FunctionName == "ServerExecuteInventoryItem")
                 {
                     auto PC = (AFortPlayerControllerAthena*)Object;
                     EquipInventoryItem(PC, *(FGuid*)Parameters);
                 }
 
-                else if (FunctionName.find("ServerReturnToMainMenu") != -1)
+                else if (FunctionName == "ServerReturnToMainMenu")
                 {
                     ((AFortPlayerController*)Object)->ClientTravel(L"Frontend", ETravelType::TRAVEL_Absolute, false, FGuid());
                 }
 
-                else if (FunctionName.find("ServerPlayEmoteItem") != -1)
+                else if (FunctionName == "ServerPlayEmoteItem")
                 {
                     auto CurrentPawn = (AFortPlayerPawnAthena*)((AFortPlayerController*)Object)->Pawn;
                     auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
@@ -375,7 +375,7 @@ namespace Hooks
                     }
                 }
 
-                else if (FunctionName.find("ServerAttemptInteract") != -1)
+                else if (FunctionName == "ServerAttemptInteract")
                 {
                     auto Params = (AFortPlayerController_ServerAttemptInteract_Params*)Parameters;
                     auto PC = (AFortPlayerController*)Object;
@@ -410,7 +410,7 @@ namespace Hooks
                             }
                         }
 
-                        else if (InteractingActorName.find("Wall") != -1 || InteractingActorName.find("Door") != -1)
+                        else if (InteractingActorName.find("Wall") != -1 || InteractingActorName.find("Door") != -1) // this is like really messed up
                         {
                             auto Actor = (ABuildingWall*)Params->ReceivingActor;
 
@@ -425,7 +425,7 @@ namespace Hooks
                     }
                 }
 
-                else if (FunctionName.find("ServerAttemptExitVehicle") != -1)
+                else if (FunctionName == "ServerAttemptExitVehicle") // is this even needed
                 {
                     auto PC = (AFortPlayerControllerAthena*)Object;
 
@@ -458,6 +458,14 @@ namespace Hooks
 
                 else if (FunctionName == "ServerRepairBuildingActor")
                 {
+                    auto Params = (AFortPlayerController_ServerRepairBuildingActor_Params*)Parameters;
+                    auto Controller = (AFortPlayerControllerAthena*)Object;
+                    auto Pawn = (APlayerPawn_Athena_C*)Controller->Pawn;
+
+                    if (Controller && Pawn && Params->BuildingActorToRepair)
+                    {
+                    
+                    }
                 }
             }
         }

@@ -27,6 +27,8 @@ namespace Game
         auto stateF = reinterpret_cast<UKismetStringLibrary*>(UKismetStringLibrary::StaticClass())->STATIC_Conv_StringToName(L"InProgress");
         authGameMode->MatchState = stateF;
         authGameMode->K2_OnSetMatchState(stateF);
+        gameState->CurrentPlaylistData = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_Playground.Playlist_Playground");
+        gameState->OnRep_CurrentPlaylistData();
 
         authGameMode->StartPlay();
         gameState->bReplicatedHasBegunPlay = true;
