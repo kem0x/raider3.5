@@ -82,7 +82,7 @@ namespace Hooks
 
         Pawn->bReplicateMovement = true;
         Pawn->OnRep_ReplicateMovement();
-
+		
         /* auto Hero = GetPlayerController()->StrongMyHero; // set the Hero to the servers Hero, temporary work around.
 
         PlayerController->StrongMyHero = Hero;
@@ -97,10 +97,32 @@ namespace Hooks
             if (!Part)
                 continue;
 
-            PlayerState->CharacterParts[i] = Part;
+            PlayerState->CharacterParts[i] = Part; // CustomCharacterBodyPartData CP_017_Athena_Body.CP_017_Athena_Body.CustomCharacterBodyPartData_0
         }
 
         PlayerState->OnRep_CharacterParts(); */
+
+        static auto Head = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
+        static auto Body = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
+
+        if (!Head || !Body)
+            std::cout << "Head: " << Head << " Body: " << Body << '\n';
+
+		PlayerController->StrongMyHero = (UFortHero*)GetGameplayStatics()->STATIC_SpawnObject(UFortHero::StaticClass(), PlayerController);
+        PlayerState->HeroType = PlayerController->StrongMyHero->GetHeroTypeBP();
+        PlayerState->OnRep_HeroType();
+        // PlayerController->StrongMyHero->Gender = Pawn->CharacterGender;
+        PlayerController->StrongMyHero->CharacterParts = *new TArray<UCustomCharacterPart*>();
+        PlayerController->StrongMyHero->CharacterParts.Add(Head);
+        PlayerController->StrongMyHero->CharacterParts.Add(Body);
+		
+        PlayerState->CharacterParts[0] = Head;
+        PlayerState->CharacterParts[1] = Body; // CustomCharacterHeadData M_Med_BLK_Sydney_Head_01_ATH.M_Med_BLK_Sydney_Head_01_ATH.CustomCharacterHeadData_5 CustomCharacterPart CP_017_Athena_Body.CP_017_Athena_Body
+
+        PlayerState->OnRep_CharacterParts();
+        Pawn->OnCharacterPartsReinitialized();
+
+        // Pawn->RandomizeCharacter(L"Male");
 
         static auto pickaxe = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_HalloweenScythe_Athena_C_T01.WID_Harvest_HalloweenScythe_Athena_C_T01");
         static auto primary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
@@ -235,19 +257,12 @@ namespace Hooks
 
         if (bTraveled)
         {
-            if (FunctionName.find("Tick") != -1)
-            {
-                if (GetAsyncKeyState(VK_F1) & 1) // TEMPORARY todo: put this on WaitingToStart or something
-                {
-                    Listen();
-                }
-            }
-
             if (FunctionName.find("ReadyToStartMatch") != -1)
             {
                 EXECUTE_ONE_TIME
                 {
                     Game::OnReadyToStartMatch();
+                    Listen();
                 }
             }
 
