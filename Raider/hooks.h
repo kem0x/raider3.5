@@ -265,11 +265,17 @@ namespace Hooks
                     static auto ReloadAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Reload");
                     static auto RangedWeaponAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_RangedWeapon");
                     static auto JumpAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Jump");
+                    static auto DeathAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_Death.GA_DefaultPlayer_Death_C");
+                    static auto InteractUseAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractUse.GA_DefaultPlayer_InteractUse_C");
+                    static auto InteractSearchAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractSearch.GA_DefaultPlayer_InteractSearch_C");
 
                     GrantGameplayAbility(Pawn, SprintAbility);
                     GrantGameplayAbility(Pawn, ReloadAbility);
                     GrantGameplayAbility(Pawn, RangedWeaponAbility);
                     GrantGameplayAbility(Pawn, JumpAbility);
+                    GrantGameplayAbility(Pawn, DeathAbility);
+                    GrantGameplayAbility(Pawn, InteractUseAbility);
+                    GrantGameplayAbility(Pawn, InteractSearchAbility);
                 }
             }
 
@@ -360,9 +366,6 @@ namespace Hooks
 
                         if (Montage)
                         {
-                            auto AnimInstance = CurrentPawn->Mesh->GetAnimInstance();
-                            CurrentPawn->PlayLocalAnimMontage(Montage, 1, Montage->CompositeSections[0].SectionName);
-                            CurrentPawn->PlayAnimMontage(Montage, 1, Montage->CompositeSections[0].SectionName);
                             CurrentPawn->OnRep_ReplicatedAnimMontage();
                         }
 
@@ -410,15 +413,6 @@ namespace Hooks
                                 static auto Medium = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsMedium.AthenaAmmoDataBulletsMedium");
                                 SummonPickupFromChest(Medium, 15, ActorLocation);
                             }
-                        }
-
-                        else if (InteractingActorName.find("Wall") != -1 || InteractingActorName.find("Door") != -1) // this is like really messed up
-                        {
-                            auto Actor = (ABuildingWall*)Params->ReceivingActor;
-
-                            Actor->bDoorOpen = ~Actor->bDoorOpen;
-                            Actor->OnRep_bDoorOpen();
-                            // Actor->DoorClosingSound
                         }
 
                         else if (InteractingActorName.find("VendingMachine") != -1)
