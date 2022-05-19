@@ -731,7 +731,7 @@ auto TryActivateAbility(UAbilitySystemComponent* AbilitySystemComponent, FGamepl
         return;
     }
 
-    UAbilitySystemComponent_ConsumeAllReplicatedData(AbilitySystemComponent, AbilityToActivate, *PredictionKey);
+    //UAbilitySystemComponent_ConsumeAllReplicatedData(AbilitySystemComponent, AbilityToActivate, *PredictionKey);
 
     UGameplayAbility* InstancedAbility = nullptr;
     Spec->InputPressed = true;

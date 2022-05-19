@@ -83,7 +83,9 @@ namespace Hooks
         Pawn->bReplicateMovement = true;
         Pawn->OnRep_ReplicateMovement();
 
-        /* auto Hero = GetPlayerController()->StrongMyHero; // set the Hero to the servers Hero, temporary work around.
+        static auto FortRegisteredPlayerInfo = UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
+
+        auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
 
         PlayerController->StrongMyHero = Hero;
 
@@ -100,7 +102,7 @@ namespace Hooks
             PlayerState->CharacterParts[i] = Part;
         }
 
-        PlayerState->OnRep_CharacterParts(); */
+        PlayerState->OnRep_CharacterParts(); 
 
         static auto pickaxe = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_HalloweenScythe_Athena_C_T01.WID_Harvest_HalloweenScythe_Athena_C_T01");
         static auto primary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
