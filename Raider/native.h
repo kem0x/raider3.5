@@ -6,7 +6,6 @@
 inline UFortEngine* GetEngine()
 {
     static auto engine = UObject::FindObject<UFortEngine>("FortEngine_");
-    printf("[+] GetEngine: %p\n", engine);
     return engine;
 }
 

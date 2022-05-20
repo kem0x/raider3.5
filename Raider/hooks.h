@@ -4,6 +4,8 @@
 #include "replication.h"
 #include "ue4.h"
 
+#define LOGGING
+
 namespace Hooks
 {
     bool LocalPlayerSpawnPlayActor(ULocalPlayer* Player, const FString& URL, FString& OutError, UWorld* World) // prevent server's pc from spawning
@@ -87,7 +89,7 @@ namespace Hooks
         PlayerState->HeroType = Hero->GetHeroTypeBP();
         PlayerState->OnRep_HeroType();
 
-        //printf("Test: %s\n", Pawn->CustomizationLoadout.Character->GetName().c_str());
+        // printf("Test: %s\n", Pawn->CustomizationLoadout.Character->GetName().c_str());
 
         for (auto i = 0; i < Hero->CharacterParts.Num(); i++)
         {
@@ -100,13 +102,15 @@ namespace Hooks
         }
 
         PlayerState->OnRep_CharacterParts();
+        PlayerState->OnRep_CharacterBodyType();
+        PlayerState->OnRep_CharacterGender();
 
-        static auto pickaxe = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_HolidayCandyCane_Athena.WID_Harvest_Pickaxe_HolidayCandyCane_Athena");
+        static auto pickaxe = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_HalloweenScythe_Athena_C_T01.WID_Harvest_HalloweenScythe_Athena_C_T01");
         static auto primary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
         static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
         static auto forth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Assault_Auto_Athena_R_Ore_T03.WID_Assault_Auto_Athena_R_Ore_T03");
-        static auto fifth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Launcher_Grenade_Athena_R_Ore_T03.WID_Launcher_Grenade_Athena_R_Ore_T03");
-        static auto sixth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition Athena_PurpleStuff.Athena_PurpleStuff");
+        static auto fifth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Launcher_Rocket_Athena_R_Ore_T03.WID_Launcher_Rocket_Athena_R_Ore_T03");
+        static auto sixth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition Athena_Shields.Athena_Shields");
 
         auto pickaxeEntry = AddItemWithUpdate(PlayerController, pickaxe, 0);
         auto primaryEntry = AddItemWithUpdate(PlayerController, primary, 1);
@@ -133,11 +137,14 @@ namespace Hooks
             }
         }
 
-        Pawn->K2_TeleportTo(FVector { 1250, 1818, 50000 }, { 0, 0, 0 });
-        Pawn->CharacterMovement->SetMovementMode(EMovementMode::MOVE_Custom, 3);
-        Pawn->bIsParachuteOpen = true;
+        Pawn->K2_TeleportTo({ 37713, -52942, 461 }, { 0, 0, 0 });
 
-        Pawn->OnRep_IsParachuteOpen(Pawn->IsParachuteOpen());
+        /*
+         Pawn->CharacterMovement->SetMovementMode(EMovementMode::MOVE_Custom, 3);
+         Pawn->bIsParachuteOpen = true;
+
+         Pawn->OnRep_IsParachuteOpen(Pawn->IsParachuteOpen());
+         */
 
         return PlayerController;
     }
@@ -272,6 +279,7 @@ namespace Hooks
 
             if (bDroppedLS) // todo change this
             {
+#ifdef LOGGING
                 if (Function->FunctionFlags & 0x00200000 || (FunctionName.starts_with("Client") && FunctionName.find("Ack") == -1))
                 {
                     if (FunctionName.find("ServerUpdateCamera") == -1 && FunctionName.find("ServerMove") == -1)
@@ -279,6 +287,7 @@ namespace Hooks
                         std::cout << "RPC Called: " << FunctionName << '\n';
                     }
                 }
+#endif
 
                 if (FunctionName.find("ServerHandlePickup") != -1)
                 {
