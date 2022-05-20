@@ -36,7 +36,6 @@ namespace Game
         gameState->CurrentPlaylistData = playlist;
         gameState->OnRep_CurrentPlaylistData();
 
-
         authGameMode->StartPlay();
         gameState->bReplicatedHasBegunPlay = true;
         gameState->OnRep_ReplicatedHasBegunPlay();

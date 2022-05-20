@@ -59,7 +59,7 @@ namespace Hooks
 
         InitInventory(PlayerController, false);
 
-        auto Pawn = SpawnActor<APlayerPawn_Athena_C>({ 1250, 1818, 3284 }, PlayerController);
+        auto Pawn = (APlayerPawn_Athena_C*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), GetPlayerStart(PlayerController), PlayerController);
 
         PlayerController->Pawn = Pawn;
         PlayerController->AcknowledgedPawn = Pawn;
@@ -273,9 +273,9 @@ namespace Hooks
                 }
             }
 
-            if (bDroppedLS) // change this
+            if (bDroppedLS) // todo change this
             {
-                if (Function->FunctionFlags & 0x00200000)
+                if (Function->FunctionFlags & 0x00200000 || (FunctionName.starts_with("Client") && FunctionName.find("Ack") == -1))
                 {
                     if (FunctionName.find("ServerUpdateCamera") == -1 && FunctionName.find("ServerMove") == -1)
                     {
@@ -285,7 +285,7 @@ namespace Hooks
 
                 if (FunctionName.find("ServerHandlePickup") != -1)
                 {
-                    // HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
+                    HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
                 }
 
                 else if (FunctionName.find("ServerCreateBuilding") != -1)
@@ -303,6 +303,16 @@ namespace Hooks
                         Transform.Scale3D = { 1, 1, 1 };
 
                         auto BuildingActor = SpawnActorTrans(CurrentBuildClass, Transform, PC); //, ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding);
+
+                        /* TArray<AActor*> OverlappingActors {};
+                        BuildingActor->GetOverlappingActors(nullptr, &OverlappingActors);
+
+                        for (auto& OverlappingActor : OverlappingActors)
+                                                {
+                            if (OverlappingActor->IsA(ABuildingActor::StaticClass()))
+                                return PEOriginal(Object, Function, Parameters);
+                        } */
+
                         ((ABuildingActor*)BuildingActor)->InitializeKismetSpawnedBuildingActor((ABuildingActor*)BuildingActor, PC);
                     }
                 }
@@ -415,7 +425,7 @@ namespace Hooks
                     auto Params = (AFortPlayerController_ServerAttemptInteract_Params*)Parameters;
                     auto PC = (AFortPlayerControllerAthena*)Object;
 
-					if (Params->ReceivingActor)
+                    if (Params->ReceivingActor)
                     {
                         auto InteractingActorName = Params->ReceivingActor->GetFullName();
 
@@ -456,6 +466,26 @@ namespace Hooks
 
                     if (Controller && Pawn && Params->BuildingActorToRepair)
                     {
+                        // Params->BuildingActorToRepair->OnRep_bUnderRepair();
+                        Params->BuildingActorToRepair->RepairBuilding(Controller, 500); // figure out how to get the repair amount
+                    }
+                }
+
+                else if (FunctionName == "ServerAttemptAircraftJump" || FunctionName == "AircraftExitedDropZone")
+                {
+                    auto Params = (AFortPlayerControllerAthena_ServerAttemptAircraftJump_Params*)Parameters;
+                    auto PC = (AFortPlayerControllerAthena*)Object;
+                    auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
+
+                    std::cout << "Attempted Jump!\n";
+
+                    std::cout << "Pawn: " << PC->Pawn << '\n';
+                    std::cout << "Aircraft[0]: " << GameState->Aircrafts[0] << '\n';
+
+                    if (PC && Params && !PC->Pawn && PC->IsInAircraft())
+                    {       
+						// ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped();
+                        InitPawn(PC, PC->K2_GetActorLocation()); // RotToQuat(Params->ClientRotation));
                     }
                 }
             }

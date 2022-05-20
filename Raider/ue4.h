@@ -406,13 +406,17 @@ inline bool IsMatchingGuid(FGuid A, FGuid B)
     return A.A == B.A && A.B == B.B && A.C == B.C && A.D == B.D;
 }
 
-inline void UpdateInventory(AFortPlayerController* PlayerController)
+inline void UpdateInventory(AFortPlayerController* PlayerController, int Dirty = 0)
 {
     PlayerController->WorldInventory->HandleInventoryLocalUpdate();
     PlayerController->HandleWorldInventoryLocalUpdate();
     PlayerController->OnRep_QuickBar();
     PlayerController->QuickBars->OnRep_PrimaryQuickBar();
     PlayerController->QuickBars->OnRep_SecondaryQuickBar();
+    PlayerController->WorldInventory->bRequiresLocalUpdate = true;
+	
+    if (Dirty != 0)
+        PlayerController->WorldInventory->Inventory.MarkItemDirty(PlayerController->WorldInventory->Inventory.ReplicatedEntries[Dirty]);
 }
 
 inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinition* Def, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1)
@@ -429,12 +433,24 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
     auto Idx = PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
     PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
 
-    PC->WorldInventory->bRequiresLocalUpdate = true;
-    PC->WorldInventory->Inventory.MarkItemDirty(PC->WorldInventory->Inventory.ReplicatedEntries[Idx]);
-
-    UpdateInventory(PC);
+    UpdateInventory(PC, Idx);
 
     return ItemEntry;
+}
+
+inline auto RemoveItem(AFortPlayerController* PC, EFortQuickBars QuickBars, int Slot) // IMPORTANT TO FIX THIS
+{
+    if (Slot == 0 || !PC)
+        return;
+
+    auto Inventory = PC->WorldInventory->Inventory;
+    // Inventory.ReplicatedEntries.RemoveAt(Slot, 1);
+    // Inventory.ItemInstances.RemoveAt(Slot, 1);
+	
+    auto pcQuickBars = PC->QuickBars;
+    pcQuickBars->EmptySlot(QuickBars, Slot);
+	
+	UpdateInventory(PC, Slot);
 }
 
 inline AFortWeapon* EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeaponItemDefinition* Definition, FGuid& Guid, int Ammo = 0)
@@ -543,7 +559,7 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
 
     if (Params->Pickup)
     {
-        if (!Params->Pickup->PrimaryPickupItemEntry.ItemDefinition->IsA(UFortWeaponItemDefinition::StaticClass()))
+        if (bEquip && !Params->Pickup->PrimaryPickupItemEntry.ItemDefinition->IsA(UFortWeaponItemDefinition::StaticClass()))
             bEquip = false;
 
         auto WorldItemDefinition = (UFortWorldItemDefinition*)Params->Pickup->PrimaryPickupItemEntry.ItemDefinition;
@@ -581,7 +597,7 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
                             SummonPickup((APlayerPawn_Athena_C*)Pawn, Def, 1, Pawn->K2_GetActorLocation());
                     }
 
-                    QuickBars->EmptySlot(EFortQuickBars::Primary, FocusedSlot);
+                    RemoveItem(Controller, EFortQuickBars::Primary, FocusedSlot);
                 }
 
                 auto entry = AddItemWithUpdate((AFortPlayerController*)Pawn->Controller, WorldItemDefinition, i, EFortQuickBars::Primary, Params->Pickup->PrimaryPickupItemEntry.Count);
@@ -773,8 +789,7 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
         {
             if (IsMatchingGuid(QuickBarSlots[i].Items[0], Params->ItemGuid))
             {
-                QuickBars->EmptySlot(EFortQuickBars::Primary, i);
-                UpdateInventory(Controller);
+                RemoveItem(Controller, EFortQuickBars::Primary, i);
             }
         }
     }
@@ -798,4 +813,84 @@ static bool KickPlayer(AFortPlayerControllerAthena* PC, FString Message)
 {
     FText text = reinterpret_cast<UKismetTextLibrary*>(UKismetTextLibrary::StaticClass())->STATIC_Conv_StringToText(Message);
     return Functions::OnlineSession::KickPlayer(GetWorld()->AuthorityGameMode->GameSession, PC, text);
+}
+
+FTransform GetPlayerStart(AFortPlayerControllerAthena* PC, FString IncomingName = L"")
+{
+    /* const TArray<AActor*> OutActors(150);
+    std::cout << "a\n";
+    GetGameplayStatics()->STATIC_GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), &OutActors);
+
+    auto ActorsNum = OutActors.Num();
+    std::cout << "Num: " << ActorsNum << '\n';
+
+    auto ActorToUseNum = rand() % ActorsNum;
+    auto ActorToUse = (OutActors)[ActorToUseNum];
+
+    if (!ActorToUse)
+        std::cout << "Invalid Actor!\n";
+    else
+        std::cout << "Valid Actor!\n";
+
+	while (!ActorToUse)
+    {
+        ActorToUseNum = rand() % ActorsNum;
+		ActorToUse = (OutActors)[ActorToUseNum];
+    } */
+
+    auto SpawnTransform = FTransform();
+    SpawnTransform.Scale3D = FVector(1, 1, 1);
+    SpawnTransform.Rotation = FQuat();
+    SpawnTransform.Translation = FVector { 1250, 1818, 3284 };
+    // SpawnTransform.Translation = ActorToUse->K2_GetActorLocation();
+	
+    return SpawnTransform;
+	
+    // return (GetWorld()->AuthorityGameMode->FindPlayerStart(PC, IncomingName))->K2_GetActorLocation();
+}
+
+static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector { 1250, 1818, 3284 }, FQuat Rotation = FQuat())
+{
+    auto SpawnTransform = FTransform();
+    SpawnTransform.Scale3D = FVector(1, 1, 1);
+    SpawnTransform.Rotation = Rotation;
+    SpawnTransform.Translation = Loc;
+
+    auto Pawn = (APlayerPawn_Athena_C*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), SpawnTransform, PlayerController);
+
+    PlayerController->Pawn = Pawn;
+    PlayerController->AcknowledgedPawn = Pawn;
+    Pawn->Owner = PlayerController;
+    Pawn->OnRep_Owner();
+    PlayerController->OnRep_Pawn();
+    PlayerController->Possess(Pawn);
+
+    Pawn->SetMaxHealth(100);
+    Pawn->SetMaxShield(100);
+
+    Pawn->bReplicateMovement = true;
+    Pawn->OnRep_ReplicateMovement();
+
+    static auto FortRegisteredPlayerInfo = UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
+
+    auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
+
+    PlayerController->StrongMyHero = Hero;
+
+    auto PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
+
+    PlayerState->HeroType = Hero->GetHeroTypeBP();
+    PlayerState->OnRep_HeroType();
+
+    for (auto i = 0; i < Hero->CharacterParts.Num(); i++)
+    {
+        auto Part = Hero->CharacterParts[i];
+
+        if (!Part)
+            continue;
+
+        PlayerState->CharacterParts[i] = Part;
+    }
+
+    PlayerState->OnRep_CharacterParts();
 }
