@@ -94,6 +94,29 @@ namespace SDK
             Data = Slack() >= NumElements ? Data : (T*)FMemory_Realloc(Data, (Max = Count + NumElements) * sizeof(T), 0);
         }
 
+        FORCEINLINE bool RemoveSingle(const int Index)
+        {
+            if (Index < Count)
+            {
+                if (Index != Count - 1)
+                    Data[Index] = Data[Count - 1];
+
+                --Count;
+
+                return true;
+            }
+            return false;
+        }
+		
+        FORCEINLINE void RemoveAt(int Index, int Length = 1)
+        {
+            for (; Length != 0; --Length)
+            {
+                if (!RemoveSingle(Index++))
+                    break;
+            }
+        }
+
         inline int Add(const T& InData)
         {
             Reserve(1);

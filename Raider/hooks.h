@@ -301,16 +301,27 @@ namespace Hooks
 
                         auto BuildingActor = SpawnActorTrans(CurrentBuildClass, Transform, PC); //, ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding);
 
-                        /* TArray<AActor*> OverlappingActors {};
+                        TArray<AActor*> OverlappingActors {};
                         BuildingActor->GetOverlappingActors(nullptr, &OverlappingActors);
 
-                        for (auto& OverlappingActor : OverlappingActors)
-                                                {
-                            if (OverlappingActor->IsA(ABuildingActor::StaticClass()))
-                                return PEOriginal(Object, Function, Parameters);
-                        } */
+						bool bOverlapsBuild = false;
 
-                        ((ABuildingActor*)BuildingActor)->InitializeKismetSpawnedBuildingActor((ABuildingActor*)BuildingActor, PC);
+                        for (int i = 0; i < OverlappingActors.Num(); i++)
+                        {
+                            auto OverlappingActor = OverlappingActors[i];
+
+                            if (!OverlappingActor)
+								continue;
+							
+                            if (OverlappingActor->IsA(ABuildingActor::StaticClass()))
+                            {
+                                bOverlapsBuild = true;
+                                break;
+                            }
+                        }
+
+                        if (!bOverlapsBuild)
+                            ((ABuildingActor*)BuildingActor)->InitializeKismetSpawnedBuildingActor((ABuildingActor*)BuildingActor, PC);
                     }
                 }
 

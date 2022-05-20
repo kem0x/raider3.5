@@ -198,7 +198,7 @@ inline bool IsMatchingGuid(FGuid A, FGuid B)
     return A.A == B.A && A.B == B.B && A.C == B.C && A.D == B.D;
 }
 
-inline void UpdateInventory(AFortPlayerController* PlayerController, int Dirty = 0)
+inline void UpdateInventory(AFortPlayerController* PlayerController, int Dirty = 0, bool bRemovedItem = false)
 {
     PlayerController->WorldInventory->HandleInventoryLocalUpdate();
     PlayerController->HandleWorldInventoryLocalUpdate();
@@ -207,6 +207,9 @@ inline void UpdateInventory(AFortPlayerController* PlayerController, int Dirty =
     PlayerController->QuickBars->OnRep_SecondaryQuickBar();
     PlayerController->WorldInventory->bRequiresLocalUpdate = true;
 	
+	if (bRemovedItem)
+        PlayerController->WorldInventory->Inventory.MarkArrayDirty();
+
     if (Dirty != 0)
         PlayerController->WorldInventory->Inventory.MarkItemDirty(PlayerController->WorldInventory->Inventory.ReplicatedEntries[Dirty]);
 }
@@ -242,7 +245,7 @@ inline auto RemoveItem(AFortPlayerController* PC, EFortQuickBars QuickBars, int 
     auto pcQuickBars = PC->QuickBars;
     pcQuickBars->EmptySlot(QuickBars, Slot);
 	
-	UpdateInventory(PC, Slot);
+	UpdateInventory(PC, 0, true);
 }
 
 inline AFortWeapon* EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeaponItemDefinition* Definition, FGuid& Guid, int Ammo = 0)
@@ -360,7 +363,7 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
 
         for (int i = 0; i < QuickBarSlots.Num(); i++)
         {
-            if (QuickBarSlots[i].Items.Data)
+            if (QuickBarSlots[i].Items.Data == 0)
             {
                 if (i >= 6)
                 {
@@ -393,10 +396,12 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
                 }
 
                 auto entry = AddItemWithUpdate((AFortPlayerController*)Pawn->Controller, WorldItemDefinition, i, EFortQuickBars::Primary, Params->Pickup->PrimaryPickupItemEntry.Count);
-                Params->Pickup->K2_DestroyActor(); // this does not work I have no idea why
+                Params->Pickup->K2_DestroyActor();
 
                 if (bEquip)
                     EquipWeaponDefinition((APlayerPawn_Athena_C*)Pawn, (UFortWeaponItemDefinition*)WorldItemDefinition, entry.ItemGuid);
+
+                break;
             }
         }
     }
