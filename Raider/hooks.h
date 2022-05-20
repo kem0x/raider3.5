@@ -12,7 +12,7 @@ namespace Hooks
             return true;
 
         else
-            return Functions::LocalPlayer::SpawnPlayActor(Player, URL, OutError, World);
+            return Native::LocalPlayer::SpawnPlayActor(Player, URL, OutError, World);
     }
 
     uint64 GetNetMode(UWorld* World) // PlayerController::SendClientAdjustment checks if the netmode is not client
@@ -30,12 +30,12 @@ namespace Hooks
             Replication::ServerReplicateActors(NetDriver);
         }
 
-        Functions::NetDriver::TickFlush(NetDriver, DeltaSeconds);
+        Native::NetDriver::TickFlush(NetDriver, DeltaSeconds);
     }
 
     void WelcomePlayer(UWorld* World, UNetConnection* IncomingConnection)
     {
-        Functions::World::WelcomePlayer(GetWorld(), IncomingConnection);
+        Native::World::WelcomePlayer(GetWorld(), IncomingConnection);
     }
 
     char KickPlayer(__int64 a1, __int64 a2, __int64 a3)
@@ -45,17 +45,15 @@ namespace Hooks
 
     void World_NotifyControlMessage(UWorld* World, UNetConnection* Connection, uint8 MessageType, void* Bunch)
     {
-        Functions::World::NotifyControlMessage(GetWorld(), Connection, MessageType, Bunch);
+        Native::World::NotifyControlMessage(GetWorld(), Connection, MessageType, Bunch);
     }
 
     APlayerController* SpawnPlayActor(UWorld* World, UPlayer* NewPlayer, ENetRole RemoteRole, FURL& URL, void* UniqueId, SDK::FString& Error, uint8 NetPlayerIndex)
     {
-        auto PlayerController = (AFortPlayerControllerAthena*)Functions::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex);
+        auto PlayerController = (AFortPlayerControllerAthena*)Native::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex);
         NewPlayer->PlayerController = PlayerController;
-        PlayerController->SetOwner((AActor*)NewPlayer);
 
         AFortPlayerStateAthena* PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
-        PlayerState->SetOwner(PlayerController);
 
         InitInventory(PlayerController, false);
 
@@ -80,9 +78,6 @@ namespace Hooks
         PlayerState->bHasStartedPlaying = true;
         PlayerState->OnRep_bHasStartedPlaying();
 
-        Pawn->bReplicateMovement = true;
-        Pawn->OnRep_ReplicateMovement();
-
         static auto FortRegisteredPlayerInfo = UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
 
         auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
@@ -91,6 +86,8 @@ namespace Hooks
 
         PlayerState->HeroType = Hero->GetHeroTypeBP();
         PlayerState->OnRep_HeroType();
+
+        //printf("Test: %s\n", Pawn->CustomizationLoadout.Character->GetName().c_str());
 
         for (auto i = 0; i < Hero->CharacterParts.Num(); i++)
         {
@@ -104,11 +101,11 @@ namespace Hooks
 
         PlayerState->OnRep_CharacterParts();
 
-        static auto pickaxe = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_HalloweenScythe_Athena_C_T01.WID_Harvest_HalloweenScythe_Athena_C_T01");
+        static auto pickaxe = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_HolidayCandyCane_Athena.WID_Harvest_Pickaxe_HolidayCandyCane_Athena");
         static auto primary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
-        static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Launcher_Rocket_Athena_R_Ore_T03.WID_Launcher_Rocket_Athena_R_Ore_T03");
+        static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
         static auto forth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Assault_Auto_Athena_R_Ore_T03.WID_Assault_Auto_Athena_R_Ore_T03");
-        static auto fifth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03.WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03");
+        static auto fifth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Launcher_Grenade_Athena_R_Ore_T03.WID_Launcher_Grenade_Athena_R_Ore_T03");
         static auto sixth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition Athena_PurpleStuff.Athena_PurpleStuff");
 
         auto pickaxeEntry = AddItemWithUpdate(PlayerController, pickaxe, 0);
@@ -136,12 +133,13 @@ namespace Hooks
             }
         }
 
-        return PlayerController;
-    }
+        Pawn->K2_TeleportTo(FVector { 1250, 1818, 50000 }, { 0, 0, 0 });
+        Pawn->CharacterMovement->SetMovementMode(EMovementMode::MOVE_Custom, 3);
+        Pawn->bIsParachuteOpen = true;
 
-    bool DestroySwappedPC(UWorld* World, UNetConnection* Connection)
-    {
-        return Functions::World::DestroySwappedPC(GetWorld(), Connection);
+        Pawn->OnRep_IsParachuteOpen(Pawn->IsParachuteOpen());
+
+        return PlayerController;
     }
 
     void Beacon_NotifyControlMessage(AOnlineBeaconHost* Beacon, UNetConnection* Connection, uint8 MessageType, int64* Bunch)
@@ -159,31 +157,31 @@ namespace Hooks
 
             FString OnlinePlatformName = FString(L"");
 
-            Functions::NetConnection::ReceiveFString(Bunch, Connection->ClientResponse);
-            Functions::NetConnection::ReceiveFString(Bunch, Connection->RequestURL);
-            Functions::NetConnection::ReceiveUniqueIdRepl(Bunch, Connection->PlayerID);
-            Functions::NetConnection::ReceiveFString(Bunch, OnlinePlatformName);
+            Native::NetConnection::ReceiveFString(Bunch, Connection->ClientResponse);
+            Native::NetConnection::ReceiveFString(Bunch, Connection->RequestURL);
+            Native::NetConnection::ReceiveUniqueIdRepl(Bunch, Connection->PlayerID);
+            Native::NetConnection::ReceiveFString(Bunch, OnlinePlatformName);
 
             Bunch[7] -= (16 * 1024 * 1024);
 
-            Functions::World::WelcomePlayer(GetWorld(), Connection);
+            Native::World::WelcomePlayer(GetWorld(), Connection);
             return;
         }
         case 15: // NMT_PCSwap
             return;
         }
 
-        Functions::World::NotifyControlMessage(GetWorld(), Connection, MessageType, Bunch);
+        Native::World::NotifyControlMessage(GetWorld(), Connection, MessageType, Bunch);
     }
 
     uint8 Beacon_NotifyAcceptingConnection(AOnlineBeacon* Beacon)
     {
-        return Functions::World::NotifyAcceptingConnection(GetWorld());
+        return Native::World::NotifyAcceptingConnection(GetWorld());
     }
 
     void* SeamlessTravelHandlerForWorld(UEngine* Engine, UWorld* World)
     {
-        return Functions::Engine::SeamlessTravelHandlerForWorld(Engine, GetWorld());
+        return Native::Engine::SeamlessTravelHandlerForWorld(Engine, GetWorld());
     }
 
     void* NetDebug(UObject* _this)
@@ -197,7 +195,7 @@ namespace Hooks
 
         AFortOnlineBeaconHost* HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
         HostBeacon->ListenPort = 7777;
-        auto bInitBeacon = Functions::OnlineBeaconHost::InitHost(HostBeacon);
+        auto bInitBeacon = Native::OnlineBeaconHost::InitHost(HostBeacon);
         CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");
 
         HostBeacon->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
@@ -208,15 +206,15 @@ namespace Hooks
         GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;
         GetWorld()->LevelCollections[1].NetDriver = HostBeacon->NetDriver;
 
-        Functions::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
+        Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
 
         DETOUR_START
-        DetourAttachE(Functions::World::WelcomePlayer, WelcomePlayer);
-        DetourAttachE(Functions::Actor::GetNetMode, Hooks::GetNetMode);
-        DetourAttachE(Functions::World::NotifyControlMessage, World_NotifyControlMessage);
-        DetourAttachE(Functions::World::SpawnPlayActor, SpawnPlayActor);
-        DetourAttachE(Functions::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage);
-        DetourAttachE(Functions::OnlineSession::KickPlayer, Hooks::KickPlayer);
+        DetourAttachE(Native::World::WelcomePlayer, WelcomePlayer);
+        DetourAttachE(Native::Actor::GetNetMode, Hooks::GetNetMode);
+        DetourAttachE(Native::World::NotifyControlMessage, World_NotifyControlMessage);
+        DetourAttachE(Native::World::SpawnPlayActor, SpawnPlayActor);
+        DetourAttachE(Native::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage);
+        DetourAttachE(Native::OnlineSession::KickPlayer, Hooks::KickPlayer);
         DETOUR_END
 
         GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = 100;
@@ -238,13 +236,12 @@ namespace Hooks
 
         if (bTraveled)
         {
-            if (FunctionName.find("ReadyToStartMatch") != -1)
+            if (!bListening && FunctionName.find("ReadyToStartMatch") != -1)
             {
-                EXECUTE_ONE_TIME
-                {
-                    Game::OnReadyToStartMatch();
-                    Listen();
-                }
+
+                Game::OnReadyToStartMatch();
+                Listen();
+                bListening = true;
             }
 
             else if (FunctionName == "ServerLoadingScreenDropped")
@@ -393,6 +390,13 @@ namespace Hooks
                     }
                 }
 
+                else if (FunctionName == "ClientNotifyWon")
+                {
+                    Game::Start();
+                    bDroppedLS = false;
+                    bListening = false;
+                }
+
                 else if (FunctionName == "ServerAttemptExitVehicle") // is this even needed
                 {
                     auto PC = (AFortPlayerControllerAthena*)Object;
@@ -427,17 +431,12 @@ namespace Hooks
 
                     if (Params->ReceivingActor)
                     {
-                        auto InteractingActorName = Params->ReceivingActor->GetFullName();
+                        auto DBNOPawn = (APlayerPawn_Athena_C*)Params->ReceivingActor;
+                        auto DBNOPC = (AFortPlayerControllerAthena*)DBNOPawn->Controller;
 
-                        if (InteractingActorName.find("PlayerPawn_Athena_C_") != -1) // is this even needed
+                        if (DBNOPawn && DBNOPC && DBNOPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
                         {
-                            auto DBNOPawn = (APlayerPawn_Athena_C*)Params->ReceivingActor;
-                            auto DBNOPC = (AFortPlayerControllerAthena*)DBNOPawn->Controller;
-
-                            if (DBNOPawn && DBNOPC && DBNOPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
-                            {
-                                DBNOPawn->ReviveFromDBNO(PC);
-                            }
+                            DBNOPawn->ReviveFromDBNO(PC);
                         }
                     }
                 }
@@ -467,7 +466,7 @@ namespace Hooks
                     if (Controller && Pawn && Params->BuildingActorToRepair)
                     {
                         // Params->BuildingActorToRepair->OnRep_bUnderRepair();
-                        Params->BuildingActorToRepair->RepairBuilding(Controller, 500); // figure out how to get the repair amount
+                        Params->BuildingActorToRepair->RepairBuilding(Controller, 10); // figure out how to get the repair amount
                     }
                 }
 
@@ -483,8 +482,8 @@ namespace Hooks
                     std::cout << "Aircraft[0]: " << GameState->Aircrafts[0] << '\n';
 
                     if (PC && Params && !PC->Pawn && PC->IsInAircraft())
-                    {       
-						// ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped();
+                    {
+                        // ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped();
                         InitPawn(PC, PC->K2_GetActorLocation()); // RotToQuat(Params->ClientRotation));
                     }
                 }

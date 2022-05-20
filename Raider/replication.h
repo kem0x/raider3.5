@@ -109,7 +109,7 @@ namespace Replication
 
             if (Actor->Name.ComparisonIndex != 0)
             {
-                Functions::Actor::CallPreReplication(Actor, NetDriver);
+                Native::Actor::CallPreReplication(Actor, NetDriver);
                 OutConsiderList.push_back(Actor);
             }
         }
@@ -140,7 +140,7 @@ namespace Replication
                 break; // Only tick on ready connections
 
             if (Connection->PlayerController)
-                Functions::PlayerController::SendClientAdjustment(Connection->PlayerController);
+                Native::PlayerController::SendClientAdjustment(Connection->PlayerController);
 
             for (auto Actor : ConsiderList)
             {
@@ -151,13 +151,13 @@ namespace Replication
 
                 if (!Channel)
                 {
-                    Channel = (UActorChannel*)(Functions::NetConnection::CreateChannel(Connection, 2, true, -1));
-                    Functions::ActorChannel::SetChannelActor(Channel, Actor);
+                    Channel = (UActorChannel*)(Native::NetConnection::CreateChannel(Connection, 2, true, -1));
+                    Native::ActorChannel::SetChannelActor(Channel, Actor);
                 }
 
                 if (Channel)
                 {
-                    Functions::ActorChannel::ReplicateActor(Channel);
+                    Native::ActorChannel::ReplicateActor(Channel);
                 }
             }
         }

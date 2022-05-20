@@ -10,15 +10,15 @@ DWORD WINAPI Main(LPVOID lpParam)
     SetupConsole();
 
     auto Start = std::chrono::steady_clock::now();
-    Functions::InitializeAll();
+    Native::InitializeAll();
     auto End = std::chrono::steady_clock::now();
 
-    printf("[Functions::InitializeAll] Time: %.02f ms\n", (End - Start).count() / 1000000.);
+    printf("[Native::InitializeAll] Time: %.02f ms\n", (End - Start).count() / 1000000.);
 
     DETOUR_START
     DetourAttachE(PEOriginal, Hooks::ProcessEvent);
-    DetourAttachE(Functions::NetDriver::TickFlush, Hooks::TickFlush);
-    DetourAttachE(Functions::LocalPlayer::SpawnPlayActor, Hooks::LocalPlayerSpawnPlayActor);
+    DetourAttachE(Native::NetDriver::TickFlush, Hooks::TickFlush);
+    DetourAttachE(Native::LocalPlayer::SpawnPlayActor, Hooks::LocalPlayerSpawnPlayActor);
 
     void* (*NetDebug)(void* _this) = (void* (*)(void* _this))(Offsets::Imagebase + 0x5CDAD0);
     DetourAttachE(NetDebug, Hooks::NetDebug);
