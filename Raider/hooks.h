@@ -313,15 +313,15 @@ namespace Hooks
                         TArray<AActor*> OverlappingActors {};
                         BuildingActor->GetOverlappingActors(nullptr, &OverlappingActors);
 
-						bool bOverlapsBuild = false;
+                        bool bOverlapsBuild = false;
 
                         for (int i = 0; i < OverlappingActors.Num(); i++)
                         {
                             auto OverlappingActor = OverlappingActors[i];
 
                             if (!OverlappingActor)
-								continue;
-							
+                                continue;
+
                             if (OverlappingActor->IsA(ABuildingActor::StaticClass()))
                             {
                                 bOverlapsBuild = true;
@@ -392,21 +392,12 @@ namespace Hooks
 
                     if (EmoteParams->EmoteAsset)
                     {
-                        auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(CurrentPawn->CharacterBodyType, CurrentPawn->CharacterGender);
-
-                        if (Montage)
+                        if (auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(EFortCustomBodyType::All, EFortCustomGender::Both))
                         {
+                            printf("Test: %s\n", Montage->CompositeSections[0].SectionName.ToString().c_str());
+                            CurrentPawn->PlayAnimMontage(Montage, 1.0f, FName(0));
                             CurrentPawn->OnRep_ReplicatedAnimMontage();
                         }
-
-                        else
-                        {
-                            std::cout << "Failed to find Montage!\n";
-                        }
-                    }
-                    else
-                    {
-                        std::cout << "Failed to find EmoteAsset!\n";
                     }
                 }
 
