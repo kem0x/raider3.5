@@ -261,7 +261,19 @@ namespace Hooks
 
                 if (Pawn && Pawn->AbilitySystemComponent)
                 {
-                    static auto SprintAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint");
+                    static auto AbilitySet = UObject::FindObject<UFortAbilitySet>("FortAbilitySet GAS_DefaultPlayer.GAS_DefaultPlayer");
+                    for (int i = 0; i < AbilitySet->GameplayAbilities.Num(); i++)
+                    {
+                        auto Ability = AbilitySet->GameplayAbilities[i];
+
+                        if (!Ability)
+                            continue;
+						
+                        std::cout << "Ability: " << Ability->GetFullName() << '\n';
+                        GrantGameplayAbility(Pawn, Ability);
+                    }
+
+                    /* static auto SprintAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint");
                     static auto ReloadAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Reload");
                     static auto RangedWeaponAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_RangedWeapon");
                     static auto JumpAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Jump");
@@ -275,7 +287,7 @@ namespace Hooks
                     GrantGameplayAbility(Pawn, JumpAbility);
                     GrantGameplayAbility(Pawn, DeathAbility);
                     GrantGameplayAbility(Pawn, InteractUseAbility);
-                    GrantGameplayAbility(Pawn, InteractSearchAbility);
+                    GrantGameplayAbility(Pawn, InteractSearchAbility); */
                     
                 }
             }
@@ -306,34 +318,17 @@ namespace Hooks
 
                     if (CurrentBuildClass)
                     {
-                        FTransform Transform;
+                        FTransform Transform {};
                         Transform.Rotation = RotToQuat(Params->BuildRot);
                         Transform.Translation = Params->BuildLoc;
                         Transform.Scale3D = { 1, 1, 1 };
 
-                        auto BuildingActor = SpawnActorTrans(CurrentBuildClass, Transform, PC); //, ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding);
+                        auto BuildingActor = (ABuildingSMActor*)SpawnActorTrans(CurrentBuildClass, Transform, PC); //, ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding);
 
-                        TArray<AActor*> OverlappingActors {};
-                        BuildingActor->GetOverlappingActors(nullptr, &OverlappingActors);
-
-                        bool bOverlapsBuild = false;
-
-                        for (int i = 0; i < OverlappingActors.Num(); i++)
+                        if (BuildingActor)
                         {
-                            auto OverlappingActor = OverlappingActors[i];
-
-                            if (!OverlappingActor)
-                                continue;
-
-                            if (OverlappingActor->IsA(ABuildingActor::StaticClass()))
-                            {
-                                bOverlapsBuild = true;
-                                break;
-                            }
+                            BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);							
                         }
-
-                        if (!bOverlapsBuild)
-                            ((ABuildingActor*)BuildingActor)->InitializeKismetSpawnedBuildingActor((ABuildingActor*)BuildingActor, PC);
                     }
                 }
 
@@ -447,6 +442,39 @@ namespace Hooks
                     }
                 }
 
+                else if (FunctionName == "ClientOnPawnDied")
+                {
+                    auto Params = (AFortPlayerControllerZone_ClientOnPawnDied_Params*)Parameters;
+                    auto DeadPC = (AFortPlayerControllerAthena*)Object;
+
+                    if (DeadPC && Params)
+                    {
+                        if (DeadPC && DeadPC->Pawn)
+                        {
+                            DeadPC->Pawn->K2_DestroyActor();
+                        }
+						
+                        auto KillerPawn = Params->DeathReport.KillerPawn;
+                        auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
+
+                        if (KillerPlayerState && KillerPlayerState != DeadPC->PlayerState)
+                        {
+                            KillerPlayerState->KillScore++;
+                            KillerPlayerState->OnRep_Kills();
+
+                            // I think we have to create a spectatorpawn, and then possess it. 
+                        }
+
+						if (KillerPawn)
+                        {
+                            auto KillerController = (AFortPlayerControllerAthena*)Params->DeathReport.KillerPawn->Controller;
+                            if (KillerController)
+                            {
+                            }
+                        }
+                    }
+                }
+
                 else if (FunctionName == "ClientNotifyWon")
                 {
                     Game::Start();
@@ -525,8 +553,9 @@ namespace Hooks
 								
                             BuildingActor->K2_DestroyActor();
 
-                            auto NewBuildingActor = (ABuildingActor*)SpawnActorTrans(NewBuildingClass, SpawnTransform, PC);
-
+                            auto NewBuildingActor = (ABuildingSMActor*)SpawnActorTrans(NewBuildingClass, SpawnTransform, PC);
+                            NewBuildingActor->SetMirrored(Params->bMirrored);
+							
                             if (NewBuildingActor)
                                 NewBuildingActor->InitializeKismetSpawnedBuildingActor(NewBuildingActor, PC);
 						}

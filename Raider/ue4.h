@@ -219,17 +219,22 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
     if (Def->IsA(UFortWeaponItemDefinition::StaticClass()))
 		Count = 1;
 
+    auto QuickBarSlots = PC->QuickBars->PrimaryQuickBar.Slots;
+
     auto TempItemInstance = Def->CreateTemporaryItemInstanceBP(Count, 1);
     TempItemInstance->SetOwningControllerForTemporaryItem(PC);
 
     ((UFortWorldItem*)TempItemInstance)->ItemEntry.Count = Count;
 
     auto ItemEntry = ((UFortWorldItem*)TempItemInstance)->ItemEntry;
-    ItemEntry.bIsDirty = true;
 
     PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
     auto Idx = PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
     PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
+
+	// QuickBarSlots[Slot].Items.Data = &ItemEntry.ItemGuid;
+
+    ItemEntry.bIsDirty = true;
 
     UpdateInventory(PC, Idx);
 
@@ -241,12 +246,17 @@ inline auto RemoveItem(AFortPlayerController* PC, EFortQuickBars QuickBars, int 
     if (Slot == 0 || !PC)
         return;
 
-    auto Inventory = PC->WorldInventory->Inventory;
-    Inventory.ReplicatedEntries.RemoveAt(Slot, 1);
-    Inventory.ItemInstances.RemoveAt(Slot, 1);
-	
     auto pcQuickBars = PC->QuickBars;
+    pcQuickBars->PrimaryQuickBar.Slots[Slot].Items.Data = nullptr;
     pcQuickBars->EmptySlot(QuickBars, Slot);
+
+    auto Inventory = PC->WorldInventory->Inventory;
+	
+    if (Inventory.ReplicatedEntries.Num() >= Slot)
+        Inventory.ReplicatedEntries.RemoveAt(Slot, 1);
+
+	if (Inventory.ItemInstances.Num() >= Slot)
+        Inventory.ItemInstances.RemoveAt(Slot, 1);
 
 	// PC->RemoveItemFromQuickBars(PC->QuickBars->PrimaryQuickBar.Slots[Slot].Items[0]);
 	
@@ -368,7 +378,7 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
 
         for (int i = 0; i < QuickBarSlots.Num(); i++)
         {
-            if (QuickBarSlots[i].Items.Data == 0)
+            if (!QuickBarSlots[i].Items.Data) // Checks if the slot is empty
             {
                 if (i >= 6)
                 {
@@ -394,7 +404,10 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
                         auto Guid = ItemInstance->ItemEntry.ItemGuid;
 
                         if (IsMatchingGuid(FocusedGuid, Guid))
-                            SummonPickup((APlayerPawn_Athena_C*)Pawn, Def, 1, Pawn->K2_GetActorLocation());
+                        {
+                            SummonPickup((APlayerPawn_Athena_C*)Pawn, Def, Params->Pickup->PrimaryPickupItemEntry.Count, Pawn->K2_GetActorLocation());
+                            break;                        
+                        }
                     }
 
                     RemoveItem(Controller, EFortQuickBars::Primary, FocusedSlot);
@@ -505,7 +518,7 @@ FGameplayAbilitySpec* UAbilitySystemComponent_FindAbilitySpecFromHandle(UAbility
 
     for (int i = 0; i < Specs.Num(); i++)
     {
-        auto Spec = Specs[i];
+        auto& Spec = Specs[i];
 
         if (Spec.Handle.Handle == Handle.Handle)
         {
@@ -585,7 +598,7 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
     auto QuickBars = Controller->QuickBars;
     auto QuickBarSlots = QuickBars->PrimaryQuickBar.Slots;
 
-    for (int i = 0; i < QuickBarSlots.Num(); i++)
+    for (int i = 1; i < QuickBarSlots.Num(); i++)
     {
         if (QuickBarSlots[i].Items.Data)
         {
@@ -597,11 +610,11 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
         }
     }
 
-    for (int i = 0; i < ItemInstances.Num(); i++)
+    for (int i = 1; i < ItemInstances.Num(); i++)
     {
         auto ItemInstance = ItemInstances[i];
 		
-        if (!ItemInstance || i == 0)
+        if (!ItemInstance)
             continue;
 
         auto Guid = ItemInstance->GetItemGuid();
