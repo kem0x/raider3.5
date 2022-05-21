@@ -276,7 +276,6 @@ namespace Hooks
                     GrantGameplayAbility(Pawn, DeathAbility);
                     GrantGameplayAbility(Pawn, InteractUseAbility);
                     GrantGameplayAbility(Pawn, InteractSearchAbility);
-                    
                 }
             }
 
@@ -297,46 +296,6 @@ namespace Hooks
                     HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
                 }
 
-                else if (FunctionName.find("ServerCreateBuilding") != -1)
-                {
-                    auto PC = (AFortPlayerControllerAthena*)Object;
-
-                    auto Params = (AFortPlayerController_ServerCreateBuildingActor_Params*)Parameters;
-                    auto CurrentBuildClass = Params->BuildingClassData.BuildingClass;
-
-                    if (CurrentBuildClass)
-                    {
-                        FTransform Transform;
-                        Transform.Rotation = RotToQuat(Params->BuildRot);
-                        Transform.Translation = Params->BuildLoc;
-                        Transform.Scale3D = { 1, 1, 1 };
-
-                        auto BuildingActor = SpawnActorTrans(CurrentBuildClass, Transform, PC); //, ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding);
-
-                        TArray<AActor*> OverlappingActors {};
-                        BuildingActor->GetOverlappingActors(nullptr, &OverlappingActors);
-
-                        bool bOverlapsBuild = false;
-
-                        for (int i = 0; i < OverlappingActors.Num(); i++)
-                        {
-                            auto OverlappingActor = OverlappingActors[i];
-
-                            if (!OverlappingActor)
-                                continue;
-
-                            if (OverlappingActor->IsA(ABuildingActor::StaticClass()))
-                            {
-                                bOverlapsBuild = true;
-                                break;
-                            }
-                        }
-
-                        if (!bOverlapsBuild)
-                            ((ABuildingActor*)BuildingActor)->InitializeKismetSpawnedBuildingActor((ABuildingActor*)BuildingActor, PC);
-                    }
-                }
-
                 else if (FunctionName == "ServerAttemptInventoryDrop")
                 {
                     auto PC = (AFortPlayerController*)Object;
@@ -349,10 +308,7 @@ namespace Hooks
                     auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
                     auto Params = (UAbilitySystemComponent_ServerTryActivateAbility_Params*)Parameters;
 
-                    if (!reinterpret_cast<AFortPlayerPawnAthena*>(AbilitySystemComponent->OwnerActor)->bIsDBNO)
-                    {
-                        TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, nullptr);
-                    }
+                    TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, nullptr);
                 }
 
                 else if (FunctionName == "ServerTryActivateAbilityWithEventData")
@@ -360,10 +316,7 @@ namespace Hooks
                     auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
                     auto Params = (UAbilitySystemComponent_ServerTryActivateAbilityWithEventData_Params*)Parameters;
 
-                    if (!reinterpret_cast<AFortPlayerPawnAthena*>(AbilitySystemComponent->OwnerActor)->bIsDBNO)
-                    {
-                        TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, &Params->TriggerEventData);
-                    }
+                    TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, &Params->TriggerEventData);
                 }
 
                 else if (FunctionName == "ServerAbilityRPCBatch")
@@ -371,10 +324,7 @@ namespace Hooks
                     auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
                     auto Params = (UAbilitySystemComponent_ServerAbilityRPCBatch_Params*)Parameters;
 
-                    if (!reinterpret_cast<AFortPlayerPawnAthena*>(AbilitySystemComponent->OwnerActor)->bIsDBNO)
-                    {
-                        TryActivateAbility(AbilitySystemComponent, Params->BatchInfo.AbilitySpecHandle, Params->BatchInfo.InputPressed, &(Params->BatchInfo.PredictionKey), nullptr);
-                    }
+                    TryActivateAbility(AbilitySystemComponent, Params->BatchInfo.AbilitySpecHandle, Params->BatchInfo.InputPressed, &(Params->BatchInfo.PredictionKey), nullptr);
                 }
 
                 else if (FunctionName == "ServerExecuteInventoryItem")
@@ -391,10 +341,10 @@ namespace Hooks
                 else if (FunctionName == "ServerPlayEmoteItem")
                 {
                     auto CurrentPC = (AFortPlayerControllerAthena*)Object;
-					
+
                     if (CurrentPC->IsInAircraft())
                         return;
-					
+
                     auto CurrentPawn = (AFortPlayerPawnAthena*)CurrentPC->Pawn;
                     auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
                     auto AnimInstance = (UFortAnimInstance*)CurrentPawn->Mesh->GetAnimInstance();
@@ -467,6 +417,35 @@ namespace Hooks
                     }
                 }
 
+                else if (FunctionName == "IsAcceptablePositionForPlacement")
+                {
+                    printf("IsAcceptablePositionForPlacement\n\n\n\n\n");
+                }
+
+                else if (FunctionName == "ServerCreateBuildingActor")
+                {
+                    auto PC = (AFortPlayerControllerAthena*)Object;
+
+                    auto Params = (AFortPlayerController_ServerCreateBuildingActor_Params*)Parameters;
+                    auto CurrentBuildClass = Params->BuildingClassData.BuildingClass;
+
+                    if (CurrentBuildClass)
+                    {
+                        FTransform Transform;
+                        Transform.Rotation = RotToQuat(Params->BuildRot);
+                        Transform.Translation = Params->BuildLoc;
+                        Transform.Scale3D = { 1, 1, 1 };
+
+                        if (auto BuildingActor = (ABuildingSMActor*)SpawnActorTrans(CurrentBuildClass, Transform, PC))
+                        {
+                            BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::CountsTowardsBounds;
+                            BuildingActor->SetMirrored(Params->bMirrored);
+                            BuildingActor->PlacedByPlacementTool();
+                            BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);
+                        }
+                    }
+                }
+
                 else if (FunctionName == "ServerBeginEditingBuildingActor")
                 {
                     auto Params = (AFortPlayerController_ServerBeginEditingBuildingActor_Params*)Parameters;
@@ -477,31 +456,13 @@ namespace Hooks
                     if (Controller && Pawn && Params->BuildingActorToEdit)
                     {
                         auto EditTool = (AFortWeap_EditingTool*)EquipWeaponDefinition(Pawn, (UFortWeaponItemDefinition*)EditToolEntry.ItemDefinition, EditToolEntry.ItemGuid);
-                        
+
                         if (EditTool)
                         {
                             EditTool->EditActor = Params->BuildingActorToEdit;
                             EditTool->OnRep_EditActor();
                             Params->BuildingActorToEdit->EditingPlayer = (AFortPlayerStateZone*)Pawn->PlayerState;
-                            Params->BuildingActorToEdit->OnRep_EditingPlayer();	
-                        }
-                    }
-                }
-
-                else if (FunctionName == "ServerAttemptInteract")
-                {
-                    auto Params = (AFortPlayerController_ServerAttemptInteract_Params*)Parameters;
-                    auto PC = (AFortPlayerControllerAthena*)Object;
-
-                    if (Params->ReceivingActor)
-                    {
-                        auto DBNOPawn = (APlayerPawn_Athena_C*)Params->ReceivingActor;
-                        auto DBNOPC = (AFortPlayerControllerAthena*)DBNOPawn->Controller;
-
-                        if (DBNOPawn && DBNOPC && DBNOPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
-                        {
-                            DBNOPawn->ReviveFromDBNO(PC);
-                            //DBNOPawn->AbilitySystemComponent->Activate(false); // possibly disable temporarily abilities
+                            Params->BuildingActorToEdit->OnRep_EditingPlayer();
                         }
                     }
                 }
@@ -509,27 +470,28 @@ namespace Hooks
                 else if (FunctionName == "ServerEditBuildingActor")
                 {
                     auto Params = (AFortPlayerController_ServerEditBuildingActor_Params*)Parameters;
-					auto PC = (AFortPlayerControllerAthena*)Object;
-					
+                    auto PC = (AFortPlayerControllerAthena*)Object;
+
                     if (PC && Params)
                     {
-						auto BuildingActor = Params->BuildingActorToEdit;
+                        auto BuildingActor = Params->BuildingActorToEdit;
                         auto NewBuildingClass = Params->NewBuildingClass;
-						
-						if (BuildingActor && NewBuildingClass)
-						{
+
+                        if (BuildingActor && NewBuildingClass)
+                        {
                             FTransform SpawnTransform;
                             SpawnTransform.Rotation = RotToQuat(BuildingActor->K2_GetActorRotation());
                             SpawnTransform.Translation = BuildingActor->K2_GetActorLocation();
                             SpawnTransform.Scale3D = BuildingActor->GetActorScale3D();
-								
+
                             BuildingActor->K2_DestroyActor();
 
-                            auto NewBuildingActor = (ABuildingActor*)SpawnActorTrans(NewBuildingClass, SpawnTransform, PC);
-
-                            if (NewBuildingActor)
+                            if (auto NewBuildingActor = (ABuildingSMActor*)SpawnActorTrans(NewBuildingClass, SpawnTransform, PC))
+                            {
+                                NewBuildingActor->SetMirrored(Params->bMirrored);
                                 NewBuildingActor->InitializeKismetSpawnedBuildingActor(NewBuildingActor, PC);
-						}
+                            }
+                        }
                     }
                 }
 
@@ -554,6 +516,24 @@ namespace Hooks
                     }
                 }
 
+                else if (FunctionName == "ServerAttemptInteract")
+                {
+                    auto Params = (AFortPlayerController_ServerAttemptInteract_Params*)Parameters;
+                    auto PC = (AFortPlayerControllerAthena*)Object;
+
+                    if (Params->ReceivingActor)
+                    {
+                        auto DBNOPawn = (APlayerPawn_Athena_C*)Params->ReceivingActor;
+                        auto DBNOPC = (AFortPlayerControllerAthena*)DBNOPawn->Controller;
+
+                        if (DBNOPawn && DBNOPC && DBNOPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
+                        {
+                            DBNOPawn->ReviveFromDBNO(PC);
+                            // DBNOPawn->AbilitySystemComponent->Activate(false); // possibly disable temporarily abilities
+                        }
+                    }
+                }
+
                 else if (FunctionName == "ServerReviveFromDBNO")
                 {
                     auto Params = (AFortPlayerPawn_ServerReviveFromDBNO_Params*)Parameters;
@@ -565,7 +545,7 @@ namespace Hooks
                     {
                         DBNOPawn->bIsDBNO = false;
                         DBNOPawn->OnRep_IsDBNO();
-						
+
                         DBNOPC->ClientOnPawnRevived(InstigatorPC);
                         DBNOPawn->SetHealth(100);
                     }
@@ -598,7 +578,7 @@ namespace Hooks
                         if (Aircraft)
                         {
                             auto ExitLocation = Aircraft->K2_GetActorLocation();
-                            
+
                             // ExitLocation.Z -= 500;
 
                             InitPawn(PC, ExitLocation);
