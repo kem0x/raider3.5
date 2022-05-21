@@ -133,48 +133,33 @@ namespace SDK
             Max = 0;
         }
 
+        /* inline Reset(int32_t NewSize = 0)
+        {
+            // If we have space to hold the excepted size, then don't reallocate
+            if (NewSize <= Count)
+            {
+                DestructItems(GetData(), Count);
+                ArrayNum = 0;
+            }
+            else
+            {
+                Empty(NewSize);
+            } 
+        } */
+
+        FORCEINLINE void Reset(int MinSizeAfterReset = 0)
+        {
+            Max = MinSizeAfterReset;
+            Count = 0;
+
+            FMemory_Free(Data);
+            Data = (T*)FMemory_Malloc(MinSizeAfterReset * sizeof(T), alignof(T));
+        }
+
     public:
         T* Data;
         int32_t Count;
         int32_t Max;
-    };
-
-    template <typename ElementType, int32_t MaxTotalElements, int32_t ElementsPerChunk>
-    class TStaticIndirectArrayThreadSafeRead
-    {
-    public:
-        inline size_t Num() const
-        {
-            return NumElements;
-        }
-
-        inline bool IsValidIndex(int32_t index) const
-        {
-            return index < Num() && index >= 0;
-        }
-
-        inline ElementType const* const& operator[](int32_t index) const
-        {
-            return *GetItemPtr(index);
-        }
-
-    private:
-        inline ElementType const* const* GetItemPtr(int32_t Index) const
-        {
-            int32_t ChunkIndex = Index / ElementsPerChunk;
-            int32_t WithinChunkIndex = Index % ElementsPerChunk;
-            ElementType** Chunk = Chunks[ChunkIndex];
-            return Chunk + WithinChunkIndex;
-        }
-
-        enum
-        {
-            ChunkTableSize = (MaxTotalElements + ElementsPerChunk - 1) / ElementsPerChunk
-        };
-
-        ElementType** Chunks[ChunkTableSize];
-        int32_t NumElements;
-        int32_t NumChunks;
     };
 
     struct FString : private TArray<wchar_t>
@@ -524,6 +509,14 @@ private:
         int32 DWORDIndex;
         uint32 Mask;
     };
+
+    inline void Reset()
+    {
+		// We need this because iterators often use whole DWORDs when masking, which includes off-the-end elements
+        // FMemory::Memset(GetData(), 0, FMath::DivideAndRoundUp(NumBits, NumBitsPerDWORD) * sizeof(uint32));
+
+        NumBits = 0;
+    }
 };
 
 template <typename ElementType>
@@ -576,6 +569,29 @@ public:
     TBitArray AllocationFlags;
     int32 FirstFreeIndex;
     int32 NumFreeIndices;
+
+    FORCEINLINE void Reset()
+    {
+        /*
+        
+	    // Destruct the allocated elements.
+		if( !TIsTriviallyDestructible<ElementType>::Value )
+		{
+			for(TIterator It(*this);It;++It)
+			{
+				ElementType& Element = *It;
+				Element.~ElementType();
+			}
+		}
+		
+        */
+
+		// Free the allocated elements.
+        Data.Reset();
+        FirstFreeIndex = -1;
+        NumFreeIndices = 0;
+        AllocationFlags.Reset();
+    }
 };
 
 template <typename ElementType>
@@ -748,6 +764,21 @@ public:
         Hash = Malloc(NumElementsToInitWith * sizeof(ElementType), alignof(ElementType));
         HashSize = NumElementsToInitWith * sizeof(ElementType);
     }
+
+    FORCEINLINE void Reset()
+    {
+        Elements.Reset();
+
+		/*
+        
+        // Clear the references to the elements that have now been removed.
+        for (int32 HashIndex = 0, LocalHashSize = HashSize; HashIndex < LocalHashSize; ++HashIndex)
+        {
+                GetTypedHash(HashIndex) = FSetElementId();
+        }
+		
+        */
+    }
 };
 
 template <typename KeyType, typename ValueType>
@@ -881,6 +912,11 @@ public:
     FORCEINLINE void Initialize(const int32 NumElementsToInitWith = 5)
     {
         return Pairs.Initialize(NumElementsToInitWith);
+    }
+
+    FORCEINLINE void Reset()
+    {
+        Pairs.Reset();
     }
 };
 

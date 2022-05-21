@@ -137,7 +137,9 @@ namespace Hooks
             }
         }
 
-        Pawn->K2_TeleportTo({ 37713, -52942, 461 }, { 0, 0, 0 });
+        PlayerController->OverriddenBackpackSize = 100;
+
+        // Pawn->K2_TeleportTo({ 37713, -52942, 461 }, { 0, 0, 0 }); // Tilted
 
         /*
          Pawn->CharacterMovement->SetMovementMode(EMovementMode::MOVE_Custom, 3);
@@ -274,13 +276,14 @@ namespace Hooks
                     GrantGameplayAbility(Pawn, DeathAbility);
                     GrantGameplayAbility(Pawn, InteractUseAbility);
                     GrantGameplayAbility(Pawn, InteractSearchAbility);
+                    
                 }
             }
 
             if (bDroppedLS) // todo change this
             {
 #ifdef LOGGING
-                if (Function->FunctionFlags & 0x00200000 || (FunctionName.starts_with("Client") && FunctionName.find("Ack") == -1))
+                if (Function->FunctionFlags & 0x00200000 || (Function->FunctionFlags & 0x01000000 && FunctionName.find("Ack") == -1 && FunctionName.find("AdjustPos") == -1))
                 {
                     if (FunctionName.find("ServerUpdateCamera") == -1 && FunctionName.find("ServerMove") == -1)
                     {
@@ -387,16 +390,37 @@ namespace Hooks
 
                 else if (FunctionName == "ServerPlayEmoteItem")
                 {
-                    auto CurrentPawn = (AFortPlayerPawnAthena*)((AFortPlayerController*)Object)->Pawn;
+                    auto CurrentPC = (AFortPlayerControllerAthena*)Object;
+                    auto CurrentPawn = (AFortPlayerPawnAthena*)CurrentPC->Pawn;
                     auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
+                    auto AnimInstance = (UFortAnimInstance*)CurrentPawn->Mesh->GetAnimInstance();
 
-                    if (EmoteParams->EmoteAsset)
+                    if (EmoteParams->EmoteAsset && !AnimInstance->bIsJumping && !AnimInstance->bIsFalling)
                     {
-                        if (auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(EFortCustomBodyType::All, EFortCustomGender::Both))
+                        if (CurrentPawn->bIsCrouched) // bruh why dont this work
                         {
-                            printf("Test: %s\n", Montage->CompositeSections[0].SectionName.ToString().c_str());
-                            CurrentPawn->PlayAnimMontage(Montage, 1.0f, FName(0));
+                            CurrentPawn->bIsCrouched = false;
+                            CurrentPawn->UnCrouch(true);
+                            CurrentPawn->OnRep_IsCrouched();
+                        }
+						
+                        std::cout << "EmoteAsset: " << EmoteParams->EmoteAsset->GetFullName() << '\n';
+                        EmoteParams->EmoteAsset->bPlayRandomSection = true;
+                        if (auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(CurrentPawn->CharacterBodyType, CurrentPawn->CharacterGender))
+                        {
+                            // PlayAnimMontage calls Montage_Play and if the SectionName is not NAME_NONE then Montage_JumpToSection
+                            // const auto Duration = CurrentPawn->PlayAnimMontage(Montage, 1.0f, (FName)-1);
+                            auto Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
+                            std::cout << "Duration: " << Duration << '\n';
+                            CurrentPawn->RepAnimMontageInfo.AnimMontage = Montage;
+                            CurrentPawn->RepCharPartAnimMontageInfo.PawnMontage = Montage;
+                            CurrentPawn->RepAnimMontageInfo.PlayRate = 1.0f;
+                            CurrentPawn->OnRep_CharPartAnimMontageInfo();
+                            CurrentPawn->OnRep_RepAnimMontageStartSection();
+                            // CurrentPawn->OnRep_ReplayRepAnimMontageInfo();
                             CurrentPawn->OnRep_ReplicatedAnimMontage();
+							
+                            Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
                         }
                     }
                 }
@@ -406,6 +430,7 @@ namespace Hooks
                     Game::Start();
                     bDroppedLS = false;
                     bListening = false;
+                    return;
                 }
 
                 else if (FunctionName == "ServerAttemptExitVehicle") // is this even needed
@@ -426,10 +451,13 @@ namespace Hooks
                     auto Params = (AFortPlayerController_ServerBeginEditingBuildingActor_Params*)Parameters;
                     auto Controller = (AFortPlayerControllerAthena*)Object;
                     auto Pawn = (APlayerPawn_Athena_C*)Controller->Pawn;
-                    auto EditTool = FindItemInInventory<UFortEditToolItemDefinition>(Controller);
+                    auto EditToolEntry = FindItemInInventory<UFortEditToolItemDefinition>(Controller);
 
-                    if (Controller && Pawn && Params->BuildingActorToEdit && EditTool)
+                    if (Controller && Pawn && Params->BuildingActorToEdit)
                     {
+                        auto EditTool = (AFortWeap_EditingTool*)EquipWeaponDefinition(Pawn, (UFortWeaponItemDefinition*)EditToolEntry.ItemDefinition, EditToolEntry.ItemGuid);
+                        EditTool->EditActor = Params->BuildingActorToEdit;
+                        EditTool->OnRep_EditActor();
                         Params->BuildingActorToEdit->EditingPlayer = (AFortPlayerStateZone*)Pawn->PlayerState;
                         Params->BuildingActorToEdit->OnRep_EditingPlayer();
                     }
@@ -452,6 +480,53 @@ namespace Hooks
                     }
                 }
 
+                else if (FunctionName == "ServerEditBuildingActor")
+                {
+                    auto Params = (AFortPlayerController_ServerEditBuildingActor_Params*)Parameters;
+					auto PC = (AFortPlayerControllerAthena*)Object;
+					
+                    if (PC && Params)
+                    {
+						auto BuildingActor = Params->BuildingActorToEdit;
+                        auto NewBuildingClass = Params->NewBuildingClass;
+						
+						if (BuildingActor && NewBuildingClass)
+						{
+                            FTransform SpawnTransform;
+                            SpawnTransform.Rotation = RotToQuat(BuildingActor->K2_GetActorRotation());
+                            SpawnTransform.Translation = BuildingActor->K2_GetActorLocation();
+                            SpawnTransform.Scale3D = BuildingActor->GetActorScale3D();
+								
+                            BuildingActor->K2_DestroyActor();
+
+                            auto NewBuildingActor = (ABuildingActor*)SpawnActorTrans(NewBuildingClass, SpawnTransform, PC);
+
+                            if (NewBuildingActor)
+                                NewBuildingActor->InitializeKismetSpawnedBuildingActor(NewBuildingActor, PC);
+						}
+                    }
+                }
+
+                else if (FunctionName == "ServerEndEditingBuildingActor")
+                {
+                    auto Params = (AFortPlayerController_ServerEndEditingBuildingActor_Params*)Parameters;
+                    auto PC = (AFortPlayerControllerAthena*)Object;
+
+                    if (Params->BuildingActorToStopEditing)
+                    {
+                        Params->BuildingActorToStopEditing->EditingPlayer = nullptr;
+                        Params->BuildingActorToStopEditing->OnRep_EditingPlayer();
+
+                        auto EditTool = (AFortWeap_EditingTool*)((APlayerPawn_Athena_C*)PC->Pawn)->CurrentWeapon;
+
+                        if (EditTool)
+                        {
+                            EditTool->bEditConfirmed = true;
+                            EditTool->OnRep_EditActor();
+                        }
+                    }
+                }
+
                 else if (FunctionName == "ServerReviveFromDBNO")
                 {
                     auto Params = (AFortPlayerPawn_ServerReviveFromDBNO_Params*)Parameters;
@@ -463,6 +538,7 @@ namespace Hooks
                     {
                         DBNOPawn->bIsDBNO = false;
                         DBNOPawn->OnRep_IsDBNO();
+						
                         DBNOPC->ClientOnPawnRevived(InstigatorPC);
                         DBNOPawn->SetHealth(100);
                     }
@@ -487,17 +563,38 @@ namespace Hooks
                     auto PC = (AFortPlayerControllerAthena*)Object;
                     auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
 
-                    std::cout << "Attempted Jump!\n";
-
-                    std::cout << "Pawn: " << PC->Pawn << '\n';
-                    std::cout << "Aircraft[0]: " << GameState->Aircrafts[0] << '\n';
-
-                    if (PC && Params && !PC->Pawn && PC->IsInAircraft())
+                    if (PC && Params && !PC->Pawn && PC->IsInAircraft()) // TODO: Teleport the player's pawn instead of making a new one.
                     {
                         // ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped();
-                        InitPawn(PC, PC->K2_GetActorLocation()); // RotToQuat(Params->ClientRotation));
+                        auto Aircraft = (AFortAthenaAircraft*)GameState->Aircrafts[0];
+
+                        if (Aircraft)
+                        {
+                            auto ExitLocation = Aircraft->K2_GetActorLocation();
+                            
+                            ExitLocation.Z -= 500;
+
+                            InitPawn(PC, ExitLocation);
+                            // PC->Pawn->K2_TeleportTo(ExitLocation, Params->ClientRotation);
+                        }
                     }
                 }
+
+                /* else if (FunctionName == "ServerSetInAircraft")
+                {
+                    auto Params = (AFortPlayerStateAthena_ServerSetInAircraft_Params*)Parameters;
+                    auto Controller = (AFortPlayerControllerAthena*)((AFortPlayerStateAthena*)Object)->
+
+                    if (Params && Params->bNewInAircraft)
+                    {
+                        if (Controller->Pawn)
+                        {
+                            auto Pawn = Controller->Pawn;
+                            Controller->UnPossess();
+                            Pawn->K2_DestroyActor();
+                        }
+                    }
+                } */
             }
         }
 

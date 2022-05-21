@@ -121,7 +121,7 @@ static FORCEINLINE void sinCos(float* ScalarSin, float* ScalarCos, float Value)
     *ScalarCos = sign * p;
 }
 
-FORCEINLINE auto RotToQuat(FRotator& Rotator)
+FORCEINLINE auto RotToQuat(FRotator Rotator)
 {
     const float DEG_TO_RAD = PI / (180.f);
     const float DIVIDE_BY_2 = DEG_TO_RAD / 2.f;
@@ -239,11 +239,13 @@ inline auto RemoveItem(AFortPlayerController* PC, EFortQuickBars QuickBars, int 
         return;
 
     auto Inventory = PC->WorldInventory->Inventory;
-    // Inventory.ReplicatedEntries.RemoveAt(Slot, 1);
-    // Inventory.ItemInstances.RemoveAt(Slot, 1);
+    Inventory.ReplicatedEntries.RemoveAt(Slot, 1);
+    Inventory.ItemInstances.RemoveAt(Slot, 1);
 	
     auto pcQuickBars = PC->QuickBars;
     pcQuickBars->EmptySlot(QuickBars, Slot);
+
+	// PC->RemoveItemFromQuickBars(PC->QuickBars->PrimaryQuickBar.Slots[Slot].Items[0]);
 	
 	UpdateInventory(PC, 0, true);
 }
@@ -472,7 +474,7 @@ static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnIn
 }
 
 template <typename Class>
-static Class* FindItemInInventory(AFortPlayerControllerAthena* PC)
+static FFortItemEntry FindItemInInventory(AFortPlayerControllerAthena* PC)
 {
     auto ItemInstances = PC->WorldInventory->Inventory.ItemInstances;
 
@@ -487,11 +489,11 @@ static Class* FindItemInInventory(AFortPlayerControllerAthena* PC)
 
         if (Def->IsA(Class::StaticClass()))
         {
-            return (Class*)ItemInstance;
+            return ItemInstance->ItemEntry;
         }
     }
 
-    return nullptr;
+    return FFortItemEntry();
 }
 
 FGameplayAbilitySpec* UAbilitySystemComponent_FindAbilitySpecFromHandle(UAbilitySystemComponent* AbilitySystemComponent, FGameplayAbilitySpecHandle Handle)
@@ -601,7 +603,7 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
             auto def = ItemInstance->ItemEntry.ItemDefinition;
 
             if (def)
-                SummonPickup(Pawn, def, 1, Pawn->K2_GetActorLocation());
+                SummonPickup(Pawn, def, ItemInstance->ItemEntry.Count, Pawn->K2_GetActorLocation());
         }
     }
 }
@@ -612,34 +614,36 @@ static bool KickPlayer(AFortPlayerControllerAthena* PC, FString Message)
     return Native::OnlineSession::KickPlayer(GetWorld()->AuthorityGameMode->GameSession, PC, text);
 }
 
-FTransform GetPlayerStart(AFortPlayerControllerAthena* PC, FString IncomingName = L"")
+FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
 {
-    /* const TArray<AActor*> OutActors(150);
-    std::cout << "a\n";
-    GetGameplayStatics()->STATIC_GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), &OutActors);
+    TArray<AActor*> OutActors;
+
+    static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
+    GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), AFortPlayerStartWarmup::StaticClass(), &OutActors);
 
     auto ActorsNum = OutActors.Num();
-    std::cout << "Num: " << ActorsNum << '\n';
 
-    auto ActorToUseNum = rand() % ActorsNum;
-    auto ActorToUse = (OutActors)[ActorToUseNum];
-
-    if (!ActorToUse)
-        std::cout << "Invalid Actor!\n";
-    else
-        std::cout << "Valid Actor!\n";
-
-	while (!ActorToUse)
-    {
-        ActorToUseNum = rand() % ActorsNum;
-		ActorToUse = (OutActors)[ActorToUseNum];
-    } */
-
-    auto SpawnTransform = FTransform();
+	auto SpawnTransform = FTransform();
     SpawnTransform.Scale3D = FVector(1, 1, 1);
     SpawnTransform.Rotation = FQuat();
     SpawnTransform.Translation = FVector { 1250, 1818, 3284 };
-    // SpawnTransform.Translation = ActorToUse->K2_GetActorLocation();
+
+    if (ActorsNum != 0)
+    {
+        auto ActorToUseNum = rand() % ActorsNum;
+        auto ActorToUse = (OutActors)[ActorToUseNum];
+		
+        while (!ActorToUse)
+        {
+            ActorToUseNum = rand() % ActorsNum;
+            ActorToUse = (OutActors)[ActorToUseNum];
+        }
+		
+        auto Location = ActorToUse->K2_GetActorLocation();
+        SpawnTransform.Translation = ActorToUse->K2_GetActorLocation();
+
+        PC->WarmupPlayerStart = (AFortPlayerStartWarmup*)ActorToUse;
+    }
 	
     return SpawnTransform;
 	
@@ -648,10 +652,15 @@ FTransform GetPlayerStart(AFortPlayerControllerAthena* PC, FString IncomingName 
 
 static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector { 1250, 1818, 3284 }, FQuat Rotation = FQuat())
 {
+    if (PlayerController->Pawn)
+        PlayerController->Pawn->K2_DestroyActor();
+	
     auto SpawnTransform = FTransform();
     SpawnTransform.Scale3D = FVector(1, 1, 1);
     SpawnTransform.Rotation = Rotation;
     SpawnTransform.Translation = Loc;
+
+    // SpawnTransform = GetPlayerStart(PlayerController);
 
     auto Pawn = (APlayerPawn_Athena_C*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), SpawnTransform, PlayerController);
 
