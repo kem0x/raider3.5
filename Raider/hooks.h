@@ -12,7 +12,6 @@ namespace Hooks
     {
         if (bTraveled)
             return true;
-
         else
             return Native::LocalPlayer::SpawnPlayActor(Player, URL, OutError, World);
     }
@@ -247,7 +246,6 @@ namespace Hooks
         {
             if (!bListening && FunctionName.find("ReadyToStartMatch") != -1)
             {
-
                 Game::OnReadyToStartMatch();
                 Listen();
                 bListening = true;
@@ -274,26 +272,10 @@ namespace Hooks
                             GrantGameplayAbility(Pawn, Ability);
                         }
                     }
-
-                    /* static auto SprintAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint");
-                    static auto ReloadAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Reload");
-                    static auto RangedWeaponAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_RangedWeapon");
-                    static auto JumpAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Jump");
-                    static auto DeathAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_Death.GA_DefaultPlayer_Death_C");
-                    static auto InteractUseAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractUse.GA_DefaultPlayer_InteractUse_C");
-                    static auto InteractSearchAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractSearch.GA_DefaultPlayer_InteractSearch_C");
-
-                    GrantGameplayAbility(Pawn, SprintAbility);
-                    GrantGameplayAbility(Pawn, ReloadAbility);
-                    GrantGameplayAbility(Pawn, RangedWeaponAbility);
-                    GrantGameplayAbility(Pawn, JumpAbility);
-                    GrantGameplayAbility(Pawn, DeathAbility);
-                    GrantGameplayAbility(Pawn, InteractUseAbility);
-                    GrantGameplayAbility(Pawn, InteractSearchAbility); */
                 }
             }
 
-            if (bDroppedLS) // todo change this
+            if (bDroppedLS)
             {
 #ifdef LOGGING
                 if (Function->FunctionFlags & 0x00200000 || (Function->FunctionFlags & 0x01000000 && FunctionName.find("Ack") == -1 && FunctionName.find("AdjustPos") == -1))
@@ -445,14 +427,6 @@ namespace Hooks
                     }
                 }
 
-                else if (FunctionName == "ClientNotifyWon")
-                {
-                    Game::Start();
-                    bDroppedLS = false;
-                    bListening = false;
-                    return;
-                }
-
                 else if (FunctionName == "ServerAttemptExitVehicle") // is this even needed
                 {
                     auto PC = (AFortPlayerControllerAthena*)Object;
@@ -463,11 +437,6 @@ namespace Hooks
                         PC->Pawn->Role = ENetRole::ROLE_Authority;
                         Vehicle->Role = ENetRole::ROLE_Authority;
                     }
-                }
-
-                else if (FunctionName == "IsAcceptablePositionForPlacement")
-                {
-                    printf("IsAcceptablePositionForPlacement\n\n\n\n\n");
                 }
 
                 else if (FunctionName == "ServerCreateBuildingActor")
