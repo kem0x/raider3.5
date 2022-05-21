@@ -261,7 +261,19 @@ namespace Hooks
 
                 if (Pawn && Pawn->AbilitySystemComponent)
                 {
-                    static auto SprintAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint");
+                    static auto AbilitySet = UObject::FindObject<UFortAbilitySet>("FortAbilitySet GAS_DefaultPlayer.GAS_DefaultPlayer");
+                    for (int i = 0; i < AbilitySet->GameplayAbilities.Num(); i++)
+                    {
+                        auto Ability = AbilitySet->GameplayAbilities[i];
+
+                        if (!Ability)
+                            continue;
+						
+                        std::cout << "Ability: " << Ability->GetFullName() << '\n';
+                        GrantGameplayAbility(Pawn, Ability);
+                    }
+
+                    /* static auto SprintAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint");
                     static auto ReloadAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Reload");
                     static auto RangedWeaponAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_RangedWeapon");
                     static auto JumpAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Jump");
@@ -275,7 +287,8 @@ namespace Hooks
                     GrantGameplayAbility(Pawn, JumpAbility);
                     GrantGameplayAbility(Pawn, DeathAbility);
                     GrantGameplayAbility(Pawn, InteractUseAbility);
-                    GrantGameplayAbility(Pawn, InteractSearchAbility);
+                    GrantGameplayAbility(Pawn, InteractSearchAbility); */
+                    
                 }
             }
 
@@ -294,6 +307,29 @@ namespace Hooks
                 if (FunctionName.find("ServerHandlePickup") != -1)
                 {
                     HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
+                }
+
+                else if (FunctionName.find("ServerCreateBuilding") != -1)
+                {
+                    auto PC = (AFortPlayerControllerAthena*)Object;
+
+                    auto Params = (AFortPlayerController_ServerCreateBuildingActor_Params*)Parameters;
+                    auto CurrentBuildClass = Params->BuildingClassData.BuildingClass;
+
+                    if (CurrentBuildClass)
+                    {
+                        FTransform Transform {};
+                        Transform.Rotation = RotToQuat(Params->BuildRot);
+                        Transform.Translation = Params->BuildLoc;
+                        Transform.Scale3D = { 1, 1, 1 };
+
+                        auto BuildingActor = (ABuildingSMActor*)SpawnActorTrans(CurrentBuildClass, Transform, PC); //, ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding);
+
+                        if (BuildingActor)
+                        {
+                            BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);							
+                        }
+                    }
                 }
 
                 else if (FunctionName == "ServerAttemptInventoryDrop")
@@ -355,43 +391,64 @@ namespace Hooks
                         {
                             if (AnimInstance && Montage)
                             {
-                                auto LocalAnimMontageInfo = CurrentPawn->AbilitySystemComponent->LocalAnimMontageInfo;
-                                auto RepAnimMontageInfo = CurrentPawn->AbilitySystemComponent->RepAnimMontageInfo;
-
+                                auto RepAnimMontageInfo = CurrentPawn->RepAnimMontageInfo;
                                 auto Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
                                 if (Duration > 0.f)
                                 {
-                                    LocalAnimMontageInfo.AnimMontage = Montage;
-                                    LocalAnimMontageInfo.PlayBit = !LocalAnimMontageInfo.PlayBit;
-
                                     RepAnimMontageInfo.AnimMontage = Montage;
-                                    RepAnimMontageInfo.ForcePlayBit = ~RepAnimMontageInfo.ForcePlayBit;
+                                    RepAnimMontageInfo.ForcePlayBit = 1;
 
-                                    bool bIsStopped = AnimInstance->Montage_GetIsStopped(LocalAnimMontageInfo.AnimMontage);
+                                    bool bIsStopped = AnimInstance->Montage_GetIsStopped(Montage);
                                     if (!bIsStopped)
                                     {
-                                        RepAnimMontageInfo.PlayRate = AnimInstance->Montage_GetPlayRate(LocalAnimMontageInfo.AnimMontage);
-                                        RepAnimMontageInfo.Position = AnimInstance->Montage_GetPosition(LocalAnimMontageInfo.AnimMontage);
-                                        RepAnimMontageInfo.BlendTime = AnimInstance->Montage_GetBlendTime(LocalAnimMontageInfo.AnimMontage);
+                                        RepAnimMontageInfo.PlayRate = AnimInstance->Montage_GetPlayRate(Montage);
+                                        RepAnimMontageInfo.Position = AnimInstance->Montage_GetPosition(Montage);
+                                        RepAnimMontageInfo.BlendTime = AnimInstance->Montage_GetBlendTime(Montage);
                                     }
 
                                     if (RepAnimMontageInfo.IsStopped != bIsStopped)
                                     {
                                         RepAnimMontageInfo.IsStopped = bIsStopped;
-                                        if (CurrentPawn->AbilitySystemComponent->AvatarActor != nullptr)
-                                        {
-                                            CurrentPawn->AbilitySystemComponent->AvatarActor->ForceNetUpdate();
-                                        }
                                     }
 
                                     RepAnimMontageInfo.NextSectionID = 0;
-
-                                    if (CurrentPawn->AbilitySystemComponent->AvatarActor != nullptr)
-                                    {
-                                        CurrentPawn->AbilitySystemComponent->AvatarActor->ForceNetUpdate();
-                                    }
                                 }
-                                CurrentPawn->AbilitySystemComponent->OnRep_ReplicatedAnimMontage();
+                                CurrentPawn->PlayAnimMontage(Montage, 1.0f, FName(-1));
+                                CurrentPawn->PlayLocalAnimMontage(Montage, 1.0f, FName(-1));
+                                CurrentPawn->OnRep_ReplicatedAnimMontage();
+                            }
+                        }
+                    }
+                }
+
+                else if (FunctionName == "ClientOnPawnDied")
+                {
+                    auto Params = (AFortPlayerControllerZone_ClientOnPawnDied_Params*)Parameters;
+                    auto DeadPC = (AFortPlayerControllerAthena*)Object;
+
+                    if (DeadPC && Params)
+                    {
+                        if (DeadPC && DeadPC->Pawn)
+                        {
+                            DeadPC->Pawn->K2_DestroyActor();
+                        }
+						
+                        auto KillerPawn = Params->DeathReport.KillerPawn;
+                        auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
+
+                        if (KillerPlayerState && KillerPlayerState != DeadPC->PlayerState)
+                        {
+                            KillerPlayerState->KillScore++;
+                            KillerPlayerState->OnRep_Kills();
+
+                            // I think we have to create a spectatorpawn, and then possess it. 
+                        }
+
+						if (KillerPawn)
+                        {
+                            auto KillerController = (AFortPlayerControllerAthena*)Params->DeathReport.KillerPawn->Controller;
+                            if (KillerController)
+                            {
                             }
                         }
                     }
