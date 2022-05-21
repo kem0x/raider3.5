@@ -400,43 +400,31 @@ namespace Hooks
                         {
                             if (AnimInstance && Montage)
                             {
-                                auto LocalAnimMontageInfo = CurrentPawn->AbilitySystemComponent->LocalAnimMontageInfo;
-                                auto RepAnimMontageInfo = CurrentPawn->AbilitySystemComponent->RepAnimMontageInfo;
-
+                                auto RepAnimMontageInfo = CurrentPawn->RepAnimMontageInfo;
                                 auto Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
                                 if (Duration > 0.f)
                                 {
-                                    LocalAnimMontageInfo.AnimMontage = Montage;
-                                    LocalAnimMontageInfo.PlayBit = !LocalAnimMontageInfo.PlayBit;
-
                                     RepAnimMontageInfo.AnimMontage = Montage;
-                                    RepAnimMontageInfo.ForcePlayBit = ~RepAnimMontageInfo.ForcePlayBit;
+                                    RepAnimMontageInfo.ForcePlayBit = 1;
 
-                                    bool bIsStopped = AnimInstance->Montage_GetIsStopped(LocalAnimMontageInfo.AnimMontage);
+                                    bool bIsStopped = AnimInstance->Montage_GetIsStopped(Montage);
                                     if (!bIsStopped)
                                     {
-                                        RepAnimMontageInfo.PlayRate = AnimInstance->Montage_GetPlayRate(LocalAnimMontageInfo.AnimMontage);
-                                        RepAnimMontageInfo.Position = AnimInstance->Montage_GetPosition(LocalAnimMontageInfo.AnimMontage);
-                                        RepAnimMontageInfo.BlendTime = AnimInstance->Montage_GetBlendTime(LocalAnimMontageInfo.AnimMontage);
+                                        RepAnimMontageInfo.PlayRate = AnimInstance->Montage_GetPlayRate(Montage);
+                                        RepAnimMontageInfo.Position = AnimInstance->Montage_GetPosition(Montage);
+                                        RepAnimMontageInfo.BlendTime = AnimInstance->Montage_GetBlendTime(Montage);
                                     }
 
                                     if (RepAnimMontageInfo.IsStopped != bIsStopped)
                                     {
                                         RepAnimMontageInfo.IsStopped = bIsStopped;
-                                        if (CurrentPawn->AbilitySystemComponent->AvatarActor != nullptr)
-                                        {
-                                            CurrentPawn->AbilitySystemComponent->AvatarActor->ForceNetUpdate();
-                                        }
                                     }
 
                                     RepAnimMontageInfo.NextSectionID = 0;
-
-                                    if (CurrentPawn->AbilitySystemComponent->AvatarActor != nullptr)
-                                    {
-                                        CurrentPawn->AbilitySystemComponent->AvatarActor->ForceNetUpdate();
-                                    }
                                 }
-                                CurrentPawn->AbilitySystemComponent->OnRep_ReplicatedAnimMontage();
+                                CurrentPawn->PlayAnimMontage(Montage, 1.0f, FName(-1));
+                                CurrentPawn->PlayLocalAnimMontage(Montage, 1.0f, FName(-1));
+                                CurrentPawn->OnRep_ReplicatedAnimMontage();
                             }
                         }
                     }
