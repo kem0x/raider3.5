@@ -105,7 +105,7 @@ namespace Replication
 
         // printf("Test: %s\n", Test[0].Get()->Actor->GetName().c_str());
 
-        auto List = GetNetworkObjectList(NetDriver).ActiveNetworkObjects;
+        auto& List = GetNetworkObjectList(NetDriver).ActiveNetworkObjects;
         for (auto& Object : List)
         {
             auto Actor = Object.Get()->Actor;

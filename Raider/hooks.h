@@ -424,45 +424,71 @@ namespace Hooks
 
                         if (DeadPC && DeadPC->Pawn)
                         {
+                            // TODO: Show death drone
                             DeadPC->Pawn->K2_DestroyActor();
                         }
 
                         auto KillerPawn = Params->DeathReport.KillerPawn;
                         auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
-						
+
                         DeadPlayerState->OnRep_DeathInfo();
                         // KillerPlayerState->ClientReportKill(DeadPlayerState);
+						
+						auto Spectate = [&](AFortPlayerStateAthena* StateToSpectate) -> void {
+                            auto PawnToSpectate = StateToSpectate->GetCurrentPawn();
+
+							if (PawnToSpectate)
+                            {
+                                DeadPC->PlayerToSpectateOnDeath = PawnToSpectate;
+                                DeadPC->SpectateOnDeath();
+                                // DeadPC->ClientSetViewTarget(PawnToSpectate, FViewTargetTransitionParams());
+                                DeadPlayerState->SpectatingTarget = StateToSpectate;
+                                DeadPlayerState->bIsSpectator = true;
+                                DeadPlayerState->OnRep_SpectatingTarget();
+
+                                auto Connection = DeadPC->NetConnection;
+                                auto SpectatorPC = SpawnActor<AFortPlayerControllerSpectating>(PawnToSpectate->K2_GetActorLocation()); // ABP_ReplayPC_Athena_C
+                                // SpectatorPC->SetNewCameraType(ESpectatorCameraType::Gameplay, true);
+                                // SpectatorPC->ToggleSpectatorHUD();
+                                Connection->PlayerController = SpectatorPC;
+                                auto SpectatorPawn = SpawnActor<ASpectatorPawn>(KillerPawn->K2_GetActorLocation(), PawnToSpectate); // ABP_SpectatorPawn_C
+
+                                // DeadPC->ClientGotoState("Spectating");
+                                SpectatorPC->SpectatorPawn = SpectatorPawn;
+                                SpectatorPC->Pawn = SpectatorPawn;
+                                SpectatorPC->AcknowledgedPawn = SpectatorPawn;
+                                SpectatorPawn->Owner = SpectatorPC;
+                                SpectatorPawn->OnRep_Owner();
+                                SpectatorPC->OnRep_Pawn();
+                                SpectatorPC->Possess(SpectatorPawn);
+
+                                SpectatorPawn->bReplicateMovement = true;
+                                SpectatorPawn->OnRep_ReplicateMovement();                            
+                            }
+                        };
 
                         if (KillerPlayerState && KillerPawn && KillerPlayerState != DeadPlayerState)
                         {
                             KillerPlayerState->KillScore++;
                             KillerPlayerState->OnRep_Kills();
+                            Spectate(KillerPlayerState);
+                        }
 
-                            DeadPC->PlayerToSpectateOnDeath = KillerPawn;
-                            DeadPC->SpectateOnDeath();
-                            // DeadPC->ClientSetViewTarget(KillerPawn, FViewTargetTransitionParams());
-                            DeadPlayerState->SpectatingTarget = KillerPlayerState;
-                            DeadPlayerState->bIsSpectator = true;
-                            DeadPlayerState->OnRep_SpectatingTarget();
-							
-                            auto Connection = DeadPC->NetConnection;
-                            auto SpectatorPC = SpawnActor<AFortPlayerControllerSpectating>(KillerPawn->K2_GetActorLocation()); // ABP_ReplayPC_Athena_C
-                            // SpectatorPC->SetNewCameraType(ESpectatorCameraType::Gameplay, true);
-                            // SpectatorPC->ToggleSpectatorHUD();
-                            Connection->PlayerController = SpectatorPC;
-                            auto SpectatorPawn = SpawnActor<ASpectatorPawn>(KillerPawn->K2_GetActorLocation(), SpectatorPC); // ABP_SpectatorPawn_C
-                            
-                            // DeadPC->ClientGotoState("Spectating");
-                            SpectatorPC->SpectatorPawn = SpectatorPawn;
-                            SpectatorPC->Pawn = SpectatorPawn;
-                            SpectatorPC->AcknowledgedPawn = SpectatorPawn;
-                            SpectatorPawn->Owner = SpectatorPC;
-                            SpectatorPawn->OnRep_Owner();
-                            SpectatorPC->OnRep_Pawn();
-                            SpectatorPC->Possess(SpectatorPawn);
+                        else
+                        {
+                            TArray<AActor*> Pawns;
+                            static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
+                            GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
+                            if (Pawns.Num() != 0)
+                            {
+                                auto PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
 
-                            SpectatorPawn->bReplicateMovement = true;
-                            SpectatorPawn->OnRep_ReplicateMovement();
+                                if (PawnToUse)
+                                {
+                                    PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
+                                    Spectate((AFortPlayerStateAthena*)PawnToUse->PlayerState);
+                                }	
+                            }
                         }
 
                         if (KillerPawn)
@@ -495,6 +521,11 @@ namespace Hooks
                 else if (FunctionName == "IsAcceptablePositionForPlacement")
                 {
                     printf("IsAcceptablePositionForPlacement\n\n\n\n\n");
+                }
+
+                else if (FunctionName == "ServerSuicide")
+                {
+                    return;
                 }
 
                 else if (FunctionName == "ServerCreateBuildingActor")
@@ -633,7 +664,6 @@ namespace Hooks
 
                     if (Controller && Pawn && Params->BuildingActorToRepair)
                     {
-                        // Params->BuildingActorToRepair->OnRep_bUnderRepair();
                         Params->BuildingActorToRepair->RepairBuilding(Controller, 10); // figure out how to get the repair amount
                     }
                 }
