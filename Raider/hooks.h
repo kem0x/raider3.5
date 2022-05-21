@@ -309,29 +309,6 @@ namespace Hooks
                     HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
                 }
 
-                else if (FunctionName.find("ServerCreateBuilding") != -1)
-                {
-                    auto PC = (AFortPlayerControllerAthena*)Object;
-
-                    auto Params = (AFortPlayerController_ServerCreateBuildingActor_Params*)Parameters;
-                    auto CurrentBuildClass = Params->BuildingClassData.BuildingClass;
-
-                    if (CurrentBuildClass)
-                    {
-                        FTransform Transform {};
-                        Transform.Rotation = RotToQuat(Params->BuildRot);
-                        Transform.Translation = Params->BuildLoc;
-                        Transform.Scale3D = { 1, 1, 1 };
-
-                        auto BuildingActor = (ABuildingSMActor*)SpawnActorTrans(CurrentBuildClass, Transform, PC); //, ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding);
-
-                        if (BuildingActor)
-                        {
-                            BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);							
-                        }
-                    }
-                }
-
                 else if (FunctionName == "ServerAttemptInventoryDrop")
                 {
                     auto PC = (AFortPlayerController*)Object;
@@ -371,6 +348,7 @@ namespace Hooks
 
                 else if (FunctionName == "ServerReturnToMainMenu")
                 {
+                    // PC->ClientReturnToMainMenuWithTextReason
                     ((AFortPlayerController*)Object)->ClientTravel(L"Frontend", ETravelType::TRAVEL_Absolute, false, FGuid());
                 }
 
@@ -378,44 +356,47 @@ namespace Hooks
                 {
                     auto CurrentPC = (AFortPlayerControllerAthena*)Object;
 
-                    if (CurrentPC->IsInAircraft())
-                        return;
-
                     auto CurrentPawn = (AFortPlayerPawnAthena*)CurrentPC->Pawn;
                     auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
                     auto AnimInstance = (UFortAnimInstance*)CurrentPawn->Mesh->GetAnimInstance();
 
-                    if (CurrentPC && CurrentPawn && EmoteParams->EmoteAsset && !AnimInstance->bIsJumping && !AnimInstance->bIsFalling)
+                    if (CurrentPC && !CurrentPC->IsInAircraft() && CurrentPawn && EmoteParams->EmoteAsset && !AnimInstance->bIsJumping && !AnimInstance->bIsFalling)
                     {
-                        if (auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(CurrentPawn->CharacterBodyType, CurrentPawn->CharacterGender))
+                        if (EmoteParams->EmoteAsset->IsA(UAthenaDanceItemDefinition::StaticClass())) // idk if emojis would work
                         {
-                            if (AnimInstance && Montage)
+                            if (auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(CurrentPawn->CharacterBodyType, CurrentPawn->CharacterGender))
                             {
-                                auto RepAnimMontageInfo = CurrentPawn->RepAnimMontageInfo;
-                                auto Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
-                                if (Duration > 0.f)
+                                if (AnimInstance && Montage)
                                 {
-                                    RepAnimMontageInfo.AnimMontage = Montage;
-                                    RepAnimMontageInfo.ForcePlayBit = 1;
+                                    auto& RepAnimMontageInfo = CurrentPawn->RepAnimMontageInfo;
+                                    auto& RepCharPartAnimMontageInfo = CurrentPawn->RepCharPartAnimMontageInfo;
+                                    auto Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
 
-                                    bool bIsStopped = AnimInstance->Montage_GetIsStopped(Montage);
-                                    if (!bIsStopped)
+                                    if (Duration > 0.f)
                                     {
-                                        RepAnimMontageInfo.PlayRate = AnimInstance->Montage_GetPlayRate(Montage);
-                                        RepAnimMontageInfo.Position = AnimInstance->Montage_GetPosition(Montage);
-                                        RepAnimMontageInfo.BlendTime = AnimInstance->Montage_GetBlendTime(Montage);
-                                    }
+                                        RepAnimMontageInfo.AnimMontage = Montage;
+                                        RepAnimMontageInfo.ForcePlayBit = 1;
 
-                                    if (RepAnimMontageInfo.IsStopped != bIsStopped)
-                                    {
+                                        RepCharPartAnimMontageInfo.PawnMontage = Montage;
+
+                                        bool bIsStopped = AnimInstance->Montage_GetIsStopped(Montage);
+
+                                        if (!bIsStopped)
+                                        {
+                                            RepAnimMontageInfo.PlayRate = AnimInstance->Montage_GetPlayRate(Montage);
+                                            RepAnimMontageInfo.Position = AnimInstance->Montage_GetPosition(Montage);
+                                            RepAnimMontageInfo.BlendTime = AnimInstance->Montage_GetBlendTime(Montage);
+                                        }
+
                                         RepAnimMontageInfo.IsStopped = bIsStopped;
-                                    }
+                                        RepAnimMontageInfo.NextSectionID = 0;
 
-                                    RepAnimMontageInfo.NextSectionID = 0;
+                                        CurrentPawn->PlayLocalAnimMontage(Montage, 1.0f, FName(-1));
+                                        CurrentPawn->PlayAnimMontage(Montage, 1.0f, FName(-1));
+                                        CurrentPawn->OnRep_CharPartAnimMontageInfo();
+                                        CurrentPawn->OnRep_ReplicatedAnimMontage();
+                                    }
                                 }
-                                CurrentPawn->PlayAnimMontage(Montage, 1.0f, FName(-1));
-                                CurrentPawn->PlayLocalAnimMontage(Montage, 1.0f, FName(-1));
-                                CurrentPawn->OnRep_ReplicatedAnimMontage();
                             }
                         }
                     }
@@ -428,6 +409,10 @@ namespace Hooks
 
                     if (DeadPC && Params)
                     {
+                        auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
+                        GameState->PlayersLeft--;
+                        // GameState->PlayerArray.RemoveAt(DeadPC->NetPlayerIndex);
+
                         if (DeadPC && DeadPC->Pawn)
                         {
                             DeadPC->Pawn->K2_DestroyActor();
@@ -436,12 +421,17 @@ namespace Hooks
                         auto KillerPawn = Params->DeathReport.KillerPawn;
                         auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
 
-                        if (KillerPlayerState && KillerPlayerState != DeadPC->PlayerState)
+                        if (KillerPlayerState && KillerPawn && KillerPlayerState != DeadPC->PlayerState)
                         {
                             KillerPlayerState->KillScore++;
                             KillerPlayerState->OnRep_Kills();
+                            
+							DeadPC->PlayerToSpectateOnDeath = KillerPawn;
+                            DeadPC->SpectateOnDeath();
+                            // DeadPC->SpectatorPawn = SpawnActor<ABP_SpectatorPawn_C>(KillerPawn->K2_GetActorLocation(), DeadPC);
+                            // DeadPC->Possess(DeadPC->SpectatorPawn);
 
-                            // I think we have to create a spectatorpawn, and then possess it. 
+                            // I think we have to create a spectator pawn, and then possess it. 
                         }
 
 						if (KillerPawn)
@@ -586,7 +576,6 @@ namespace Hooks
                         if (DBNOPawn && DBNOPC && DBNOPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
                         {
                             DBNOPawn->ReviveFromDBNO(PC);
-                            // DBNOPawn->AbilitySystemComponent->Activate(false); // possibly disable temporarily abilities
                         }
                     }
                 }

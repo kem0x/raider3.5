@@ -24,6 +24,8 @@ namespace Game
 
         auto authGameMode = reinterpret_cast<AFortGameModeAthena*>(world->AuthorityGameMode);
 
+        authGameMode->bAllowSpectateAfterDeath = true;
+
         auto stateF = reinterpret_cast<UKismetStringLibrary*>(UKismetStringLibrary::StaticClass())->STATIC_Conv_StringToName(L"InProgress");
         authGameMode->MatchState = stateF;
         authGameMode->K2_OnSetMatchState(stateF);
