@@ -397,36 +397,48 @@ namespace Hooks
 
                     if (EmoteParams->EmoteAsset && !AnimInstance->bIsJumping && !AnimInstance->bIsFalling)
                     {
-                        if (CurrentPawn->bIsCrouched) // bruh why dont this work
-                        {
-                            CurrentPawn->bIsCrouched = false;
-                            CurrentPawn->UnCrouch(true);
-                            CurrentPawn->OnRep_IsCrouched();
-                        }
-						
-                        std::cout << "EmoteAsset: " << EmoteParams->EmoteAsset->GetFullName() << '\n';
-                        EmoteParams->EmoteAsset->bPlayRandomSection = true;
                         if (auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(CurrentPawn->CharacterBodyType, CurrentPawn->CharacterGender))
                         {
-                            // PlayAnimMontage calls Montage_Play and if the SectionName is not NAME_NONE then Montage_JumpToSection
-                            // const auto Duration = CurrentPawn->PlayAnimMontage(Montage, 1.0f, (FName)-1);
-                            /*auto Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
-                            std::cout << "Duration: " << Duration << '\n';
-                            CurrentPawn->RepAnimMontageInfo.AnimMontage = Montage;
-                            CurrentPawn->RepCharPartAnimMontageInfo.PawnMontage = Montage;
-                            CurrentPawn->RepAnimMontageInfo.PlayRate = 1.0f;
-                            CurrentPawn->OnRep_CharPartAnimMontageInfo();
-                            CurrentPawn->OnRep_RepAnimMontageStartSection();
-                            // CurrentPawn->OnRep_ReplayRepAnimMontageInfo();
-                            CurrentPawn->OnRep_ReplicatedAnimMontage();*/
-							
-                            CurrentPawn->AbilitySystemComponent->RepAnimMontageInfo.AnimMontage = Montage;
-                            CurrentPawn->AbilitySystemComponent->RepAnimMontageInfo.PlayRate = 1.0f;
+                            if (AnimInstance && Montage)
+                            {
+                                auto LocalAnimMontageInfo = CurrentPawn->AbilitySystemComponent->LocalAnimMontageInfo;
+                                auto RepAnimMontageInfo = CurrentPawn->AbilitySystemComponent->RepAnimMontageInfo;
 
-                            CurrentPawn->AbilitySystemComponent->OnRep_ReplicatedAnimMontage();
-                            CurrentPawn->AbilitySystemComponent->ServerCurrentMontageSetPlayRate(Montage, 1.0f);
+                                auto Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
+                                if (Duration > 0.f)
+                                {
+                                    LocalAnimMontageInfo.AnimMontage = Montage;
+                                    LocalAnimMontageInfo.PlayBit = !LocalAnimMontageInfo.PlayBit;
 
-                            //Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
+                                    RepAnimMontageInfo.AnimMontage = Montage;
+                                    RepAnimMontageInfo.ForcePlayBit = !bool(RepAnimMontageInfo.ForcePlayBit);
+
+                                    bool bIsStopped = AnimInstance->Montage_GetIsStopped(LocalAnimMontageInfo.AnimMontage);
+                                    if (!bIsStopped)
+                                    {
+                                        RepAnimMontageInfo.PlayRate = AnimInstance->Montage_GetPlayRate(LocalAnimMontageInfo.AnimMontage);
+                                        RepAnimMontageInfo.Position = AnimInstance->Montage_GetPosition(LocalAnimMontageInfo.AnimMontage);
+                                        RepAnimMontageInfo.BlendTime = AnimInstance->Montage_GetBlendTime(LocalAnimMontageInfo.AnimMontage);
+                                    }
+
+                                    if (RepAnimMontageInfo.IsStopped != bIsStopped)
+                                    {
+                                        RepAnimMontageInfo.IsStopped = bIsStopped;
+                                        if (CurrentPawn->AbilitySystemComponent->AvatarActor != nullptr)
+                                        {
+                                            CurrentPawn->AbilitySystemComponent->AvatarActor->ForceNetUpdate();
+                                        }
+                                    }
+
+                                    RepAnimMontageInfo.NextSectionID = 0;
+
+                                    if (CurrentPawn->AbilitySystemComponent->AvatarActor != nullptr)
+                                    {
+                                        CurrentPawn->AbilitySystemComponent->AvatarActor->ForceNetUpdate();
+                                    }
+                                }
+                                CurrentPawn->AbilitySystemComponent->OnRep_ReplicatedAnimMontage();
+                            }
                         }
                     }
                 }
