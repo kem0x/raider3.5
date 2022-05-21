@@ -410,7 +410,7 @@ namespace Hooks
                         {
                             // PlayAnimMontage calls Montage_Play and if the SectionName is not NAME_NONE then Montage_JumpToSection
                             // const auto Duration = CurrentPawn->PlayAnimMontage(Montage, 1.0f, (FName)-1);
-                            auto Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
+                            /*auto Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
                             std::cout << "Duration: " << Duration << '\n';
                             CurrentPawn->RepAnimMontageInfo.AnimMontage = Montage;
                             CurrentPawn->RepCharPartAnimMontageInfo.PawnMontage = Montage;
@@ -418,9 +418,15 @@ namespace Hooks
                             CurrentPawn->OnRep_CharPartAnimMontageInfo();
                             CurrentPawn->OnRep_RepAnimMontageStartSection();
                             // CurrentPawn->OnRep_ReplayRepAnimMontageInfo();
-                            CurrentPawn->OnRep_ReplicatedAnimMontage();
+                            CurrentPawn->OnRep_ReplicatedAnimMontage();*/
 							
-                            Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
+                            CurrentPawn->AbilitySystemComponent->RepAnimMontageInfo.AnimMontage = Montage;
+                            CurrentPawn->AbilitySystemComponent->RepAnimMontageInfo.PlayRate = 1.0f;
+
+                            CurrentPawn->AbilitySystemComponent->OnRep_ReplicatedAnimMontage();
+                            CurrentPawn->AbilitySystemComponent->ServerCurrentMontageSetPlayRate(Montage, 1.0f);
+
+                            //Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
                         }
                     }
                 }
@@ -476,6 +482,7 @@ namespace Hooks
                         if (DBNOPawn && DBNOPC && DBNOPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
                         {
                             DBNOPawn->ReviveFromDBNO(PC);
+                            //DBNOPawn->AbilitySystemComponent->Activate(false); // possibly disable temporarily abilities
                         }
                     }
                 }
