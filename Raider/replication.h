@@ -1,6 +1,8 @@
 #pragma once
 #include "ue4.h"
 
+#define invptr (void*)0xffffffff
+
 namespace Replication
 {
     int PrepConnections(UNetDriver* NetDriver)
@@ -94,12 +96,19 @@ namespace Replication
         if (!World || !&OutConsiderList || !NetDriver)
             return;
 
-        TArray<AActor*> Actors;
-        GetGameplayStatics()->STATIC_GetAllActorsOfClass(World, AActor::StaticClass(), &Actors);
+        // TArray<AActor*> Actors;
+        // GetGameplayStatics()->STATIC_GetAllActorsOfClass(World, AActor::StaticClass(), &Actors);
 
-        for (int i = 0; i < Actors.Num(); i++)
+        // TArray<TSharedPtr<FNetworkObjectInfo>> Test;
+
+        // auto ptr = (void*)Native::Engine::TSetToTArray(int64(&GetNetworkObjectList(NetDriver)), int64(&Test));
+
+        // printf("Test: %s\n", Test[0].Get()->Actor->GetName().c_str());
+
+        auto List = GetNetworkObjectList(NetDriver).ActiveNetworkObjects;
+        for (auto& Object : List)
         {
-            auto Actor = Actors[i];
+            auto Actor = Object.Get()->Actor;
 
             if (!Actor || Actor->RemoteRole == ENetRole::ROLE_None || Actor->bActorIsBeingDestroyed)
                 continue;
@@ -114,7 +123,7 @@ namespace Replication
             }
         }
 
-        Actors.FreeArray();
+        // Actors.FreeArray();
     }
 
     void ServerReplicateActors(UNetDriver* NetDriver)

@@ -89,6 +89,7 @@ namespace Native
     namespace Engine
     {
         inline void* (*SeamlessTravelHandlerForWorld)(UEngine* Engine, UWorld* World);
+        inline __int64 (*TSetToTArray)(__int64 a1, __int64 OutArray);
     }
 
     void InitializeAll()
@@ -202,6 +203,10 @@ namespace Native
         Address = Utils::FindPattern(Patterns::LocalPlayerSpawnPlayActor);
         CheckNullFatal(Address, "Failed to find LocalPlayerSpawnPlayActor");
         AddressToFunction(Address, LocalPlayer::SpawnPlayActor);
+
+        Address = Utils::FindPattern(Patterns::TSetToTArray, true, 1);
+        CheckNullFatal(Address, "Failed to find TSetToTArray");
+        AddressToFunction(Address, Engine::TSetToTArray);
 
         PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
 

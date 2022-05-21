@@ -4,7 +4,7 @@
 #include "replication.h"
 #include "ue4.h"
 
-#define LOGGING
+//#define LOGGING
 
 namespace Hooks
 {
@@ -273,9 +273,11 @@ namespace Hooks
 
                         if (!Ability)
                             continue;
-						
-                        std::cout << "Ability: " << Ability->GetFullName() << '\n';
-                        GrantGameplayAbility(Pawn, Ability);
+
+                        if (Ability->GetName().find("DBNO") == -1)
+                        {
+                            GrantGameplayAbility(Pawn, Ability);
+                        }
                     }
 
                     /* static auto SprintAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint");
@@ -293,7 +295,6 @@ namespace Hooks
                     GrantGameplayAbility(Pawn, DeathAbility);
                     GrantGameplayAbility(Pawn, InteractUseAbility);
                     GrantGameplayAbility(Pawn, InteractSearchAbility); */
-                    
                 }
             }
 
@@ -425,7 +426,7 @@ namespace Hooks
                         {
                             DeadPC->Pawn->K2_DestroyActor();
                         }
-						
+
                         auto KillerPawn = Params->DeathReport.KillerPawn;
                         auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
 						
@@ -436,8 +437,8 @@ namespace Hooks
                         {
                             KillerPlayerState->KillScore++;
                             KillerPlayerState->OnRep_Kills();
-                            
-							DeadPC->PlayerToSpectateOnDeath = KillerPawn;
+
+                            DeadPC->PlayerToSpectateOnDeath = KillerPawn;
                             DeadPC->SpectateOnDeath();
                             // DeadPC->ClientSetViewTarget(KillerPawn, FViewTargetTransitionParams());
                             DeadPlayerState->SpectatingTarget = KillerPlayerState;
@@ -450,7 +451,7 @@ namespace Hooks
                             // SpectatorPC->ToggleSpectatorHUD();
                             Connection->PlayerController = SpectatorPC;
                             auto SpectatorPawn = SpawnActor<ASpectatorPawn>(KillerPawn->K2_GetActorLocation(), SpectatorPC); // ABP_SpectatorPawn_C
-
+                            
                             // DeadPC->ClientGotoState("Spectating");
                             SpectatorPC->SpectatorPawn = SpectatorPawn;
                             SpectatorPC->Pawn = SpectatorPawn;
@@ -464,7 +465,7 @@ namespace Hooks
                             SpectatorPawn->OnRep_ReplicateMovement();
                         }
 
-						if (KillerPawn)
+                        if (KillerPawn)
                         {
                             auto KillerController = (AFortPlayerControllerAthena*)Params->DeathReport.KillerPawn->Controller;
                             if (KillerController)
