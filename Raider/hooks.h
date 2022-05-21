@@ -268,9 +268,11 @@ namespace Hooks
 
                         if (!Ability)
                             continue;
-						
-                        std::cout << "Ability: " << Ability->GetFullName() << '\n';
-                        GrantGameplayAbility(Pawn, Ability);
+
+                        if (Ability->GetName().find("DBNO") == -1)
+                        {
+                            GrantGameplayAbility(Pawn, Ability);
+                        }
                     }
 
                     /* static auto SprintAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint");
@@ -288,7 +290,6 @@ namespace Hooks
                     GrantGameplayAbility(Pawn, DeathAbility);
                     GrantGameplayAbility(Pawn, InteractUseAbility);
                     GrantGameplayAbility(Pawn, InteractSearchAbility); */
-                    
                 }
             }
 
@@ -417,7 +418,7 @@ namespace Hooks
                         {
                             DeadPC->Pawn->K2_DestroyActor();
                         }
-						
+
                         auto KillerPawn = Params->DeathReport.KillerPawn;
                         auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
 
@@ -425,16 +426,16 @@ namespace Hooks
                         {
                             KillerPlayerState->KillScore++;
                             KillerPlayerState->OnRep_Kills();
-                            
-							DeadPC->PlayerToSpectateOnDeath = KillerPawn;
+
+                            DeadPC->PlayerToSpectateOnDeath = KillerPawn;
                             DeadPC->SpectateOnDeath();
                             // DeadPC->SpectatorPawn = SpawnActor<ABP_SpectatorPawn_C>(KillerPawn->K2_GetActorLocation(), DeadPC);
                             // DeadPC->Possess(DeadPC->SpectatorPawn);
 
-                            // I think we have to create a spectator pawn, and then possess it. 
+                            // I think we have to create a spectator pawn, and then possess it.
                         }
 
-						if (KillerPawn)
+                        if (KillerPawn)
                         {
                             auto KillerController = (AFortPlayerControllerAthena*)Params->DeathReport.KillerPawn->Controller;
                             if (KillerController)
