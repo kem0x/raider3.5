@@ -341,7 +341,7 @@ namespace Hooks
                 {
                     auto PC = (AFortPlayerController*)Object;
                     auto Pawn = (APlayerPawn_Athena_C*)PC->Pawn;
-                    HandleInventoryDrop(Pawn, Parameters);
+                    // HandleInventoryDrop(Pawn, Parameters);
                 }
 
                 else if (FunctionName == "ServerTryActivateAbility")
@@ -391,11 +391,15 @@ namespace Hooks
                 else if (FunctionName == "ServerPlayEmoteItem")
                 {
                     auto CurrentPC = (AFortPlayerControllerAthena*)Object;
+					
+                    if (CurrentPC->IsInAircraft())
+                        return;
+					
                     auto CurrentPawn = (AFortPlayerPawnAthena*)CurrentPC->Pawn;
                     auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
                     auto AnimInstance = (UFortAnimInstance*)CurrentPawn->Mesh->GetAnimInstance();
 
-                    if (EmoteParams->EmoteAsset && !AnimInstance->bIsJumping && !AnimInstance->bIsFalling)
+                    if (CurrentPC && CurrentPawn && EmoteParams->EmoteAsset && !AnimInstance->bIsJumping && !AnimInstance->bIsFalling)
                     {
                         if (auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(CurrentPawn->CharacterBodyType, CurrentPawn->CharacterGender))
                         {
@@ -411,7 +415,7 @@ namespace Hooks
                                     LocalAnimMontageInfo.PlayBit = !LocalAnimMontageInfo.PlayBit;
 
                                     RepAnimMontageInfo.AnimMontage = Montage;
-                                    RepAnimMontageInfo.ForcePlayBit = !bool(RepAnimMontageInfo.ForcePlayBit);
+                                    RepAnimMontageInfo.ForcePlayBit = ~RepAnimMontageInfo.ForcePlayBit;
 
                                     bool bIsStopped = AnimInstance->Montage_GetIsStopped(LocalAnimMontageInfo.AnimMontage);
                                     if (!bIsStopped)
@@ -465,7 +469,6 @@ namespace Hooks
 
                 else if (FunctionName == "ServerBeginEditingBuildingActor")
                 {
-                    std::cout << "Attempting to edit a building!\n";
                     auto Params = (AFortPlayerController_ServerBeginEditingBuildingActor_Params*)Parameters;
                     auto Controller = (AFortPlayerControllerAthena*)Object;
                     auto Pawn = (APlayerPawn_Athena_C*)Controller->Pawn;
@@ -474,10 +477,14 @@ namespace Hooks
                     if (Controller && Pawn && Params->BuildingActorToEdit)
                     {
                         auto EditTool = (AFortWeap_EditingTool*)EquipWeaponDefinition(Pawn, (UFortWeaponItemDefinition*)EditToolEntry.ItemDefinition, EditToolEntry.ItemGuid);
-                        EditTool->EditActor = Params->BuildingActorToEdit;
-                        EditTool->OnRep_EditActor();
-                        Params->BuildingActorToEdit->EditingPlayer = (AFortPlayerStateZone*)Pawn->PlayerState;
-                        Params->BuildingActorToEdit->OnRep_EditingPlayer();
+                        
+                        if (EditTool)
+                        {
+                            EditTool->EditActor = Params->BuildingActorToEdit;
+                            EditTool->OnRep_EditActor();
+                            Params->BuildingActorToEdit->EditingPlayer = (AFortPlayerStateZone*)Pawn->PlayerState;
+                            Params->BuildingActorToEdit->OnRep_EditingPlayer();	
+                        }
                     }
                 }
 
@@ -541,6 +548,7 @@ namespace Hooks
                         if (EditTool)
                         {
                             EditTool->bEditConfirmed = true;
+                            EditTool->EditActor = nullptr;
                             EditTool->OnRep_EditActor();
                         }
                     }
@@ -591,7 +599,7 @@ namespace Hooks
                         {
                             auto ExitLocation = Aircraft->K2_GetActorLocation();
                             
-                            ExitLocation.Z -= 500;
+                            // ExitLocation.Z -= 500;
 
                             InitPawn(PC, ExitLocation);
                             // PC->Pawn->K2_TeleportTo(ExitLocation, Params->ClientRotation);

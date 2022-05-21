@@ -210,12 +210,15 @@ inline void UpdateInventory(AFortPlayerController* PlayerController, int Dirty =
 	if (bRemovedItem)
         PlayerController->WorldInventory->Inventory.MarkArrayDirty();
 
-    if (Dirty != 0)
+    if (Dirty != 0 && PlayerController->WorldInventory->Inventory.ReplicatedEntries.Num() >= Dirty)
         PlayerController->WorldInventory->Inventory.MarkItemDirty(PlayerController->WorldInventory->Inventory.ReplicatedEntries[Dirty]);
 }
 
 inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinition* Def, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1)
 {
+    if (Def->IsA(UFortWeaponItemDefinition::StaticClass()))
+		Count = 1;
+
     auto TempItemInstance = Def->CreateTemporaryItemInstanceBP(Count, 1);
     TempItemInstance->SetOwningControllerForTemporaryItem(PC);
 
@@ -589,6 +592,7 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
             if (IsMatchingGuid(QuickBarSlots[i].Items[0], Params->ItemGuid))
             {
                 RemoveItem(Controller, EFortQuickBars::Primary, i);
+                break;
             }
         }
     }
@@ -596,6 +600,10 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
     for (int i = 0; i < ItemInstances.Num(); i++)
     {
         auto ItemInstance = ItemInstances[i];
+		
+        if (!ItemInstance || i == 0)
+            continue;
+
         auto Guid = ItemInstance->GetItemGuid();
 
         if (IsMatchingGuid(Guid, Params->ItemGuid))
@@ -603,7 +611,27 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
             auto def = ItemInstance->ItemEntry.ItemDefinition;
 
             if (def)
+            {
                 SummonPickup(Pawn, def, ItemInstance->ItemEntry.Count, Pawn->K2_GetActorLocation());
+                break;            
+            }
+        }
+    }
+
+    for (int i = ItemInstances.Num(); i > 0; i--) // equip the item before until its valid
+    {
+        auto ItemInstance = ItemInstances[i];
+
+        if (!ItemInstance)
+            continue;
+
+		auto Def = ItemInstance->ItemEntry.ItemDefinition;
+		
+		if (Def /* && Def->IsA(UFortWeaponItemDefinition::StaticClass()) */)
+        {
+            QuickBars->PrimaryQuickBar.CurrentFocusedSlot = i;
+            // EquipWeaponDefinition((APlayerPawn_Athena_C*)Controller->Pawn, (UFortWeaponItemDefinition*)Def, ItemInstance->ItemEntry.ItemGuid, ItemInstance->ItemEntry.Count);
+            break;
         }
     }
 }
