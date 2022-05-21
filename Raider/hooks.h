@@ -4,7 +4,7 @@
 #include "replication.h"
 #include "ue4.h"
 
-#define LOGGING
+//#define LOGGING
 
 namespace Hooks
 {

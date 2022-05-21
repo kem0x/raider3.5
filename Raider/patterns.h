@@ -36,7 +36,6 @@ namespace Patterns {
 	constexpr const char* MarkAbilitySpecDirty = "48 89 5C 24 ? 57 48 83 EC 20 80 B9 ? ? ? ? ? 48 8B FA 48 8B D9 75 4A C6 81";
     constexpr const char* LocalPlayerSpawnPlayActor = "40 55 53 56 57 41 56 41 57 48 8D 6C 24 ? 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 45 40 48 8B D9 4D 8B F1 49 8B C9 4D 8B F8 48 8B F2";
 
-    constexpr const char* MarkActive = "40 55 53 41 55 41 56 41 57 48 8D 6C 24 ? 48 81 EC ? ? ? ? 49 8B C1 4D 8B E8 4C 8B C0 45 33 C9 4C 8B FA 4C 8B F1 E8 ? ? ? ? 48 8B D8 48 85 C0";
-    constexpr const char* Remove = "48 85 D2 0F 84 ? ? ? ? 55 56 41 56 48 8D 6C 24 ? 48 81 EC ? ? ? ? 4C 8B F2 4C 8B C2 48 8D 55 6F 48 8B F1 E8 ? ? ? ? 48 63 45 6F 83 F8 FF 0F 84 ? ? ? ? 48 8D 0C 40";
+    constexpr const char* TSetToTArray = "E8 ? ? ? ? 49 8D 7D 30";
 
 }
