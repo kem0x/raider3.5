@@ -84,6 +84,8 @@ namespace Hooks
         auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
 
         PlayerController->StrongMyHero = Hero;
+        Pawn->CharacterGender = (EFortCustomGender)Hero->Gender;
+        Pawn->CharacterBodyType = Hero->CharacterParts[0]->BodyTypesPermitted;
 
         PlayerState->HeroType = Hero->GetHeroTypeBP();
         PlayerState->OnRep_HeroType();
@@ -136,16 +138,7 @@ namespace Hooks
             }
         }
 
-        PlayerController->OverriddenBackpackSize = 100;
-
         // Pawn->K2_TeleportTo({ 37713, -52942, 461 }, { 0, 0, 0 }); // Tilted
-
-        /*
-         Pawn->CharacterMovement->SetMovementMode(EMovementMode::MOVE_Custom, 3);
-         Pawn->bIsParachuteOpen = true;
-
-         Pawn->OnRep_IsParachuteOpen(Pawn->IsParachuteOpen());
-         */
 
         return PlayerController;
     }
@@ -176,7 +169,8 @@ namespace Hooks
             return;
         }
         case 15: // NMT_PCSwap
-            return;
+            // return;
+            break;
         }
 
         Native::World::NotifyControlMessage(GetWorld(), Connection, MessageType, Bunch);
@@ -338,8 +332,9 @@ namespace Hooks
                 else if (FunctionName == "ServerPlayEmoteItem")
                 {
                     auto CurrentPC = (AFortPlayerControllerAthena*)Object;
+                    auto CurrentPawn = (APlayerPawn_Athena_C*)CurrentPC->Pawn;
+                    ((AFortPlayerStateAthena*)CurrentPawn->PlayerState)->OnRep_MapIndicatorPos();
 
-                    auto CurrentPawn = (AFortPlayerPawnAthena*)CurrentPC->Pawn;
                     auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
                     auto AnimInstance = (UFortAnimInstance*)CurrentPawn->Mesh->GetAnimInstance();
 
@@ -374,6 +369,7 @@ namespace Hooks
                                         RepAnimMontageInfo.IsStopped = bIsStopped;
                                         RepAnimMontageInfo.NextSectionID = 0;
 
+                                        CurrentPawn->OnRep_ReplicatedMovement();
                                         CurrentPawn->PlayLocalAnimMontage(Montage, 1.0f, FName(-1));
                                         CurrentPawn->PlayAnimMontage(Montage, 1.0f, FName(-1));
                                         CurrentPawn->OnRep_CharPartAnimMontageInfo();
@@ -389,6 +385,7 @@ namespace Hooks
                 {
                     auto Params = (AFortPlayerControllerZone_ClientOnPawnDied_Params*)Parameters;
                     auto DeadPC = (AFortPlayerControllerAthena*)Object;
+                    auto DeadPlayerState = (AFortPlayerStateAthena*)DeadPC->PlayerState;
 
                     if (DeadPC && Params)
                     {
@@ -398,23 +395,72 @@ namespace Hooks
 
                         if (DeadPC && DeadPC->Pawn)
                         {
+                            // TODO: Show death drone
                             DeadPC->Pawn->K2_DestroyActor();
                         }
 
                         auto KillerPawn = Params->DeathReport.KillerPawn;
                         auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
 
-                        if (KillerPlayerState && KillerPawn && KillerPlayerState != DeadPC->PlayerState)
+                        DeadPlayerState->OnRep_DeathInfo();
+                        // KillerPlayerState->ClientReportKill(DeadPlayerState);
+
+                        auto Spectate = [&](AFortPlayerStateAthena* StateToSpectate) -> void
+                        {
+                            auto PawnToSpectate = StateToSpectate->GetCurrentPawn();
+
+                            if (PawnToSpectate)
+                            {
+                                DeadPC->PlayerToSpectateOnDeath = PawnToSpectate;
+                                DeadPC->SpectateOnDeath();
+                                // DeadPC->ClientSetViewTarget(PawnToSpectate, FViewTargetTransitionParams());
+                                DeadPlayerState->SpectatingTarget = StateToSpectate;
+                                DeadPlayerState->bIsSpectator = true;
+                                DeadPlayerState->OnRep_SpectatingTarget();
+
+                                auto Connection = DeadPC->NetConnection;
+                                auto SpectatorPC = SpawnActor<AFortPlayerControllerSpectating>(PawnToSpectate->K2_GetActorLocation()); // ABP_ReplayPC_Athena_C
+                                // SpectatorPC->SetNewCameraType(ESpectatorCameraType::Gameplay, true);
+                                // SpectatorPC->ToggleSpectatorHUD();
+                                Connection->PlayerController = SpectatorPC;
+                                auto SpectatorPawn = SpawnActor<ASpectatorPawn>(KillerPawn->K2_GetActorLocation(), PawnToSpectate); // ABP_SpectatorPawn_C
+
+                                // DeadPC->ClientGotoState("Spectating");
+                                SpectatorPC->SpectatorPawn = SpectatorPawn;
+                                SpectatorPC->Pawn = SpectatorPawn;
+                                SpectatorPC->AcknowledgedPawn = SpectatorPawn;
+                                SpectatorPawn->Owner = SpectatorPC;
+                                SpectatorPawn->OnRep_Owner();
+                                SpectatorPC->OnRep_Pawn();
+                                SpectatorPC->Possess(SpectatorPawn);
+
+                                SpectatorPawn->bReplicateMovement = true;
+                                SpectatorPawn->OnRep_ReplicateMovement();
+                            }
+                        };
+
+                        if (KillerPlayerState && KillerPawn && KillerPlayerState != DeadPlayerState)
                         {
                             KillerPlayerState->KillScore++;
                             KillerPlayerState->OnRep_Kills();
+                            Spectate(KillerPlayerState);
+                        }
 
-                            DeadPC->PlayerToSpectateOnDeath = KillerPawn;
-                            DeadPC->SpectateOnDeath();
-                            // DeadPC->SpectatorPawn = SpawnActor<ABP_SpectatorPawn_C>(KillerPawn->K2_GetActorLocation(), DeadPC);
-                            // DeadPC->Possess(DeadPC->SpectatorPawn);
+                        else
+                        {
+                            TArray<AActor*> Pawns;
+                            static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
+                            GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
+                            if (Pawns.Num() != 0)
+                            {
+                                auto PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
 
-                            // I think we have to create a spectator pawn, and then possess it.
+                                if (PawnToUse)
+                                {
+                                    PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
+                                    Spectate((AFortPlayerStateAthena*)PawnToUse->PlayerState);
+                                }
+                            }
                         }
 
                         if (KillerPawn)
@@ -427,6 +473,11 @@ namespace Hooks
                     }
                 }
 
+                else if (FunctionName == "ClientNotifyWon")
+                {
+                    return;
+                }
+
                 else if (FunctionName == "ServerAttemptExitVehicle") // is this even needed
                 {
                     auto PC = (AFortPlayerControllerAthena*)Object;
@@ -437,6 +488,11 @@ namespace Hooks
                         PC->Pawn->Role = ENetRole::ROLE_Authority;
                         Vehicle->Role = ENetRole::ROLE_Authority;
                     }
+                }
+
+                else if (FunctionName == "ServerSuicide")
+                {
+                    return;
                 }
 
                 else if (FunctionName == "ServerCreateBuildingActor")
@@ -575,7 +631,6 @@ namespace Hooks
 
                     if (Controller && Pawn && Params->BuildingActorToRepair)
                     {
-                        // Params->BuildingActorToRepair->OnRep_bUnderRepair();
                         Params->BuildingActorToRepair->RepairBuilding(Controller, 10); // figure out how to get the repair amount
                     }
                 }
@@ -602,22 +657,6 @@ namespace Hooks
                         }
                     }
                 }
-
-                /* else if (FunctionName == "ServerSetInAircraft")
-                {
-                    auto Params = (AFortPlayerStateAthena_ServerSetInAircraft_Params*)Parameters;
-                    auto Controller = (AFortPlayerControllerAthena*)((AFortPlayerStateAthena*)Object)->
-
-                    if (Params && Params->bNewInAircraft)
-                    {
-                        if (Controller->Pawn)
-                        {
-                            auto Pawn = Controller->Pawn;
-                            Controller->UnPossess();
-                            Pawn->K2_DestroyActor();
-                        }
-                    }
-                } */
             }
         }
 
