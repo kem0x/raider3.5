@@ -52,7 +52,7 @@ namespace SDK
     inline void* (*FMemory_Realloc)(void* Memory, int64 NewSize, uint32 Alignment);
     inline void (*FMemory_Free)(void* Mem);
 
-template <class T>
+    template <class T>
     struct TArray
     {
         friend struct FString;
@@ -107,7 +107,7 @@ template <class T>
             }
             return false;
         }
-		
+
         FORCEINLINE void RemoveAt(int Index, int Length = 1)
         {
             for (; Length != 0; --Length)
@@ -144,7 +144,7 @@ template <class T>
             else
             {
                 Empty(NewSize);
-            } 
+            }
         } */
 
         FORCEINLINE void Reset(int MinSizeAfterReset = 0)
@@ -1107,8 +1107,8 @@ template <class T>
 
         TSparseArray<ElementType> Elements;
 
-         TInlineAllocator<1>::ForElementType<int> Hash;
-         int32 HashSize;
+        TInlineAllocator<1>::ForElementType<int> Hash;
+        int32 HashSize;
 
     public:
         class FBaseIterator

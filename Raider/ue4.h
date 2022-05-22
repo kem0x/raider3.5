@@ -162,7 +162,7 @@ inline auto GetItemInstances(AFortPlayerController* PC)
     return PC->WorldInventory->Inventory.ItemInstances;
 }
 
-inline AActor* SpawnActor(UClass* ActorClass, FVector Location = { 0.0f, 0.0f, 0.0f }, FRotator Rotation = {0, 0, 0}, AActor* Owner = nullptr)
+inline AActor* SpawnActor(UClass* ActorClass, FVector Location = { 0.0f, 0.0f, 0.0f }, FRotator Rotation = { 0, 0, 0 }, AActor* Owner = nullptr)
 {
     FTransform SpawnTransform;
 
@@ -174,7 +174,7 @@ inline AActor* SpawnActor(UClass* ActorClass, FVector Location = { 0.0f, 0.0f, 0
 }
 
 template <typename RetActorType = AActor>
-inline RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor* Owner = nullptr, FQuat Rotation = {0, 0, 0})
+inline RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor* Owner = nullptr, FQuat Rotation = { 0, 0, 0 })
 {
     FTransform SpawnTransform;
 
@@ -235,8 +235,9 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
     TempItemInstance->SetOwningControllerForTemporaryItem(PC);
 
     ((UFortWorldItem*)TempItemInstance)->ItemEntry.Count = Count;
+    ((UFortWorldItem*)TempItemInstance)->OwnerInventory = PC->WorldInventory;
 
-    auto ItemEntry = ((UFortWorldItem*)TempItemInstance)->ItemEntry;
+    auto& ItemEntry = ((UFortWorldItem*)TempItemInstance)->ItemEntry;
 
     auto Idx = PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
     PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
@@ -251,6 +252,8 @@ inline auto RemoveItem(AFortPlayerController* PC, EFortQuickBars QuickBars, int 
 {
     if (Slot == 0 || !PC)
         return;
+
+    UpdateInventory(PC, 0, true);
 
     auto pcQuickBars = PC->QuickBars;
     pcQuickBars->PrimaryQuickBar.Slots[Slot].Items.FreeArray();
@@ -289,6 +292,7 @@ inline AFortWeapon* EquipWeaponDefinition(APawn* dPawn, UFortWeaponItemDefinitio
         {
             /* Weapon->ItemEntryGuid = Guid;
             Weapon->WeaponData = Definition; */
+
             Weapon->ItemEntryGuid = Guid;
             Weapon->OnRep_ReplicatedWeaponData();
             Weapon->ClientGivenTo(Pawn);
@@ -344,27 +348,27 @@ inline void DumpObjects()
     std::cout << "Finished dumping objects!\n";
 }
 
-    void Listen()
-    {
-        printf("[UWorld::Listen]\n");
+void Listen()
+{
+    printf("[UWorld::Listen]\n");
 
-        AFortOnlineBeaconHost* HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
-        HostBeacon->ListenPort = 7777;
-        auto bInitBeacon = Native::OnlineBeaconHost::InitHost(HostBeacon);
-        CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");
+    AFortOnlineBeaconHost* HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
+    HostBeacon->ListenPort = 7777;
+    auto bInitBeacon = Native::OnlineBeaconHost::InitHost(HostBeacon);
+    CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");
 
-        HostBeacon->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
-        HostBeacon->NetDriver->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
-        HostBeacon->NetDriver->World = GetWorld();
+    HostBeacon->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
+    HostBeacon->NetDriver->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
+    HostBeacon->NetDriver->World = GetWorld();
 
-        GetWorld()->NetDriver = HostBeacon->NetDriver;
-        GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;
-        GetWorld()->LevelCollections[1].NetDriver = HostBeacon->NetDriver;
+    GetWorld()->NetDriver = HostBeacon->NetDriver;
+    GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;
+    GetWorld()->LevelCollections[1].NetDriver = HostBeacon->NetDriver;
 
-        Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
+    Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
 
-        GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = 100;
-    }
+    GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = 100;
+}
 
 static void SummonPickup(AFortPlayerPawn* Pawn, auto ItemDef, int Count, FVector Location)
 {
@@ -585,7 +589,7 @@ auto TryActivateAbility(UAbilitySystemComponent* AbilitySystemComponent, FGamepl
     }
     else
     {
-        printf("InternalServerTryActiveAbility. Rejecting ClientActivation of %s. InternalTryActivateAbility failed", Spec->Ability->GetName().c_str());
+        printf("InternalServerTryActiveAbility. Rejecting ClientActivation of %s. InternalTryActivateAbility failed\n", Spec->Ability->GetName().c_str());
         AbilitySystemComponent->ClientActivateAbilityFailed(AbilityToActivate, PredictionKey->Current);
         Spec->InputPressed = false;
         return;
@@ -793,4 +797,14 @@ void ChangeItem(AFortPlayerController* PC, UFortItemDefinition* Old, UFortItemDe
 
     if (bEquip)
         EquipWeaponDefinition(PC->Pawn, (UFortWeaponItemDefinition*)New, NewEntry.ItemGuid);
+}
+
+void ClientMessage(AFortPlayerControllerAthena* PC, FString Message) // Send a message to the user's console.
+{
+    PC->ClientMessage(Message, FName(-1), 10000);
+}
+
+auto toWStr(const std::string& str)
+{
+    return std::wstring(str.begin(), str.end());
 }

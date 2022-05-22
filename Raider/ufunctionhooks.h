@@ -1,12 +1,13 @@
 #pragma once
 
+#include <functional>
+
 #include "game.h"
 #include "replication.h"
 #include "ue4.h"
-#include <functional>
 
-//#define LOGGING
-#define DEVELOPERCHEATS
+// #define LOGGING
+static bool bDeveloperCheats = false; // CAnt put a ifdef in a define
 
 inline std::vector<UFunction*> toHook;
 inline std::vector<std::function<void(UObject*, void*)>> toCall;
@@ -41,6 +42,104 @@ namespace UFunctionHooks
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerPawn.ServerHandlePickup", { HandlePickup((AFortPlayerPawn*)Object, Parameters, true); })
+
+        DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCheat", {
+            if (Object->IsA(AFortPlayerControllerAthena::StaticClass()))
+            {
+                auto PC = (AFortPlayerControllerAthena*)Object;
+                auto Params = (AFortPlayerController_ServerCheat_Params*)Parameters;
+
+                if (Params && PC && !PC->IsInAircraft())
+                {
+                    auto Pawn = (APlayerPawn_Athena_C*)PC->Pawn;
+                    auto Message = Params->Msg.ToString() + ' ';
+
+                    std::vector<std::string> Arguments;
+
+                    while (Message.find(" ") != -1)
+                    {
+                        Arguments.push_back(Message.substr(0, Message.find(' ')));
+                        Message.erase(0, Message.find(' ') + 1);
+                    }
+
+                    auto NumArgs = Arguments.size() - 1;
+
+                    if (NumArgs >= 0)
+                    {
+                        auto& Command = Arguments[0];
+
+                        if (Command == "setpickaxe" && NumArgs >= 1)
+                        {
+                            auto& PickaxeName = Arguments[1];
+                            auto PID = UObject::FindObject<UFortWeaponMeleeItemDefinition>("WID_Harvest_" + PickaxeName + "_Athena_C_T01" + ".WID_Harvest_" + PickaxeName + "_Athena_C_T01");
+
+                            if (PID && PID->IsA(UFortWeaponMeleeItemDefinition::StaticClass()))
+                            {
+                                bool bFound = false;
+                                auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
+
+                                if (bFound)
+                                {
+                                    ChangeItem(PC, PickaxeEntry.ItemDefinition, PID, 0);
+                                    ClientMessage(PC, (L"Changed pickaxe to " + toWStr(PickaxeName) + L"!").c_str());
+                                }
+                            }
+                        }
+
+                        else if (bDeveloperCheats && Command == "giveweapon" && NumArgs >= 1)
+                        {
+                            auto& weaponName = Arguments[1];
+                            int slot = 1;
+                            int count = 1;
+
+                            try
+                            {
+                                if (NumArgs >= 2)
+                                    slot = std::stoi(Arguments[2]);
+
+                                if (NumArgs >= 3)
+                                    count = std::stoi(Arguments[3]);
+                            }
+                            catch (...)
+                            {
+                            }
+
+                            auto WID = UObject::FindObject<UFortWeaponRangedItemDefinition>("FortWeaponRangedItemDefinition " + weaponName + '.' + weaponName);
+
+                            if (WID && WID->IsA(UFortWeaponRangedItemDefinition::StaticClass()))
+                            {
+                                AddItemWithUpdate(PC, WID, slot, EFortQuickBars::Primary, count);
+                                ClientMessage(PC, std::wstring(L"Successfully gave " + count + std::wstring(L" ") + toWStr(weaponName) + L" to slot " + std::to_wstring(slot)).c_str());
+                            }
+                        }
+
+                        else if (bDeveloperCheats && Command == "revive" && Pawn->bIsDBNO)
+                        {
+                            Pawn->bIsDBNO = false;
+                            Pawn->OnRep_IsDBNO();
+
+                            // PC->ClientOnPawnRevived(InstigatorPC);
+                            Pawn->SetHealth(100);
+                        }
+
+                        else if (bDeveloperCheats && Command == "respawn" && !Pawn)
+                        {
+                            InitPawn(PC);
+                            PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
+
+                            bool bFound = false;
+                            auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
+
+                            if (bFound)
+                                EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
+                        }
+
+                        else
+                            ClientMessage(PC, L"Unable to handle command!");
+                    }
+                }
+            }
+        })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCreateBuildingActor", {
             auto PC = (AFortPlayerControllerAthena*)Object;
@@ -266,7 +365,7 @@ namespace UFunctionHooks
                 }
             }
         })
-
+			
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerAttemptInventoryDrop", {
             auto PC = (AFortPlayerControllerAthena*)Object;
 
@@ -308,7 +407,6 @@ namespace UFunctionHooks
                 static auto JumpAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Jump");
                 static auto DeathAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_Death.GA_DefaultPlayer_Death_C");
                 static auto InteractUseAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractUse.GA_DefaultPlayer_InteractUse_C");
-                static auto InteractSearchAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractSearch.GA_DefaultPlayer_InteractSearch_C");
                 static auto InteractSearchAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractSearch.GA_DefaultPlayer_InteractSearch_C");
 
                 GrantGameplayAbility(Pawn, SprintAbility);

@@ -59,6 +59,8 @@
     <ClInclude Include="replication.h">
       <Filter>UE4</Filter>
     </ClInclude>
+    <ClInclude Include="native.h" />
+    <ClInclude Include="ufunctionhooks.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
