@@ -1,11 +1,6 @@
 #pragma once
 
-#include "game.h"
-#include "replication.h"
-#include "ue4.h"
-
-#define LOGGING
-#define DEVELOPERCHEATS
+#include "ufunctionhooks.h"
 
 namespace Hooks
 {
@@ -106,10 +101,10 @@ namespace Hooks
         PlayerState->OnRep_CharacterGender();
         PlayerState->OnRep_CharacterParts();
 
-        static auto pickaxe = UObject::FindObject<UFortWeaponMeleeItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_HalloweenScythe_Athena_C_T01.WID_Harvest_HalloweenScythe_Athena_C_T01");
-        static auto primary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
-        static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
-        static auto forth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Assault_Auto_Athena_R_Ore_T03.WID_Assault_Auto_Athena_R_Ore_T03");
+        static auto pickaxe = UObject::FindObject<UFortWeaponMeleeItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_HolidayCandyCane_Athena.WID_Harvest_Pickaxe_HolidayCandyCane_Athena");
+        static auto primary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_SlugFire_Athena_VR.WID_Shotgun_SlugFire_Athena_VR");
+        static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Pistol_HandCannon_Athena_VR_Ore_T03.WID_Pistol_HandCannon_Athena_VR_Ore_T03");
+        static auto forth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Sniper_NoScope_Athena_UC_Ore_T03.WID_Sniper_NoScope_Athena_UC_Ore_T03");
         static auto fifth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Launcher_Rocket_Athena_R_Ore_T03.WID_Launcher_Rocket_Athena_R_Ore_T03");
         static auto sixth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition Athena_Shields.Athena_Shields");
 
@@ -191,25 +186,8 @@ namespace Hooks
         return nullptr;
     }
 
-    void Listen()
+    void InitNetworkHooks()
     {
-        printf("[UWorld::Listen]\n");
-
-        AFortOnlineBeaconHost* HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
-        HostBeacon->ListenPort = 7777;
-        auto bInitBeacon = Native::OnlineBeaconHost::InitHost(HostBeacon);
-        CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");
-
-        HostBeacon->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
-        HostBeacon->NetDriver->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
-        HostBeacon->NetDriver->World = GetWorld();
-
-        GetWorld()->NetDriver = HostBeacon->NetDriver;
-        GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;
-        GetWorld()->LevelCollections[1].NetDriver = HostBeacon->NetDriver;
-
-        Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
-
         DETOUR_START
         DetourAttachE(Native::World::WelcomePlayer, WelcomePlayer);
         DetourAttachE(Native::Actor::GetNetMode, Hooks::GetNetMode);
@@ -218,559 +196,42 @@ namespace Hooks
         DetourAttachE(Native::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage);
         DetourAttachE(Native::OnlineSession::KickPlayer, Hooks::KickPlayer);
         DETOUR_END
-
-        GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = 100;
-
-        return;
     }
 
     void ProcessEvent(UObject* Object, UFunction* Function, void* Parameters)
     {
-        auto ObjectName = Object->GetName();
-        auto FunctionName = Function->GetName();
-
-        if (!bPlayButton && FunctionName.find("BP_PlayButton") != -1)
+        if (!bPlayButton)
         {
-            bPlayButton = true;
-            Game::Start();
-            printf("[Game::Start] Done\n");
+            auto ObjectName = Object->GetName();
+            auto FunctionName = Function->GetName();
+            if (FunctionName.find("BP_PlayButton") != -1)
+            {
+                bPlayButton = true;
+                Game::Start();
+                printf("[Game::Start] Done\n");
+
+                InitNetworkHooks();
+            }
         }
 
         if (bTraveled)
         {
-            if (!bListening && FunctionName.find("ReadyToStartMatch") != -1)
-            {
-                Game::OnReadyToStartMatch();
-                Listen();
-                bListening = true;
-            }
 
-            else if (FunctionName == "ServerLoadingScreenDropped")
-            {
-                bDroppedLS = true;
-
-                auto Pawn = (APlayerPawn_Athena_C*)((AFortPlayerController*)Object)->Pawn;
-
-                if (Pawn && Pawn->AbilitySystemComponent)
-                {
-                    static auto AbilitySet = UObject::FindObject<UFortAbilitySet>("FortAbilitySet GAS_DefaultPlayer.GAS_DefaultPlayer");
-                    for (int i = 0; i < AbilitySet->GameplayAbilities.Num(); i++)
-                    {
-                        auto Ability = AbilitySet->GameplayAbilities[i];
-
-                        if (!Ability)
-                            continue;
-
-                        if (Ability->GetName().find("DBNO") == -1)
-                        {
-                            GrantGameplayAbility(Pawn, Ability);
-                        }
-                    }
-                }
-            }
-
-            if (bDroppedLS)
-            {
 #ifdef LOGGING
-                if (Function->FunctionFlags & 0x00200000 || (Function->FunctionFlags & 0x01000000 && FunctionName.find("Ack") == -1 && FunctionName.find("AdjustPos") == -1))
+            if (Function->FunctionFlags & 0x00200000 || (Function->FunctionFlags & 0x01000000 && FunctionName.find("Ack") == -1 && FunctionName.find("AdjustPos") == -1))
+            {
+                if (FunctionName.find("ServerUpdateCamera") == -1 && FunctionName.find("ServerMove") == -1)
                 {
-                    if (FunctionName.find("ServerUpdateCamera") == -1 && FunctionName.find("ServerMove") == -1)
-                    {
-                        std::cout << "RPC Called: " << FunctionName << '\n';
-                    }
+                    std::cout << "RPC Called: " << FunctionName << '\n';
                 }
+            }
 #endif
 
-                if (FunctionName == "ServerHandlePickup")
+            for (int i = 0; i < toHook.size(); i++)
+            {
+                if (Function == toHook[i])
                 {
-                    HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
-                }
-
-                else if (FunctionName == "ServerAttemptInventoryDrop")
-                {
-                    auto PC = (AFortPlayerControllerAthena*)Object;
-
-                    if (!PC->IsInAircraft())
-                    {
-                        auto Pawn = (APlayerPawn_Athena_C*)PC->Pawn;
-                        HandleInventoryDrop(Pawn, Parameters);
-                    }
-                }
-
-                else if (FunctionName == "ServerChoosePart")
-                {
-                    auto Params = (AFortPlayerPawn_ServerChoosePart_Params*)Parameters;
-
-                    /*if (!Params || (!Params->ChosenCharacterPart && Params->Part != EFortCustomPartType::Hat))
-                        return;*/
-                }
-
-                else if (FunctionName == "ServerCheat") // You need cheatmanager (fortcheatmanager maybe?)
-                {
-                    auto Params = (AFortPlayerController_ServerCheat_Params*)Parameters;
-                    auto PC = (AFortPlayerControllerAthena*)Object;
-
-                    if (Params && PC)
-                    {
-                        auto Msg = Params->Msg.ToString() + " ";
-                        std::vector<std::string> args;
-
-                        // std::cout << "Message Raw: " << Msg << "\n";
-
-                        while (Msg.find(" ") != -1)
-                        {
-                            args.push_back(Msg.substr(0, Msg.find(' ')));
-                            Msg.erase(0, Msg.find(' ') + 1);
-                        }
-
-                        auto amountOfArgs = args.size() - 1;
-
-                        if (amountOfArgs >= 0)
-                        {
-                            auto& Command = args[0];
-
-                            std::cout << "Command: " << Command << '\n';
-
-                            if (Command == "setpickaxe" && amountOfArgs >= 1) // "cheat setpickaxe Pickaxe_Lockjaw" will set your pickaxe to renegade raider's pickaxe
-                            {
-                                auto PickaxeName = args[1]; // auto& ?
-                                std::cout << "Requested to set pickaxe to " + PickaxeName + "!\n";
-                                auto toFind = "WID_Harvest_" + PickaxeName + "_Athena_C_T01";
-                                toFind += "." + toFind;
-                                auto PID = UObject::FindObject<UFortWeaponMeleeItemDefinition>(toFind);
-
-                                if (PID && PID->IsA(UFortWeaponMeleeItemDefinition::StaticClass()))
-                                {
-                                    bool bFound = false;
-                                    auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
-
-                                    if (bFound)
-                                    {
-                                        ChangeItem(PC, PickaxeEntry.ItemDefinition, PID, 0);
-                                        std::cout << "Changed Pickaxe!\n";
-                                    }
-                                    else
-                                        std::cout << "Unable to find Pickaxe in inventory!\n";
-                                }
-
-                                else
-                                    std::cout << "Unable to find PID: " << PickaxeName << '\n';
-                            }
-
-#ifdef DEVELOPERCHEATS
-
-                            else if (Command == "giveweapon" && amountOfArgs >= 1)
-                            {
-                                std::cout << "Not implemented!\n";
-                            }
-
-#endif
-
-                            else
-                                std::cout << "Unable to handle cheat!\n";
-                        }
-                    }
-                }
-
-                else if (FunctionName == "ServerTryActivateAbility")
-                {
-                    auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
-                    auto Params = (UAbilitySystemComponent_ServerTryActivateAbility_Params*)Parameters;
-
-                    TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, nullptr);
-                }
-
-                else if (FunctionName == "ServerTryActivateAbilityWithEventData")
-                {
-                    auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
-                    auto Params = (UAbilitySystemComponent_ServerTryActivateAbilityWithEventData_Params*)Parameters;
-
-                    TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, &Params->TriggerEventData);
-                }
-
-                else if (FunctionName == "ServerAbilityRPCBatch")
-                {
-                    auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
-                    auto Params = (UAbilitySystemComponent_ServerAbilityRPCBatch_Params*)Parameters;
-
-                    TryActivateAbility(AbilitySystemComponent, Params->BatchInfo.AbilitySpecHandle, Params->BatchInfo.InputPressed, &Params->BatchInfo.PredictionKey, nullptr);
-                }
-
-                else if (FunctionName == "ServerExecuteInventoryItem")
-                {
-                    auto PC = (AFortPlayerControllerAthena*)Object;
-                    EquipInventoryItem(PC, *(FGuid*)Parameters);
-                }
-
-                else if (FunctionName == "ServerReturnToMainMenu")
-                {
-                    // PC->ClientReturnToMainMenuWithTextReason
-                    ((AFortPlayerController*)Object)->ClientTravel(L"Frontend", ETravelType::TRAVEL_Absolute, false, FGuid());
-                }
-
-                /*else if (FunctionName == "ServerPlayEmoteItem")
-                {
-                    auto CurrentPC = (AFortPlayerControllerAthena*)Object;
-                    auto CurrentPawn = (APlayerPawn_Athena_C*)CurrentPC->Pawn;
-
-                    auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
-
-                    if (CurrentPC && !CurrentPC->IsInAircraft() && CurrentPawn && EmoteParams->EmoteAsset)
-                    {
-                        if (auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(CurrentPawn->CharacterBodyType, CurrentPawn->CharacterGender))
-                        {
-                            CurrentPawn->PlayLocalAnimMontage(Montage, 1.0f, FName(0));
-                            CurrentPawn->PlayAnimMontage(Montage, 1.0f, FName(0));
-                            CurrentPawn->OnRep_CharPartAnimMontageInfo();
-                            CurrentPawn->OnRep_ReplicatedAnimMontage();
-                        }
-                    }
-                }*/
-
-                else if (FunctionName == "OnSpawnOutAnimEnded" && Object->IsA(ABP_VictoryDrone_C::StaticClass()))
-                {
-                    auto Drone = (ABP_VictoryDrone_C*)Object;
-
-                    if (Drone)
-                    {
-                        Drone->K2_DestroyActor();
-                    }
-                }
-
-                else if (FunctionName == "ServerFollowTeammate") // "Next Teammate" "Previous Teammate"
-                {
-                    if (Object->IsA(AFortPlayerControllerSpectating::StaticClass()))
-                    {
-                        auto PC = (AFortPlayerControllerSpectating*)Object;
-                        auto Pawn = (ASpectatorPawn*)PC->Pawn;
-                        auto Params = (AFortPlayerControllerAthena_ServerFollowTeammate_Params*)Parameters;
-
-                        auto PlayerState = (AFortPlayerStateAthena*)Pawn->PlayerState;
-
-                        if (Params)
-                        {
-                            TArray<AActor*> Pawns;
-                            static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
-                            GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
-
-                            APlayerPawn_Athena_C* PawnToUse = nullptr;
-
-                            if (Pawns.Num() != 0)
-                            {
-                                PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
-
-                                while (!PawnToUse)
-                                    PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
-                            }
-
-                            if (PawnToUse)
-                            {
-                                auto PlayerStateToUse = (AFortPlayerStateAthena*)PawnToUse->PlayerState;
-
-                                PlayerState->SpectatingTarget = PlayerStateToUse;
-                                PlayerState->OnRep_SpectatingTarget();
-                            }
-
-                            /*
-                            if (Params->bNext)
-                                PC->FollowNextPlayer();
-                            else
-                                PC->FollowPrevPlayer();
-                            */
-
-                            Pawns.FreeArray();
-                        }
-                    }
-                }
-
-                else if (FunctionName == "ClientOnPawnDied") // TODO IMPORTANT: Check if player left and their pawn died.
-                {
-                    auto Params = (AFortPlayerControllerZone_ClientOnPawnDied_Params*)Parameters;
-                    auto DeadPC = (AFortPlayerControllerAthena*)Object;
-                    auto DeadPlayerState = (AFortPlayerStateAthena*)DeadPC->PlayerState;
-
-                    if (DeadPC && Params)
-                    {
-                        auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
-                        GameState->PlayersLeft--;
-                        // GameState->PlayerArray.RemoveAt(DeadPC->NetPlayerIndex);
-
-                        if (DeadPC && DeadPC->Pawn)
-                        {
-                            static auto DeathAnimation = UObject::FindObject<UAnimMontage>("AnimMontage PlayerDeath_Athena.PlayerDeath_Athena");
-
-                            if (DeathAnimation)
-                            {
-                                // ((AFortPlayerPawnAthena*)DeadPC->Pawn)->PlayAnimMontage(DeathAnimation, 0.7, FName(-1));
-                                // SpawnActor<ABP_VictoryDrone_C>(DeadPC->Pawn->K2_GetActorLocation(), DeadPC);
-                            }
-
-                            else
-                                std::cout << "Could not find Death Animation!\n";
-                        }
-
-                        auto KillerPawn = Params->DeathReport.KillerPawn;
-                        auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
-
-                        DeadPlayerState->OnRep_DeathInfo();
-                        // KillerPlayerState->ClientReportKill(DeadPlayerState);
-
-                        auto Spectate = [&](AFortPlayerStateAthena* StateToSpectate) -> void
-                        {
-                            auto PawnToSpectate = StateToSpectate->GetCurrentPawn();
-
-                            if (PawnToSpectate)
-                            {
-                                DeadPC->PlayerToSpectateOnDeath = PawnToSpectate;
-                                DeadPC->SpectateOnDeath();
-                                // DeadPC->ClientSetViewTarget(PawnToSpectate, FViewTargetTransitionParams());
-                                DeadPlayerState->SpectatingTarget = StateToSpectate;
-                                DeadPlayerState->bIsSpectator = true;
-                                DeadPlayerState->OnRep_SpectatingTarget();
-
-                                auto Connection = DeadPC->NetConnection;
-                                auto SpectatorPC = SpawnActor<AFortPlayerControllerSpectating>(PawnToSpectate->K2_GetActorLocation()); // ABP_ReplayPC_Athena_C
-                                SpectatorPC->SetNewCameraType(ESpectatorCameraType::ThirdPerson, true);
-                                // SpectatorPC->ToggleSpectatorHUD();
-                                Connection->PlayerController = SpectatorPC;
-                                auto SpectatorPawn = SpawnActor<ASpectatorPawn>(KillerPawn->K2_GetActorLocation(), PawnToSpectate); // ABP_SpectatorPawn_C
-
-                                // DeadPC->ClientGotoState("Spectating");
-                                SpectatorPC->SpectatorPawn = SpectatorPawn;
-                                SpectatorPC->Pawn = SpectatorPawn;
-                                SpectatorPC->AcknowledgedPawn = SpectatorPawn;
-                                SpectatorPawn->Owner = SpectatorPC;
-                                SpectatorPawn->OnRep_Owner();
-                                SpectatorPC->OnRep_Pawn();
-                                SpectatorPC->Possess(SpectatorPawn);
-
-                                SpectatorPawn->bReplicateMovement = true;
-                                SpectatorPawn->OnRep_ReplicateMovement();
-                            }
-                        };
-
-                        if (KillerPlayerState && KillerPawn && KillerPlayerState != DeadPlayerState)
-                        {
-                            KillerPlayerState->KillScore++;
-                            KillerPlayerState->OnRep_Kills();
-                            Spectate(KillerPlayerState);
-                        }
-
-                        else
-                        {
-                            TArray<AActor*> Pawns;
-                            static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
-                            GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
-                            if (Pawns.Num() != 0)
-                            {
-                                auto PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
-
-                                while (!PawnToUse)
-                                    PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
-
-                                if (PawnToUse)
-                                    Spectate((AFortPlayerStateAthena*)PawnToUse->PlayerState);
-                            }
-                        }
-
-                        if (KillerPawn)
-                        {
-                            auto KillerController = (AFortPlayerControllerAthena*)Params->DeathReport.KillerPawn->Controller;
-                            if (KillerController)
-                            {
-                            }
-                        }
-
-                        // DeadPC->Pawn->K2_DestroyActor();
-                    }
-                }
-
-                else if (FunctionName == "ServerAttemptExitVehicle")
-                {
-                    auto PC = (AFortPlayerControllerAthena*)Object;
-
-                    if (PC && PC->Pawn)
-                    {
-                        auto Vehicle = ((AFortPlayerPawnAthena*)PC->Pawn)->GetVehicle();
-                        PC->Pawn->Role = ENetRole::ROLE_Authority;
-                        Vehicle->Role = ENetRole::ROLE_Authority;
-                    }
-                }
-
-                else if (FunctionName == "ServerSuicide")
-                {
-                }
-
-                else if (FunctionName == "ServerCreateBuildingActor")
-                {
-                    auto PC = (AFortPlayerControllerAthena*)Object;
-
-                    auto Params = (AFortPlayerController_ServerCreateBuildingActor_Params*)Parameters;
-                    auto CurrentBuildClass = Params->BuildingClassData.BuildingClass;
-
-                    if (CurrentBuildClass)
-                    {
-                        FTransform Transform;
-                        Transform.Rotation = RotToQuat(Params->BuildRot);
-                        Transform.Translation = Params->BuildLoc;
-                        Transform.Scale3D = { 1, 1, 1 };
-
-                        if (auto BuildingActor = (ABuildingSMActor*)SpawnActorTrans(CurrentBuildClass, Transform, PC))
-                        {
-                            BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::CountsTowardsBounds;
-                            BuildingActor->SetMirrored(Params->bMirrored);
-                            BuildingActor->PlacedByPlacementTool();
-                            BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);
-                        }
-                    }
-                }
-
-                else if (FunctionName == "ServerBeginEditingBuildingActor")
-                {
-                    auto Params = (AFortPlayerController_ServerBeginEditingBuildingActor_Params*)Parameters;
-                    auto Controller = (AFortPlayerControllerAthena*)Object;
-                    auto Pawn = (APlayerPawn_Athena_C*)Controller->Pawn;
-                    bool bFound = false;
-                    auto EditToolEntry = FindItemInInventory<UFortEditToolItemDefinition>(Controller, bFound);
-
-                    if (Controller && Pawn && Params->BuildingActorToEdit && bFound)
-                    {
-                        auto EditTool = (AFortWeap_EditingTool*)EquipWeaponDefinition(Pawn, (UFortWeaponItemDefinition*)EditToolEntry.ItemDefinition, EditToolEntry.ItemGuid);
-
-                        if (EditTool)
-                        {
-                            EditTool->EditActor = Params->BuildingActorToEdit;
-                            EditTool->OnRep_EditActor();
-                            Params->BuildingActorToEdit->EditingPlayer = (AFortPlayerStateZone*)Pawn->PlayerState;
-                            Params->BuildingActorToEdit->OnRep_EditingPlayer();
-                        }
-                    }
-                }
-
-                else if (FunctionName == "ServerEditBuildingActor")
-                {
-                    auto Params = (AFortPlayerController_ServerEditBuildingActor_Params*)Parameters;
-                    auto PC = (AFortPlayerControllerAthena*)Object;
-
-                    if (PC && Params)
-                    {
-                        auto BuildingActor = Params->BuildingActorToEdit;
-                        auto NewBuildingClass = Params->NewBuildingClass;
-
-                        if (BuildingActor && NewBuildingClass)
-                        {
-                            FTransform SpawnTransform;
-                            SpawnTransform.Rotation = RotToQuat(BuildingActor->K2_GetActorRotation());
-                            SpawnTransform.Translation = BuildingActor->K2_GetActorLocation();
-                            SpawnTransform.Scale3D = BuildingActor->GetActorScale3D();
-
-                            BuildingActor->K2_DestroyActor();
-
-                            if (auto NewBuildingActor = (ABuildingSMActor*)SpawnActorTrans(NewBuildingClass, SpawnTransform, PC))
-                            {
-                                NewBuildingActor->SetMirrored(Params->bMirrored);
-                                NewBuildingActor->InitializeKismetSpawnedBuildingActor(NewBuildingActor, PC);
-                            }
-                        }
-                    }
-                }
-
-                else if (FunctionName == "ServerEndEditingBuildingActor")
-                {
-                    auto Params = (AFortPlayerController_ServerEndEditingBuildingActor_Params*)Parameters;
-                    auto PC = (AFortPlayerControllerAthena*)Object;
-
-                    if (Params->BuildingActorToStopEditing)
-                    {
-                        Params->BuildingActorToStopEditing->EditingPlayer = nullptr;
-                        Params->BuildingActorToStopEditing->OnRep_EditingPlayer();
-
-                        auto EditTool = (AFortWeap_EditingTool*)((APlayerPawn_Athena_C*)PC->Pawn)->CurrentWeapon;
-
-                        if (EditTool)
-                        {
-                            EditTool->bEditConfirmed = true;
-                            EditTool->EditActor = nullptr;
-                            EditTool->OnRep_EditActor();
-                        }
-                    }
-                }
-
-                else if (FunctionName == "ServerAttemptInteract")
-                {
-                    auto Params = (AFortPlayerController_ServerAttemptInteract_Params*)Parameters;
-                    auto PC = (AFortPlayerControllerAthena*)Object;
-
-                    if (Params->ReceivingActor)
-                    {
-                        auto DBNOPawn = (APlayerPawn_Athena_C*)Params->ReceivingActor;
-                        auto DBNOPC = (AFortPlayerControllerAthena*)DBNOPawn->Controller;
-
-                        if (DBNOPawn && DBNOPC && DBNOPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
-                        {
-                            DBNOPawn->ReviveFromDBNO(PC);
-                        }
-                    }
-                }
-
-                else if (FunctionName == "ServerReviveFromDBNO")
-                {
-                    auto Params = (AFortPlayerPawn_ServerReviveFromDBNO_Params*)Parameters;
-                    auto DBNOPawn = (APlayerPawn_Athena_C*)Object;
-                    auto DBNOPC = (AFortPlayerControllerAthena*)DBNOPawn->Controller;
-                    auto InstigatorPC = (AFortPlayerControllerAthena*)Params->EventInstigator;
-
-                    if (InstigatorPC && DBNOPawn && DBNOPC)
-                    {
-                        DBNOPawn->bIsDBNO = false;
-                        DBNOPawn->OnRep_IsDBNO();
-
-                        DBNOPC->ClientOnPawnRevived(InstigatorPC);
-                        DBNOPawn->SetHealth(100);
-                    }
-                }
-
-                else if (FunctionName == "ServerRepairBuildingActor")
-                {
-                    auto Params = (AFortPlayerController_ServerRepairBuildingActor_Params*)Parameters;
-                    auto Controller = (AFortPlayerControllerAthena*)Object;
-                    auto Pawn = (APlayerPawn_Athena_C*)Controller->Pawn;
-
-                    if (Controller && Pawn && Params->BuildingActorToRepair)
-                    {
-                        Params->BuildingActorToRepair->RepairBuilding(Controller, 10); // figure out how to get the repair amount
-                    }
-                }
-
-                else if (FunctionName == "ServerAttemptAircraftJump") // figure out how to make the player jump when the battle bus is at the end.
-                {
-                    auto Params = (AFortPlayerControllerAthena_ServerAttemptAircraftJump_Params*)Parameters;
-                    auto PC = (AFortPlayerControllerAthena*)Object;
-                    auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
-
-                    if (PC && Params && !PC->Pawn && PC->IsInAircraft()) // TODO: Teleport the player's pawn instead of making a new one.
-                    {
-                        // ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped();
-                        auto Aircraft = (AFortAthenaAircraft*)GameState->Aircrafts[0];
-
-                        if (Aircraft)
-                        {
-                            auto ExitLocation = Aircraft->K2_GetActorLocation();
-
-                            // ExitLocation.Z -= 500;
-
-                            InitPawn(PC, ExitLocation);
-                            PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
-
-                            bool bFound = false;
-                            auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
-
-                            if (bFound)
-                                EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
-
-                            // PC->Pawn->K2_TeleportTo(ExitLocation, Params->ClientRotation);
-                        }
-                    }
+                    toCall[i](Object, Parameters);
                 }
             }
         }

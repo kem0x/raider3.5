@@ -3,7 +3,7 @@
 #include "SDK.hpp"
 #include "game.h"
 #include "hooks.h"
-#include "ue4.h"
+#include "ufunctionhooks.h"
 
 DWORD WINAPI Main(LPVOID lpParam)
 {
@@ -14,6 +14,8 @@ DWORD WINAPI Main(LPVOID lpParam)
     auto End = std::chrono::steady_clock::now();
 
     printf("[Native::InitializeAll] Time: %.02f ms\n", (End - Start).count() / 1000000.);
+
+    UFunctionHooks::Initialize();
 
     DETOUR_START
     DetourAttachE(PEOriginal, Hooks::ProcessEvent);

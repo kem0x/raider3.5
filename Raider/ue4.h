@@ -8,7 +8,6 @@ constexpr auto HALF_PI = 1.57079632679f;
 
 inline bool bTraveled = false;
 inline bool bPlayButton = false;
-inline bool bDroppedLS = false;
 inline bool bListening = false;
 
 inline UWorld* GetWorld()
@@ -121,7 +120,7 @@ static FORCEINLINE void sinCos(float* ScalarSin, float* ScalarCos, float Value)
     *ScalarCos = sign * p;
 }
 
-FORCEINLINE auto RotToQuat(FRotator Rotator)
+static auto RotToQuat(FRotator Rotator)
 {
     const float DEG_TO_RAD = PI / (180.f);
     const float DIVIDE_BY_2 = DEG_TO_RAD / 2.f;
@@ -141,7 +140,7 @@ FORCEINLINE auto RotToQuat(FRotator Rotator)
     return RotationQuat;
 }
 
-inline AActor* SpawnActorTrans(UClass* StaticClass, FTransform SpawnTransform, AActor* Owner = nullptr, ESpawnActorCollisionHandlingMethod Flags = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn)
+static AActor* SpawnActorTrans(UClass* StaticClass, FTransform SpawnTransform, AActor* Owner = nullptr, ESpawnActorCollisionHandlingMethod Flags = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn)
 {
     AActor* FirstActor = GetGameplayStatics()->STATIC_BeginDeferredActorSpawnFromClass(GetWorld(), StaticClass, SpawnTransform, Flags, Owner);
 
@@ -163,14 +162,25 @@ inline auto GetItemInstances(AFortPlayerController* PC)
     return PC->WorldInventory->Inventory.ItemInstances;
 }
 
-template <typename RetActorType = AActor>
-inline RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor* Owner = nullptr)
+inline AActor* SpawnActor(UClass* ActorClass, FVector Location = { 0.0f, 0.0f, 0.0f }, FRotator Rotation = {0, 0, 0}, AActor* Owner = nullptr)
 {
     FTransform SpawnTransform;
 
     SpawnTransform.Translation = Location;
     SpawnTransform.Scale3D = FVector { 1, 1, 1 };
-    SpawnTransform.Rotation = FQuat { 0, 0, 0 };
+    SpawnTransform.Rotation = RotToQuat(Rotation);
+
+    return SpawnActorTrans(ActorClass, SpawnTransform, Owner);
+}
+
+template <typename RetActorType = AActor>
+inline RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor* Owner = nullptr, FQuat Rotation = {0, 0, 0})
+{
+    FTransform SpawnTransform;
+
+    SpawnTransform.Translation = Location;
+    SpawnTransform.Scale3D = FVector { 1, 1, 1 };
+    SpawnTransform.Rotation = Rotation;
 
     return (RetActorType*)SpawnActorTrans(RetActorType::StaticClass(), SpawnTransform, Owner);
 }
@@ -247,7 +257,7 @@ inline auto RemoveItem(AFortPlayerController* PC, EFortQuickBars QuickBars, int 
         return;
 
     auto pcQuickBars = PC->QuickBars;
-    pcQuickBars->PrimaryQuickBar.Slots[Slot].Items.Data = nullptr;
+    pcQuickBars->PrimaryQuickBar.Slots[Slot].Items.FreeArray();
     pcQuickBars->EmptySlot(QuickBars, Slot);
 
     auto Inventory = PC->WorldInventory->Inventory;
@@ -341,6 +351,28 @@ inline void DumpObjects()
 
     std::cout << "Finished dumping objects!\n";
 }
+
+    void Listen()
+    {
+        printf("[UWorld::Listen]\n");
+
+        AFortOnlineBeaconHost* HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
+        HostBeacon->ListenPort = 7777;
+        auto bInitBeacon = Native::OnlineBeaconHost::InitHost(HostBeacon);
+        CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");
+
+        HostBeacon->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
+        HostBeacon->NetDriver->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
+        HostBeacon->NetDriver->World = GetWorld();
+
+        GetWorld()->NetDriver = HostBeacon->NetDriver;
+        GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;
+        GetWorld()->LevelCollections[1].NetDriver = HostBeacon->NetDriver;
+
+        Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
+
+        GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = 100;
+    }
 
 static void SummonPickup(AFortPlayerPawn* Pawn, auto ItemDef, int Count, FVector Location)
 {
