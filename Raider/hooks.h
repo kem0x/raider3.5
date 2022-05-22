@@ -22,6 +22,19 @@ namespace Hooks
         if (!NetDriver)
             return;
 
+		if (GetAsyncKeyState(VK_F6) & 1) // Start Aircraft
+        {
+            auto gameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+
+            gameState->bGameModeWillSkipAircraft = false;
+            gameState->AircraftStartTime = 0;		
+			gameState->WarmupCountdownEndTime = 0;
+			
+            ((UKismetSystemLibrary*)UKismetSystemLibrary::StaticClass())->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
+
+            std::cout << "Started Aircraft!\n";
+        }
+
         if (NetDriver->IsA(UIpNetDriver::StaticClass()) && NetDriver->ClientConnections.Num() > 0 && NetDriver->ClientConnections[0]->InternalAck == false)
         {
             Replication::ServerReplicateActors(NetDriver);

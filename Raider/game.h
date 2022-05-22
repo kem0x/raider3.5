@@ -15,9 +15,9 @@ namespace Game
         auto world = GetWorld();
         auto gameState = reinterpret_cast<AAthena_GameState_C*>(world->GameState);
 
-        // gameState->bGameModeWillSkipAircraft = true;
-        // gameState->AircraftStartTime = 99999.0f;
-        // gameState->WarmupCountdownEndTime = 99999.0f;
+        gameState->bGameModeWillSkipAircraft = true;
+        gameState->AircraftStartTime = 99999.0f;
+        gameState->WarmupCountdownEndTime = 99999.0f;
 
         gameState->GamePhase = EAthenaGamePhase::Warmup;
         gameState->OnRep_GamePhase(EAthenaGamePhase::None);
