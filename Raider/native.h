@@ -92,6 +92,11 @@ namespace Native
         inline __int64 (*TSetToTArray)(__int64 a1, __int64 OutArray);
     }
 
+    namespace GameViewportClient
+    {
+        inline void (*PostRender)(UGameViewportClient* _this, UCanvas* Canvas);
+    }
+
     void InitializeAll()
     {
         Offsets::Imagebase = (uintptr_t)GetModuleHandleA(0);
@@ -207,6 +212,10 @@ namespace Native
         Address = Utils::FindPattern(Patterns::TSetToTArray, true, 1);
         CheckNullFatal(Address, "Failed to find TSetToTArray");
         AddressToFunction(Address, Engine::TSetToTArray);
+
+        Address = Utils::FindPattern(Patterns::PostRender);
+        CheckNullFatal(Address, "Failed to find PostRender");
+        AddressToFunction(Address, GameViewportClient::PostRender);
 
         PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
 
