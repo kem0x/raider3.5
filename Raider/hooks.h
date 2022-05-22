@@ -138,7 +138,7 @@ namespace Hooks
             }
         }
 
-        Pawn->K2_TeleportTo({ 37713, -52942, 461 }, { 0, 0, 0 }); // Tilted
+        // Pawn->K2_TeleportTo({ 37713, -52942, 461 }, { 0, 0, 0 }); // Tilted
 
         return PlayerController;
     }
