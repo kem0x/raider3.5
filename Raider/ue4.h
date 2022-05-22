@@ -206,8 +206,8 @@ inline void UpdateInventory(AFortPlayerController* PlayerController, int Dirty =
     PlayerController->QuickBars->OnRep_PrimaryQuickBar();
     PlayerController->QuickBars->OnRep_SecondaryQuickBar();
     PlayerController->WorldInventory->bRequiresLocalUpdate = true;
-	
-	if (bRemovedItem)
+
+    if (bRemovedItem)
         PlayerController->WorldInventory->Inventory.MarkArrayDirty();
 
     if (Dirty != 0 && PlayerController->WorldInventory->Inventory.ReplicatedEntries.Num() >= Dirty)
@@ -217,7 +217,7 @@ inline void UpdateInventory(AFortPlayerController* PlayerController, int Dirty =
 inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinition* Def, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1)
 {
     if (Def->IsA(UFortWeaponItemDefinition::StaticClass()))
-		Count = 1;
+        Count = 1;
 
     auto QuickBarSlots = PC->QuickBars->PrimaryQuickBar.Slots;
 
@@ -232,7 +232,7 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
     auto Idx = PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
     PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
 
-	// QuickBarSlots[Slot].Items.Data = &ItemEntry.ItemGuid;
+    // QuickBarSlots[Slot].Items.Data = &ItemEntry.ItemGuid;
 
     ItemEntry.bIsDirty = true;
 
@@ -251,16 +251,16 @@ inline auto RemoveItem(AFortPlayerController* PC, EFortQuickBars QuickBars, int 
     pcQuickBars->EmptySlot(QuickBars, Slot);
 
     auto Inventory = PC->WorldInventory->Inventory;
-	
+
     if (Inventory.ReplicatedEntries.Num() >= Slot)
         Inventory.ReplicatedEntries.RemoveAt(Slot, 1);
 
-	if (Inventory.ItemInstances.Num() >= Slot)
+    if (Inventory.ItemInstances.Num() >= Slot)
         Inventory.ItemInstances.RemoveAt(Slot, 1);
 
-	// PC->RemoveItemFromQuickBars(PC->QuickBars->PrimaryQuickBar.Slots[Slot].Items[0]);
-	
-	UpdateInventory(PC, 0, true);
+    // PC->RemoveItemFromQuickBars(PC->QuickBars->PrimaryQuickBar.Slots[Slot].Items[0]);
+
+    UpdateInventory(PC, 0, true);
 }
 
 inline AFortWeapon* EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeaponItemDefinition* Definition, FGuid& Guid, int Ammo = 0)
@@ -271,7 +271,7 @@ inline AFortWeapon* EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeapo
     {
         // auto Weapon = (AFortWeapon*)SpawnActorTrans(weaponClass, {}, Pawn);
         auto Weapon = Pawn->EquipWeaponDefinition(Definition, Guid);
-		
+
         if (Weapon)
         {
             /* Weapon->ItemEntryGuid = Guid;
@@ -406,7 +406,7 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
                         if (IsMatchingGuid(FocusedGuid, Guid))
                         {
                             SummonPickup((APlayerPawn_Athena_C*)Pawn, Def, Params->Pickup->PrimaryPickupItemEntry.Count, Pawn->K2_GetActorLocation());
-                            break;                        
+                            break;
                         }
                     }
 
@@ -549,7 +549,7 @@ auto TryActivateAbility(UAbilitySystemComponent* AbilitySystemComponent, FGamepl
         return;
     }
 
-    //UAbilitySystemComponent_ConsumeAllReplicatedData(AbilitySystemComponent, AbilityToActivate, *PredictionKey);
+    // UAbilitySystemComponent_ConsumeAllReplicatedData(AbilitySystemComponent, AbilityToActivate, *PredictionKey);
 
     UGameplayAbility* InstancedAbility = nullptr;
     Spec->InputPressed = true;
@@ -572,7 +572,7 @@ auto TryActivateAbility(UAbilitySystemComponent* AbilitySystemComponent, FGamepl
 static auto GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* GameplayAbilityClass)
 {
     auto AbilitySystemComponent = TargetPawn->AbilitySystemComponent;
-	
+
     if (!AbilitySystemComponent)
         return;
 
@@ -613,7 +613,7 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
     for (int i = 1; i < ItemInstances.Num(); i++)
     {
         auto ItemInstance = ItemInstances[i];
-		
+
         if (!ItemInstance)
             continue;
 
@@ -626,7 +626,7 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
             if (def)
             {
                 SummonPickup(Pawn, def, ItemInstance->ItemEntry.Count, Pawn->K2_GetActorLocation());
-                break;            
+                break;
             }
         }
     }
@@ -638,9 +638,9 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
         if (!ItemInstance)
             continue;
 
-		auto Def = ItemInstance->ItemEntry.ItemDefinition;
-		
-		if (Def /* && Def->IsA(UFortWeaponItemDefinition::StaticClass()) */)
+        auto Def = ItemInstance->ItemEntry.ItemDefinition;
+
+        if (Def /* && Def->IsA(UFortWeaponItemDefinition::StaticClass()) */)
         {
             QuickBars->PrimaryQuickBar.CurrentFocusedSlot = i;
             // EquipWeaponDefinition((APlayerPawn_Athena_C*)Controller->Pawn, (UFortWeaponItemDefinition*)Def, ItemInstance->ItemEntry.ItemGuid, ItemInstance->ItemEntry.Count);
@@ -664,7 +664,7 @@ FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
 
     auto ActorsNum = OutActors.Num();
 
-	auto SpawnTransform = FTransform();
+    auto SpawnTransform = FTransform();
     SpawnTransform.Scale3D = FVector(1, 1, 1);
     SpawnTransform.Rotation = FQuat();
     SpawnTransform.Translation = FVector { 1250, 1818, 3284 };
@@ -673,21 +673,21 @@ FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
     {
         auto ActorToUseNum = rand() % ActorsNum;
         auto ActorToUse = (OutActors)[ActorToUseNum];
-		
+
         while (!ActorToUse)
         {
             ActorToUseNum = rand() % ActorsNum;
             ActorToUse = (OutActors)[ActorToUseNum];
         }
-		
+
         auto Location = ActorToUse->K2_GetActorLocation();
         SpawnTransform.Translation = ActorToUse->K2_GetActorLocation();
 
         PC->WarmupPlayerStart = (AFortPlayerStartWarmup*)ActorToUse;
     }
-	
+
     return SpawnTransform;
-	
+
     // return (GetWorld()->AuthorityGameMode->FindPlayerStart(PC, IncomingName))->K2_GetActorLocation();
 }
 
@@ -695,7 +695,7 @@ static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc 
 {
     if (PlayerController->Pawn)
         PlayerController->Pawn->K2_DestroyActor();
-	
+
     auto SpawnTransform = FTransform();
     SpawnTransform.Scale3D = FVector(1, 1, 1);
     SpawnTransform.Rotation = Rotation;
