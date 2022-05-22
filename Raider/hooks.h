@@ -281,7 +281,7 @@ namespace Hooks
                 }
 #endif
 
-                if (FunctionName.find("ServerHandlePickup") != -1)
+                if (FunctionName == "ServerHandlePickup")
                 {
                     HandlePickup((AFortPlayerPawn*)Object, Parameters, true); // crashes
                 }
@@ -290,19 +290,19 @@ namespace Hooks
                 {
                     auto PC = (AFortPlayerControllerAthena*)Object;
 
-                    if (PC->IsInAircraft())
-                        return;
-
-                    auto Pawn = (APlayerPawn_Athena_C*)PC->Pawn;
-                    HandleInventoryDrop(Pawn, Parameters);
+                    if (!PC->IsInAircraft())
+                    {
+                        auto Pawn = (APlayerPawn_Athena_C*)PC->Pawn;
+                        HandleInventoryDrop(Pawn, Parameters);
+                    }
                 }
 
                 else if (FunctionName == "ServerChoosePart")
                 {
                     auto Params = (AFortPlayerPawn_ServerChoosePart_Params*)Parameters;
 
-                    if (!Params || (!Params->ChosenCharacterPart && Params->Part != EFortCustomPartType::Hat))
-                        return;
+                    /*if (!Params || (!Params->ChosenCharacterPart && Params->Part != EFortCustomPartType::Hat))
+                        return;*/
                 }
 
                 else if (FunctionName == "ServerCheat") // You need cheatmanager (fortcheatmanager maybe?)
@@ -410,52 +410,52 @@ namespace Hooks
 
                 else if (FunctionName == "ServerPlayEmoteItem")
                 {
-                    if (!Object->IsA(AFortPlayerControllerAthena::StaticClass())) // they may be spectating
-                        return;
-
-                    auto CurrentPC = (AFortPlayerControllerAthena*)Object;
-                    auto CurrentPawn = (APlayerPawn_Athena_C*)CurrentPC->Pawn;
-
-                    auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
-                    auto AnimInstance = (UFortAnimInstance*)CurrentPawn->Mesh->GetAnimInstance();
-
-                    if (CurrentPC && !CurrentPC->IsInAircraft() && CurrentPawn && EmoteParams->EmoteAsset && !AnimInstance->bIsJumping && !AnimInstance->bIsFalling)
+                    if (Object->IsA(AFortPlayerControllerAthena::StaticClass()))
                     {
-                        if (EmoteParams->EmoteAsset->IsA(UAthenaDanceItemDefinition::StaticClass())) // idk if emojis would work
+                        auto CurrentPC = (AFortPlayerControllerAthena*)Object;
+                        auto CurrentPawn = (APlayerPawn_Athena_C*)CurrentPC->Pawn;
+
+                        auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
+                        auto AnimInstance = (UFortAnimInstance*)CurrentPawn->Mesh->GetAnimInstance();
+
+                        if (CurrentPC && !CurrentPC->IsInAircraft() && CurrentPawn && EmoteParams->EmoteAsset && !AnimInstance->bIsJumping && !AnimInstance->bIsFalling)
                         {
-                            if (auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(CurrentPawn->CharacterBodyType, CurrentPawn->CharacterGender))
+                            if (EmoteParams->EmoteAsset->IsA(UAthenaDanceItemDefinition::StaticClass())) // idk if emojis would work
                             {
-                                if (AnimInstance && Montage)
+                                if (auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(CurrentPawn->CharacterBodyType, CurrentPawn->CharacterGender))
                                 {
-                                    auto& RepAnimMontageInfo = CurrentPawn->RepAnimMontageInfo;
-                                    auto& RepCharPartAnimMontageInfo = CurrentPawn->RepCharPartAnimMontageInfo;
-
-                                    const auto Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
-
-                                    if (Duration > 0.f)
+                                    if (AnimInstance && Montage)
                                     {
-                                        RepAnimMontageInfo.AnimMontage = Montage;
-                                        RepAnimMontageInfo.ForcePlayBit = 1;
+                                        auto& RepAnimMontageInfo = CurrentPawn->RepAnimMontageInfo;
+                                        auto& RepCharPartAnimMontageInfo = CurrentPawn->RepCharPartAnimMontageInfo;
 
-                                        RepCharPartAnimMontageInfo.PawnMontage = Montage;
+                                        const auto Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
 
-                                        bool bIsStopped = AnimInstance->Montage_GetIsStopped(Montage);
-
-                                        if (!bIsStopped)
+                                        if (Duration > 0.f)
                                         {
-                                            RepAnimMontageInfo.PlayRate = AnimInstance->Montage_GetPlayRate(Montage);
-                                            RepAnimMontageInfo.Position = AnimInstance->Montage_GetPosition(Montage);
-                                            RepAnimMontageInfo.BlendTime = AnimInstance->Montage_GetBlendTime(Montage);
+                                            RepAnimMontageInfo.AnimMontage = Montage;
+                                            RepAnimMontageInfo.ForcePlayBit = 1;
+
+                                            RepCharPartAnimMontageInfo.PawnMontage = Montage;
+
+                                            bool bIsStopped = AnimInstance->Montage_GetIsStopped(Montage);
+
+                                            if (!bIsStopped)
+                                            {
+                                                RepAnimMontageInfo.PlayRate = AnimInstance->Montage_GetPlayRate(Montage);
+                                                RepAnimMontageInfo.Position = AnimInstance->Montage_GetPosition(Montage);
+                                                RepAnimMontageInfo.BlendTime = AnimInstance->Montage_GetBlendTime(Montage);
+                                            }
+
+                                            RepAnimMontageInfo.IsStopped = bIsStopped;
+                                            RepAnimMontageInfo.NextSectionID = 0;
+
+                                            CurrentPawn->OnRep_ReplicatedMovement();
+                                            CurrentPawn->PlayLocalAnimMontage(Montage, 1.0f, FName(-1));
+                                            CurrentPawn->PlayAnimMontage(Montage, 1.0f, FName(-1));
+                                            CurrentPawn->OnRep_CharPartAnimMontageInfo();
+                                            CurrentPawn->OnRep_ReplicatedAnimMontage();
                                         }
-
-                                        RepAnimMontageInfo.IsStopped = bIsStopped;
-                                        RepAnimMontageInfo.NextSectionID = 0;
-
-                                        CurrentPawn->OnRep_ReplicatedMovement();
-                                        CurrentPawn->PlayLocalAnimMontage(Montage, 1.0f, FName(-1));
-                                        CurrentPawn->PlayAnimMontage(Montage, 1.0f, FName(-1));
-                                        CurrentPawn->OnRep_CharPartAnimMontageInfo();
-                                        CurrentPawn->OnRep_ReplicatedAnimMontage();
                                     }
                                 }
                             }
@@ -475,45 +475,47 @@ namespace Hooks
 
                 else if (FunctionName == "ServerFollowTeammate") // "Next Teammate" "Previous Teammate"
                 {
-                    if (!Object->IsA(AFortPlayerControllerSpectating::StaticClass()))
-                        return;
-
-                    auto PC = (AFortPlayerControllerSpectating*)Object;
-                    auto Pawn = (ASpectatorPawn*)PC->Pawn;
-                    auto Params = (AFortPlayerControllerAthena_ServerFollowTeammate_Params*)Parameters;
-
-                    auto PlayerState = (AFortPlayerStateAthena*)Pawn->PlayerState;
-
-                    if (Params)
+                    if (Object->IsA(AFortPlayerControllerSpectating::StaticClass()))
                     {
-                        TArray<AActor*> Pawns;
-                        static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
-                        GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
+                        auto PC = (AFortPlayerControllerSpectating*)Object;
+                        auto Pawn = (ASpectatorPawn*)PC->Pawn;
+                        auto Params = (AFortPlayerControllerAthena_ServerFollowTeammate_Params*)Parameters;
 
-                        APlayerPawn_Athena_C* PawnToUse = nullptr;
+                        auto PlayerState = (AFortPlayerStateAthena*)Pawn->PlayerState;
 
-                        if (Pawns.Num() != 0)
+                        if (Params)
                         {
-                            PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
+                            TArray<AActor*> Pawns;
+                            static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
+                            GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
 
-                            while (!PawnToUse)
+                            APlayerPawn_Athena_C* PawnToUse = nullptr;
+
+                            if (Pawns.Num() != 0)
+                            {
                                 PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
+
+                                while (!PawnToUse)
+                                    PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
+                            }
+
+                            if (PawnToUse)
+                            {
+                                auto PlayerStateToUse = (AFortPlayerStateAthena*)PawnToUse->PlayerState;
+
+                                PlayerState->SpectatingTarget = PlayerStateToUse;
+                                PlayerState->OnRep_SpectatingTarget();
+                            }
+
+                            /*
+                            if (Params->bNext)
+                                PC->FollowNextPlayer();
+                            else
+                                PC->FollowPrevPlayer();
+                            */
+
+                           Pawns.FreeArray();
                         }
-
-                        if (PawnToUse)
-                        {
-                            auto PlayerStateToUse = (AFortPlayerStateAthena*)PawnToUse->PlayerState;
-
-                            PlayerState->SpectatingTarget = PlayerStateToUse;
-                            PlayerState->OnRep_SpectatingTarget();
-                        }
-
-                        /*
-                        if (Params->bNext)
-                            PC->FollowNextPlayer();
-                        else
-                            PC->FollowPrevPlayer();
-                        */
                     }
                 }
 
@@ -619,12 +621,7 @@ namespace Hooks
                     }
                 }
 
-                else if (FunctionName == "ClientNotifyWon")
-                {
-                    return;
-                }
-
-                else if (FunctionName == "ServerAttemptExitVehicle") // is this even needed
+                else if (FunctionName == "ServerAttemptExitVehicle")
                 {
                     auto PC = (AFortPlayerControllerAthena*)Object;
 
@@ -638,7 +635,7 @@ namespace Hooks
 
                 else if (FunctionName == "ServerSuicide")
                 {
-                    return;
+                    
                 }
 
                 else if (FunctionName == "ServerCreateBuildingActor")
