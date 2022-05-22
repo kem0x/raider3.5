@@ -408,60 +408,24 @@ namespace Hooks
                     ((AFortPlayerController*)Object)->ClientTravel(L"Frontend", ETravelType::TRAVEL_Absolute, false, FGuid());
                 }
 
-                else if (FunctionName == "ServerPlayEmoteItem")
+                /*else if (FunctionName == "ServerPlayEmoteItem")
                 {
-                    if (Object->IsA(AFortPlayerControllerAthena::StaticClass()))
+                    auto CurrentPC = (AFortPlayerControllerAthena*)Object;
+                    auto CurrentPawn = (APlayerPawn_Athena_C*)CurrentPC->Pawn;
+
+                    auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
+
+                    if (CurrentPC && !CurrentPC->IsInAircraft() && CurrentPawn && EmoteParams->EmoteAsset)
                     {
-                        auto CurrentPC = (AFortPlayerControllerAthena*)Object;
-                        auto CurrentPawn = (APlayerPawn_Athena_C*)CurrentPC->Pawn;
-
-                        auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
-                        auto AnimInstance = (UFortAnimInstance*)CurrentPawn->Mesh->GetAnimInstance();
-
-                        if (CurrentPC && !CurrentPC->IsInAircraft() && CurrentPawn && EmoteParams->EmoteAsset && !AnimInstance->bIsJumping && !AnimInstance->bIsFalling)
+                        if (auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(CurrentPawn->CharacterBodyType, CurrentPawn->CharacterGender))
                         {
-                            if (EmoteParams->EmoteAsset->IsA(UAthenaDanceItemDefinition::StaticClass())) // idk if emojis would work
-                            {
-                                if (auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(CurrentPawn->CharacterBodyType, CurrentPawn->CharacterGender))
-                                {
-                                    if (AnimInstance && Montage)
-                                    {
-                                        auto& RepAnimMontageInfo = CurrentPawn->RepAnimMontageInfo;
-                                        auto& RepCharPartAnimMontageInfo = CurrentPawn->RepCharPartAnimMontageInfo;
-
-                                        const auto Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
-
-                                        if (Duration > 0.f)
-                                        {
-                                            RepAnimMontageInfo.AnimMontage = Montage;
-                                            RepAnimMontageInfo.ForcePlayBit = 1;
-
-                                            RepCharPartAnimMontageInfo.PawnMontage = Montage;
-
-                                            bool bIsStopped = AnimInstance->Montage_GetIsStopped(Montage);
-
-                                            if (!bIsStopped)
-                                            {
-                                                RepAnimMontageInfo.PlayRate = AnimInstance->Montage_GetPlayRate(Montage);
-                                                RepAnimMontageInfo.Position = AnimInstance->Montage_GetPosition(Montage);
-                                                RepAnimMontageInfo.BlendTime = AnimInstance->Montage_GetBlendTime(Montage);
-                                            }
-
-                                            RepAnimMontageInfo.IsStopped = bIsStopped;
-                                            RepAnimMontageInfo.NextSectionID = 0;
-
-                                            CurrentPawn->OnRep_ReplicatedMovement();
-                                            CurrentPawn->PlayLocalAnimMontage(Montage, 1.0f, FName(-1));
-                                            CurrentPawn->PlayAnimMontage(Montage, 1.0f, FName(-1));
-                                            CurrentPawn->OnRep_CharPartAnimMontageInfo();
-                                            CurrentPawn->OnRep_ReplicatedAnimMontage();
-                                        }
-                                    }
-                                }
-                            }
+                            CurrentPawn->PlayLocalAnimMontage(Montage, 1.0f, FName(0));
+                            CurrentPawn->PlayAnimMontage(Montage, 1.0f, FName(0));
+                            CurrentPawn->OnRep_CharPartAnimMontageInfo();
+                            CurrentPawn->OnRep_ReplicatedAnimMontage();
                         }
                     }
-                }
+                }*/
 
                 else if (FunctionName == "OnSpawnOutAnimEnded" && Object->IsA(ABP_VictoryDrone_C::StaticClass()))
                 {
@@ -514,7 +478,7 @@ namespace Hooks
                                 PC->FollowPrevPlayer();
                             */
 
-                           Pawns.FreeArray();
+                            Pawns.FreeArray();
                         }
                     }
                 }
@@ -635,7 +599,6 @@ namespace Hooks
 
                 else if (FunctionName == "ServerSuicide")
                 {
-                    
                 }
 
                 else if (FunctionName == "ServerCreateBuildingActor")
