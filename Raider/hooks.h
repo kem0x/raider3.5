@@ -381,6 +381,12 @@ namespace Hooks
                     }
                 }
 
+                else if (FunctionName == "OnSpawnOutAnimEnded" && Object->IsA(ABP_VictoryDrone_C::StaticClass()))
+                {
+                    auto Drone = (ABP_VictoryDrone_C*)Object;
+                    Drone->K2_DestroyActor();
+                }
+
                 else if (FunctionName == "ClientOnPawnDied")
                 {
                     auto Params = (AFortPlayerControllerZone_ClientOnPawnDied_Params*)Parameters;
@@ -389,6 +395,14 @@ namespace Hooks
 
                     if (DeadPC && Params)
                     {
+                        static auto DeathAnimation = UObject::FindObject<UAnimMontage>("AnimMontage PlayerDeath_Athena.PlayerDeath_Athena");
+						
+                        ((AFortPlayerPawnAthena*)DeadPC->Pawn)->PlayAnimMontage(DeathAnimation, 0.7, FName(-1));
+
+                        FTransform Transform {};
+                        Transform.Translation = DeadPC->Pawn->K2_GetActorLocation();
+                        SpawnActorTrans(ABP_VictoryDrone_C::StaticClass(), Transform, DeadPC);
+						
                         auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
                         GameState->PlayersLeft--;
                         // GameState->PlayerArray.RemoveAt(DeadPC->NetPlayerIndex);
