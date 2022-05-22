@@ -153,7 +153,6 @@ namespace SDK
             Count = 0;
 
             FMemory_Free(Data);
-            Data = (T*)FMemory_Malloc(MinSizeAfterReset * sizeof(T), alignof(T));
         }
 
     public:
