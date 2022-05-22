@@ -443,7 +443,6 @@ template <class T>
     template <int32 NumElements>
     class TInlineAllocator
     {
-    private:
         template <int32 Size, int32 Alignment>
         struct alignas(Alignment) TAlligendBytes
         {
@@ -461,12 +460,11 @@ template <class T>
         {
             friend class TBitArray;
 
-        private:
+        public:
             TTypeCompatibleBytes<ElementType> InlineData[NumElements];
 
             ElementType* SecondaryData;
 
-        public:
             FORCEINLINE int32 NumInlineBytes() const
             {
                 return sizeof(ElementType) * NumElements;
@@ -1107,11 +1105,10 @@ template <class T>
         typedef TSetElement<SetType> ElementType;
         typedef TSparseArrayElementOrListLink<ElementType> ArrayElementType;
 
-    private:
         TSparseArray<ElementType> Elements;
 
-        mutable TInlineAllocator<1>::ForElementType<int> Hash;
-        mutable int32 HashSize;
+         TInlineAllocator<1>::ForElementType<int> Hash;
+         int32 HashSize;
 
     public:
         class FBaseIterator
@@ -1293,6 +1290,11 @@ template <class T>
         FORCEINLINE void Reset()
         {
             Elements.Reset();
+            Hash.InlineData->Pad[0] = 0;
+            Hash.InlineData->Pad[1] = 0;
+            Hash.InlineData->Pad[2] = 0;
+            Hash.InlineData->Pad[3] = 0;
+            Hash.SecondaryData = nullptr;
         }
     };
 

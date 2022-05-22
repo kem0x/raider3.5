@@ -242,10 +242,6 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
     PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
     PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
 
-    // QuickBarSlots[Slot].Items.Data = &ItemEntry.ItemGuid;
-
-    ItemEntry.bIsDirty = true;
-
     UpdateInventory(PC, Idx);
 
     return ItemEntry;
@@ -279,7 +275,7 @@ inline auto RemoveItem(AFortPlayerController* PC, EFortQuickBars QuickBars, int 
     UpdateInventory(PC, 0, true);
 }
 
-inline AFortWeapon* EquipWeaponDefinition(APawn* dPawn, UFortWeaponItemDefinition* Definition, FGuid& Guid, int Ammo = 0)
+inline AFortWeapon* EquipWeaponDefinition(APawn* dPawn, UFortWeaponItemDefinition* Definition, FGuid& Guid)
 {
     // auto weaponClass = Definition->GetWeaponActorClass();
     // if (weaponClass)
@@ -293,11 +289,7 @@ inline AFortWeapon* EquipWeaponDefinition(APawn* dPawn, UFortWeaponItemDefinitio
         {
             /* Weapon->ItemEntryGuid = Guid;
             Weapon->WeaponData = Definition; */
-            if (Ammo == 0)
-                Ammo = Weapon->GetLocalRemainingAmmo() - 1;
-
             Weapon->ItemEntryGuid = Guid;
-            Weapon->AmmoCount = Ammo;
             Weapon->OnRep_ReplicatedWeaponData();
             Weapon->ClientGivenTo(Pawn);
             Pawn->ClientInternalEquipWeapon(Weapon);

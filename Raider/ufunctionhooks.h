@@ -229,7 +229,7 @@ namespace UFunctionHooks
                             if (Duration > 0.f)
                             {
                                 LocalAnimMontageInfo.AnimMontage = Montage;
-                                if(Ability)
+                                if (Ability)
                                 {
                                     LocalAnimMontageInfo.AnimatingAbility = Ability;
                                 }
@@ -240,7 +240,7 @@ namespace UFunctionHooks
 
                                 RepCharPartAnimMontageInfo.PawnMontage = Montage;
 
-                                if(Ability)
+                                if (Ability)
                                 {
                                     Ability->CurrentMontage = Montage;
                                 }
@@ -302,19 +302,22 @@ namespace UFunctionHooks
 
             if (Pawn && Pawn->AbilitySystemComponent)
             {
-                static auto AbilitySet = UObject::FindObject<UFortAbilitySet>("FortAbilitySet GAS_DefaultPlayer.GAS_DefaultPlayer");
-                for (int i = 0; i < AbilitySet->GameplayAbilities.Num(); i++)
-                {
-                    auto Ability = AbilitySet->GameplayAbilities[i];
+                static auto SprintAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint");
+                static auto ReloadAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Reload");
+                static auto RangedWeaponAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_RangedWeapon");
+                static auto JumpAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Jump");
+                static auto DeathAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_Death.GA_DefaultPlayer_Death_C");
+                static auto InteractUseAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractUse.GA_DefaultPlayer_InteractUse_C");
+                static auto InteractSearchAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractSearch.GA_DefaultPlayer_InteractSearch_C");
+                static auto InteractSearchAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractSearch.GA_DefaultPlayer_InteractSearch_C");
 
-                    if (!Ability)
-                        continue;
-
-                    if (Ability->GetName().find("DBNO") == -1)
-                    {
-                        GrantGameplayAbility(Pawn, Ability);
-                    }
-                }
+                GrantGameplayAbility(Pawn, SprintAbility);
+                GrantGameplayAbility(Pawn, ReloadAbility);
+                GrantGameplayAbility(Pawn, RangedWeaponAbility);
+                GrantGameplayAbility(Pawn, JumpAbility);
+                GrantGameplayAbility(Pawn, DeathAbility);
+                GrantGameplayAbility(Pawn, InteractUseAbility);
+                GrantGameplayAbility(Pawn, InteractSearchAbility);
             }
         })
 
