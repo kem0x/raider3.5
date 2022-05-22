@@ -4,7 +4,8 @@
 #include "replication.h"
 #include "ue4.h"
 
-//#define LOGGING
+#define LOGGING
+#define DEVELOPERCHEATS
 
 namespace Hooks
 {
@@ -84,8 +85,6 @@ namespace Hooks
         auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
 
         PlayerController->StrongMyHero = Hero;
-        Pawn->CharacterGender = (EFortCustomGender)Hero->Gender;
-        Pawn->CharacterBodyType = Hero->CharacterParts[0]->BodyTypesPermitted;
 
         PlayerState->HeroType = Hero->GetHeroTypeBP();
         PlayerState->OnRep_HeroType();
@@ -99,14 +98,15 @@ namespace Hooks
             if (!Part)
                 continue;
 
-            PlayerState->CharacterParts[i] = Part;
+            Pawn->ServerChoosePart((EFortCustomPartType)i, Part);
+            // PlayerState->CharacterParts[i] = Part;
         }
 
-        PlayerState->OnRep_CharacterParts();
         PlayerState->OnRep_CharacterBodyType();
         PlayerState->OnRep_CharacterGender();
+        PlayerState->OnRep_CharacterParts();
 
-        static auto pickaxe = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_HalloweenScythe_Athena_C_T01.WID_Harvest_HalloweenScythe_Athena_C_T01");
+        static auto pickaxe = UObject::FindObject<UFortWeaponMeleeItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_HalloweenScythe_Athena_C_T01.WID_Harvest_HalloweenScythe_Athena_C_T01");
         static auto primary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
         static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_Standard_Athena_UC_Ore_T03.WID_Shotgun_Standard_Athena_UC_Ore_T03");
         static auto forth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Assault_Auto_Athena_R_Ore_T03.WID_Assault_Auto_Athena_R_Ore_T03");
@@ -138,7 +138,7 @@ namespace Hooks
             }
         }
 
-        // Pawn->K2_TeleportTo({ 37713, -52942, 461 }, { 0, 0, 0 }); // Tilted
+        Pawn->K2_TeleportTo({ 37713, -52942, 461 }, { 0, 0, 0 }); // Tilted
 
         return PlayerController;
     }
@@ -288,9 +288,88 @@ namespace Hooks
 
                 else if (FunctionName == "ServerAttemptInventoryDrop")
                 {
-                    auto PC = (AFortPlayerController*)Object;
+                    auto PC = (AFortPlayerControllerAthena*)Object;
+
+                    if (PC->IsInAircraft())
+                        return;
+
                     auto Pawn = (APlayerPawn_Athena_C*)PC->Pawn;
-                    // HandleInventoryDrop(Pawn, Parameters);
+                    HandleInventoryDrop(Pawn, Parameters);
+                }
+
+                else if (FunctionName == "ServerChoosePart")
+                {
+                    auto Params = (AFortPlayerPawn_ServerChoosePart_Params*)Parameters;
+
+                    if (!Params || (!Params->ChosenCharacterPart && Params->Part != EFortCustomPartType::Hat))
+                        return;
+                }
+
+                else if (FunctionName == "ServerCheat") // You need cheatmanager (fortcheatmanager maybe?)
+                {
+                    auto Params = (AFortPlayerController_ServerCheat_Params*)Parameters;
+                    auto PC = (AFortPlayerControllerAthena*)Object;
+
+                    if (Params && PC)
+                    {
+                        auto Msg = Params->Msg.ToString() + " ";
+                        std::vector<std::string> args;
+
+                        // std::cout << "Message Raw: " << Msg << "\n";
+
+                        while (Msg.find(" ") != -1)
+                        {
+                            args.push_back(Msg.substr(0, Msg.find(' ')));
+                            Msg.erase(0, Msg.find(' ') + 1);
+                        }
+
+                        auto amountOfArgs = args.size() - 1;
+
+                        if (amountOfArgs >= 0)
+                        {
+                            auto& Command = args[0];
+
+                            std::cout << "Command: " << Command << '\n';
+
+                            if (Command == "setpickaxe" && amountOfArgs >= 1) // "cheat setpickaxe Pickaxe_Lockjaw" will set your pickaxe to renegade raider's pickaxe
+                            {
+                                auto PickaxeName = args[1]; // auto& ?
+                                std::cout << "Requested to set pickaxe to " + PickaxeName + "!\n";
+                                auto toFind = "WID_Harvest_" + PickaxeName + "_Athena_C_T01";
+                                toFind += "." + toFind;
+                                auto PID = UObject::FindObject<UFortWeaponMeleeItemDefinition>(toFind);
+
+                                if (PID && PID->IsA(UFortWeaponMeleeItemDefinition::StaticClass()))
+                                {
+                                    bool bFound = false;
+                                    auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
+
+                                    if (bFound)
+                                    {
+                                        ChangeItem(PC, PickaxeEntry.ItemDefinition, PID, 0);
+                                        std::cout << "Changed Pickaxe!\n";
+                                    }
+                                    else
+                                        std::cout << "Unable to find Pickaxe in inventory!\n";
+                                }
+
+                                else
+                                    std::cout << "Unable to find PID: " << PickaxeName << '\n';
+                            }
+
+#ifdef DEVELOPERCHEATS
+
+                            else if (Command == "giveweapon" && amountOfArgs >= 1)
+                            {
+                                std::cout << "Not implemented!\n";
+                            }
+
+#endif
+
+                            else
+                                std::cout << "Unable to handle cheat!\n";
+                        }
+                    }
                 }
 
                 else if (FunctionName == "ServerTryActivateAbility")
@@ -314,7 +393,7 @@ namespace Hooks
                     auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
                     auto Params = (UAbilitySystemComponent_ServerAbilityRPCBatch_Params*)Parameters;
 
-                    TryActivateAbility(AbilitySystemComponent, Params->BatchInfo.AbilitySpecHandle, Params->BatchInfo.InputPressed, &(Params->BatchInfo.PredictionKey), nullptr);
+                    TryActivateAbility(AbilitySystemComponent, Params->BatchInfo.AbilitySpecHandle, Params->BatchInfo.InputPressed, &Params->BatchInfo.PredictionKey, nullptr);
                 }
 
                 else if (FunctionName == "ServerExecuteInventoryItem")
@@ -331,9 +410,11 @@ namespace Hooks
 
                 else if (FunctionName == "ServerPlayEmoteItem")
                 {
+                    if (!Object->IsA(AFortPlayerControllerAthena::StaticClass())) // they may be spectating
+                        return;
+
                     auto CurrentPC = (AFortPlayerControllerAthena*)Object;
                     auto CurrentPawn = (APlayerPawn_Athena_C*)CurrentPC->Pawn;
-                    ((AFortPlayerStateAthena*)CurrentPawn->PlayerState)->OnRep_MapIndicatorPos();
 
                     auto EmoteParams = (AFortPlayerController_ServerPlayEmoteItem_Params*)Parameters;
                     auto AnimInstance = (UFortAnimInstance*)CurrentPawn->Mesh->GetAnimInstance();
@@ -348,7 +429,8 @@ namespace Hooks
                                 {
                                     auto& RepAnimMontageInfo = CurrentPawn->RepAnimMontageInfo;
                                     auto& RepCharPartAnimMontageInfo = CurrentPawn->RepCharPartAnimMontageInfo;
-                                    auto Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
+
+                                    const auto Duration = AnimInstance->Montage_Play(Montage, 1.0f, EMontagePlayReturnType::Duration, 0.0f, true);
 
                                     if (Duration > 0.f)
                                     {
@@ -384,10 +466,58 @@ namespace Hooks
                 else if (FunctionName == "OnSpawnOutAnimEnded" && Object->IsA(ABP_VictoryDrone_C::StaticClass()))
                 {
                     auto Drone = (ABP_VictoryDrone_C*)Object;
-                    Drone->K2_DestroyActor();
+
+                    if (Drone)
+                    {
+                        Drone->K2_DestroyActor();
+                    }
                 }
 
-                else if (FunctionName == "ClientOnPawnDied")
+                else if (FunctionName == "ServerFollowTeammate") // "Next Teammate" "Previous Teammate"
+                {
+                    if (!Object->IsA(AFortPlayerControllerSpectating::StaticClass()))
+                        return;
+
+                    auto PC = (AFortPlayerControllerSpectating*)Object;
+                    auto Pawn = (ASpectatorPawn*)PC->Pawn;
+                    auto Params = (AFortPlayerControllerAthena_ServerFollowTeammate_Params*)Parameters;
+
+                    auto PlayerState = (AFortPlayerStateAthena*)Pawn->PlayerState;
+
+                    if (Params)
+                    {
+                        TArray<AActor*> Pawns;
+                        static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
+                        GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
+
+                        APlayerPawn_Athena_C* PawnToUse = nullptr;
+
+                        if (Pawns.Num() != 0)
+                        {
+                            PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
+
+                            while (!PawnToUse)
+                                PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
+                        }
+
+                        if (PawnToUse)
+                        {
+                            auto PlayerStateToUse = (AFortPlayerStateAthena*)PawnToUse->PlayerState;
+
+                            PlayerState->SpectatingTarget = PlayerStateToUse;
+                            PlayerState->OnRep_SpectatingTarget();
+                        }
+
+                        /*
+                        if (Params->bNext)
+                            PC->FollowNextPlayer();
+                        else
+                            PC->FollowPrevPlayer();
+                        */
+                    }
+                }
+
+                else if (FunctionName == "ClientOnPawnDied") // TODO IMPORTANT: Check if player left and their pawn died.
                 {
                     auto Params = (AFortPlayerControllerZone_ClientOnPawnDied_Params*)Parameters;
                     auto DeadPC = (AFortPlayerControllerAthena*)Object;
@@ -395,22 +525,22 @@ namespace Hooks
 
                     if (DeadPC && Params)
                     {
-                        static auto DeathAnimation = UObject::FindObject<UAnimMontage>("AnimMontage PlayerDeath_Athena.PlayerDeath_Athena");
-
-                        ((AFortPlayerPawnAthena*)DeadPC->Pawn)->PlayAnimMontage(DeathAnimation, 0.7, FName(-1));
-
-                        FTransform Transform {};
-                        Transform.Translation = DeadPC->Pawn->K2_GetActorLocation();
-                        SpawnActorTrans(ABP_VictoryDrone_C::StaticClass(), Transform, DeadPC);
-
                         auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
                         GameState->PlayersLeft--;
                         // GameState->PlayerArray.RemoveAt(DeadPC->NetPlayerIndex);
 
                         if (DeadPC && DeadPC->Pawn)
                         {
-                            // TODO: Show death drone
-                            DeadPC->Pawn->K2_DestroyActor();
+                            static auto DeathAnimation = UObject::FindObject<UAnimMontage>("AnimMontage PlayerDeath_Athena.PlayerDeath_Athena");
+
+                            if (DeathAnimation)
+                            {
+                                // ((AFortPlayerPawnAthena*)DeadPC->Pawn)->PlayAnimMontage(DeathAnimation, 0.7, FName(-1));
+                                // SpawnActor<ABP_VictoryDrone_C>(DeadPC->Pawn->K2_GetActorLocation(), DeadPC);
+                            }
+
+                            else
+                                std::cout << "Could not find Death Animation!\n";
                         }
 
                         auto KillerPawn = Params->DeathReport.KillerPawn;
@@ -434,7 +564,7 @@ namespace Hooks
 
                                 auto Connection = DeadPC->NetConnection;
                                 auto SpectatorPC = SpawnActor<AFortPlayerControllerSpectating>(PawnToSpectate->K2_GetActorLocation()); // ABP_ReplayPC_Athena_C
-                                // SpectatorPC->SetNewCameraType(ESpectatorCameraType::Gameplay, true);
+                                SpectatorPC->SetNewCameraType(ESpectatorCameraType::ThirdPerson, true);
                                 // SpectatorPC->ToggleSpectatorHUD();
                                 Connection->PlayerController = SpectatorPC;
                                 auto SpectatorPawn = SpawnActor<ASpectatorPawn>(KillerPawn->K2_GetActorLocation(), PawnToSpectate); // ABP_SpectatorPawn_C
@@ -469,11 +599,11 @@ namespace Hooks
                             {
                                 auto PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
 
-                                if (PawnToUse)
-                                {
+                                while (!PawnToUse)
                                     PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
+
+                                if (PawnToUse)
                                     Spectate((AFortPlayerStateAthena*)PawnToUse->PlayerState);
-                                }
                             }
                         }
 
@@ -484,6 +614,8 @@ namespace Hooks
                             {
                             }
                         }
+
+                        // DeadPC->Pawn->K2_DestroyActor();
                     }
                 }
 
@@ -538,9 +670,10 @@ namespace Hooks
                     auto Params = (AFortPlayerController_ServerBeginEditingBuildingActor_Params*)Parameters;
                     auto Controller = (AFortPlayerControllerAthena*)Object;
                     auto Pawn = (APlayerPawn_Athena_C*)Controller->Pawn;
-                    auto EditToolEntry = FindItemInInventory<UFortEditToolItemDefinition>(Controller);
+                    bool bFound = false;
+                    auto EditToolEntry = FindItemInInventory<UFortEditToolItemDefinition>(Controller, bFound);
 
-                    if (Controller && Pawn && Params->BuildingActorToEdit)
+                    if (Controller && Pawn && Params->BuildingActorToEdit && bFound)
                     {
                         auto EditTool = (AFortWeap_EditingTool*)EquipWeaponDefinition(Pawn, (UFortWeaponItemDefinition*)EditToolEntry.ItemDefinition, EditToolEntry.ItemGuid);
 
@@ -649,7 +782,7 @@ namespace Hooks
                     }
                 }
 
-                else if (FunctionName == "ServerAttemptAircraftJump" || FunctionName == "AircraftExitedDropZone")
+                else if (FunctionName == "ServerAttemptAircraftJump") // figure out how to make the player jump when the battle bus is at the end.
                 {
                     auto Params = (AFortPlayerControllerAthena_ServerAttemptAircraftJump_Params*)Parameters;
                     auto PC = (AFortPlayerControllerAthena*)Object;
@@ -667,6 +800,14 @@ namespace Hooks
                             // ExitLocation.Z -= 500;
 
                             InitPawn(PC, ExitLocation);
+                            PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
+
+                            bool bFound = false;
+                            auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
+
+                            if (bFound)
+                                EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
+
                             // PC->Pawn->K2_TeleportTo(ExitLocation, Params->ClientRotation);
                         }
                     }

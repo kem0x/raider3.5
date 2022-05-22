@@ -228,8 +228,8 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
 
     auto ItemEntry = ((UFortWorldItem*)TempItemInstance)->ItemEntry;
 
-    PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
-    auto Idx = PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
+    auto Idx = PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
+    PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
     PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
 
     // QuickBarSlots[Slot].Items.Data = &ItemEntry.ItemGuid;
@@ -253,20 +253,27 @@ inline auto RemoveItem(AFortPlayerController* PC, EFortQuickBars QuickBars, int 
     auto Inventory = PC->WorldInventory->Inventory;
 
     if (Inventory.ReplicatedEntries.Num() >= Slot)
+    {
         Inventory.ReplicatedEntries.RemoveAt(Slot, 1);
+        std::cout << "Removed from ReplicatedEntries!\n";
+    }
 
     if (Inventory.ItemInstances.Num() >= Slot)
+    {
         Inventory.ItemInstances.RemoveAt(Slot, 1);
+        std::cout << "Removed from ItemInstances!\n";
+    }
 
     // PC->RemoveItemFromQuickBars(PC->QuickBars->PrimaryQuickBar.Slots[Slot].Items[0]);
 
     UpdateInventory(PC, 0, true);
 }
 
-inline AFortWeapon* EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeaponItemDefinition* Definition, FGuid& Guid, int Ammo = 0)
+inline AFortWeapon* EquipWeaponDefinition(APawn* dPawn, UFortWeaponItemDefinition* Definition, FGuid& Guid, int Ammo = 0)
 {
     // auto weaponClass = Definition->GetWeaponActorClass();
     // if (weaponClass)
+    auto Pawn = (APlayerPawn_Athena_C*)dPawn;
     if (Pawn && Definition)
     {
         // auto Weapon = (AFortWeapon*)SpawnActorTrans(weaponClass, {}, Pawn);
@@ -277,8 +284,9 @@ inline AFortWeapon* EquipWeaponDefinition(APlayerPawn_Athena_C* Pawn, UFortWeapo
             /* Weapon->ItemEntryGuid = Guid;
             Weapon->WeaponData = Definition; */
             if (Ammo == 0)
-                Ammo = Weapon->GetMagazineAmmoCount();
+                Ammo = Weapon->GetLocalRemainingAmmo() - 1;
 
+            Weapon->ItemEntryGuid = Guid;
             Weapon->AmmoCount = Ammo;
             Weapon->OnRep_ReplicatedWeaponData();
             Weapon->ClientGivenTo(Pawn);
@@ -405,7 +413,7 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
 
                         if (IsMatchingGuid(FocusedGuid, Guid))
                         {
-                            SummonPickup((APlayerPawn_Athena_C*)Pawn, Def, Params->Pickup->PrimaryPickupItemEntry.Count, Pawn->K2_GetActorLocation());
+                            SummonPickup((APlayerPawn_Athena_C*)Pawn, Def, 1, Pawn->K2_GetActorLocation());
                             break;
                         }
                     }
@@ -413,11 +421,13 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
                     RemoveItem(Controller, EFortQuickBars::Primary, FocusedSlot);
                 }
 
-                auto entry = AddItemWithUpdate((AFortPlayerController*)Pawn->Controller, WorldItemDefinition, i, EFortQuickBars::Primary, Params->Pickup->PrimaryPickupItemEntry.Count);
+                auto entry = AddItemWithUpdate((AFortPlayerController*)Pawn->Controller, WorldItemDefinition, i, EFortQuickBars::Primary, 1); // Params->Pickup->PrimaryPickupItemEntry.Count);
                 Params->Pickup->K2_DestroyActor();
 
                 if (bEquip)
                     EquipWeaponDefinition((APlayerPawn_Athena_C*)Pawn, (UFortWeaponItemDefinition*)WorldItemDefinition, entry.ItemGuid);
+
+                UpdateInventory((AFortPlayerController*)Pawn->Controller);
 
                 break;
             }
@@ -446,17 +456,6 @@ static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnIn
         PlayerController->OutpostInventory = OutpostInventory;
         PlayerController->HandleOutpostInventoryLocalUpdate();
     }
-
-    // not sure if this enable stuff is acutally needed
-    QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 0);
-    QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 1);
-    QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 2);
-    QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 3);
-    QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 4);
-    QuickBars->ServerEnableSlot(EFortQuickBars::Secondary, 5);
-    QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 1);
-    QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 2);
-    QuickBars->ServerEnableSlot(EFortQuickBars::Primary, 3);
 
     static auto Wall = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall");
     static auto Stair = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W");
@@ -490,7 +489,7 @@ static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnIn
 }
 
 template <typename Class>
-static FFortItemEntry FindItemInInventory(AFortPlayerControllerAthena* PC)
+static FFortItemEntry FindItemInInventory(AFortPlayerControllerAthena* PC, bool& bFound)
 {
     auto ItemInstances = PC->WorldInventory->Inventory.ItemInstances;
 
@@ -503,12 +502,14 @@ static FFortItemEntry FindItemInInventory(AFortPlayerControllerAthena* PC)
 
         auto Def = ItemInstance->ItemEntry.ItemDefinition;
 
-        if (Def->IsA(Class::StaticClass()))
+        if (Def && Def->IsA(Class::StaticClass()))
         {
+            bFound = true;
             return ItemInstance->ItemEntry;
         }
     }
 
+    bFound = false;
     return FFortItemEntry();
 }
 
@@ -596,16 +597,30 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
     auto ItemInstances = GetItemInstances((AFortPlayerControllerAthena*)Pawn->Controller);
     auto Controller = (AFortPlayerControllerAthena*)Pawn->Controller;
     auto QuickBars = Controller->QuickBars;
-    auto QuickBarSlots = QuickBars->PrimaryQuickBar.Slots;
 
-    for (int i = 1; i < QuickBarSlots.Num(); i++)
+    auto PrimaryQuickBarSlots = QuickBars->PrimaryQuickBar.Slots;
+    auto SecondaryQuickBarSlots = QuickBars->SecondaryQuickBar.Slots;
+
+    for (int i = 1; i < PrimaryQuickBarSlots.Num(); i++)
     {
-        if (QuickBarSlots[i].Items.Data)
+        if (PrimaryQuickBarSlots[i].Items.Data)
         {
-            if (IsMatchingGuid(QuickBarSlots[i].Items[0], Params->ItemGuid))
+            if (IsMatchingGuid(PrimaryQuickBarSlots[i].Items[0], Params->ItemGuid))
             {
                 RemoveItem(Controller, EFortQuickBars::Primary, i);
-                break;
+                // break;
+            }
+        }
+    }
+
+    for (int i = 0; i < SecondaryQuickBarSlots.Num(); i++)
+    {
+        if (SecondaryQuickBarSlots[i].Items.Data)
+        {
+            if (IsMatchingGuid(SecondaryQuickBarSlots[i].Items[0], Params->ItemGuid))
+            {
+                RemoveItem(Controller, EFortQuickBars::Secondary, i);
+                // break;
             }
         }
     }
@@ -625,13 +640,14 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
 
             if (def)
             {
-                SummonPickup(Pawn, def, ItemInstance->ItemEntry.Count, Pawn->K2_GetActorLocation());
-                break;
+                std::cout << "Matching Guid for " << def->GetFullName() << '\n';
+                SummonPickup(Pawn, def, 1, Pawn->K2_GetActorLocation());
+                // break;
             }
         }
     }
 
-    for (int i = ItemInstances.Num(); i > 0; i--) // equip the item before until its valid
+    /* for (int i = ItemInstances.Num(); i > 0; i--) // equip the item before until its valid
     {
         auto ItemInstance = ItemInstances[i];
 
@@ -640,13 +656,14 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
 
         auto Def = ItemInstance->ItemEntry.ItemDefinition;
 
-        if (Def /* && Def->IsA(UFortWeaponItemDefinition::StaticClass()) */)
+        if (Def) // && Def->IsA(UFortWeaponItemDefinition::StaticClass()))
         {
             QuickBars->PrimaryQuickBar.CurrentFocusedSlot = i;
             // EquipWeaponDefinition((APlayerPawn_Athena_C*)Controller->Pawn, (UFortWeaponItemDefinition*)Def, ItemInstance->ItemEntry.ItemGuid, ItemInstance->ItemEntry.Count);
+            QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
             break;
         }
-    }
+    } */
 }
 
 static bool KickPlayer(AFortPlayerControllerAthena* PC, FString Message)
@@ -667,9 +684,12 @@ FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
     auto SpawnTransform = FTransform();
     SpawnTransform.Scale3D = FVector(1, 1, 1);
     SpawnTransform.Rotation = FQuat();
-    SpawnTransform.Translation = FVector { 1250, 1818, 3284 };
+    SpawnTransform.Translation = FVector { 1250, 1818, 3284 }; // Next to salty
 
-    if (ActorsNum != 0)
+    auto GamePhase = ((AAthena_GameState_C*)GetWorld()->GameState)->GamePhase;
+
+    if (ActorsNum != 0
+        && (GamePhase == EAthenaGamePhase::Setup || GamePhase == EAthenaGamePhase::Warmup))
     {
         auto ActorToUseNum = rand() % ActorsNum;
         auto ActorToUse = (OutActors)[ActorToUseNum];
@@ -740,4 +760,13 @@ static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc 
     }
 
     PlayerState->OnRep_CharacterParts();
+}
+
+void ChangeItem(AFortPlayerController* PC, UFortItemDefinition* Old, UFortItemDefinition* New, int Slot, bool bEquip = false) // we can find the slot too
+{
+    RemoveItem(PC, EFortQuickBars::Primary, Slot);
+    auto NewEntry = AddItemWithUpdate(PC, (UFortWorldItemDefinition*)New, Slot);
+
+    if (bEquip)
+        EquipWeaponDefinition(PC->Pawn, (UFortWeaponItemDefinition*)New, NewEntry.ItemGuid);
 }
