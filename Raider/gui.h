@@ -17,11 +17,11 @@ namespace GUI
 
         auto pos = FVector2D { 200.f, 250.0f };
 
-        if (ZeroGUI::Window((char*)"Raider GS", &pos, FVector2D { 500.0f, 400.0f }, menu_opened))
+        if (ZeroGUI::Window((char*)"Raider", &pos, FVector2D { 500.0f, 400.0f }, menu_opened))
         {
             if (!bStartedBus)
             {
-                if (ZeroGUI::Button((char*)"Start Bus!", FVector2D { 100, 25 }))
+                if (ZeroGUI::Button((char*)"Start Bus", FVector2D { 100, 25 }))
                 {
                     auto gameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
 
@@ -32,8 +32,23 @@ namespace GUI
                     ((UKismetSystemLibrary*)UKismetSystemLibrary::StaticClass())->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
 
                     printf("Started Aircraft!\n");
+                    bStartedBus = true;
                 }
-                bStartedBus = true;
+            }
+
+			if (bListening && HostBeacon)
+            {
+                if (ZeroGUI::Button((char*)"Allow Requests", FVector2D {100, 25}))
+                {
+                    Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
+                    printf("Allowing requests!\n");
+                }
+
+                if (ZeroGUI::Button((char*)"Deny Requests", FVector2D {100, 25}))
+                {
+                    Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, true);
+                    printf("Denying requests!\n");
+                }            
             }
         }
 

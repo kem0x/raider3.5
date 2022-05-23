@@ -102,6 +102,18 @@ namespace Hooks
         PlayerState->OnRep_CharacterGender();
         PlayerState->OnRep_CharacterParts();
 
+        static std::vector<std::string> doublePumpLoadout = {
+            "WID_Harvest_Pickaxe_HolidayCandyCane_Athena", // Candy Axe
+            "WID_Shotgun_Standard_Athena_UC_Ore_T03", // Blue Pump
+            "WID_Shotgun_Standard_Athena_UC_Ore_T03", // Blue Pump
+            "WID_Assault_Auto_Athena_R_Ore_T03", // Blue AR
+            "WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03", // Blue Bolt Action
+            // "Athena_KnockGrenade" // Impulse Grenades
+            "Athena_Shields" // Big Shield Potion
+        }; // Impulse
+
+        EquipLoadout(PlayerController, doublePumpLoadout);
+        /*
         static auto pickaxe = UObject::FindObject<UFortWeaponMeleeItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_HolidayCandyCane_Athena.WID_Harvest_Pickaxe_HolidayCandyCane_Athena");
         static auto primary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_SemiAuto_Athena_VR_Ore_T03.WID_Shotgun_SemiAuto_Athena_VR_Ore_T03");
         static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Pistol_HandCannon_Athena_VR_Ore_T03.WID_Pistol_HandCannon_Athena_VR_Ore_T03");
@@ -116,7 +128,7 @@ namespace Hooks
         auto fifthEntry = AddItemWithUpdate(PlayerController, fifth, 4);
         auto sixthEntry = AddItemWithUpdate(PlayerController, sixth, 5);
 
-        EquipWeaponDefinition(Pawn, pickaxe, pickaxeEntry.ItemGuid);
+        EquipWeaponDefinition(Pawn, pickaxe, pickaxeEntry.ItemGuid); */
 
         auto CheatManager = (UFortCheatManager*)CreateCheatManager(PlayerController, true);
         CheatManager->ToggleInfiniteAmmo();
@@ -195,6 +207,16 @@ namespace Hooks
         return Native::GameViewportClient::PostRender(_this, Canvas);
     }
 
+    double __fastcall ProcessObjectArray(__int64 a1, __int64 a2, __int64* a3)
+    {
+        return 0;
+    }
+
+    __int64 __fastcall CollectGarbage(void* a1, unsigned __int8 a2)
+    {
+        return 0;
+    };
+
     void InitNetworkHooks()
     {
         DETOUR_START
@@ -205,6 +227,8 @@ namespace Hooks
         DetourAttachE(Native::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage);
         DetourAttachE(Native::OnlineSession::KickPlayer, KickPlayer);
         DetourAttachE(Native::GameViewportClient::PostRender, PostRender);
+        // DetourAttachE(Native::GC::CollectGarbage, CollectGarbage);
+        // DetourAttachE(Native::GC::ProcessObjectArray, ProcessObjectArray);
         DETOUR_END
     }
 

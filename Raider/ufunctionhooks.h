@@ -430,6 +430,17 @@ namespace UFunctionHooks
             }
         })
 
+        DEFINE_PEHOOK("Function FortniteGame.FortPlayerPawn.ServerChoosePart", {
+            auto Params = (AFortPlayerPawn_ServerChoosePart_Params*)Parameters;
+            auto Pawn = (APlayerPawn_Athena_C*)Object;
+
+			if (Params && Pawn)
+            {
+                if (!Params->ChosenCharacterPart)
+                    return;
+            }
+        })
+
         DEFINE_PEHOOK("Function Engine.GameMode.ReadyToStartMatch", {
             if (!bListening)
             {

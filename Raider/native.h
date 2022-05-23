@@ -24,6 +24,12 @@ namespace Native
         bool (*SpawnPlayActor)(ULocalPlayer* Player, const FString& URL, FString& OutError, UWorld* World);
     }
 
+    namespace GC
+    {
+        double (__fastcall* ProcessObjectArray)(__int64 a1, __int64 a2, __int64* a3);
+        __int64 (__fastcall* CollectGarbage)(void* a1, unsigned __int8 a2);
+    }
+
     namespace PlayerController
     {
         inline bool (*SendClientAdjustment)(APlayerController* Controller);
@@ -216,6 +222,14 @@ namespace Native
         Address = Utils::FindPattern(Patterns::PostRender);
         CheckNullFatal(Address, "Failed to find PostRender");
         AddressToFunction(Address, GameViewportClient::PostRender);
+
+        Address = Utils::FindPattern(Patterns::ProcessObjectArray);
+		CheckNullFatal(Address, "Failed to find ProcessObjectArray");
+		AddressToFunction(Address, GC::ProcessObjectArray);
+
+        Address = Utils::FindPattern(Patterns::CollectGarbage);
+		CheckNullFatal(Address, "Failed to find CollectGarbage");
+		AddressToFunction(Address, GC::CollectGarbage);
 
         PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
 

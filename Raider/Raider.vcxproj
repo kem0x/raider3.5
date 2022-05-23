@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
+    <ClInclude Include="gui.h" />
     <ClInclude Include="hooks.h" />
     <ClInclude Include="native.h" />
     <ClInclude Include="patterns.h" />

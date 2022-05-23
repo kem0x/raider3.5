@@ -351,11 +351,13 @@ inline void DumpObjects()
     std::cout << "Finished dumping objects!\n";
 }
 
+AFortOnlineBeaconHost* HostBeacon = nullptr;
+
 void Listen()
 {
     printf("[UWorld::Listen]\n");
 
-    AFortOnlineBeaconHost* HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
+    HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
     HostBeacon->ListenPort = 7777;
     auto bInitBeacon = Native::OnlineBeaconHost::InitHost(HostBeacon);
     CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");
