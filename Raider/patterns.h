@@ -37,5 +37,5 @@ namespace Patterns {
     constexpr const char* LocalPlayerSpawnPlayActor = "40 55 53 56 57 41 56 41 57 48 8D 6C 24 ? 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 45 40 48 8B D9 4D 8B F1 49 8B C9 4D 8B F8 48 8B F2";
 
     constexpr const char* TSetToTArray = "E8 ? ? ? ? 49 8D 7D 30";
-
+    constexpr const char* ProcessObjectArray = "48 89 5C 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 ? ? ? ? 48 81 EC ? ? ? ? 45 33 FF";
 }

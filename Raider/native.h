@@ -86,6 +86,11 @@ namespace Native
         inline void* (*AddNetworkActor)(UWorld*, AActor*);
     }
 
+    namespace GC
+    {
+        inline double (__fastcall* ProcessObjectArray)(__int64 a1, __int64 a2);
+    }
+
     namespace Engine
     {
         inline void* (*SeamlessTravelHandlerForWorld)(UEngine* Engine, UWorld* World);
@@ -207,6 +212,10 @@ namespace Native
         Address = Utils::FindPattern(Patterns::TSetToTArray, true, 1);
         CheckNullFatal(Address, "Failed to find TSetToTArray");
         AddressToFunction(Address, Engine::TSetToTArray);
+
+        Address = Utils::FindPattern(Patterns::ProcessObjectArray);
+        CheckNullFatal(Address, "Failed to find ProcessObjectArray");
+        AddressToFunction(Address, GC::ProcessObjectArray);
 
         PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
 

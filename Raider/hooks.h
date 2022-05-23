@@ -17,6 +17,11 @@ namespace Hooks
         return 2; // ENetMode::NM_ListenServer;
     }
 
+	double __fastcall ProcessObjectArray(__int64 a1, __int64 a2)
+    {
+        return 0;
+    }
+
     void TickFlush(UNetDriver* NetDriver, float DeltaSeconds)
     {
         if (!NetDriver)
@@ -114,6 +119,17 @@ namespace Hooks
         PlayerState->OnRep_CharacterGender();
         PlayerState->OnRep_CharacterParts();
 
+        static std::vector<std::string> doublePumpLoadout = { "WID_Harvest_Pickaxe_HolidayCandyCane_Athena", // Candy Axe
+                                                       "WID_Shotgun_Standard_Athena_UC_Ore_T03", // Blue Pump
+                                                       "WID_Shotgun_Standard_Athena_UC_Ore_T03", // Blue Pump
+                                                       "WID_Assault_Auto_Athena_R_Ore_T03", // Blue AR
+                                                       "WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03", // Blue Bolt Action
+                                                       // "Athena_KnockGrenade" // Impulse Grenades
+                                                       "Athena_Shields" // Big Shield Potion
+        }; // Impulse
+
+        // EquipLoadout(PlayerController, doublePumpLoadout);
+
         static auto pickaxe = UObject::FindObject<UFortWeaponMeleeItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_HolidayCandyCane_Athena.WID_Harvest_Pickaxe_HolidayCandyCane_Athena");
         static auto primary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_SemiAuto_Athena_VR_Ore_T03.WID_Shotgun_SemiAuto_Athena_VR_Ore_T03");
         static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Pistol_HandCannon_Athena_VR_Ore_T03.WID_Pistol_HandCannon_Athena_VR_Ore_T03");
@@ -208,6 +224,7 @@ namespace Hooks
         DetourAttachE(Native::World::SpawnPlayActor, SpawnPlayActor);
         DetourAttachE(Native::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage);
         DetourAttachE(Native::OnlineSession::KickPlayer, Hooks::KickPlayer);
+        DetourAttachE(Native::GC::ProcessObjectArray, Hooks::ProcessObjectArray);
         DETOUR_END
     }
 

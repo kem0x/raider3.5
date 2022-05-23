@@ -248,9 +248,9 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinitio
     return ItemEntry;
 }
 
-inline auto RemoveItem(AFortPlayerController* PC, EFortQuickBars QuickBars, int Slot) // IMPORTANT TO FIX THIS
+inline auto RemoveItem(AFortPlayerControllerAthena* PC, EFortQuickBars QuickBars, int Slot) // IMPORTANT TO FIX THIS
 {
-    if (Slot == 0 || !PC)
+    if (Slot == 0 || !PC || PC->IsInAircraft())
         return;
 
     UpdateInventory(PC, 0, true);
@@ -306,8 +306,11 @@ inline AFortWeapon* EquipWeaponDefinition(APawn* dPawn, UFortWeaponItemDefinitio
     return nullptr;
 }
 
-inline void EquipInventoryItem(AFortPlayerController* PC, FGuid& Guid)
+inline void EquipInventoryItem(AFortPlayerControllerAthena* PC, FGuid& Guid)
 {
+    if (!PC || PC->IsInAircraft())
+        return;
+
     auto ItemInstances = PC->WorldInventory->Inventory.ItemInstances;
 
     for (int i = 0; i < ItemInstances.Num(); i++)
@@ -790,7 +793,7 @@ static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc 
     PlayerState->OnRep_CharacterParts();
 }
 
-void ChangeItem(AFortPlayerController* PC, UFortItemDefinition* Old, UFortItemDefinition* New, int Slot, bool bEquip = false) // we can find the slot too
+void ChangeItem(AFortPlayerControllerAthena* PC, UFortItemDefinition* Old, UFortItemDefinition* New, int Slot, bool bEquip = false) // we can find the slot too
 {
     RemoveItem(PC, EFortQuickBars::Primary, Slot);
     auto NewEntry = AddItemWithUpdate(PC, (UFortWorldItemDefinition*)New, Slot);
@@ -807,4 +810,35 @@ void ClientMessage(AFortPlayerControllerAthena* PC, FString Message) // Send a m
 auto toWStr(const std::string& str)
 {
     return std::wstring(str.begin(), str.end());
+}
+
+void EquipLoadout(AFortPlayerController* Controller, std::vector<std::string> WIDS)
+{
+    FFortItemEntry pickaxeEntry;
+	
+    for (int i = 0; i < WIDS.size(); i++)
+    {
+        // if (i >= 6)
+            // break;
+        
+        auto WID = WIDS[i];
+
+        auto Def = UObject::FindObject<UFortWeaponRangedItemDefinition>("FortWeaponRangedItemDefinition " + WID + '.' + WID);
+
+		if (i == 0 && !Def)
+        {
+            Def = UObject::FindObject<UFortWeaponRangedItemDefinition>("WID_Harvest_" + WID + "_Athena_C_T01" + ".WID_Harvest_" + WID + "_Athena_C_T01");
+            if (!Def)
+                Def = UObject::FindObject<UFortWeaponRangedItemDefinition>(WID + "." + WID);
+        }
+		
+		if (Def)
+        {
+            auto Entry = AddItemWithUpdate(Controller, Def, i);
+            if (i == 0)
+                pickaxeEntry = Entry;
+        }
+    }
+
+	EquipWeaponDefinition(Controller->Pawn, (UFortWeaponMeleeItemDefinition*)pickaxeEntry.ItemDefinition, pickaxeEntry.ItemGuid);
 }

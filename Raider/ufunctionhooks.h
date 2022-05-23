@@ -7,7 +7,7 @@
 #include "ue4.h"
 
 // #define LOGGING
-static bool bDeveloperCheats = false; // CAnt put a ifdef in a define
+static bool bDeveloperCheats = true; // CAnt put a ifdef in a define
 
 inline std::vector<UFunction*> toHook;
 inline std::vector<std::function<void(UObject*, void*)>> toCall;
@@ -83,7 +83,12 @@ namespace UFunctionHooks
                                     ChangeItem(PC, PickaxeEntry.ItemDefinition, PID, 0);
                                     ClientMessage(PC, (L"Changed pickaxe to " + toWStr(PickaxeName) + L"!").c_str());
                                 }
+
+                                else
+                                    ClientMessage(PC, L"Unable to find your pickaxe!\n");
                             }
+                            else
+                                ClientMessage(PC, L"Requested item is not a pickaxe!\n");
                         }
 
                         else if (bDeveloperCheats && Command == "giveweapon" && NumArgs >= 1)
@@ -111,6 +116,8 @@ namespace UFunctionHooks
                                 AddItemWithUpdate(PC, WID, slot, EFortQuickBars::Primary, count);
                                 ClientMessage(PC, std::wstring(L"Successfully gave " + count + std::wstring(L" ") + toWStr(weaponName) + L" to slot " + std::to_wstring(slot)).c_str());
                             }
+                            else
+								ClientMessage(PC, L"Requested item is not a weapon!\n");
                         }
 
                         else if (bDeveloperCheats && Command == "revive" && Pawn->bIsDBNO)
@@ -205,6 +212,10 @@ namespace UFunctionHooks
                     }
                 }
             }
+        })
+
+        DEFINE_PEHOOK("Function FortniteGame.FortPlayerControllerZone.ClientOnPawnDied", {
+            return;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerEndEditingBuildingActor", {
