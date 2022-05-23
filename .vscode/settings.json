@@ -84,5 +84,6 @@
         "xutility": "cpp",
         "random": "cpp"
     },
-    "search.useIgnoreFiles": false
+    "search.useIgnoreFiles": false,
+    "C_Cpp.errorSquiggles": "Enabled"
 }

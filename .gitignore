@@ -41,3 +41,7 @@ obj/
 *.db
 *.opendb
 *.db-shm
+.vscode/launch.json
+.vscode/settings.json
+.vscode/settings.json
+.vscode/settings.json

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ZeroGUI.h"
+#include <format>
 
 static bool bStartedBus = false;
 
@@ -19,36 +20,43 @@ namespace GUI
 
         if (ZeroGUI::Window((char*)"Raider", &pos, FVector2D { 500.0f, 400.0f }, menu_opened))
         {
-            if (!bStartedBus)
+            if (bListening && HostBeacon)
             {
-                if (ZeroGUI::Button((char*)"Start Bus", FVector2D { 100, 25 }))
+                auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+                std::string ConnectedPlayers = std::format("Connected Players: {}!\n", GameState->PlayerArray.Num());
+
+                ZeroGUI::Text((char*)ConnectedPlayers.c_str());
+
+                if (!bStartedBus)
                 {
-                    auto gameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+                    if (ZeroGUI::Button((char*)"Start Bus", FVector2D { 100, 25 }))
+                    {
+                        GameState->bGameModeWillSkipAircraft = false;
+                        GameState->AircraftStartTime = 0;
+                        GameState->WarmupCountdownEndTime = 0;
 
-                    gameState->bGameModeWillSkipAircraft = false;
-                    gameState->AircraftStartTime = 0;
-                    gameState->WarmupCountdownEndTime = 0;
+                        GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
 
-                    ((UKismetSystemLibrary*)UKismetSystemLibrary::StaticClass())->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
-
-                    printf("Started Aircraft!\n");
-                    bStartedBus = true;
+                        printf("Started Aircraft!\n");
+                        bStartedBus = true;
+                    }
                 }
-            }
 
-			if (bListening && HostBeacon)
-            {
-                if (ZeroGUI::Button((char*)"Allow Requests", FVector2D {100, 25}))
+                if (ZeroGUI::Button((char*)"Allow Requests", FVector2D { 100, 25 }))
                 {
                     Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
                     printf("Allowing requests!\n");
                 }
 
-                if (ZeroGUI::Button((char*)"Deny Requests", FVector2D {100, 25}))
+                if (ZeroGUI::Button((char*)"Deny Requests", FVector2D { 100, 25 }))
                 {
                     Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, true);
                     printf("Denying requests!\n");
-                }            
+                }
+            }
+            else
+            {
+                ZeroGUI::Text((char*)"Waiting for the server to launch - or the requirements (bListening && HostBeacon) are failing to be met.", true, true);
             }
         }
 
