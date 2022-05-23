@@ -86,15 +86,15 @@ namespace Native
         inline void* (*AddNetworkActor)(UWorld*, AActor*);
     }
 
-    namespace GC
-    {
-        inline double (__fastcall* ProcessObjectArray)(__int64 a1, __int64 a2);
-    }
-
     namespace Engine
     {
         inline void* (*SeamlessTravelHandlerForWorld)(UEngine* Engine, UWorld* World);
         inline __int64 (*TSetToTArray)(__int64 a1, __int64 OutArray);
+    }
+
+    namespace GameViewportClient
+    {
+        inline void (*PostRender)(UGameViewportClient* _this, UCanvas* Canvas);
     }
 
     void InitializeAll()
@@ -213,9 +213,9 @@ namespace Native
         CheckNullFatal(Address, "Failed to find TSetToTArray");
         AddressToFunction(Address, Engine::TSetToTArray);
 
-        Address = Utils::FindPattern(Patterns::ProcessObjectArray);
-        CheckNullFatal(Address, "Failed to find ProcessObjectArray");
-        AddressToFunction(Address, GC::ProcessObjectArray);
+        Address = Utils::FindPattern(Patterns::PostRender);
+        CheckNullFatal(Address, "Failed to find PostRender");
+        AddressToFunction(Address, GameViewportClient::PostRender);
 
         PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
 

@@ -376,7 +376,7 @@ namespace UFunctionHooks
                 }
             }
         })
-			
+
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerAttemptInventoryDrop", {
             auto PC = (AFortPlayerControllerAthena*)Object;
 
