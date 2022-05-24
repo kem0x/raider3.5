@@ -40,7 +40,5 @@ namespace Patterns
     constexpr const char* PostRender = "48 89 74 24 ? 57 48 81 EC ? ? ? ? 80 B9 ? ? ? ? ? 48 8B F2";
 
     constexpr const char* TSetToTArray = "E8 ? ? ? ? 49 8D 7D 30";
-    constexpr const char* ProcessObjectArray = "48 89 5C 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 ? ? ? ? 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 85 ? ? ? ? 44 8B 2D ?";
-    // constexpr const char* CollectGarbageInternal = "E9 8C FD E1 03";
-    constexpr const char* CollectGarbage = "48 89 5C 24 ? 57 48 83 EC 20 0F B6 DA 8B F9 E8 ? ? ? ? 0F B6 D3 8B CF E8 ? ? ? ? 48 8B 1D ? ? ? ? 48 8B 4B 38";
-}
+    constexpr const char* CollectGarbage = "E9 ? ? ? ? 4D 85 ? 55 48 BD ? ? ? ? ? ? ? ? 48 87 ? ? 53 50 48 8B ? ? ? 48 B8 ? ? ? ? ? ? ? ? 48 0F ? ? 48 89 ? ? ? 58 5B C3 E9 ? ? ? ? E8";
+    }

@@ -117,7 +117,7 @@ namespace UFunctionHooks
                                 ClientMessage(PC, std::wstring(L"Successfully gave " + count + std::wstring(L" ") + toWStr(weaponName) + L" to slot " + std::to_wstring(slot)).c_str());
                             }
                             else
-								ClientMessage(PC, L"Requested item is not a weapon!\n");
+                                ClientMessage(PC, L"Requested item is not a weapon!\n");
                         }
 
                         else if (bDeveloperCheats && Command == "revive" && Pawn->bIsDBNO)
@@ -154,14 +154,29 @@ namespace UFunctionHooks
             auto Params = (AFortPlayerController_ServerCreateBuildingActor_Params*)Parameters;
             auto CurrentBuildClass = Params->BuildingClassData.BuildingClass;
 
+            static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+
             if (CurrentBuildClass)
             {
                 if (auto BuildingActor = (ABuildingSMActor*)SpawnActor(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, PC))
                 {
-                    BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::CountsTowardsBounds;
-                    BuildingActor->SetMirrored(Params->bMirrored);
-                    BuildingActor->PlacedByPlacementTool();
-                    BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);
+                    TArray<class ABuildingActor*> ExistingBuildings;
+                    auto bCanBuild = GameState->StructuralSupportSystem->K2_CanAddBuildingActorToGrid(GetWorld(), BuildingActor, Params->BuildLoc, Params->BuildRot, false, false, &ExistingBuildings);
+
+                    if (bCanBuild == EFortStructuralGridQueryResults::CanAdd || ExistingBuildings.Num() == 0)
+                    {
+                        BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::DestroyAnythingThatCollides;
+                        BuildingActor->SetMirrored(Params->bMirrored);
+                        BuildingActor->PlacedByPlacementTool();
+                        BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);
+                    }
+                    else
+                    {
+                        BuildingActor->SetActorScale3D({});
+                        BuildingActor->K2_DestroyActor();
+                    }
+
+                    ExistingBuildings.Reset();
                 }
             }
         })
@@ -434,7 +449,7 @@ namespace UFunctionHooks
             auto Params = (AFortPlayerPawn_ServerChoosePart_Params*)Parameters;
             auto Pawn = (APlayerPawn_Athena_C*)Object;
 
-			if (Params && Pawn)
+            if (Params && Pawn)
             {
                 if (!Params->ChosenCharacterPart)
                     return;

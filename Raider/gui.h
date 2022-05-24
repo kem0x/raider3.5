@@ -35,7 +35,7 @@ namespace GUI
                         GameState->AircraftStartTime = 0;
                         GameState->WarmupCountdownEndTime = 0;
 
-                        GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
+                        ((UKismetSystemLibrary*)UKismetSystemLibrary::StaticClass())->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
 
                         printf("Started Aircraft!\n");
                         bStartedBus = true;
