@@ -136,6 +136,7 @@ namespace Replication
             return;
 
         std::vector<AActor*> ConsiderList;
+        ConsiderList.reserve(GetNetworkObjectList(NetDriver).ActiveNetworkObjects.Num());
         BuildConsiderList(NetDriver, ConsiderList);
 
         for (int i = 0; i < NetDriver->ClientConnections.Num(); i++)

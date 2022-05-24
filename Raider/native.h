@@ -71,8 +71,7 @@ namespace Native
 
     namespace GC
     {
-        double (* ProcessObjectArray)(__int64 a1, __int64 a2, __int64* a3);
-        void (* CollectGarbage)(EObjectFlags KeepFlags, bool bPerformFullPurge);
+        __int64 (* CollectGarbage)(__int64 a1);
     }
 
     namespace PlayerController
@@ -268,7 +267,7 @@ namespace Native
         CheckNullFatal(Address, "Failed to find PostRender");
         AddressToFunction(Address, GameViewportClient::PostRender);
 
-        Address = Utils::FindPattern(Patterns::CollectGarbage);
+        Address = Utils::FindPattern(Patterns::CollectGarbage, true, 1);
 		CheckNullFatal(Address, "Failed to find CollectGarbage");
 		AddressToFunction(Address, GC::CollectGarbage);
 

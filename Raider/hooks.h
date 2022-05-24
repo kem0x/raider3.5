@@ -212,9 +212,9 @@ namespace Hooks
         return 0;
     }
 
-    void CollectGarbage(EObjectFlags KeepFlags, bool bPerformFullPurge)
+    __int64 CollectGarbage(__int64 a1)
     {
-        return;
+        return 0;
     };
 
     void InitNetworkHooks()
@@ -227,7 +227,7 @@ namespace Hooks
         DetourAttachE(Native::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage);
         DetourAttachE(Native::OnlineSession::KickPlayer, KickPlayer);
         DetourAttachE(Native::GameViewportClient::PostRender, PostRender);
-        //DetourAttachE(Native::GC::CollectGarbage, CollectGarbage);
+        DetourAttachE(Native::GC::CollectGarbage, CollectGarbage);
         DETOUR_END
     }
 
