@@ -78,6 +78,11 @@ FORCEINLINE UGameplayStatics* GetGameplayStatics()
     return reinterpret_cast<UGameplayStatics*>(UGameplayStatics::StaticClass());
 }
 
+FORCEINLINE UKismetSystemLibrary* GetKismetSystem()
+{
+    return reinterpret_cast<UKismetSystemLibrary*>(UKismetSystemLibrary::StaticClass());
+}
+
 FORCEINLINE UKismetStringLibrary* GetKismetString()
 {
     return (UKismetStringLibrary*)UKismetStringLibrary::StaticClass();

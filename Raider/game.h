@@ -12,36 +12,38 @@ namespace Game
 
     void OnReadyToStartMatch()
     {
-        auto world = GetWorld();
-        auto gameState = reinterpret_cast<AAthena_GameState_C*>(world->GameState);
+        auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+        auto GameMode = reinterpret_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode);
+        auto Playlist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");
+        auto InProgress = GetKismetString()->STATIC_Conv_StringToName(L"InProgress");
 
-        gameState->bGameModeWillSkipAircraft = true;
-        gameState->AircraftStartTime = 99999.0f;
-        gameState->WarmupCountdownEndTime = 99999.0f;
+        GameState->GamePhase = EAthenaGamePhase::Warmup;
+        GameState->OnRep_GamePhase(EAthenaGamePhase::None);
 
-        gameState->GamePhase = EAthenaGamePhase::Warmup;
-        gameState->OnRep_GamePhase(EAthenaGamePhase::None);
+        GameMode->bDisableGCOnServerDuringMatch = true;
+        GameMode->bAllowSpectateAfterDeath = true;
 
-        auto authGameMode = reinterpret_cast<AFortGameModeAthena*>(world->AuthorityGameMode);
+        GameMode->MatchState = InProgress;
+        GameMode->K2_OnSetMatchState(InProgress);
 
-        authGameMode->bAllowSpectateAfterDeath = true;
+        if (Playlist) {
+            Playlist->bNoDBNO = false;
+            Playlist->bIsLargeTeamGame = true;
+            
+            Playlist->FriendlyFireType = EFriendlyFireType::On;
+            
+            GameState->CurrentPlaylistData = Playlist;
+            GameState->OnRep_CurrentPlaylistData();
+        }
+        
+        GameMode->FriendlyFireType = EFriendlyFireType::On;
 
-        auto stateF = reinterpret_cast<UKismetStringLibrary*>(UKismetStringLibrary::StaticClass())->STATIC_Conv_StringToName(L"InProgress");
-        authGameMode->MatchState = stateF;
-        authGameMode->K2_OnSetMatchState(stateF);
+        GameMode->StartPlay();
 
-        auto playlist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");
+        GameState->bReplicatedHasBegunPlay = true;
+        GameState->OnRep_ReplicatedHasBegunPlay();
 
-        playlist->bNoDBNO = false;
-        playlist->FriendlyFireType = EFriendlyFireType::On;
-        authGameMode->FriendlyFireType = EFriendlyFireType::On;
-        gameState->CurrentPlaylistData = playlist;
-        gameState->OnRep_CurrentPlaylistData();
-
-        authGameMode->StartPlay();
-        gameState->bReplicatedHasBegunPlay = true;
-        gameState->OnRep_ReplicatedHasBegunPlay();
-        authGameMode->StartMatch();
-        authGameMode->bAlwaysDBNO = true;
+        GameMode->StartMatch();
+        GameMode->bAlwaysDBNO = true;
     }
 }
