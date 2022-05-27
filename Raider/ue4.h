@@ -145,6 +145,20 @@ static auto RotToQuat(FRotator Rotator)
     return RotationQuat;
 }
 
+static auto VecToRot(FVector Vector)
+{
+    FRotator R;
+	
+    R.Yaw =  std::atan2(Vector.Y, Vector.X) * (180.f / PI);
+
+	R.Pitch = std::atan2(Vector.Z, std::sqrt(Vector.X * Vector.X + Vector.Y *Vector.Y)) * (180.f / PI);
+
+	// roll can't be found from vector
+	R.Roll = 0;
+
+    return R;
+}
+
 static AActor* SpawnActorTrans(UClass* StaticClass, FTransform SpawnTransform, AActor* Owner = nullptr, ESpawnActorCollisionHandlingMethod Flags = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn)
 {
     AActor* FirstActor = GetGameplayStatics()->STATIC_BeginDeferredActorSpawnFromClass(GetWorld(), StaticClass, SpawnTransform, Flags, Owner);

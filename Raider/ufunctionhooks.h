@@ -210,17 +210,19 @@ namespace UFunctionHooks
             {
                 auto BuildingActor = Params->BuildingActorToEdit;
                 auto NewBuildingClass = Params->NewBuildingClass;
+                auto RotationIterations = Params->RotationIterations;
+
+                printf("RotationIterations: %i\n", RotationIterations);
 
                 if (BuildingActor && NewBuildingClass)
                 {
-                    FTransform SpawnTransform;
-                    SpawnTransform.Rotation = RotToQuat(BuildingActor->K2_GetActorRotation());
-                    SpawnTransform.Translation = BuildingActor->K2_GetActorLocation();
-                    SpawnTransform.Scale3D = BuildingActor->GetActorScale3D();
+                    auto rotation = BuildingActor->K2_GetActorRotation(); //Not correct, this is not centered.
+
+                    rotation.Yaw =+ 90.0f * RotationIterations;
 
                     BuildingActor->K2_DestroyActor();
 
-                    if (auto NewBuildingActor = (ABuildingSMActor*)SpawnActorTrans(NewBuildingClass, SpawnTransform, PC))
+                    if (auto NewBuildingActor = (ABuildingSMActor*)SpawnActor(NewBuildingClass, BuildingActor->K2_GetActorLocation(), rotation, PC))
                     {
                         NewBuildingActor->SetMirrored(Params->bMirrored);
                         NewBuildingActor->InitializeKismetSpawnedBuildingActor(NewBuildingActor, PC);
