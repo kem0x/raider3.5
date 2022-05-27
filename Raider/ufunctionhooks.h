@@ -66,7 +66,7 @@ namespace UFunctionHooks
 
                     if (NumArgs >= 0)
                     {
-                        auto& Command = Arguments[0];
+                        auto& Command = Arguments[0]; // TODO: Make the string all lower case.
 
                         if (Command == "setpickaxe" && NumArgs >= 1)
                         {
@@ -160,7 +160,7 @@ namespace UFunctionHooks
             {
                 if (auto BuildingActor = (ABuildingSMActor*)SpawnActor(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, PC))
                 {
-                    TArray<class ABuildingActor*> ExistingBuildings;
+                    TArray<ABuildingActor*> ExistingBuildings;
                     auto bCanBuild = GameState->StructuralSupportSystem->K2_CanAddBuildingActorToGrid(GetWorld(), BuildingActor, Params->BuildLoc, Params->BuildRot, false, false, &ExistingBuildings);
 
                     if (bCanBuild == EFortStructuralGridQueryResults::CanAdd || ExistingBuildings.Num() == 0)
@@ -173,7 +173,8 @@ namespace UFunctionHooks
                     else
                     {
                         BuildingActor->SetActorScale3D({});
-                        BuildingActor->K2_DestroyActor();
+                        BuildingActor->SilentDie();
+                        // BuildingActor->K2_DestroyActor();
                     }
 
                     ExistingBuildings.Reset();
@@ -218,9 +219,13 @@ namespace UFunctionHooks
                 {
                     auto rotation = BuildingActor->K2_GetActorRotation(); //Not correct, this is not centered.
 
-                    rotation.Yaw =+ 90.0f * RotationIterations;
-
-                    BuildingActor->K2_DestroyActor();
+					if (BuildingActor->BuildingType == EFortBuildingType::Wall)
+                        rotation.Yaw =+ 90.0f * RotationIterations;
+                    else if (BuildingActor->BuildingType == EFortBuildingType::Stairs)
+                        rotation.Yaw =+ 180.0f * RotationIterations;
+					
+                    //  BuildingActor->K2_DestroyActor();					
+                    BuildingActor->SilentDie();
 
                     if (auto NewBuildingActor = (ABuildingSMActor*)SpawnActor(NewBuildingClass, BuildingActor->K2_GetActorLocation(), rotation, PC))
                     {
@@ -239,7 +244,7 @@ namespace UFunctionHooks
             auto Params = (AFortPlayerController_ServerEndEditingBuildingActor_Params*)Parameters;
             auto PC = (AFortPlayerControllerAthena*)Object;
 
-            if (Params->BuildingActorToStopEditing)
+            if (!PC->IsInAircraft() && Params->BuildingActorToStopEditing)
             {
                 Params->BuildingActorToStopEditing->EditingPlayer = nullptr;
                 Params->BuildingActorToStopEditing->OnRep_EditingPlayer();
@@ -464,6 +469,26 @@ namespace UFunctionHooks
                 Game::OnReadyToStartMatch();
                 Listen();
                 bListening = true;
+            }
+        })
+
+        DEFINE_PEHOOK("Function FortniteGame.FortGameModeAthena.OnAircraftExitedDropZone", { // To make this faster we could loop through client connections and get their controllers
+            TArray<AActor*> PlayerArray;
+
+            static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
+            GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerController::StaticClass(), &PlayerArray);
+
+            std::cout << "Size: " << PlayerArray.Num() << std::endl;
+
+            for (int i = 0; i < PlayerArray.Num(); i++)
+            {
+                auto Controller = (AFortPlayerControllerAthena*)PlayerArray[i];
+
+                if (!Controller)
+                    continue;
+
+                if (Controller && Controller->IsInAircraft())
+                    Controller->ServerAttemptAircraftJump(FRotator());
             }
         })
 

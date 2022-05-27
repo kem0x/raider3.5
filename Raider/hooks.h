@@ -80,7 +80,7 @@ namespace Hooks
 
         auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
 
-        PlayerController->StrongMyHero = Hero;
+        // PlayerController->StrongMyHero = Hero;
 
         PlayerState->HeroType = Hero->GetHeroTypeBP();
         PlayerState->OnRep_HeroType();
