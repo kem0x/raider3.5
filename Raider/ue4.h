@@ -227,14 +227,67 @@ inline bool IsMatchingGuid(FGuid A, FGuid B)
     return A.A == B.A && A.B == B.B && A.C == B.C && A.D == B.D;
 }
 
+bool CanBuild(FVector& Location)
+{
+    static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+
+    FBuildingGridActorFilter filter { true, true, true, true};
+    FBuildingNeighboringActorInfo OutActors;
+    GameState->StructuralSupportSystem->K2_GetBuildingActorsInGridCell(Location, filter, &OutActors);
+    auto Amount = OutActors.NeighboringCenterCellInfos.Num() + OutActors.NeighboringFloorInfos.Num() + OutActors.NeighboringWallInfos.Num();
+    if (Amount == 0)
+        return true;
+    return false;
+}
+
+bool IsCurrentlyDisconnecting(UNetConnection* Connection)
+{
+    return false;
+}
+
+void Spectate(UNetConnection* SpectatingConnection, AFortPlayerStateAthena* StateToSpectate)
+{
+    auto PawnToSpectate = StateToSpectate->GetCurrentPawn();
+    auto DeadPC = (AFortPlayerControllerAthena*)SpectatingConnection->PlayerController;
+    auto DeadPlayerState = (AFortPlayerStateAthena*)DeadPC->PlayerState;
+
+    if (!IsCurrentlyDisconnecting(SpectatingConnection) && SpectatingConnection && StateToSpectate && DeadPlayerState && DeadPC && PawnToSpectate)
+    {
+        DeadPC->PlayerToSpectateOnDeath = PawnToSpectate;
+        DeadPC->SpectateOnDeath();
+
+        DeadPlayerState->SpectatingTarget = StateToSpectate;
+        DeadPlayerState->bIsSpectator = true;
+        DeadPlayerState->OnRep_SpectatingTarget();
+
+        auto SpectatorPC = SpawnActor<ABP_SpectatorPC_C>(PawnToSpectate->K2_GetActorLocation());
+        SpectatorPC->SetNewCameraType(ESpectatorCameraType::DroneAttach, true);
+        SpectatorPC->CurrentCameraType = ESpectatorCameraType::DroneAttach;
+        SpectatorPC->ResetCamera();
+        SpectatingConnection->PlayerController = SpectatorPC;
+        
+        // auto SpectatorPawn = SpawnActor<ABP_SpectatorPawn_C>(PawnToSpectate->K2_GetActorLocation(), PawnToSpectate);
+
+        /* SpectatorPC->SpectatorPawn = SpectatorPawn;
+        SpectatorPC->Pawn = SpectatorPawn;
+        SpectatorPC->AcknowledgedPawn = SpectatorPawn;
+        SpectatorPawn->Owner = SpectatorPC;
+        SpectatorPawn->OnRep_Owner();
+        SpectatorPC->OnRep_Pawn();
+        SpectatorPC->Possess(SpectatorPawn); */
+
+        if (DeadPC->QuickBars)
+            DeadPC->QuickBars->K2_DestroyActor();
+    }
+}
+
 inline void UpdateInventory(AFortPlayerController* PlayerController, int Dirty = 0, bool bRemovedItem = false)
 {
+    PlayerController->WorldInventory->bRequiresLocalUpdate = true;
     PlayerController->WorldInventory->HandleInventoryLocalUpdate();
     PlayerController->HandleWorldInventoryLocalUpdate();
-    PlayerController->OnRep_QuickBar();
-    PlayerController->QuickBars->OnRep_PrimaryQuickBar();
-    PlayerController->QuickBars->OnRep_SecondaryQuickBar();
-    PlayerController->WorldInventory->bRequiresLocalUpdate = true;
+    PlayerController->ForceUpdateQuickbar(EFortQuickBars::Primary);
+    PlayerController->QuickBars->ForceNetUpdate();
 
     if (bRemovedItem)
         PlayerController->WorldInventory->Inventory.MarkArrayDirty();
@@ -243,24 +296,40 @@ inline void UpdateInventory(AFortPlayerController* PlayerController, int Dirty =
         PlayerController->WorldInventory->Inventory.MarkItemDirty(PlayerController->WorldInventory->Inventory.ReplicatedEntries[Dirty]);
 }
 
-inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinition* Def, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1)
+inline auto AddItem(AFortPlayerController* PC, UFortWorldItemDefinition* Def, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1, int* Idx = nullptr)
 {
+    if (!PC || !Def)
+        return FFortItemEntry();
+
     if (Def->IsA(UFortWeaponItemDefinition::StaticClass()))
         Count = 1;
 
     auto QuickBarSlots = PC->QuickBars->PrimaryQuickBar.Slots;
 
-    auto TempItemInstance = Def->CreateTemporaryItemInstanceBP(Count, 1);
+    auto TempItemInstance = (UFortWorldItem*)Def->CreateTemporaryItemInstanceBP(Count, 1);
     TempItemInstance->SetOwningControllerForTemporaryItem(PC);
 
-    ((UFortWorldItem*)TempItemInstance)->ItemEntry.Count = Count;
-    ((UFortWorldItem*)TempItemInstance)->OwnerInventory = PC->WorldInventory;
+    TempItemInstance->ItemEntry.Count = Count;
+    TempItemInstance->OwnerInventory = PC->WorldInventory;
 
-    auto& ItemEntry = ((UFortWorldItem*)TempItemInstance)->ItemEntry;
+    auto& ItemEntry = TempItemInstance->ItemEntry;
 
-    auto Idx = PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
+    auto _Idx = PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
+	
+    if (Idx)
+        *Idx = _Idx;
+	
     PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
     PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
+
+    return ItemEntry;
+}
+
+inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinition* Def, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1)
+{
+	int Idx = 0;
+
+    auto ItemEntry = AddItem(PC, Def, Slot, Bars, Count, &Idx);
 
     UpdateInventory(PC, Idx);
 
@@ -272,23 +341,25 @@ inline auto RemoveItem(AFortPlayerControllerAthena* PC, EFortQuickBars QuickBars
     if (Slot == 0 || !PC || PC->IsInAircraft())
         return;
 
-    UpdateInventory(PC, 0, true);
+    // UpdateInventory(PC, 0, true);
 
     auto pcQuickBars = PC->QuickBars;
-    pcQuickBars->PrimaryQuickBar.Slots[Slot].Items.FreeArray();
-    pcQuickBars->EmptySlot(QuickBars, Slot);
+    // pcQuickBars->PrimaryQuickBar.Slots[Slot].Items.FreeArray();
+    // pcQuickBars->EmptySlot(QuickBars, Slot);
+    auto& QuickBarSlot = pcQuickBars->PrimaryQuickBar.Slots[Slot];
+    pcQuickBars->PrimaryQuickBar.Slots.RemoveAt(Slot);
 
     auto Inventory = PC->WorldInventory->Inventory;
 
     if (Inventory.ReplicatedEntries.Num() >= Slot)
     {
-        Inventory.ReplicatedEntries.RemoveAt(Slot, 1);
+        Inventory.ReplicatedEntries.RemoveAt(Slot);
         std::cout << "Removed from ReplicatedEntries!\n";
     }
 
     if (Inventory.ItemInstances.Num() >= Slot)
     {
-        Inventory.ItemInstances.RemoveAt(Slot, 1);
+        Inventory.ItemInstances.RemoveAt(Slot);
         std::cout << "Removed from ItemInstances!\n";
     }
 
@@ -391,7 +462,12 @@ void Listen()
 
     Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
 
-    GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = 100;
+    auto GameState = (AAthena_GameState_C*)GetWorld()->GameState;
+
+    // GameState->SpectatorClass = ABP_SpectatorPawn_C::StaticClass();
+    // sGameState->OnRep_SpectatorClass();
+	
+    ((AAthena_GameMode_C*)GetWorld()->AuthorityGameMode)->GameSession->MaxPlayers = 100;
 }
 
 static void SummonPickup(AFortPlayerPawn* Pawn, auto ItemDef, int Count, FVector Location)
@@ -423,6 +499,9 @@ static void SummonPickupFromChest(auto ItemDef, int Count, FVector Location)
 
 static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = false)
 {
+    if (!Pawn || !params)
+        return;
+
     auto Params = (AFortPlayerPawn_ServerHandlePickup_Params*)params;
 
     auto ItemInstances = ((AFortPlayerController*)Pawn->Controller)->WorldInventory->Inventory.ItemInstances;
@@ -493,22 +572,6 @@ static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnIn
     auto QuickBars = PlayerController->QuickBars;
     PlayerController->OnRep_QuickBar();
 
-    if (bSpawnInventory)
-    {
-        PlayerController->WorldInventory = SpawnActor<AFortInventory>({ -280, 400, 3000 }, PlayerController);
-        PlayerController->WorldInventory->InventoryType = EFortInventoryType::World;
-        PlayerController->WorldInventory->Inventory = FFortItemList();
-
-        PlayerController->WorldInventory->bReplicates = true;
-        PlayerController->bHasInitializedWorldInventory = true;
-
-        auto OutpostInventory = SpawnActor<AFortInventory>({}, PlayerController);
-        OutpostInventory->bReplicates = true;
-        OutpostInventory->InventoryType = EFortInventoryType::Outpost;
-        PlayerController->OutpostInventory = OutpostInventory;
-        PlayerController->HandleOutpostInventoryLocalUpdate();
-    }
-
     static auto Wall = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall");
     static auto Stair = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W");
     static auto Cone = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_RoofS.BuildingItemData_RoofS");
@@ -523,17 +586,17 @@ static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnIn
 
     // we should probably only update once
 
-    AddItemWithUpdate(PlayerController, Wall, 0, EFortQuickBars::Secondary, 1);
-    AddItemWithUpdate(PlayerController, Floor, 1, EFortQuickBars::Secondary, 1);
-    AddItemWithUpdate(PlayerController, Stair, 2, EFortQuickBars::Secondary, 1);
-    AddItemWithUpdate(PlayerController, Cone, 3, EFortQuickBars::Secondary, 1);
+    AddItem(PlayerController, Wall, 0, EFortQuickBars::Secondary, 1);
+    AddItem(PlayerController, Floor, 1, EFortQuickBars::Secondary, 1);
+    AddItem(PlayerController, Stair, 2, EFortQuickBars::Secondary, 1);
+    AddItem(PlayerController, Cone, 3, EFortQuickBars::Secondary, 1);
 
-    AddItemWithUpdate(PlayerController, Wood, 0, EFortQuickBars::Secondary, 999);
-    AddItemWithUpdate(PlayerController, Stone, 0, EFortQuickBars::Secondary, 999);
-    AddItemWithUpdate(PlayerController, Metal, 0, EFortQuickBars::Secondary, 999);
-    AddItemWithUpdate(PlayerController, Medium, 0, EFortQuickBars::Secondary, 999);
-    AddItemWithUpdate(PlayerController, Light, 0, EFortQuickBars::Secondary, 999);
-    AddItemWithUpdate(PlayerController, Heavy, 0, EFortQuickBars::Secondary, 999);
+    AddItem(PlayerController, Wood, 0, EFortQuickBars::Secondary, 999);
+    AddItem(PlayerController, Stone, 0, EFortQuickBars::Secondary, 999);
+    AddItem(PlayerController, Metal, 0, EFortQuickBars::Secondary, 999);
+    AddItem(PlayerController, Medium, 0, EFortQuickBars::Secondary, 999);
+    AddItem(PlayerController, Light, 0, EFortQuickBars::Secondary, 999);
+    AddItem(PlayerController, Heavy, 0, EFortQuickBars::Secondary, 999);
 
     AddItemWithUpdate(PlayerController, EditTool, 0, EFortQuickBars::Primary, 1);
 
@@ -763,6 +826,11 @@ FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
     // return (GetWorld()->AuthorityGameMode->FindPlayerStart(PC, IncomingName))->K2_GetActorLocation();
 }
 
+inline UKismetMathLibrary* GetMath()
+{
+    return (UKismetMathLibrary*)UKismetMathLibrary::StaticClass();
+}
+
 static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector { 1250, 1818, 3284 }, FQuat Rotation = FQuat())
 {
     if (PlayerController->Pawn)
@@ -812,6 +880,10 @@ static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc 
     }
 
     PlayerState->OnRep_CharacterParts();
+
+    PlayerController->OnRep_QuickBar();
+    PlayerController->QuickBars->OnRep_PrimaryQuickBar();
+    PlayerController->QuickBars->OnRep_SecondaryQuickBar();
 }
 
 void ChangeItem(AFortPlayerControllerAthena* PC, UFortItemDefinition* Old, UFortItemDefinition* New, int Slot, bool bEquip = false) // we can find the slot too
@@ -833,7 +905,21 @@ auto toWStr(const std::string& str)
     return std::wstring(str.begin(), str.end());
 }
 
-void EquipLoadout(AFortPlayerController* Controller, std::vector<std::string> WIDS)
+inline UFortWeaponRangedItemDefinition* FindWID(const std::string& WID)
+{
+    auto Def = UObject::FindObject<UFortWeaponRangedItemDefinition>("FortWeaponRangedItemDefinition " + WID + '.' + WID);
+
+    if (!Def)
+    {
+        Def = UObject::FindObject<UFortWeaponRangedItemDefinition>("WID_Harvest_" + WID + "_Athena_C_T01" + ".WID_Harvest_" + WID + "_Athena_C_T01");
+        if (!Def)
+            Def = UObject::FindObject<UFortWeaponRangedItemDefinition>(WID + "." + WID);
+    }
+
+    return Def;
+}
+
+void EquipLoadout(AFortPlayerController* Controller, std::vector<UFortWeaponRangedItemDefinition*> WIDS)
 {
     FFortItemEntry pickaxeEntry;
 	
@@ -842,16 +928,7 @@ void EquipLoadout(AFortPlayerController* Controller, std::vector<std::string> WI
         // if (i >= 6)
             // break;
         
-        auto WID = WIDS[i];
-
-        auto Def = UObject::FindObject<UFortWeaponRangedItemDefinition>("FortWeaponRangedItemDefinition " + WID + '.' + WID);
-
-		if (i == 0 && !Def)
-        {
-            Def = UObject::FindObject<UFortWeaponRangedItemDefinition>("WID_Harvest_" + WID + "_Athena_C_T01" + ".WID_Harvest_" + WID + "_Athena_C_T01");
-            if (!Def)
-                Def = UObject::FindObject<UFortWeaponRangedItemDefinition>(WID + "." + WID);
-        }
+        auto Def = WIDS[i];
 		
 		if (Def)
         {
@@ -862,4 +939,24 @@ void EquipLoadout(AFortPlayerController* Controller, std::vector<std::string> WI
     }
 
 	EquipWeaponDefinition(Controller->Pawn, (UFortWeaponMeleeItemDefinition*)pickaxeEntry.ItemDefinition, pickaxeEntry.ItemGuid);
+}
+
+inline auto ApplyAbilities(APawn* _Pawn)
+{
+    auto Pawn = (APlayerPawn_Athena_C*)_Pawn;
+    static auto SprintAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint");
+    static auto ReloadAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Reload");
+    static auto RangedWeaponAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_RangedWeapon");
+    static auto JumpAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Jump");
+    static auto DeathAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_Death.GA_DefaultPlayer_Death_C");
+    static auto InteractUseAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractUse.GA_DefaultPlayer_InteractUse_C");
+    static auto InteractSearchAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractSearch.GA_DefaultPlayer_InteractSearch_C");
+
+    GrantGameplayAbility(Pawn, SprintAbility);
+    GrantGameplayAbility(Pawn, ReloadAbility);
+    GrantGameplayAbility(Pawn, RangedWeaponAbility);
+    GrantGameplayAbility(Pawn, JumpAbility);
+    GrantGameplayAbility(Pawn, DeathAbility);
+    GrantGameplayAbility(Pawn, InteractUseAbility);
+    GrantGameplayAbility(Pawn, InteractSearchAbility);
 }

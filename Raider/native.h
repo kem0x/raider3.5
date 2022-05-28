@@ -238,11 +238,7 @@ namespace Native
         Address = Utils::FindPattern(Patterns::AddNetworkActor);
         CheckNullFatal(Address, "Failed to find AddNetworkActor");
         AddressToFunction(Address, World::AddNetworkActor);
-
-        Address = Utils::FindPattern(Patterns::IsNetRelevantFor);
-        CheckNullFatal(Address, "Failed to find IsNetRelevantFor");
-        AddressToFunction(Address, Actor::IsNetRelevantFor);
-
+		
         Address = Utils::FindPattern(Patterns::GiveAbility);
         CheckNullFatal(Address, "Failed to find GiveAbility");
         AddressToFunction(Address, AbilitySystemComponent::GiveAbility);

@@ -102,15 +102,15 @@ namespace Hooks
         PlayerState->OnRep_CharacterGender();
         PlayerState->OnRep_CharacterParts();
 
-        static std::vector<std::string> doublePumpLoadout = {
-            "WID_Harvest_Pickaxe_HolidayCandyCane_Athena", // Candy Axe
-            "WID_Shotgun_Standard_Athena_UC_Ore_T03", // Blue Pump
-            "WID_Shotgun_Standard_Athena_UC_Ore_T03", // Blue Pump
-            "WID_Assault_Auto_Athena_R_Ore_T03", // Blue AR
-            "WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03", // Blue Bolt Action
+        static std::vector<UFortWeaponRangedItemDefinition*> doublePumpLoadout = {
+            FindWID("WID_Harvest_Pickaxe_HolidayCandyCane_Athena"), // Candy Axe
+            FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
+            FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
+            FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03"), // Gold AR
+            FindWID("WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03"), // Blue Bolt Action
             // "Athena_KnockGrenade" // Impulse Grenades
-            "Athena_Shields" // Big Shield Potion
-        }; // Impulse
+            FindWID("Athena_Shields") // Big Shield Potion
+        };
 
         EquipLoadout(PlayerController, doublePumpLoadout);
         /*
@@ -138,8 +138,7 @@ namespace Hooks
         {
             if (PlayerController->Pawn->PlayerState)
             {
-                static int Idx = 2;
-                PlayerState->TeamIndex = EFortTeam(Idx);
+                PlayerState->TeamIndex = EFortTeam(2); // GetMath()->STATIC_RandomIntegerInRange(2, 98));
                 PlayerState->OnRep_PlayerTeam();
                 PlayerState->SquadId = PlayerState->PlayerTeam->TeamMembers.Num() + 1;
                 PlayerState->OnRep_SquadId();
@@ -162,7 +161,7 @@ namespace Hooks
             return;
         case 5: // NMT_Login
         {
-            Bunch[7] += (16 * 1024 * 1024);
+            Bunch[7] += 16,777,216;
 
             FString OnlinePlatformName = FString(L"");
 
@@ -171,7 +170,7 @@ namespace Hooks
             Native::NetConnection::ReceiveUniqueIdRepl(Bunch, Connection->PlayerID);
             Native::NetConnection::ReceiveFString(Bunch, OnlinePlatformName);
 
-            Bunch[7] -= (16 * 1024 * 1024);
+            Bunch[7] -= 16,777,216;
 
             Native::World::WelcomePlayer(GetWorld(), Connection);
             return;
@@ -265,6 +264,7 @@ namespace Hooks
                 if (Function == toHook[i])
                 {
                     toCall[i](Object, Parameters);
+                    break;
                 }
             }
         }

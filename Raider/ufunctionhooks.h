@@ -67,6 +67,7 @@ namespace UFunctionHooks
                     if (NumArgs >= 0)
                     {
                         auto& Command = Arguments[0]; // TODO: Make the string all lower case.
+                        std::transform(Command.begin(), Command.end(), Command.begin(), ::tolower);
 
                         if (Command == "setpickaxe" && NumArgs >= 1)
                         {
@@ -129,7 +130,7 @@ namespace UFunctionHooks
                             Pawn->SetHealth(100);
                         }
 
-                        else if (bDeveloperCheats && Command == "respawn" && !Pawn)
+                        else if (bDeveloperCheats && Command == "respawn" && !Pawn) // ISSUE: Player is unable to shoot.
                         {
                             InitPawn(PC);
                             PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
@@ -139,6 +140,8 @@ namespace UFunctionHooks
 
                             if (bFound)
                                 EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
+
+                            ApplyAbilities(PC->Pawn);
                         }
 
                         else
@@ -156,28 +159,33 @@ namespace UFunctionHooks
 
             static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
 
-            if (CurrentBuildClass)
+            if (PC && Params && CurrentBuildClass)
             {
-                if (auto BuildingActor = (ABuildingSMActor*)SpawnActor(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, PC))
+                bool bCanBuild = true; // CanBuild(Params->BuildLoc);
+                if (bCanBuild)
                 {
-                    TArray<ABuildingActor*> ExistingBuildings;
-                    auto bCanBuild = GameState->StructuralSupportSystem->K2_CanAddBuildingActorToGrid(GetWorld(), BuildingActor, Params->BuildLoc, Params->BuildRot, false, false, &ExistingBuildings);
-
-                    if (bCanBuild == EFortStructuralGridQueryResults::CanAdd || ExistingBuildings.Num() == 0)
+                    auto BuildingActor = (ABuildingSMActor*)SpawnActor(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, PC);
+                    if (BuildingActor)
                     {
-                        BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::DestroyAnythingThatCollides;
-                        BuildingActor->SetMirrored(Params->bMirrored);
-                        BuildingActor->PlacedByPlacementTool();
-                        BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);
-                    }
-                    else
-                    {
-                        BuildingActor->SetActorScale3D({});
-                        BuildingActor->SilentDie();
-                        // BuildingActor->K2_DestroyActor();
-                    }
+                        TArray<ABuildingActor*> ExistingBuildings;
+                        auto eCanBuild = GameState->StructuralSupportSystem->K2_CanAddBuildingActorToGrid(GetWorld(), BuildingActor, Params->BuildLoc, Params->BuildRot, false, false, &ExistingBuildings);
 
-                    ExistingBuildings.Reset();
+                        if (eCanBuild == EFortStructuralGridQueryResults::CanAdd && ExistingBuildings.Num() == 0)
+                        {
+                            BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::DestroyAnythingThatCollides;
+                            BuildingActor->SetMirrored(Params->bMirrored);
+                            BuildingActor->PlacedByPlacementTool();
+                            BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);
+                        }
+                        else
+                        {
+                            BuildingActor->SetActorScale3D({});
+                            BuildingActor->SilentDie();
+                            // BuildingActor->K2_DestroyActor();
+                        }
+
+                        ExistingBuildings.Reset();
+                    }
                 }
             }
         })
@@ -219,10 +227,7 @@ namespace UFunctionHooks
                 {
                     auto rotation = BuildingActor->K2_GetActorRotation(); //Not correct, this is not centered.
 
-					if (BuildingActor->BuildingType == EFortBuildingType::Wall)
-                        rotation.Yaw =+ 90.0f * RotationIterations;
-                    else if (BuildingActor->BuildingType == EFortBuildingType::Stairs)
-                        rotation.Yaw =+ 180.0f * RotationIterations;
+                    rotation.Yaw += rotation.Yaw * RotationIterations;                    
 					
                     //  BuildingActor->K2_DestroyActor();					
                     BuildingActor->SilentDie();
@@ -237,6 +242,52 @@ namespace UFunctionHooks
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerControllerZone.ClientOnPawnDied", {
+            auto Params = (AFortPlayerControllerZone_ClientOnPawnDied_Params*)Parameters;
+            auto DeadPC = (AFortPlayerControllerAthena*)Object;
+            auto DeadPlayerState = (AFortPlayerStateAthena*)DeadPC->PlayerState;
+
+            if (false && DeadPC && Params) // this crashes like 9/10
+            {
+                auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
+                GameState->PlayersLeft--;
+                // GameState->PlayerArray.RemoveAt(DeadPC->NetPlayerIndex);
+
+                if (DeadPC && DeadPC->Pawn)
+                {
+                    // TODO: Show death drone
+                    DeadPC->Pawn->K2_DestroyActor();
+                }
+
+                auto KillerPawn = Params->DeathReport.KillerPawn;
+                auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
+
+                DeadPlayerState->OnRep_DeathInfo();
+
+                if (KillerPlayerState && KillerPawn && KillerPlayerState != DeadPlayerState)
+                {
+                    KillerPlayerState->KillScore++;
+                    KillerPlayerState->OnRep_Kills();
+                    Spectate(DeadPC->NetConnection, KillerPlayerState);
+                    DeadPC->K2_DestroyActor();
+                }
+
+                else
+                {
+                    TArray<AActor*> Pawns;
+                    static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
+                    GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
+                    if (Pawns.Num() != 0)
+                    {
+                        auto PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
+
+                        if (PawnToUse)
+                        {
+                            PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
+                            Spectate(DeadPC->NetConnection, (AFortPlayerStateAthena*)PawnToUse->PlayerState);
+                        }
+                    }
+                }
+            }
             return;
         })
 
@@ -434,21 +485,7 @@ namespace UFunctionHooks
 
             if (Pawn && Pawn->AbilitySystemComponent)
             {
-                static auto SprintAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint");
-                static auto ReloadAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Reload");
-                static auto RangedWeaponAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_RangedWeapon");
-                static auto JumpAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Jump");
-                static auto DeathAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_Death.GA_DefaultPlayer_Death_C");
-                static auto InteractUseAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractUse.GA_DefaultPlayer_InteractUse_C");
-                static auto InteractSearchAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractSearch.GA_DefaultPlayer_InteractSearch_C");
-
-                GrantGameplayAbility(Pawn, SprintAbility);
-                GrantGameplayAbility(Pawn, ReloadAbility);
-                GrantGameplayAbility(Pawn, RangedWeaponAbility);
-                GrantGameplayAbility(Pawn, JumpAbility);
-                GrantGameplayAbility(Pawn, DeathAbility);
-                GrantGameplayAbility(Pawn, InteractUseAbility);
-                GrantGameplayAbility(Pawn, InteractSearchAbility);
+                ApplyAbilities(Pawn);
             }
         })
 
@@ -473,22 +510,21 @@ namespace UFunctionHooks
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortGameModeAthena.OnAircraftExitedDropZone", { // To make this faster we could loop through client connections and get their controllers
-            TArray<AActor*> PlayerArray;
 
-            static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
-            GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerController::StaticClass(), &PlayerArray);
-
-            std::cout << "Size: " << PlayerArray.Num() << std::endl;
-
-            for (int i = 0; i < PlayerArray.Num(); i++)
+			if (GetWorld() && GetWorld()->NetDriver && GetWorld()->NetDriver->ClientConnections[0])
             {
-                auto Controller = (AFortPlayerControllerAthena*)PlayerArray[i];
+                auto Connections = HostBeacon->NetDriver->ClientConnections;
 
-                if (!Controller)
-                    continue;
+                for (int i = 0; i < Connections.Num(); i++)
+                {
+                    auto Controller = (AFortPlayerControllerAthena*)Connections[i]->PlayerController;
 
-                if (Controller && Controller->IsInAircraft())
-                    Controller->ServerAttemptAircraftJump(FRotator());
+                    if (!Controller || !Controller->IsA(AFortPlayerControllerAthena::StaticClass()) || Controller->PlayerState->bIsSpectator)
+                        continue;
+
+                    if (Controller && Controller->IsInAircraft())
+                        Controller->ServerAttemptAircraftJump(FRotator());
+                }            
             }
         })
 

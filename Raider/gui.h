@@ -22,7 +22,7 @@ namespace GUI
         {
             if (bListening && HostBeacon)
             {
-                auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+                static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
                 std::string ConnectedPlayers = std::format("Connected Players: {}!\n", GameState->PlayerArray.Num());
 
                 ZeroGUI::Text((char*)ConnectedPlayers.c_str());
@@ -38,7 +38,15 @@ namespace GUI
                         ((UKismetSystemLibrary*)UKismetSystemLibrary::StaticClass())->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
 
                         printf("Started Aircraft!\n");
-                        bStartedBus = true;
+                        bStartedBus = true; // Instead of relying on a variable, we should check if the aircraft has started or is planning to start (potentially by checking the gamephase?).
+                    }
+
+                    if (ZeroGUI::Button((char*)"Prevent Aircraft Start", FVector2D { 125, 31.25 })) // Makes the font so weird.
+                    {
+                        GameState->bGameModeWillSkipAircraft = true;
+                        GameState->AircraftStartTime = 9999.9f;
+                        GameState->WarmupCountdownEndTime = 99999.9f;
+                        printf("Preventing Aircraft start!\n");
                     }
                 }
 
@@ -50,7 +58,7 @@ namespace GUI
 
                 if (ZeroGUI::Button((char*)"Deny Requests", FVector2D { 100, 25 }))
                 {
-                    Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, true);
+                    // Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, true); // crashes 0x950
                     printf("Denying requests!\n");
                 }
             }

@@ -5,6 +5,21 @@
 
 namespace Replication
 {
+    static FORCEINLINE bool IsActorRelevantToConnection(AActor* Actor, TArray<FNetViewer*>& ConnectionViewers)
+    {
+        Native::Actor::IsNetRelevantFor = decltype(Native::Actor::IsNetRelevantFor)(Actor->Vtable[0x420]);
+
+        for (int32 viewerIdx = 0; viewerIdx < ConnectionViewers.Num(); viewerIdx++)
+        {
+            if (Native::Actor::IsNetRelevantFor(Actor, ConnectionViewers[viewerIdx]->InViewer, ConnectionViewers[viewerIdx]->ViewTarget, ConnectionViewers[viewerIdx]->ViewLocation))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     int PrepConnections(UNetDriver* NetDriver)
     {
         int ReadyConnections = 0;
@@ -12,6 +27,7 @@ namespace Replication
         for (int ConnIdx = 0; ConnIdx < NetDriver->ClientConnections.Num(); ConnIdx++)
         {
             UNetConnection* Connection = NetDriver->ClientConnections[ConnIdx];
+			
             if (!Connection)
                 continue;
 
@@ -91,21 +107,13 @@ namespace Replication
 
     void BuildConsiderList(UNetDriver* NetDriver, std::vector<AActor*>& OutConsiderList)
     {
-        auto World = NetDriver->World;
+        static auto World = NetDriver->World;
 
         if (!World || !&OutConsiderList || !NetDriver)
             return;
 
-        // TArray<AActor*> Actors;
-        // GetGameplayStatics()->STATIC_GetAllActorsOfClass(World, AActor::StaticClass(), &Actors);
-
-        // TArray<TSharedPtr<FNetworkObjectInfo>> Test;
-
-        // auto ptr = (void*)Native::Engine::TSetToTArray(int64(&GetNetworkObjectList(NetDriver)), int64(&Test));
-
-        // printf("Test: %s\n", Test[0].Get()->Actor->GetName().c_str());
-
         auto& List = GetNetworkObjectList(NetDriver).ActiveNetworkObjects;
+		
         for (auto& Object : List)
         {
             auto Actor = Object.Get()->Actor;
@@ -122,8 +130,6 @@ namespace Replication
                 OutConsiderList.push_back(Actor);
             }
         }
-
-        // Actors.FreeArray();
     }
 
     void ServerReplicateActors(UNetDriver* NetDriver)
@@ -149,25 +155,47 @@ namespace Replication
             if (i >= NumClientsToTick)
                 break; // Only tick on ready connections
 
-            if (Connection->PlayerController)
-                Native::PlayerController::SendClientAdjustment(Connection->PlayerController);
-
-            for (auto Actor : ConsiderList)
+            else if (Connection->ViewTarget)
             {
-                if (Actor->IsA(APlayerController::StaticClass()) && Actor != Connection->PlayerController)
-                    continue;
-
-                auto Channel = FindChannel(Actor, Connection);
-
-                if (!Channel)
+                // ConnectionViewers.Reset();
+                // new (ConnectionViewers) FNetViewer(Connection, DeltaSeconds);
+                /* static TArray<FNetViewer*> ConnectionViewers;
+                ConnectionViewers.Add(new FNetViewer { Connection });
+                for (int32 ViewerIndex = 0; ViewerIndex < Connection->Children.Num(); ViewerIndex++)
                 {
-                    Channel = (UActorChannel*)(Native::NetConnection::CreateChannel(Connection, 2, true, -1));
-                    Native::ActorChannel::SetChannelActor(Channel, Actor);
-                }
+                    if (Connection->Children[ViewerIndex]->ViewTarget)
+                    {
+                        ConnectionViewers.Add(new FNetViewer { Connection->Children[ViewerIndex] });
+                        // new (ConnectionViewers) FNetViewer(Connection->Children[ViewerIndex], DeltaSeconds);
+                    }
+                } */
 
-                if (Channel)
+                if (Connection->PlayerController)
+                    Native::PlayerController::SendClientAdjustment(Connection->PlayerController); // Sending adjustments to children is for splitscreen
+
+                for (auto Actor : ConsiderList)
                 {
-                    Native::ActorChannel::ReplicateActor(Channel);
+                    if (Actor->IsA(APlayerController::StaticClass()) && Actor != Connection->PlayerController)
+                        continue;
+
+                    auto Channel = FindChannel(Actor, Connection);
+
+                    if (!Channel)
+                    {
+                        if (false) // !IsActorRelevantToConnection(Actor, ConnectionViewers) && !Actor->bAlwaysRelevant) // Actor->bOnlyRelevantToOwner && Actor->Owner != )
+                        {
+                            // If not relevant (and we don't have a channel), skip
+                            continue;
+                        }
+
+                        Channel = (UActorChannel*)(Native::NetConnection::CreateChannel(Connection, 2, true, -1));
+                        Native::ActorChannel::SetChannelActor(Channel, Actor);
+                    }
+
+                    if (Channel)
+                    {
+                        Native::ActorChannel::ReplicateActor(Channel);
+                    }
                 }
             }
         }
