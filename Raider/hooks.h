@@ -248,6 +248,7 @@ namespace Hooks
 
         if (bTraveled)
         {
+            static auto CheatAll = UObject::FindObject<UFunction>("Function FortniteGame.FortPlayerController.ServerCheatAll");
 
 #ifdef LOGGING
             if (Function->FunctionFlags & 0x00200000 || (Function->FunctionFlags & 0x01000000 && FunctionName.find("Ack") == -1 && FunctionName.find("AdjustPos") == -1))
@@ -265,6 +266,11 @@ namespace Hooks
                 {
                     toCall[i](Object, Parameters);
                     break;
+                }
+
+                else if (Function == CheatAll)
+                {
+                    return;
                 }
             }
         }

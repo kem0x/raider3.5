@@ -8,6 +8,7 @@
 
 // #define LOGGING
 static bool bDeveloperCheats = true; // CAnt put a ifdef in a define
+static bool bInBuild = false;
 
 inline std::vector<UFunction*> toHook;
 inline std::vector<std::function<void(UObject*, void*)>> toCall;
@@ -72,12 +73,18 @@ namespace UFunctionHooks
                         if (Command == "setpickaxe" && NumArgs >= 1)
                         {
                             auto& PickaxeName = Arguments[1];
-                            auto PID = UObject::FindObject<UFortWeaponMeleeItemDefinition>("WID_Harvest_" + PickaxeName + "_Athena_C_T01" + ".WID_Harvest_" + PickaxeName + "_Athena_C_T01");
+                            UFortWeaponMeleeItemDefinition* PID = UObject::FindObject<UFortWeaponMeleeItemDefinition>("WID_Harvest_" + PickaxeName + "_Athena_C_T01" + ".WID_Harvest_" + PickaxeName + "_Athena_C_T01");
 
-                            if (PID && PID->IsA(UFortWeaponMeleeItemDefinition::StaticClass()))
+							// if (!PID)
+                               // PID = UObject::FindObject<UFortWeaponMeleeItemDefinition>(PickaxeName + "." + PickaxeName); // UAthenaPickaxeItemDefinition
+
+                            if (PID && (PID->IsA(UFortWeaponMeleeItemDefinition::StaticClass()) || PID->IsA(UAthenaPickaxeItemDefinition::StaticClass())))
                             {
                                 bool bFound = false;
                                 auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
+
+                                if (!bFound)
+                                    PickaxeEntry = FindItemInInventory<UAthenaPickaxeItemDefinition>(PC, bFound);
 
                                 if (bFound)
                                 {
@@ -90,6 +97,35 @@ namespace UFunctionHooks
                             }
                             else
                                 ClientMessage(PC, L"Requested item is not a pickaxe!\n");
+                        }
+
+                        else if (bDeveloperCheats && Command == "revive" && Pawn->bIsDBNO)
+                        {
+                            Pawn->bIsDBNO = false;
+                            Pawn->OnRep_IsDBNO();
+
+                            // PC->ClientOnPawnRevived(InstigatorPC);
+                            Pawn->SetHealth(100);
+                        }
+
+                        else if (bDeveloperCheats && Command == "respawn" && !Pawn) // ISSUE: Player is unable to shoot.
+                        {
+                            InitPawn(PC);
+                            PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
+
+                            bool bFound = false;
+                            auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
+
+                            if (bFound)
+                                EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
+
+                            ApplyAbilities(PC->Pawn);
+                        }
+
+                        else if (bDeveloperCheats && Command == "togglegodmode")
+                        {
+                            Pawn->bCanBeDamaged = !Pawn->bCanBeDamaged;
+                            std::cout << "Godmode enabled for " << Pawn->GetName() << '\n';
                         }
 
                         else if (bDeveloperCheats && Command == "giveweapon" && NumArgs >= 1)
@@ -121,29 +157,6 @@ namespace UFunctionHooks
                                 ClientMessage(PC, L"Requested item is not a weapon!\n");
                         }
 
-                        else if (bDeveloperCheats && Command == "revive" && Pawn->bIsDBNO)
-                        {
-                            Pawn->bIsDBNO = false;
-                            Pawn->OnRep_IsDBNO();
-
-                            // PC->ClientOnPawnRevived(InstigatorPC);
-                            Pawn->SetHealth(100);
-                        }
-
-                        else if (bDeveloperCheats && Command == "respawn" && !Pawn) // ISSUE: Player is unable to shoot.
-                        {
-                            InitPawn(PC);
-                            PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
-
-                            bool bFound = false;
-                            auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
-
-                            if (bFound)
-                                EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
-
-                            ApplyAbilities(PC->Pawn);
-                        }
-
                         else
                             ClientMessage(PC, L"Unable to handle command!");
                     }
@@ -161,30 +174,25 @@ namespace UFunctionHooks
 
             if (PC && Params && CurrentBuildClass)
             {
-                bool bCanBuild = true; // CanBuild(Params->BuildLoc);
+                /* while (bInBuild) // It double built once, in theory this should fix but I don't know if its needed.
+                {
+                    Sleep(1000 / 15);
+                }
+                bInBuild = true; */
+                bool bCanBuild = CanBuild(CurrentBuildClass, Params->BuildLoc);
+
                 if (bCanBuild)
                 {
                     auto BuildingActor = (ABuildingSMActor*)SpawnActor(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, PC);
                     if (BuildingActor)
                     {
-                        TArray<ABuildingActor*> ExistingBuildings;
-                        auto eCanBuild = GameState->StructuralSupportSystem->K2_CanAddBuildingActorToGrid(GetWorld(), BuildingActor, Params->BuildLoc, Params->BuildRot, false, false, &ExistingBuildings);
+                        Buildings.insert(BuildingActor); // Add as soon as possible to make sure there is no time to double build.
+                        bInBuild = false;
 
-                        if (eCanBuild == EFortStructuralGridQueryResults::CanAdd && ExistingBuildings.Num() == 0)
-                        {
-                            BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::DestroyAnythingThatCollides;
-                            BuildingActor->SetMirrored(Params->bMirrored);
-                            BuildingActor->PlacedByPlacementTool();
-                            BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);
-                        }
-                        else
-                        {
-                            BuildingActor->SetActorScale3D({});
-                            BuildingActor->SilentDie();
-                            // BuildingActor->K2_DestroyActor();
-                        }
-
-                        ExistingBuildings.Reset();
+                        BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::DestroyAnythingThatCollides;
+                        BuildingActor->SetMirrored(Params->bMirrored);
+                        BuildingActor->PlacedByPlacementTool();
+                        BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);
                     }
                 }
             }
@@ -396,6 +404,8 @@ namespace UFunctionHooks
 
             if (CurrentPC && !CurrentPC->IsInAircraft() && CurrentPawn && EmoteParams->EmoteAsset && !AnimInstance->bIsJumping && !AnimInstance->bIsFalling)
             {
+                // ((UFortCheatManager*)CurrentPC->CheatManager)->AthenaEmote(EmoteParams->EmoteAsset->Name.ToWString().c_str());
+                // CurrentPC->ServerEmote(EmoteParams->EmoteAsset->Name);
                 if (EmoteParams->EmoteAsset->IsA(UAthenaDanceItemDefinition::StaticClass()))
                 {
                     if (auto Montage = EmoteParams->EmoteAsset->GetAnimationHardReference(CurrentPawn->CharacterBodyType, CurrentPawn->CharacterGender))

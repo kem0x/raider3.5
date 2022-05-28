@@ -310,6 +310,11 @@ struct FVector
 	float                                              X;                                                        // 0x0000(0x0004) (Edit, BlueprintVisible, ZeroConstructor, SaveGame, IsPlainOldData)
 	float                                              Y;                                                        // 0x0004(0x0004) (Edit, BlueprintVisible, ZeroConstructor, SaveGame, IsPlainOldData)
 	float                                              Z;                                                        // 0x0008(0x0004) (Edit, BlueprintVisible, ZeroConstructor, SaveGame, IsPlainOldData)
+
+	bool operator==(const FVector& Vector)
+	{
+		return X == Vector.X && Y == Vector.Y && Z == Vector.Z;
+	}
 };
 
 // ScriptStruct CoreUObject.Vector4

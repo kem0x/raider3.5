@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_set>
+
 #include "native.h"
 
 constexpr auto PI = 3.1415926535897932f;
@@ -9,6 +11,7 @@ constexpr auto HALF_PI = 1.57079632679f;
 inline bool bTraveled = false;
 inline bool bPlayButton = false;
 inline bool bListening = false;
+static std::unordered_set<ABuildingSMActor*> Buildings;
 
 inline UWorld* GetWorld()
 {
@@ -227,17 +230,46 @@ inline bool IsMatchingGuid(FGuid A, FGuid B)
     return A.A == B.A && A.B == B.B && A.C == B.C && A.D == B.D;
 }
 
-bool CanBuild(FVector& Location)
+bool CanBuild(UClass* BuildingClass, FVector& Location)
 {
-    static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+    /* static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
 
     FBuildingGridActorFilter filter { true, true, true, true};
     FBuildingNeighboringActorInfo OutActors;
     GameState->StructuralSupportSystem->K2_GetBuildingActorsInGridCell(Location, filter, &OutActors);
     auto Amount = OutActors.NeighboringCenterCellInfos.Num() + OutActors.NeighboringFloorInfos.Num() + OutActors.NeighboringWallInfos.Num();
     if (Amount == 0)
-        return true;
-    return false;
+        return true; */
+
+    for (const auto Building : Buildings)
+    {
+        if (!Building) // || Building->bDestroyed)
+        {
+            Buildings.erase(Building);
+            continue;
+        }
+
+        if (Building->bDestroyed)
+        {
+            Buildings.erase(Building);
+            break;
+        }
+
+        if (Building->K2_GetActorLocation() == Location) // If we use a vector of locations, I do not know how to track if the actor has been destroyed.
+        {
+            return false;
+
+            bool bIsAStair = BuildingClass->IsA(ABuildingStairs::StaticClass());
+            if (!bIsAStair || (bIsAStair && Building->BuildingType == EFortBuildingType::Stairs))
+            {
+                return false;
+            }
+            else
+                std::cout << "AAA\n";
+        }
+    }
+
+    return true;
 }
 
 bool IsCurrentlyDisconnecting(UNetConnection* Connection)
@@ -296,36 +328,48 @@ inline void UpdateInventory(AFortPlayerController* PlayerController, int Dirty =
         PlayerController->WorldInventory->Inventory.MarkItemDirty(PlayerController->WorldInventory->Inventory.ReplicatedEntries[Dirty]);
 }
 
-inline auto AddItem(AFortPlayerController* PC, UFortWorldItemDefinition* Def, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1, int* Idx = nullptr)
+inline auto AddItem(AFortPlayerController* PC, UFortItemDefinition* Def, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1, int* Idx = nullptr)
 {
     if (!PC || !Def)
         return FFortItemEntry();
 
     if (Def->IsA(UFortWeaponItemDefinition::StaticClass()))
         Count = 1;
+	
+    if (Slot < 0)
+        Slot = 1;
+
+    if (Bars == EFortQuickBars::Primary && Slot >= 6)
+        Slot = 5;
 
     auto QuickBarSlots = PC->QuickBars->PrimaryQuickBar.Slots;
 
     auto TempItemInstance = (UFortWorldItem*)Def->CreateTemporaryItemInstanceBP(Count, 1);
-    TempItemInstance->SetOwningControllerForTemporaryItem(PC);
-
-    TempItemInstance->ItemEntry.Count = Count;
-    TempItemInstance->OwnerInventory = PC->WorldInventory;
-
-    auto& ItemEntry = TempItemInstance->ItemEntry;
-
-    auto _Idx = PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
 	
-    if (Idx)
-        *Idx = _Idx;
-	
-    PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
-    PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
+    if (TempItemInstance)
+    {
+        TempItemInstance->SetOwningControllerForTemporaryItem(PC);
 
-    return ItemEntry;
+        TempItemInstance->ItemEntry.Count = Count;
+        TempItemInstance->OwnerInventory = PC->WorldInventory;
+
+        auto& ItemEntry = TempItemInstance->ItemEntry;
+
+        auto _Idx = PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
+
+        if (Idx)
+            *Idx = _Idx;
+
+        PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
+        PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
+
+        return ItemEntry;
+    }
+
+    return FFortItemEntry();
 }
 
-inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortWorldItemDefinition* Def, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1)
+inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortItemDefinition* Def, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1)
 {
 	int Idx = 0;
 
@@ -347,7 +391,20 @@ inline auto RemoveItem(AFortPlayerControllerAthena* PC, EFortQuickBars QuickBars
     // pcQuickBars->PrimaryQuickBar.Slots[Slot].Items.FreeArray();
     // pcQuickBars->EmptySlot(QuickBars, Slot);
     auto& QuickBarSlot = pcQuickBars->PrimaryQuickBar.Slots[Slot];
-    pcQuickBars->PrimaryQuickBar.Slots.RemoveAt(Slot);
+    // pcQuickBars->PrimaryQuickBar.Slots.RemoveAt(Slot);
+    for (int i = 0; i < QuickBarSlot.Items.Num(); i++)
+    {
+        auto& Item = QuickBarSlot.Items[i];
+
+        Item.A = 0;
+        Item.B = 0;
+        Item.C = 0;
+        Item.D = 0;
+
+	    pcQuickBars->PrimaryQuickBar.Slots.RemoveAt(i);
+    }
+	
+    // QuickBarSlot.Items.Reset();
 
     auto Inventory = PC->WorldInventory->Inventory;
 
@@ -517,8 +574,12 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
 
         for (int i = 0; i < QuickBarSlots.Num(); i++)
         {
+            std::cout << "On Slot: " << i << '\n';
+
             if (!QuickBarSlots[i].Items.Data) // Checks if the slot is empty
             {
+                std::cout << "Empty Slot: " << i << '\n';
+
                 if (i >= 6)
                 {
                     auto QuickBars = Controller->QuickBars;

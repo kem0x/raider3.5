@@ -228,6 +228,28 @@ namespace SDK
 
             return name.substr(pos + 1);
         }
+
+        std::wstring ToWString()
+        {
+            if (!this)
+                return L"";
+
+            FString temp;
+
+            FNameToString(this, temp);
+
+            auto wName = std::wstring(temp.c_str());
+
+            FMemory_Free((void*)temp.c_str());
+
+            auto pos = wName.rfind('/');
+            if (pos == std::wstring::npos)
+            {
+                return wName;
+            }
+
+            return wName.substr(pos + 1);
+        }
     };
 
     template <class TEnum>
