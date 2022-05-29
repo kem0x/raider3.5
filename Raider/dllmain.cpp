@@ -18,7 +18,7 @@ DWORD WINAPI Main(LPVOID lpParam)
     UFunctionHooks::Initialize();
 
     DETOUR_START
-    DetourAttachE(PEOriginal, Hooks::ProcessEvent);
+    DetourAttachE(ProcessEvent, Hooks::ProcessEventHook);
     DetourAttachE(Native::NetDriver::TickFlush, Hooks::TickFlush);
     DetourAttachE(Native::LocalPlayer::SpawnPlayActor, Hooks::LocalPlayerSpawnPlayActor);
 

@@ -140,7 +140,7 @@ namespace Hooks
             return;
         case 5: // NMT_Login
         {
-            Bunch[7] += 16,777,216;
+            Bunch[7] += (16 * 1024 * 1024);
 
             FString OnlinePlatformName = FString(L"");
 
@@ -149,7 +149,7 @@ namespace Hooks
             Native::NetConnection::ReceiveUniqueIdRepl(Bunch, Connection->PlayerID);
             Native::NetConnection::ReceiveFString(Bunch, OnlinePlatformName);
 
-            Bunch[7] -= 16,777,216;
+            Bunch[7] -= (16 * 1024 * 1024);
 
             Native::World::WelcomePlayer(GetWorld(), Connection);
             return;
@@ -185,11 +185,6 @@ namespace Hooks
         return Native::GameViewportClient::PostRender(_this, Canvas);
     }
 
-    double __fastcall ProcessObjectArray(__int64 a1, __int64 a2, __int64* a3)
-    {
-        return 0;
-    }
-
     __int64 CollectGarbage(__int64 a1)
     {
         return 0;
@@ -209,7 +204,7 @@ namespace Hooks
         DETOUR_END
     }
 
-    void ProcessEvent(UObject* Object, UFunction* Function, void* Parameters)
+    void ProcessEventHook(UObject* Object, UFunction* Function, void* Parameters)
     {
         if (!bPlayButton)
         {
@@ -227,8 +222,6 @@ namespace Hooks
 
         if (bTraveled)
         {
-            static auto CheatAll = UObject::FindObject<UFunction>("Function FortniteGame.FortPlayerController.ServerCheatAll");
-
 #ifdef LOGGING
             if (Function->FunctionFlags & 0x00200000 || (Function->FunctionFlags & 0x01000000 && FunctionName.find("Ack") == -1 && FunctionName.find("AdjustPos") == -1))
             {
@@ -239,21 +232,19 @@ namespace Hooks
             }
 #endif
 
-            for (int i = 0; i < toHook.size(); i++)
+            for (int i = 0; i < UFunctionHooks::toHook.size(); i++)
             {
-                if (Function == toHook[i])
+                if (Function == UFunctionHooks::toHook[i])
                 {
-                    toCall[i](Object, Parameters);
+                    if(UFunctionHooks::toCall[i](Object, Parameters))
+                    {
+                        return;
+                    }
                     break;
-                }
-
-                else if (Function == CheatAll)
-                {
-                    return;
                 }
             }
         }
 
-        return PEOriginal(Object, Function, Parameters);
+        return ProcessEvent(Object, Function, Parameters);
     }
 }

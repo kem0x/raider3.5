@@ -40,26 +40,6 @@ namespace GUI
                         printf("Started Aircraft!\n");
                         bStartedBus = true; // Instead of relying on a variable, we should check if the aircraft has started or is planning to start (potentially by checking the gamephase?).
                     }
-
-                    if (ZeroGUI::Button((char*)"Prevent Aircraft Start", FVector2D { 125, 31.25 })) // Makes the font so weird.
-                    {
-                        GameState->bGameModeWillSkipAircraft = true;
-                        GameState->AircraftStartTime = 9999.9f;
-                        GameState->WarmupCountdownEndTime = 99999.9f;
-                        printf("Preventing Aircraft start!\n");
-                    }
-                }
-
-                if (ZeroGUI::Button((char*)"Allow Requests", FVector2D { 100, 25 }))
-                {
-                    Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
-                    printf("Allowing requests!\n");
-                }
-
-                if (ZeroGUI::Button((char*)"Deny Requests", FVector2D { 100, 25 }))
-                {
-                    // Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, true); // crashes 0x950
-                    printf("Denying requests!\n");
                 }
 				
                 if (ZeroGUI::Button((char*)"Summon FloorLoot", FVector2D { 100, 25 })) // this isn't a great idea due to no relevancy...
@@ -75,6 +55,6 @@ namespace GUI
         }
 
         ZeroGUI::Render();
-        ZeroGUI::Draw_Cursor(menu_opened);
+        //ZeroGUI::Draw_Cursor(menu_opened);
     }
 }

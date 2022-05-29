@@ -267,9 +267,7 @@ namespace Native
 		CheckNullFatal(Address, "Failed to find CollectGarbage");
 		AddressToFunction(Address, GC::CollectGarbage);
 
-        PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
-
-        return;
+        ProcessEvent = reinterpret_cast<decltype(ProcessEvent)>(GetEngine()->Vtable[0x40]);
     }
 
 }
