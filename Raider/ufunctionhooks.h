@@ -179,11 +179,12 @@ namespace UFunctionHooks
                     Sleep(1000 / 15);
                 }
                 bInBuild = true; */
+				
                 bool bCanBuild = CanBuild(CurrentBuildClass, Params->BuildLoc);
 
                 if (bCanBuild)
                 {
-                    auto BuildingActor = (ABuildingSMActor*)SpawnActor(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, PC);
+                    auto BuildingActor = (ABuildingSMActor*)SpawnActor(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, PC, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
                     if (BuildingActor)
                     {
                         Buildings.insert(BuildingActor); // Add as soon as possible to make sure there is no time to double build.

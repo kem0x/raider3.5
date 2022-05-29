@@ -47,12 +47,12 @@ namespace Hooks
     }
 
     APlayerController* SpawnPlayActor(UWorld* World, UPlayer* NewPlayer, ENetRole RemoteRole, FURL& URL, void* UniqueId, SDK::FString& Error, uint8 NetPlayerIndex)
-    {
+    {		
         auto PlayerController = (AFortPlayerControllerAthena*)Native::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex);
         NewPlayer->PlayerController = PlayerController;
 
         AFortPlayerStateAthena* PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
-
+        
         InitInventory(PlayerController, false);
 
         auto Pawn = (APlayerPawn_Athena_C*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), GetPlayerStart(PlayerController), PlayerController);
@@ -80,12 +80,8 @@ namespace Hooks
 
         auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
 
-        // PlayerController->StrongMyHero = Hero;
-
         PlayerState->HeroType = Hero->GetHeroTypeBP();
         PlayerState->OnRep_HeroType();
-
-        // printf("Test: %s\n", Pawn->CustomizationLoadout.Character->GetName().c_str());
 
         for (auto i = 0; i < Hero->CharacterParts.Num(); i++)
         {
@@ -95,7 +91,6 @@ namespace Hooks
                 continue;
 
             Pawn->ServerChoosePart((EFortCustomPartType)i, Part);
-            // PlayerState->CharacterParts[i] = Part;
         }
 
         PlayerState->OnRep_CharacterBodyType();
@@ -113,24 +108,8 @@ namespace Hooks
         };
 
         EquipLoadout(PlayerController, doublePumpLoadout);
-        /*
-        static auto pickaxe = UObject::FindObject<UFortWeaponMeleeItemDefinition>("FortWeaponMeleeItemDefinition WID_Harvest_Pickaxe_HolidayCandyCane_Athena.WID_Harvest_Pickaxe_HolidayCandyCane_Athena");
-        static auto primary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Shotgun_SemiAuto_Athena_VR_Ore_T03.WID_Shotgun_SemiAuto_Athena_VR_Ore_T03");
-        static auto secondary = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Pistol_HandCannon_Athena_VR_Ore_T03.WID_Pistol_HandCannon_Athena_VR_Ore_T03");
-        static auto forth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition WID_Sniper_NoScope_Athena_UC_Ore_T03.WID_Sniper_NoScope_Athena_UC_Ore_T03");
-        static auto fifth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition Athena_C4.Athena_C4");
-        static auto sixth = UObject::FindObject<UFortWeaponItemDefinition>("FortWeaponRangedItemDefinition Athena_Shields.Athena_Shields");
 
-        auto pickaxeEntry = AddItemWithUpdate(PlayerController, pickaxe, 0);
-        auto primaryEntry = AddItemWithUpdate(PlayerController, primary, 1);
-        auto secondaryEntry = AddItemWithUpdate(PlayerController, secondary, 2);
-        auto forthEntry = AddItemWithUpdate(PlayerController, forth, 3);
-        auto fifthEntry = AddItemWithUpdate(PlayerController, fifth, 4);
-        auto sixthEntry = AddItemWithUpdate(PlayerController, sixth, 5);
-
-        EquipWeaponDefinition(Pawn, pickaxe, pickaxeEntry.ItemGuid); */
-
-        auto CheatManager = (UFortCheatManager*)CreateCheatManager(PlayerController, true);
+        auto CheatManager = CreateCheatManager(PlayerController);
         CheatManager->ToggleInfiniteAmmo();
         CheatManager->ToggleInfiniteDurability();
 
@@ -138,7 +117,7 @@ namespace Hooks
         {
             if (PlayerController->Pawn->PlayerState)
             {
-                PlayerState->TeamIndex = EFortTeam(2); // GetMath()->STATIC_RandomIntegerInRange(2, 98));
+                PlayerState->TeamIndex = EFortTeam(2); // GetMath()->STATIC_RandomIntegerInRange(2, 102));
                 PlayerState->OnRep_PlayerTeam();
                 PlayerState->SquadId = PlayerState->PlayerTeam->TeamMembers.Num() + 1;
                 PlayerState->OnRep_SquadId();

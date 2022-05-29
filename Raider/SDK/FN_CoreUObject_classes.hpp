@@ -37,19 +37,25 @@ public:
 	std::string GetFullName();
 
 	template<typename T>
-	static T* FindObject(const std::string& name)
+	static T* FindObject(const std::string& name, int toSkip = 0)
 	{
 		for (int i = 0; i < GetGlobalObjects()->Num(); ++i)
 		{
 			auto object = GetGlobalObjects()->GetByIndex(i);
 	
-			if (object == nullptr)
+			if (!object)
 			{
 				continue;
 			}
 	
 			if (object->GetFullName().find(name) != std::string::npos)
 			{
+                if (toSkip > 0)
+				{
+					toSkip--;
+					continue;
+				}
+				
 				return static_cast<T*>(object);
 			}
 		}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_set>
+#include <random>
 
 #include "native.h"
 
@@ -184,7 +185,7 @@ inline auto GetItemInstances(AFortPlayerController* PC)
     return PC->WorldInventory->Inventory.ItemInstances;
 }
 
-inline AActor* SpawnActor(UClass* ActorClass, FVector Location = { 0.0f, 0.0f, 0.0f }, FRotator Rotation = { 0, 0, 0 }, AActor* Owner = nullptr)
+inline AActor* SpawnActor(UClass* ActorClass, FVector Location = { 0.0f, 0.0f, 0.0f }, FRotator Rotation = { 0, 0, 0 }, AActor* Owner = nullptr, ESpawnActorCollisionHandlingMethod Flags = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn)
 {
     FTransform SpawnTransform;
 
@@ -192,11 +193,11 @@ inline AActor* SpawnActor(UClass* ActorClass, FVector Location = { 0.0f, 0.0f, 0
     SpawnTransform.Scale3D = FVector { 1, 1, 1 };
     SpawnTransform.Rotation = RotToQuat(Rotation);
 
-    return SpawnActorTrans(ActorClass, SpawnTransform, Owner);
+    return SpawnActorTrans(ActorClass, SpawnTransform, Owner, Flags);
 }
 
 template <typename RetActorType = AActor>
-inline RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor* Owner = nullptr, FQuat Rotation = { 0, 0, 0 })
+inline RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor* Owner = nullptr, FQuat Rotation = { 0, 0, 0 }, ESpawnActorCollisionHandlingMethod Flags = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn)
 {
     FTransform SpawnTransform;
 
@@ -204,7 +205,7 @@ inline RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor*
     SpawnTransform.Scale3D = FVector { 1, 1, 1 };
     SpawnTransform.Rotation = Rotation;
 
-    return (RetActorType*)SpawnActorTrans(RetActorType::StaticClass(), SpawnTransform, Owner);
+    return (RetActorType*)SpawnActorTrans(RetActorType::StaticClass(), SpawnTransform, Owner, Flags);
 }
 
 inline void CreateConsole()
@@ -212,17 +213,14 @@ inline void CreateConsole()
     GetEngine()->GameViewport->ViewportConsole = (UConsole*)GetGameplayStatics()->STATIC_SpawnObject(UConsole::StaticClass(), GetEngine()->GameViewport);
 }
 
-inline auto CreateCheatManager(APlayerController* Controller, bool bFortCheatManager = false)
+inline auto CreateCheatManager(APlayerController* Controller)
 {
     if (!Controller->CheatManager)
     {
-        if (bFortCheatManager)
-            Controller->CheatManager = (UCheatManager*)GetGameplayStatics()->STATIC_SpawnObject(UCheatManager::StaticClass(), Controller);
-        else
-            Controller->CheatManager = (UCheatManager*)GetGameplayStatics()->STATIC_SpawnObject(UFortCheatManager::StaticClass(), Controller);
+        Controller->CheatManager = (UCheatManager*)GetGameplayStatics()->STATIC_SpawnObject(UFortCheatManager::StaticClass(), Controller); // lets just assume its gamemode athena
     }
 
-    return Controller->CheatManager;
+    return (UFortCheatManager*)Controller->CheatManager;
 }
 
 inline bool IsMatchingGuid(FGuid A, FGuid B)
@@ -257,9 +255,9 @@ bool CanBuild(UClass* BuildingClass, FVector& Location)
 
         if (Building->K2_GetActorLocation() == Location) // If we use a vector of locations, I do not know how to track if the actor has been destroyed.
         {
-            return false;
+            // return false;
 
-            bool bIsAStair = BuildingClass->IsA(ABuildingStairs::StaticClass());
+            bool bIsAStair = BuildingClass->IsA(APBWA_W1_StairW_C::StaticClass());
             if (!bIsAStair || (bIsAStair && Building->BuildingType == EFortBuildingType::Stairs))
             {
                 return false;
@@ -848,12 +846,19 @@ static bool KickPlayer(AFortPlayerControllerAthena* PC, FString Message)
     return Native::OnlineSession::KickPlayer(GetWorld()->AuthorityGameMode->GameSession, PC, text);
 }
 
-FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
+auto GetAllActorsOfClass(UClass* Class)
 {
     TArray<AActor*> OutActors;
 
     static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
-    GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), AFortPlayerStartWarmup::StaticClass(), &OutActors);
+    GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), Class, &OutActors);
+
+    return OutActors;
+}
+
+FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
+{
+    TArray<AActor*> OutActors = GetAllActorsOfClass(AFortPlayerStartWarmup::StaticClass());
 
     auto ActorsNum = OutActors.Num();
 
@@ -1020,4 +1025,57 @@ inline auto ApplyAbilities(APawn* _Pawn)
     GrantGameplayAbility(Pawn, DeathAbility);
     GrantGameplayAbility(Pawn, InteractUseAbility);
     GrantGameplayAbility(Pawn, InteractSearchAbility);
+}
+
+auto RandomIntInRange(int min, int max)
+{
+    std::random_device rd; // obtain a random number from hardware
+    std::mt19937 gen(rd()); // seed the generator
+    static std::uniform_int_distribution<> distr(min, max); // define the range
+
+	return distr(gen);
+}
+
+auto GetRandomWID(int skip = 0)
+{
+    if (skip == 0)
+        skip = RandomIntInRange(4, 100);
+
+    return UObject::FindObject<UFortWeaponRangedItemDefinition>("FortWeaponRangedItemDefinition WID_", skip);
+}
+
+DWORD WINAPI SummonFloorLoot(LPVOID)
+{
+    static auto FloorLootClass = UObject::FindObject<UClass>("BlueprintGeneratedClass Tiered_Athena_FloorLoot_01.Tiered_Athena_FloorLoot_01_C");
+    static std::vector<UFortWeaponRangedItemDefinition*> Weapons = {
+        GetRandomWID(7),
+        GetRandomWID(11),
+        GetRandomWID(15),
+        GetRandomWID(19),
+    };
+    static auto Scar = FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03");
+    auto FloorLootActors = GetAllActorsOfClass(FloorLootClass);
+
+    std::cout << "Floor Loot Num: " << FloorLootActors.Num();
+
+    for (int i = 0; i < 100; i++)
+    {
+        // Weapons.push_back(GetRandomWID());
+    }
+
+    for (int i = 0; i < FloorLootActors.Num(); i++)
+    {
+        auto FloorLootActor = FloorLootActors[i];
+        auto weaponToSpawn = Scar; // Weapons[RandomIntInRange(0, 3)];
+
+        if (!FloorLootActor || !weaponToSpawn)
+            continue;
+
+        SummonPickupFromChest(weaponToSpawn, 1, FloorLootActor->K2_GetActorLocation());
+        SummonPickupFromChest(weaponToSpawn->GetAmmoWorldItemDefinition_BP(), 10, FloorLootActor->K2_GetActorLocation());
+    }
+
+    printf("Finished spawning floor loot!\n");
+
+    return 0;
 }
