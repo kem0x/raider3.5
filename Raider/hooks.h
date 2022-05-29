@@ -56,7 +56,7 @@ namespace Hooks
         InitInventory(PlayerController, false);
 
         auto Pawn = (APlayerPawn_Athena_C*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), GetPlayerStart(PlayerController), PlayerController);
-
+		
         PlayerController->Pawn = Pawn;
         PlayerController->AcknowledgedPawn = Pawn;
         Pawn->Owner = PlayerController;
@@ -93,8 +93,6 @@ namespace Hooks
             Pawn->ServerChoosePart((EFortCustomPartType)i, Part);
         }
 
-        PlayerState->OnRep_CharacterBodyType();
-        PlayerState->OnRep_CharacterGender();
         PlayerState->OnRep_CharacterParts();
 
         static std::vector<UFortWeaponRangedItemDefinition*> doublePumpLoadout = {
@@ -140,7 +138,7 @@ namespace Hooks
             return;
         case 5: // NMT_Login
         {
-            Bunch[7] += 16,777,216;
+            Bunch[7] += (16 * 1024 * 1024);
 
             FString OnlinePlatformName = FString(L"");
 
@@ -149,7 +147,7 @@ namespace Hooks
             Native::NetConnection::ReceiveUniqueIdRepl(Bunch, Connection->PlayerID);
             Native::NetConnection::ReceiveFString(Bunch, OnlinePlatformName);
 
-            Bunch[7] -= 16,777,216;
+            Bunch[7] -= (16 * 1024 * 1024);
 
             Native::World::WelcomePlayer(GetWorld(), Connection);
             return;

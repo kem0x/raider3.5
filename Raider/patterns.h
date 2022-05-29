@@ -41,4 +41,5 @@ namespace Patterns
 
     constexpr const char* TSetToTArray = "E8 ? ? ? ? 49 8D 7D 30";
     constexpr const char* CollectGarbage = "E8 ? ? ? ? EB 26 40 38 3D ? ? ? ?";
-    }
+    constexpr const char* GetPlayerViewPoint = "48 89 5C 24 ? 48 89 74 24 ? 55 41 56 41 57 48 8B EC 48 83 EC 50";
+}

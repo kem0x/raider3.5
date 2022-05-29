@@ -77,6 +77,7 @@ namespace Native
     namespace PlayerController
     {
         inline bool (*SendClientAdjustment)(APlayerController* Controller);
+        inline void (*GetPlayerViewPoint)(APlayerController* Controller, FVector* Location, FRotator* Rotation);
     }
 
     namespace AbilitySystemComponent
@@ -266,6 +267,14 @@ namespace Native
         Address = Utils::FindPattern(Patterns::CollectGarbage, true, 1);
 		CheckNullFatal(Address, "Failed to find CollectGarbage");
 		AddressToFunction(Address, GC::CollectGarbage);
+
+        Address = Utils::FindPattern(Patterns::GetPlayerViewPoint);
+        CheckNullFatal(Address, "Failed to find GetPlayerViewPoint");
+		AddressToFunction(Address, PlayerController::GetPlayerViewPoint);
+
+        Address = Utils::FindPattern(Patterns::IsNetRelevantFor);
+        CheckNullFatal(Address, "Failed to find IsNetRelevantFor");
+		AddressToFunction(Address, Actor::IsNetRelevantFor);
 
         PEOriginal = reinterpret_cast<decltype(PEOriginal)>(GetEngine()->Vtable[0x40]);
 

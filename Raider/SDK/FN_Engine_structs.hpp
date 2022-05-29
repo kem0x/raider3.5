@@ -5937,15 +5937,15 @@ struct FInteriorSettings
 	float                                              InteriorLPFTime;                                          // 0x0020(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
 };
 
-// ScriptStruct Engine.NetViewer
-// 0x0030
 struct FNetViewer
 {
-	class UNetConnection*                              Connection;                                               // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
-	class AActor*                                      InViewer;                                                 // 0x0008(0x0008) (ZeroConstructor, IsPlainOldData)
-	class AActor*                                      ViewTarget;                                               // 0x0010(0x0008) (ZeroConstructor, IsPlainOldData)
-	struct FVector                                     ViewLocation;                                             // 0x0018(0x000C) (IsPlainOldData)
-	struct FVector                                     ViewDir;                                                  // 0x0024(0x000C) (IsPlainOldData)
+    class UNetConnection* Connection; // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
+    class AActor* InViewer; // 0x0008(0x0008) (ZeroConstructor, IsPlainOldData)
+    class AActor* ViewTarget; // 0x0010(0x0008) (ZeroConstructor, IsPlainOldData)
+    struct FVector ViewLocation; // 0x0018(0x000C) (IsPlainOldData)
+    struct FVector ViewDir; // 0x0024(0x000C) (IsPlainOldData)
+
+    FNetViewer(UNetConnection* InConnection);
 };
 
 // ScriptStruct Engine.InstancedStaticMeshInstanceData

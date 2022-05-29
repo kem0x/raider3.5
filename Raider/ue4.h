@@ -552,6 +552,18 @@ static void SummonPickupFromChest(auto ItemDef, int Count, FVector Location)
     FortPickup->OnRep_TossedFromContainer();
 }
 
+inline void SpawnPickupFromFloorLoot(auto ItemDef, int Count, FVector Location)
+{
+    auto FortPickup = SpawnActor<AFortPickupAthena>(Location, nullptr, {}, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
+
+    FortPickup->bReplicates = true; // should be autmoatic but eh
+
+    FortPickup->PrimaryPickupItemEntry.Count = Count;
+    FortPickup->PrimaryPickupItemEntry.ItemDefinition = ItemDef;
+
+    FortPickup->OnRep_PrimaryPickupItemEntry();
+}
+
 static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = false)
 {
     if (!Pawn || !params)
@@ -897,6 +909,16 @@ inline UKismetMathLibrary* GetMath()
     return (UKismetMathLibrary*)UKismetMathLibrary::StaticClass();
 }
 
+FVector RotToVec(const FRotator& Rotator)
+{
+    float CP, SP, CY, SY;
+    sinCos(&SP, &CP, GetMath()->STATIC_DegreesToRadians(Rotator.Pitch));
+    sinCos(&SY, &CY, GetMath()->STATIC_DegreesToRadians(Rotator.Yaw));
+    FVector V = FVector(CP * CY, CP * SY, SP);
+
+    return V;
+}
+
 static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector { 1250, 1818, 3284 }, FQuat Rotation = FQuat())
 {
     if (PlayerController->Pawn)
@@ -1047,23 +1069,32 @@ auto GetRandomWID(int skip = 0)
 DWORD WINAPI SummonFloorLoot(LPVOID)
 {
     static auto FloorLootClass = UObject::FindObject<UClass>("BlueprintGeneratedClass Tiered_Athena_FloorLoot_01.Tiered_Athena_FloorLoot_01_C");
+	
+	if (!FloorLootClass)
+        return 0;
+
+    static auto Scar = FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03");
+    auto FloorLootActors = GetAllActorsOfClass(FloorLootClass);
+
+	/*
+
     static std::vector<UFortWeaponRangedItemDefinition*> Weapons = {
         GetRandomWID(7),
         GetRandomWID(11),
         GetRandomWID(15),
         GetRandomWID(19),
     };
-    static auto Scar = FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03");
-    auto FloorLootActors = GetAllActorsOfClass(FloorLootClass);
-
-    std::cout << "Floor Loot Num: " << FloorLootActors.Num();
 
     for (int i = 0; i < 100; i++)
     {
         // Weapons.push_back(GetRandomWID());
     }
 
-    for (int i = 0; i < FloorLootActors.Num(); i++)
+    */
+	
+    auto AmountOfActorsToSpawn = 700; // FloorLootActors.Num(); // For now, without relevancy we just spawn some.
+
+    for (int i = 0; i < AmountOfActorsToSpawn; i++)
     {
         auto FloorLootActor = FloorLootActors[i];
         auto weaponToSpawn = Scar; // Weapons[RandomIntInRange(0, 3)];
@@ -1071,8 +1102,10 @@ DWORD WINAPI SummonFloorLoot(LPVOID)
         if (!FloorLootActor || !weaponToSpawn)
             continue;
 
-        SummonPickupFromChest(weaponToSpawn, 1, FloorLootActor->K2_GetActorLocation());
-        SummonPickupFromChest(weaponToSpawn->GetAmmoWorldItemDefinition_BP(), 10, FloorLootActor->K2_GetActorLocation());
+        SpawnPickupFromFloorLoot(weaponToSpawn, 1, FloorLootActor->K2_GetActorLocation());
+
+		if (false)// (auto Ammo = weaponToSpawn->GetAmmoWorldItemDefinition_BP())
+            SpawnPickupFromFloorLoot(nullptr, 10, FloorLootActor->K2_GetActorLocation());
     }
 
     printf("Finished spawning floor loot!\n");

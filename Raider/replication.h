@@ -3,15 +3,41 @@
 
 #define invptr (void*)0xffffffff
 
+FNetViewer::FNetViewer(UNetConnection* InConnection)
+    : Connection(InConnection)
+    , InViewer(InConnection->PlayerController ? InConnection->PlayerController : InConnection->OwningActor)
+    , ViewTarget(InConnection->ViewTarget)
+    , ViewLocation(FVector())
+    , ViewDir(FVector())
+{
+    if (!InConnection->OwningActor)
+        return;
+
+    // if (!InConnection->PlayerController || (InConnection->PlayerController == InConnection->OwningActor)) return;
+
+    APlayerController* ViewingController = InConnection->PlayerController;
+
+    // Get viewer coordinates.
+    ViewLocation = ViewTarget->K2_GetActorLocation();
+
+    if (ViewingController)
+    {
+        FRotator ViewRotation = ViewingController->GetControlRotation();
+        Native::PlayerController::GetPlayerViewPoint(ViewingController, &ViewLocation, &ViewRotation);
+        ViewDir = RotToVec(ViewRotation);
+    }
+}
+
 namespace Replication
 {
-    static FORCEINLINE bool IsActorRelevantToConnection(AActor* Actor, TArray<FNetViewer*>& ConnectionViewers)
+    static FORCEINLINE bool IsActorRelevantToConnection(AActor* Actor, TArray<FNetViewer>& ConnectionViewers)
     {
-        Native::Actor::IsNetRelevantFor = decltype(Native::Actor::IsNetRelevantFor)(Actor->Vtable[0x420]);
+        // return true;
+        // Native::Actor::IsNetRelevantFor = decltype(Native::Actor::IsNetRelevantFor)(Actor->Vtable[0x149]); // this offset is probably wrong
 
         for (int32 viewerIdx = 0; viewerIdx < ConnectionViewers.Num(); viewerIdx++)
         {
-            if (Native::Actor::IsNetRelevantFor(Actor, ConnectionViewers[viewerIdx]->InViewer, ConnectionViewers[viewerIdx]->ViewTarget, ConnectionViewers[viewerIdx]->ViewLocation))
+            if (Native::Actor::IsNetRelevantFor(Actor, ConnectionViewers[viewerIdx].InViewer, ConnectionViewers[viewerIdx].ViewTarget, ConnectionViewers[viewerIdx].ViewLocation))
             {
                 return true;
             }
@@ -157,18 +183,19 @@ namespace Replication
 
             else if (Connection->ViewTarget)
             {
-                // ConnectionViewers.Reset();
-                // new (ConnectionViewers) FNetViewer(Connection, DeltaSeconds);
-                /* static TArray<FNetViewer*> ConnectionViewers;
-                ConnectionViewers.Add(new FNetViewer { Connection });
+                /*
+                static auto ConnectionViewers = GetWorld()->PersistentLevel->WorldSettings->ReplicationViewers;
+                ConnectionViewers.Reset();
+                ConnectionViewers.Add(FNetViewer(Connection));
+
                 for (int32 ViewerIndex = 0; ViewerIndex < Connection->Children.Num(); ViewerIndex++)
                 {
                     if (Connection->Children[ViewerIndex]->ViewTarget)
                     {
-                        ConnectionViewers.Add(new FNetViewer { Connection->Children[ViewerIndex] });
-                        // new (ConnectionViewers) FNetViewer(Connection->Children[ViewerIndex], DeltaSeconds);
+                        ConnectionViewers.Add(FNetViewer(Connection->Children[ViewerIndex]));
                     }
-                } */
+                }
+                */
 
                 if (Connection->PlayerController)
                     Native::PlayerController::SendClientAdjustment(Connection->PlayerController); // Sending adjustments to children is for splitscreen
@@ -182,11 +209,13 @@ namespace Replication
 
                     if (!Channel)
                     {
-                        if (false) // !IsActorRelevantToConnection(Actor, ConnectionViewers) && !Actor->bAlwaysRelevant) // Actor->bOnlyRelevantToOwner && Actor->Owner != )
+                        /*
+                        if (!IsActorRelevantToConnection(Actor, ConnectionViewers) && !Actor->bAlwaysRelevant)
                         {
                             // If not relevant (and we don't have a channel), skip
                             continue;
                         }
+                        */
 
                         Channel = (UActorChannel*)(Native::NetConnection::CreateChannel(Connection, 2, true, -1));
                         Native::ActorChannel::SetChannelActor(Channel, Actor);
@@ -194,7 +223,15 @@ namespace Replication
 
                     if (Channel)
                     {
-                        Native::ActorChannel::ReplicateActor(Channel);
+                        // if (IsActorRelevantToConnection(Actor, ConnectionViewers) || Actor->bAlwaysRelevant) // temporary
+                        {
+                            Native::ActorChannel::ReplicateActor(Channel);
+                        }
+                        // else // techinally we should wait like 5 seconds but whatever.
+                        {
+							// todo get pattern
+                            // Native::ActorChannel::Close(Channel);
+                        }
                     }
                 }
             }
