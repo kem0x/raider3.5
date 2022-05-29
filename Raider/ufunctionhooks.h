@@ -7,18 +7,20 @@
 #include "ue4.h"
 
 // #define LOGGING
-static bool bDeveloperCheats = true; // CAnt put a ifdef in a define
-static bool bInBuild = false;
-
-inline std::vector<UFunction*> toHook;
-inline std::vector<std::function<void(UObject*, void*)>> toCall;
-
-#define DEFINE_PEHOOK(ufunctionName, func)                           \
-    toHook.push_back(UObject::FindObject<UFunction>(ufunctionName)); \
-    toCall.push_back([](UObject * Object, void* Parameters) -> void func);
+static bool bDeveloperCheats = true;
+    
+//Define the hook with ufunction full name
+//Return true in the lambda to prevent the original function call
 
 namespace UFunctionHooks
 {
+    inline std::vector<UFunction*> toHook;
+    inline std::vector<std::function<bool(UObject*, void*)>> toCall;
+
+    #define DEFINE_PEHOOK(ufunctionName, func)                           \
+        toHook.push_back(UObject::FindObject<UFunction>(ufunctionName)); \
+        toCall.push_back([](UObject * Object, void* Parameters) -> bool func);
+
     auto Initialize()
     {
         DEFINE_PEHOOK("Function GameplayAbilities.AbilitySystemComponent.ServerTryActivateAbility", {
@@ -26,6 +28,8 @@ namespace UFunctionHooks
             auto Params = (UAbilitySystemComponent_ServerTryActivateAbility_Params*)Parameters;
 
             TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, nullptr);
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function GameplayAbilities.AbilitySystemComponent.ServerTryActivateAbilityWithEventData", {
@@ -33,6 +37,8 @@ namespace UFunctionHooks
             auto Params = (UAbilitySystemComponent_ServerTryActivateAbilityWithEventData_Params*)Parameters;
 
             TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, &Params->TriggerEventData);
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function GameplayAbilities.AbilitySystemComponent.ServerAbilityRPCBatch", {
@@ -40,9 +46,11 @@ namespace UFunctionHooks
             auto Params = (UAbilitySystemComponent_ServerAbilityRPCBatch_Params*)Parameters;
 
             TryActivateAbility(AbilitySystemComponent, Params->BatchInfo.AbilitySpecHandle, Params->BatchInfo.InputPressed, &Params->BatchInfo.PredictionKey, nullptr);
+        
+            return false;
         })
 
-        DEFINE_PEHOOK("Function FortniteGame.FortPlayerPawn.ServerHandlePickup", { HandlePickup((AFortPlayerPawn*)Object, Parameters, true); })
+        DEFINE_PEHOOK("Function FortniteGame.FortPlayerPawn.ServerHandlePickup", { HandlePickup((AFortPlayerPawn*)Object, Parameters, true); return false; })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCheat", {
             if (Object->IsA(AFortPlayerControllerAthena::StaticClass()))
@@ -162,6 +170,8 @@ namespace UFunctionHooks
                     }
                 }
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCreateBuildingActor", {
@@ -174,21 +184,12 @@ namespace UFunctionHooks
 
             if (PC && Params && CurrentBuildClass)
             {
-                /* while (bInBuild) // It double built once, in theory this should fix but I don't know if its needed.
-                {
-                    Sleep(1000 / 15);
-                }
-                bInBuild = true; */
-				
-                bool bCanBuild = CanBuild(CurrentBuildClass, Params->BuildLoc);
-
-                if (bCanBuild)
+                if (auto bCanBuild = CanBuild(CurrentBuildClass, Params->BuildLoc))
                 {
                     auto BuildingActor = (ABuildingSMActor*)SpawnActor(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, PC, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
                     if (BuildingActor)
                     {
                         Buildings.insert(BuildingActor); // Add as soon as possible to make sure there is no time to double build.
-                        bInBuild = false;
 
                         BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::DestroyAnythingThatCollides;
                         BuildingActor->SetMirrored(Params->bMirrored);
@@ -197,6 +198,8 @@ namespace UFunctionHooks
                     }
                 }
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerBeginEditingBuildingActor", {
@@ -218,6 +221,8 @@ namespace UFunctionHooks
                     Params->BuildingActorToEdit->OnRep_EditingPlayer();
                 }
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerEditBuildingActor", {
@@ -248,6 +253,8 @@ namespace UFunctionHooks
                     }
                 }
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerControllerZone.ClientOnPawnDied", {
@@ -297,7 +304,8 @@ namespace UFunctionHooks
                     }
                 }
             }
-            return;
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerEndEditingBuildingActor", {
@@ -318,6 +326,8 @@ namespace UFunctionHooks
                     EditTool->OnRep_EditActor();
                 }
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerRepairBuildingActor", {
@@ -329,6 +339,8 @@ namespace UFunctionHooks
             {
                 Params->BuildingActorToRepair->RepairBuilding(Controller, 10); // figure out how to get the repair amount
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerControllerAthena.ServerAttemptAircraftJump", {
@@ -359,6 +371,8 @@ namespace UFunctionHooks
                     // PC->Pawn->K2_TeleportTo(ExitLocation, Params->ClientRotation);
                 }
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerPawn.ServerReviveFromDBNO", {
@@ -375,6 +389,8 @@ namespace UFunctionHooks
                 DBNOPC->ClientOnPawnRevived(InstigatorPC);
                 DBNOPawn->SetHealth(100);
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerAttemptInteract", {
@@ -391,11 +407,13 @@ namespace UFunctionHooks
                     DBNOPawn->ReviveFromDBNO(PC);
                 }
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerPlayEmoteItem", {
             if (!Object->IsA(AFortPlayerControllerAthena::StaticClass()))
-                return;
+                return false;
 
             auto CurrentPC = (AFortPlayerControllerAthena*)Object;
             auto CurrentPawn = (APlayerPawn_Athena_C*)CurrentPC->Pawn;
@@ -459,6 +477,8 @@ namespace UFunctionHooks
                     }
                 }
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerAttemptInventoryDrop", {
@@ -469,6 +489,8 @@ namespace UFunctionHooks
                 auto Pawn = (APlayerPawn_Athena_C*)PC->Pawn;
                 HandleInventoryDrop(Pawn, Parameters);
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function BP_VictoryDrone.BP_VictoryDrone_C.OnSpawnOutAnimEnded", {
@@ -481,14 +503,20 @@ namespace UFunctionHooks
                     Drone->K2_DestroyActor();
                 }
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerExecuteInventoryItem", {
             EquipInventoryItem((AFortPlayerControllerAthena*)Object, *(FGuid*)Parameters);
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerReturnToMainMenu", {
             ((AFortPlayerController*)Object)->ClientTravel(L"Frontend", ETravelType::TRAVEL_Absolute, false, FGuid());
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerLoadingScreenDropped", {
@@ -498,6 +526,8 @@ namespace UFunctionHooks
             {
                 ApplyAbilities(Pawn);
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerPawn.ServerChoosePart", {
@@ -507,8 +537,10 @@ namespace UFunctionHooks
             if (Params && Pawn)
             {
                 if (!Params->ChosenCharacterPart)
-                    return;
+                    return false;
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function Engine.GameMode.ReadyToStartMatch", {
@@ -518,6 +550,8 @@ namespace UFunctionHooks
                 Listen();
                 bListening = true;
             }
+
+            return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortGameModeAthena.OnAircraftExitedDropZone", { // To make this faster we could loop through client connections and get their controllers
@@ -537,6 +571,12 @@ namespace UFunctionHooks
                         Controller->ServerAttemptAircraftJump(FRotator());
                 }            
             }
+
+            return false;
+        })
+
+        DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCheatAll", {
+            return true;
         })
 
         printf("[+] Hooked %zu UFunction(s)\n", toHook.size());

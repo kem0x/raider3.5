@@ -19,7 +19,7 @@
 
 #include "SDK/FN_Basic.hpp"
 
-inline void (*PEOriginal)(void*, void*, void*);
+inline void (*ProcessEvent)(void*, void*, void*);
 
 namespace Offsets
 {

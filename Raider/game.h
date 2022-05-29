@@ -17,6 +17,10 @@ namespace Game
         auto Playlist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");
         auto InProgress = GetKismetString()->STATIC_Conv_StringToName(L"InProgress");
 
+        GameState->bGameModeWillSkipAircraft = true;
+        GameState->AircraftStartTime = 9999.9f;
+        GameState->WarmupCountdownEndTime = 99999.9f;
+
         GameState->GamePhase = EAthenaGamePhase::Warmup;
         GameState->OnRep_GamePhase(EAthenaGamePhase::None);
 
@@ -26,7 +30,8 @@ namespace Game
         GameMode->MatchState = InProgress;
         GameMode->K2_OnSetMatchState(InProgress);
 
-        if (Playlist) {
+        if (Playlist) 
+        {
             Playlist->bNoDBNO = false;
             Playlist->bIsLargeTeamGame = true;
             

@@ -150,6 +150,9 @@ namespace ZeroGUI
     {
         POINT cursorPos;
         GetCursorPos(&cursorPos);
+
+        ScreenToClient(GetActiveWindow(), &cursorPos);
+
         return FVector2D { (float)cursorPos.x, (float)cursorPos.y };
     }
 
@@ -207,6 +210,7 @@ namespace ZeroGUI
         offset_x = x;
         PushNextElementY(first_element_pos.Y, false);
     }
+    
     void ClearFirstPos()
     {
         first_element_pos = FVector2D { 0, 0 };
