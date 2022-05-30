@@ -306,6 +306,14 @@ struct FGuid
     {
 		return A == Guid.A && B == Guid.B && C == Guid.C && D == Guid.D;
 	}
+
+	void Reset()
+    {
+		A = 0;
+		B = 0;
+		C = 0;
+		D = 0;
+	}
 };
 
 // ScriptStruct CoreUObject.Vector

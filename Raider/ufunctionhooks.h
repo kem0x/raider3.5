@@ -50,7 +50,10 @@ namespace UFunctionHooks
             return false;
         })
 
-        DEFINE_PEHOOK("Function FortniteGame.FortPlayerPawn.ServerHandlePickup", { HandlePickup((AFortPlayerPawn*)Object, Parameters, true); return false; })
+        DEFINE_PEHOOK("Function FortniteGame.FortPlayerPawn.ServerHandlePickup", { 
+            Inventory::OnPickup((AFortPlayerControllerAthena*)((APawn*)Object)->Controller, Parameters, true);
+            return false;
+        })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCheat", {
             if (Object->IsA(AFortPlayerControllerAthena::StaticClass()))
@@ -488,11 +491,8 @@ namespace UFunctionHooks
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerAttemptInventoryDrop", {
             auto PC = (AFortPlayerControllerAthena*)Object;
 
-            if (!PC->IsInAircraft())
-            {
-                auto Pawn = (APlayerPawn_Athena_C*)PC->Pawn;
-                HandleInventoryDrop(Pawn, Parameters);
-            }
+            if (PC && !PC->IsInAircraft())
+                Inventory::OnDrop(PC, Parameters);
 
             return false;
         })
