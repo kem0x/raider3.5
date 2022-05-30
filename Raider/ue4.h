@@ -87,6 +87,11 @@ FORCEINLINE UKismetSystemLibrary* GetKismetSystem()
     return reinterpret_cast<UKismetSystemLibrary*>(UKismetSystemLibrary::StaticClass());
 }
 
+FORCEINLINE UFortKismetLibrary* GetFortKismet()
+{
+    return ((UFortKismetLibrary*)UFortKismetLibrary::StaticClass());
+}
+
 FORCEINLINE UKismetStringLibrary* GetKismetString()
 {
     return (UKismetStringLibrary*)UKismetStringLibrary::StaticClass();
@@ -180,7 +185,7 @@ static AActor* SpawnActorTrans(UClass* StaticClass, FTransform SpawnTransform, A
     return nullptr;
 }
 
-inline auto GetItemInstances(AFortPlayerController* PC)
+inline auto& GetItemInstances(AFortPlayerController* PC)
 {
     return PC->WorldInventory->Inventory.ItemInstances;
 }
@@ -208,6 +213,16 @@ inline RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor*
     return (RetActorType*)SpawnActorTrans(RetActorType::StaticClass(), SpawnTransform, Owner, Flags);
 }
 
+inline ABuildingSMActor* SpawnBuilding(UClass* BGAClass, FVector& Location, FRotator& Rotation, APlayerPawn_Athena_C* Pawn)
+{
+    FTransform Transform;
+    Transform.Translation = Location;
+    Transform.Scale3D = FVector { 1, 1, 1 };
+    Transform.Rotation = RotToQuat(Rotation);
+	
+    return (ABuildingSMActor*)GetFortKismet()->STATIC_SpawnBuildingGameplayActor(BGAClass, Transform, Pawn);
+}
+
 inline void CreateConsole()
 {
     GetEngine()->GameViewport->ViewportConsole = (UConsole*)GetGameplayStatics()->STATIC_SpawnObject(UConsole::StaticClass(), GetEngine()->GameViewport);
@@ -223,9 +238,53 @@ inline auto CreateCheatManager(APlayerController* Controller)
     return (UFortCheatManager*)Controller->CheatManager;
 }
 
-inline bool IsMatchingGuid(FGuid A, FGuid B)
+inline int RemoveDuplicatesFromInventory(AFortPlayerController* Controller) // i don't think this works
 {
-    return A.A == B.A && A.B == B.B && A.C == B.C && A.D == B.D;
+    auto& ReplicatedEntries = Controller->WorldInventory->Inventory.ReplicatedEntries;
+    auto& ItemInstances = GetItemInstances(Controller);
+    int AmountRemoved = 0;
+
+    for (int i = 1; i < ReplicatedEntries.Num(); i++)
+    {
+        auto Guid = ReplicatedEntries[i].ItemGuid;
+
+        for (int j = 1; j < ReplicatedEntries.Num(); j++)
+        {
+            if (j == i)
+                continue;
+
+			auto Guid2 = ReplicatedEntries[j].ItemGuid;
+
+			if (Guid == Guid2)
+            {
+                std::cout << std::format("{} is a duplicate of {} in ReplicatedEntries!\n", std::to_string(j), std::to_string(i));
+				ReplicatedEntries.RemoveAt(j);
+                AmountRemoved++;
+            }
+        }
+    }
+
+    for (int i = 1; i < ItemInstances.Num(); i++)
+    {
+        auto Guid = ItemInstances[i]->GetItemGuid();
+
+        for (int j = 1; j < ItemInstances.Num(); j++)
+        {
+            if (j == i)
+                continue;
+
+            auto Guid2 = ItemInstances[j]->GetItemGuid();
+
+            if (Guid == Guid2)
+            {
+                std::cout << std::format("{} is a duplicate of {} in ItemInstances!\n", std::to_string(j), std::to_string(i));
+                ItemInstances.RemoveAt(j);
+                AmountRemoved++;
+            }
+        }
+    }
+
+    return AmountRemoved;
 }
 
 bool CanBuild(UClass* BuildingClass, FVector& Location)
@@ -317,9 +376,11 @@ inline void UpdateInventory(AFortPlayerController* PlayerController, int Dirty =
     PlayerController->WorldInventory->HandleInventoryLocalUpdate();
     PlayerController->HandleWorldInventoryLocalUpdate();
     PlayerController->ForceUpdateQuickbar(EFortQuickBars::Primary);
+    PlayerController->QuickBars->OnRep_PrimaryQuickBar();
+    PlayerController->QuickBars->OnRep_SecondaryQuickBar();
     PlayerController->QuickBars->ForceNetUpdate();
 
-    if (bRemovedItem)
+    if (RemoveDuplicatesFromInventory(PlayerController) != 0 || bRemovedItem)
         PlayerController->WorldInventory->Inventory.MarkArrayDirty();
 
     if (Dirty != 0 && PlayerController->WorldInventory->Inventory.ReplicatedEntries.Num() >= Dirty)
@@ -340,7 +401,7 @@ inline auto AddItem(AFortPlayerController* PC, UFortItemDefinition* Def, int Slo
     if (Bars == EFortQuickBars::Primary && Slot >= 6)
         Slot = 5;
 
-    auto QuickBarSlots = PC->QuickBars->PrimaryQuickBar.Slots;
+    auto& QuickBarSlots = PC->QuickBars->PrimaryQuickBar.Slots;
 
     auto TempItemInstance = (UFortWorldItem*)Def->CreateTemporaryItemInstanceBP(Count, 1);
 	
@@ -358,7 +419,7 @@ inline auto AddItem(AFortPlayerController* PC, UFortItemDefinition* Def, int Slo
         if (Idx)
             *Idx = _Idx;
 
-        PC->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
+        GetItemInstances(PC).Add((UFortWorldItem*)TempItemInstance);
         PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
 
         return ItemEntry;
@@ -378,6 +439,31 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortItemDefinition* De
     return ItemEntry;
 }
 
+inline UFortItemDefinition* GetDefInSlot(AFortPlayerControllerAthena* PC, int Slot, int Item = 0)
+{
+    auto& ItemInstances = GetItemInstances(PC);
+    auto& QuickBarSlots = PC->QuickBars->PrimaryQuickBar.Slots;
+    auto& ToFindGuid = QuickBarSlots[Slot].Items[Item];
+
+    for (int j = 0; j < ItemInstances.Num(); j++)
+    {
+        auto ItemInstance = ItemInstances[j];
+
+        if (!ItemInstance)
+            continue;
+
+        auto Def = ItemInstance->ItemEntry.ItemDefinition;
+        auto Guid = ItemInstance->ItemEntry.ItemGuid;
+
+        if (ToFindGuid == Guid)
+        {
+            return Def;
+        }
+    }
+
+    return nullptr;
+}
+
 inline auto RemoveItem(AFortPlayerControllerAthena* PC, EFortQuickBars QuickBars, int Slot) // IMPORTANT TO FIX THIS
 {
     if (Slot == 0 || !PC || PC->IsInAircraft())
@@ -386,63 +472,96 @@ inline auto RemoveItem(AFortPlayerControllerAthena* PC, EFortQuickBars QuickBars
     // UpdateInventory(PC, 0, true);
 
     auto pcQuickBars = PC->QuickBars;
-    // pcQuickBars->PrimaryQuickBar.Slots[Slot].Items.FreeArray();
-    // pcQuickBars->EmptySlot(QuickBars, Slot);
-    auto& QuickBarSlot = pcQuickBars->PrimaryQuickBar.Slots[Slot];
-    // pcQuickBars->PrimaryQuickBar.Slots.RemoveAt(Slot);
-    for (int i = 0; i < QuickBarSlot.Items.Num(); i++)
-    {
-        auto& Item = QuickBarSlot.Items[i];
-
-        Item.A = 0;
-        Item.B = 0;
-        Item.C = 0;
-        Item.D = 0;
-
-	    pcQuickBars->PrimaryQuickBar.Slots.RemoveAt(i);
-    }
 	
-    // QuickBarSlot.Items.Reset();
-
-    auto Inventory = PC->WorldInventory->Inventory;
-
-    if (Inventory.ReplicatedEntries.Num() >= Slot)
+	// if (false)
     {
-        Inventory.ReplicatedEntries.RemoveAt(Slot);
-        std::cout << "Removed from ReplicatedEntries!\n";
+        // pcQuickBars->PrimaryQuickBar.Slots[Slot].Items.FreeArray();
+        pcQuickBars->EmptySlot(QuickBars, Slot);
+        auto& QuickBarSlot = pcQuickBars->PrimaryQuickBar.Slots[Slot];
+        // pcQuickBars->PrimaryQuickBar.Slots.RemoveAt(Slot);
+        for (int i = 0; i < QuickBarSlot.Items.Num(); i++) // this is what emptyslot does ig
+        {
+            auto& Item = QuickBarSlot.Items[i];
+
+            Item.A = 0;
+            Item.B = 0;
+            Item.C = 0;
+            Item.D = 0;
+
+	        pcQuickBars->PrimaryQuickBar.Slots.RemoveAt(i);
+        }
+	
+        // QuickBarSlot.Items.Reset();
+
+        auto& Inventory = PC->WorldInventory->Inventory;
+
+        if (Inventory.ReplicatedEntries.Num() >= Slot)
+        {
+            Inventory.ReplicatedEntries.RemoveAt(Slot);
+            std::cout << "Removed from ReplicatedEntries!\n";
+        }
+
+        if (Inventory.ItemInstances.Num() >= Slot)
+        {
+            Inventory.ItemInstances.RemoveAt(Slot);
+            std::cout << "Removed from ItemInstances!\n";
+        }
     }
 
-    if (Inventory.ItemInstances.Num() >= Slot)
-    {
-        Inventory.ItemInstances.RemoveAt(Slot);
-        std::cout << "Removed from ItemInstances!\n";
-    }
-
-    // PC->RemoveItemFromQuickBars(PC->QuickBars->PrimaryQuickBar.Slots[Slot].Items[0]);
+	// GetFortKismet()->STATIC_K2_RemoveItemFromPlayer(PC, (UFortWorldItemDefinition*)GetDefInSlot(PC, Slot), 1, true);
+    // GetFortKismet()->STATIC_EmptyQuickBarSlot(GetWorld(), EFortQuickBars::Primary, Slot);
+    // PC->RemoveItemFromQuickBars((UFortWorldItemDefinition*)GetDefInSlot(PC, Slot));
+    // pcQuickBars->ServerRemoveItemInternal(pcQuickBars->PrimaryQuickBar.Slots[Slot].Items[0], false, true);
+    // pcQuickBars->EmptySlot(QuickBars, Slot);
 
     UpdateInventory(PC, 0, true);
 }
 
-inline AFortWeapon* EquipWeaponDefinition(APawn* dPawn, UFortWeaponItemDefinition* Definition, FGuid& Guid)
+inline bool IsGuidInInventory(AFortPlayerControllerAthena* Controller, const FGuid& Guid)
+{
+    auto& QuickBarSlots = Controller->QuickBars->PrimaryQuickBar.Slots;
+
+    for (int i = 0; i < QuickBarSlots.Num(); i++)
+    {
+        if (QuickBarSlots[i].Items.Data)
+        {
+            auto items = QuickBarSlots[i].Items;
+			
+            for (int i = 0; items.Num(); i++)
+            {
+                if (items[i] == Guid)
+                    return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+inline AFortWeapon* EquipWeaponDefinition(APawn* dPawn, UFortWeaponItemDefinition* Definition, const FGuid& Guid) // don't use, use EquipInventoryItem // not too secure
 {
     // auto weaponClass = Definition->GetWeaponActorClass();
-    // if (weaponClass)
     auto Pawn = (APlayerPawn_Athena_C*)dPawn;
     if (Pawn && Definition)
     {
-        // auto Weapon = (AFortWeapon*)SpawnActorTrans(weaponClass, {}, Pawn);
+        auto Controller = (AFortPlayerControllerAthena*)Pawn->Controller;
+
+        if (!IsGuidInInventory(Controller, Guid))
+			return nullptr;
+
+        // auto Weapon = (AFortWeapon*)SpawnActorTrans(weaponClass, {}, Pawn); // Other people can't see their weapon.
+        // Weapon->bReplicates = true;
         auto Weapon = Pawn->EquipWeaponDefinition(Definition, Guid);
 
         if (Weapon)
         {
-            /* Weapon->ItemEntryGuid = Guid;
-            Weapon->WeaponData = Definition; */
-
+            Weapon->WeaponData = Definition;
             Weapon->ItemEntryGuid = Guid;
+            // Weapon->SetOwner(dPawn);
             Weapon->OnRep_ReplicatedWeaponData();
             Weapon->ClientGivenTo(Pawn);
             Pawn->ClientInternalEquipWeapon(Weapon);
-            Pawn->OnRep_CurrentWeapon();
+            Pawn->OnRep_CurrentWeapon(); // i dont think this is needed but alr
         }
 
         return Weapon;
@@ -456,7 +575,7 @@ inline void EquipInventoryItem(AFortPlayerControllerAthena* PC, FGuid& Guid)
     if (!PC || PC->IsInAircraft())
         return;
 
-    auto ItemInstances = PC->WorldInventory->Inventory.ItemInstances;
+    auto& ItemInstances = GetItemInstances(PC);
 
     for (int i = 0; i < ItemInstances.Num(); i++)
     {
@@ -467,9 +586,10 @@ inline void EquipInventoryItem(AFortPlayerControllerAthena* PC, FGuid& Guid)
 
         auto Def = (UFortWeaponItemDefinition*)CurrentItemInstance->GetItemDefinitionBP();
 
-        if (IsMatchingGuid(CurrentItemInstance->GetItemGuid(), Guid) && Def)
+        if (CurrentItemInstance->GetItemGuid() == Guid && Def)
         {
             EquipWeaponDefinition((APlayerPawn_Athena_C*)PC->Pawn, Def, Guid);
+            break;
         }
     }
 }
@@ -500,7 +620,7 @@ AFortOnlineBeaconHost* HostBeacon = nullptr;
 
 void Listen()
 {
-    printf("[UWorld::Listen]\n");
+    printf("\n[Listening]\n\n");
 
     HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
     HostBeacon->ListenPort = 7777;
@@ -525,9 +645,9 @@ void Listen()
     ((AAthena_GameMode_C*)GetWorld()->AuthorityGameMode)->GameSession->MaxPlayers = 100;
 }
 
-static void SummonPickup(AFortPlayerPawn* Pawn, auto ItemDef, int Count, FVector Location)
+static AFortPickup* SummonPickup(AFortPlayerPawn* Pawn, auto ItemDef, int Count, FVector Location)
 {
-    auto FortPickup = SpawnActor<AFortPickupAthena>(Location, Pawn);
+    auto FortPickup = SpawnActor<AFortPickup>(Location, Pawn);
 
     FortPickup->bReplicates = true; // should be autmoatic but eh
 
@@ -536,11 +656,13 @@ static void SummonPickup(AFortPlayerPawn* Pawn, auto ItemDef, int Count, FVector
 
     FortPickup->OnRep_PrimaryPickupItemEntry();
     FortPickup->TossPickup(Location, Pawn, 6, true);
+
+    return FortPickup;
 }
 
 static void SummonPickupFromChest(auto ItemDef, int Count, FVector Location)
 {
-    auto FortPickup = SpawnActor<AFortPickupAthena>(Location);
+    auto FortPickup = SpawnActor<AFortPickup>(Location);
 
     FortPickup->bReplicates = true; // should be autmoatic but eh
     FortPickup->bTossedFromContainer = true;
@@ -554,7 +676,7 @@ static void SummonPickupFromChest(auto ItemDef, int Count, FVector Location)
 
 inline void SpawnPickupFromFloorLoot(auto ItemDef, int Count, FVector Location)
 {
-    auto FortPickup = SpawnActor<AFortPickupAthena>(Location, nullptr, {}, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
+    auto FortPickup = SpawnActor<AFortPickup>(Location);
 
     FortPickup->bReplicates = true; // should be autmoatic but eh
 
@@ -571,7 +693,7 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
 
     auto Params = (AFortPlayerPawn_ServerHandlePickup_Params*)params;
 
-    auto ItemInstances = ((AFortPlayerController*)Pawn->Controller)->WorldInventory->Inventory.ItemInstances;
+    auto& ItemInstances = GetItemInstances((AFortPlayerController*)Pawn->Controller);
 
     if (Params->Pickup)
     {
@@ -580,9 +702,9 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
 
         auto WorldItemDefinition = (UFortWorldItemDefinition*)Params->Pickup->PrimaryPickupItemEntry.ItemDefinition;
         auto Controller = (AFortPlayerControllerAthena*)Pawn->Controller;
-        auto QuickBarSlots = Controller->QuickBars->PrimaryQuickBar.Slots;
+        auto& QuickBarSlots = Controller->QuickBars->PrimaryQuickBar.Slots;
 
-        for (int i = 0; i < QuickBarSlots.Num(); i++)
+        for (int i = 1; i < QuickBarSlots.Num(); i++)
         {
             std::cout << "On Slot: " << i << '\n';
 
@@ -613,9 +735,9 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
                         auto Def = ItemInstance->ItemEntry.ItemDefinition;
                         auto Guid = ItemInstance->ItemEntry.ItemGuid;
 
-                        if (IsMatchingGuid(FocusedGuid, Guid))
+                        if (FocusedGuid == Guid)
                         {
-                            SummonPickup((APlayerPawn_Athena_C*)Pawn, Def, 1, Pawn->K2_GetActorLocation());
+                            SummonPickup((APlayerPawn_Athena_C*)Pawn, Def, 1/* ItemInstance->ItemEntry.Count */, Pawn->K2_GetActorLocation());
                             break;
                         }
                     }
@@ -623,11 +745,11 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
                     RemoveItem(Controller, EFortQuickBars::Primary, FocusedSlot);
                 }
 
-                auto entry = AddItemWithUpdate((AFortPlayerController*)Pawn->Controller, WorldItemDefinition, i, EFortQuickBars::Primary, 1); // Params->Pickup->PrimaryPickupItemEntry.Count);
+                auto entry = AddItem((AFortPlayerController*)Pawn->Controller, WorldItemDefinition, i, EFortQuickBars::Primary, 1); // Params->Pickup->PrimaryPickupItemEntry.Count);
                 Params->Pickup->K2_DestroyActor();
 
                 if (bEquip)
-                    EquipWeaponDefinition((APlayerPawn_Athena_C*)Pawn, (UFortWeaponItemDefinition*)WorldItemDefinition, entry.ItemGuid);
+                    EquipInventoryItem(Controller, entry.ItemGuid);
 
                 UpdateInventory((AFortPlayerController*)Pawn->Controller);
 
@@ -637,7 +759,7 @@ static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = fals
     }
 }
 
-static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnInventory = true)
+static void InitInventory(AFortPlayerController* PlayerController)
 {
     PlayerController->QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
     auto QuickBars = PlayerController->QuickBars;
@@ -677,7 +799,7 @@ static void InitInventory(AFortPlayerController* PlayerController, bool bSpawnIn
 template <typename Class>
 static FFortItemEntry FindItemInInventory(AFortPlayerControllerAthena* PC, bool& bFound)
 {
-    auto ItemInstances = PC->WorldInventory->Inventory.ItemInstances;
+    auto& ItemInstances = GetItemInstances(PC);
 
     for (int i = 0; i < ItemInstances.Num(); i++)
     {
@@ -780,21 +902,21 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
 {
     auto Params = (AFortPlayerController_ServerAttemptInventoryDrop_Params*)params;
 
-    auto ItemInstances = GetItemInstances((AFortPlayerControllerAthena*)Pawn->Controller);
+    auto& ItemInstances = GetItemInstances((AFortPlayerControllerAthena*)Pawn->Controller);
     auto Controller = (AFortPlayerControllerAthena*)Pawn->Controller;
     auto QuickBars = Controller->QuickBars;
 
-    auto PrimaryQuickBarSlots = QuickBars->PrimaryQuickBar.Slots;
-    auto SecondaryQuickBarSlots = QuickBars->SecondaryQuickBar.Slots;
+    auto& PrimaryQuickBarSlots = QuickBars->PrimaryQuickBar.Slots;
+    auto& SecondaryQuickBarSlots = QuickBars->SecondaryQuickBar.Slots;
 
     for (int i = 1; i < PrimaryQuickBarSlots.Num(); i++)
     {
         if (PrimaryQuickBarSlots[i].Items.Data)
         {
-            if (IsMatchingGuid(PrimaryQuickBarSlots[i].Items[0], Params->ItemGuid))
+            if (PrimaryQuickBarSlots[i].Items[0] == Params->ItemGuid)
             {
                 RemoveItem(Controller, EFortQuickBars::Primary, i);
-                // break;
+                break;
             }
         }
     }
@@ -803,10 +925,10 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
     {
         if (SecondaryQuickBarSlots[i].Items.Data)
         {
-            if (IsMatchingGuid(SecondaryQuickBarSlots[i].Items[0], Params->ItemGuid))
+            if (SecondaryQuickBarSlots[i].Items[0] == Params->ItemGuid)
             {
                 RemoveItem(Controller, EFortQuickBars::Secondary, i);
-                // break;
+                break;
             }
         }
     }
@@ -820,7 +942,7 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
 
         auto Guid = ItemInstance->GetItemGuid();
 
-        if (IsMatchingGuid(Guid, Params->ItemGuid))
+        if (Guid == Params->ItemGuid)
         {
             auto def = ItemInstance->ItemEntry.ItemDefinition;
 
@@ -828,10 +950,13 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
             {
                 std::cout << "Matching Guid for " << def->GetFullName() << '\n';
                 SummonPickup(Pawn, def, 1, Pawn->K2_GetActorLocation());
-                // break;
+                break;
             }
         }
     }
+
+    if (PrimaryQuickBarSlots[0].Items.Data)
+	    EquipInventoryItem(Controller, PrimaryQuickBarSlots[0].Items[0]); // just select pickaxe for now
 
     /* for (int i = ItemInstances.Num(); i > 0; i--) // equip the item before until its valid
     {
@@ -845,7 +970,7 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
         if (Def) // && Def->IsA(UFortWeaponItemDefinition::StaticClass()))
         {
             QuickBars->PrimaryQuickBar.CurrentFocusedSlot = i;
-            // EquipWeaponDefinition((APlayerPawn_Athena_C*)Controller->Pawn, (UFortWeaponItemDefinition*)Def, ItemInstance->ItemEntry.ItemGuid, ItemInstance->ItemEntry.Count);
+            // EquipInventoryItem(Controller, ItemInstance->ItemEntry.ItemGuid, ItemInstance->ItemEntry.Count);
             QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
             break;
         }
@@ -919,6 +1044,28 @@ FVector RotToVec(const FRotator& Rotator)
     return V;
 }
 
+inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already has the ability.
+{
+    auto Pawn = (APlayerPawn_Athena_C*)_Pawn;
+    static auto SprintAbility = UObject::FindClass("Class FortniteGame.FortGameplayAbility_Sprint");
+    static auto ReloadAbility = UObject::FindClass("Class FortniteGame.FortGameplayAbility_Reload");
+    static auto RangedWeaponAbility = UObject::FindClass("Class FortniteGame.FortGameplayAbility_RangedWeapon");
+    static auto JumpAbility = UObject::FindClass("Class FortniteGame.FortGameplayAbility_Jump");
+    static auto DeathAbility = UObject::FindClass("BlueprintGeneratedClass GA_DefaultPlayer_Death.GA_DefaultPlayer_Death_C");
+    static auto InteractUseAbility = UObject::FindClass("BlueprintGeneratedClass GA_DefaultPlayer_InteractUse.GA_DefaultPlayer_InteractUse_C");
+    static auto InteractSearchAbility = UObject::FindClass("BlueprintGeneratedClass GA_DefaultPlayer_InteractSearch.GA_DefaultPlayer_InteractSearch_C");
+    static auto EmoteAbility = UObject::FindClass("BlueprintGeneratedClass GAB_Emote_Generic.GAB_Emote_Generic_C");
+
+    GrantGameplayAbility(Pawn, SprintAbility);
+    GrantGameplayAbility(Pawn, ReloadAbility);
+    GrantGameplayAbility(Pawn, RangedWeaponAbility);
+    GrantGameplayAbility(Pawn, JumpAbility);
+    GrantGameplayAbility(Pawn, DeathAbility);
+    GrantGameplayAbility(Pawn, InteractUseAbility);
+    GrantGameplayAbility(Pawn, InteractSearchAbility);
+    GrantGameplayAbility(Pawn, EmoteAbility);
+}
+
 static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector { 1250, 1818, 3284 }, FQuat Rotation = FQuat())
 {
     if (PlayerController->Pawn)
@@ -972,6 +1119,8 @@ static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc 
     PlayerController->OnRep_QuickBar();
     PlayerController->QuickBars->OnRep_PrimaryQuickBar();
     PlayerController->QuickBars->OnRep_SecondaryQuickBar();
+
+	ApplyAbilities(Pawn);
 }
 
 void ChangeItem(AFortPlayerControllerAthena* PC, UFortItemDefinition* Old, UFortItemDefinition* New, int Slot, bool bEquip = false) // we can find the slot too
@@ -980,7 +1129,7 @@ void ChangeItem(AFortPlayerControllerAthena* PC, UFortItemDefinition* Old, UFort
     auto NewEntry = AddItemWithUpdate(PC, (UFortWorldItemDefinition*)New, Slot);
 
     if (bEquip)
-        EquipWeaponDefinition(PC->Pawn, (UFortWeaponItemDefinition*)New, NewEntry.ItemGuid);
+        EquipInventoryItem(PC, NewEntry.ItemGuid);
 }
 
 void ClientMessage(AFortPlayerControllerAthena* PC, FString Message) // Send a message to the user's console.
@@ -1007,7 +1156,7 @@ inline UFortWeaponRangedItemDefinition* FindWID(const std::string& WID)
     return Def;
 }
 
-void EquipLoadout(AFortPlayerController* Controller, std::vector<UFortWeaponRangedItemDefinition*> WIDS)
+void EquipLoadout(AFortPlayerControllerAthena* Controller, std::vector<UFortWeaponRangedItemDefinition*> WIDS)
 {
     FFortItemEntry pickaxeEntry;
 	
@@ -1021,32 +1170,13 @@ void EquipLoadout(AFortPlayerController* Controller, std::vector<UFortWeaponRang
 		if (Def)
         {
             auto Entry = AddItemWithUpdate(Controller, Def, i);
+			
             if (i == 0)
                 pickaxeEntry = Entry;
         }
     }
 
-	EquipWeaponDefinition(Controller->Pawn, (UFortWeaponMeleeItemDefinition*)pickaxeEntry.ItemDefinition, pickaxeEntry.ItemGuid);
-}
-
-inline auto ApplyAbilities(APawn* _Pawn)
-{
-    auto Pawn = (APlayerPawn_Athena_C*)_Pawn;
-    static auto SprintAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Sprint");
-    static auto ReloadAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Reload");
-    static auto RangedWeaponAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_RangedWeapon");
-    static auto JumpAbility = UObject::FindObject<UClass>("Class FortniteGame.FortGameplayAbility_Jump");
-    static auto DeathAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_Death.GA_DefaultPlayer_Death_C");
-    static auto InteractUseAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractUse.GA_DefaultPlayer_InteractUse_C");
-    static auto InteractSearchAbility = UObject::FindObject<UClass>("BlueprintGeneratedClass GA_DefaultPlayer_InteractSearch.GA_DefaultPlayer_InteractSearch_C");
-
-    GrantGameplayAbility(Pawn, SprintAbility);
-    GrantGameplayAbility(Pawn, ReloadAbility);
-    GrantGameplayAbility(Pawn, RangedWeaponAbility);
-    GrantGameplayAbility(Pawn, JumpAbility);
-    GrantGameplayAbility(Pawn, DeathAbility);
-    GrantGameplayAbility(Pawn, InteractUseAbility);
-    GrantGameplayAbility(Pawn, InteractSearchAbility);
+	EquipInventoryItem(Controller, pickaxeEntry.ItemGuid);
 }
 
 auto RandomIntInRange(int min, int max)
@@ -1092,23 +1222,28 @@ DWORD WINAPI SummonFloorLoot(LPVOID)
 
     */
 	
-    auto AmountOfActorsToSpawn = 700; // FloorLootActors.Num(); // For now, without relevancy we just spawn some.
+    // it also crashes sometimes if you spawn alot on like constructionscript
+    auto AmountOfActorsToSpawn = 20; // FloorLootActors.Num(); // For now, without relevancy we just spawn some.
+    int AmountSpawned = 0;
 
     for (int i = 0; i < AmountOfActorsToSpawn; i++)
     {
         auto FloorLootActor = FloorLootActors[i];
         auto weaponToSpawn = Scar; // Weapons[RandomIntInRange(0, 3)];
+        auto Location = FloorLootActor->K2_GetActorLocation();
 
         if (!FloorLootActor || !weaponToSpawn)
             continue;
 
-        SpawnPickupFromFloorLoot(weaponToSpawn, 1, FloorLootActor->K2_GetActorLocation());
+        // SpawnPickupFromFloorLoot(weaponToSpawn, 1, Location);
+        SummonPickupFromChest(weaponToSpawn, 1, Location);
+        AmountSpawned++;
 
 		if (false)// (auto Ammo = weaponToSpawn->GetAmmoWorldItemDefinition_BP())
-            SpawnPickupFromFloorLoot(nullptr, 10, FloorLootActor->K2_GetActorLocation());
+            SpawnPickupFromFloorLoot(nullptr, 10, Location); // Crashes sometimes idk why
     }
 
-    printf("Finished spawning floor loot!\n");
+    std::cout << "Spawned " << AmountSpawned << " pickups!\n";
 
     return 0;
 }

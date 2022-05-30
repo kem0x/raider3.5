@@ -53,7 +53,7 @@ namespace Hooks
 
         AFortPlayerStateAthena* PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
         
-        InitInventory(PlayerController, false);
+        InitInventory(PlayerController);
 
         auto Pawn = (APlayerPawn_Athena_C*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), GetPlayerStart(PlayerController), PlayerController);
 		

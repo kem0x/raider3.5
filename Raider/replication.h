@@ -23,7 +23,7 @@ FNetViewer::FNetViewer(UNetConnection* InConnection)
     if (ViewingController)
     {
         FRotator ViewRotation = ViewingController->GetControlRotation();
-        Native::PlayerController::GetPlayerViewPoint(ViewingController, &ViewLocation, &ViewRotation);
+        // Native::PlayerController::GetPlayerViewPoint(ViewingController, &ViewLocation, &ViewRotation); // git just deleted the pattern thanks
         ViewDir = RotToVec(ViewRotation);
     }
 }
