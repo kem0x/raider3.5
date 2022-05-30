@@ -5,10 +5,10 @@
 
 FNetViewer::FNetViewer(UNetConnection* InConnection)
     : Connection(InConnection)
-      , InViewer(InConnection->PlayerController ? InConnection->PlayerController : InConnection->OwningActor)
-      , ViewTarget(InConnection->ViewTarget)
-      , ViewLocation(FVector())
-      , ViewDir(FVector())
+    , InViewer(InConnection->PlayerController ? InConnection->PlayerController : InConnection->OwningActor)
+    , ViewTarget(InConnection->ViewTarget)
+    , ViewLocation(FVector())
+    , ViewDir(FVector())
 {
     if (!InConnection->OwningActor)
         return;
@@ -23,24 +23,18 @@ FNetViewer::FNetViewer(UNetConnection* InConnection)
     if (ViewingController)
     {
         FRotator ViewRotation = ViewingController->GetControlRotation();
-        // Native::PlayerController::GetPlayerViewPoint(ViewingController, &ViewLocation, &ViewRotation); // git just deleted the pattern thanks
         ViewDir = RotToVec(ViewRotation);
     }
 }
 
 namespace Replication
 {
-    static FORCEINLINE bool IsActorRelevantToConnection(AActor* Actor, TArray<FNetViewer>& ConnectionViewers)
+    static FORCEINLINE bool IsActorRelevantToConnection(AActor* Actor, FNetViewer ConnectionViewer)
     {
-        // return true;
-        // Native::Actor::IsNetRelevantFor = decltype(Native::Actor::IsNetRelevantFor)(Actor->Vtable[0x149]); // this offset is probably wrong
-
-        for (int32 viewerIdx = 0; viewerIdx < ConnectionViewers.Num(); viewerIdx++)
+        printf("ConnectionViewer: InViewer %p, ViewTarget %p, ViewLocation %f\n", ConnectionViewer.InViewer, ConnectionViewer.ViewTarget, ConnectionViewer.ViewLocation.X);
+        if (Native::Actor::IsNetRelevantFor(Actor, ConnectionViewer.InViewer, ConnectionViewer.ViewTarget, ConnectionViewer.ViewLocation))
         {
-            if (Native::Actor::IsNetRelevantFor(Actor, ConnectionViewers[viewerIdx].InViewer, ConnectionViewers[viewerIdx].ViewTarget, ConnectionViewers[viewerIdx].ViewLocation))
-            {
-                return true;
-            }
+            return true;
         }
 
         return false;
@@ -183,19 +177,6 @@ namespace Replication
 
             else if (Connection->ViewTarget)
             {
-                /*
-                static auto ConnectionViewers = GetWorld()->PersistentLevel->WorldSettings->ReplicationViewers;
-                ConnectionViewers.Reset();
-                ConnectionViewers.Add(FNetViewer(Connection));
-
-                for (int32 ViewerIndex = 0; ViewerIndex < Connection->Children.Num(); ViewerIndex++)
-                {
-                    if (Connection->Children[ViewerIndex]->ViewTarget)
-                    {
-                        ConnectionViewers.Add(FNetViewer(Connection->Children[ViewerIndex]));
-                    }
-                }
-                */
 
                 if (Connection->PlayerController)
                     Native::PlayerController::SendClientAdjustment(Connection->PlayerController); // Sending adjustments to children is for splitscreen
@@ -209,13 +190,6 @@ namespace Replication
 
                     if (!Channel)
                     {
-                        /*
-                        if (!IsActorRelevantToConnection(Actor, ConnectionViewers) && !Actor->bAlwaysRelevant)
-                        {
-                            // If not relevant (and we don't have a channel), skip
-                            continue;
-                        }
-                        */
 
                         Channel = (UActorChannel*)(Native::NetConnection::CreateChannel(Connection, 2, true, -1));
                         Native::ActorChannel::SetChannelActor(Channel, Actor);
@@ -223,15 +197,10 @@ namespace Replication
 
                     if (Channel)
                     {
-                        // if (IsActorRelevantToConnection(Actor, ConnectionViewers) || Actor->bAlwaysRelevant) // temporary
-                        {
+                        //if (IsActorRelevantToConnection(Actor, FNetViewer(Connection)))
+                        //{
                             Native::ActorChannel::ReplicateActor(Channel);
-                        }
-                        // else // techinally we should wait like 5 seconds but whatever.
-                        {
-                            // todo get pattern
-                            // Native::ActorChannel::Close(Channel);
-                        }
+                        //}
                     }
                 }
             }
