@@ -5,10 +5,10 @@
 
 FNetViewer::FNetViewer(UNetConnection* InConnection)
     : Connection(InConnection)
-    , InViewer(InConnection->PlayerController ? InConnection->PlayerController : InConnection->OwningActor)
-    , ViewTarget(InConnection->ViewTarget)
-    , ViewLocation(FVector())
-    , ViewDir(FVector())
+      , InViewer(InConnection->PlayerController ? InConnection->PlayerController : InConnection->OwningActor)
+      , ViewTarget(InConnection->ViewTarget)
+      , ViewLocation(FVector())
+      , ViewDir(FVector())
 {
     if (!InConnection->OwningActor)
         return;
@@ -53,7 +53,7 @@ namespace Replication
         for (int ConnIdx = 0; ConnIdx < NetDriver->ClientConnections.Num(); ConnIdx++)
         {
             UNetConnection* Connection = NetDriver->ClientConnections[ConnIdx];
-			
+
             if (!Connection)
                 continue;
 
@@ -139,7 +139,7 @@ namespace Replication
             return;
 
         auto& List = GetNetworkObjectList(NetDriver).ActiveNetworkObjects;
-		
+
         for (auto& Object : List)
         {
             auto Actor = Object.Get()->Actor;
@@ -229,7 +229,7 @@ namespace Replication
                         }
                         // else // techinally we should wait like 5 seconds but whatever.
                         {
-							// todo get pattern
+                            // todo get pattern
                             // Native::ActorChannel::Close(Channel);
                         }
                     }

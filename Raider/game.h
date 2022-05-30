@@ -30,17 +30,17 @@ namespace Game
         GameMode->MatchState = InProgress;
         GameMode->K2_OnSetMatchState(InProgress);
 
-        if (Playlist) 
+        if (Playlist)
         {
             Playlist->bNoDBNO = false;
             Playlist->bIsLargeTeamGame = true;
-            
+
             Playlist->FriendlyFireType = EFriendlyFireType::On;
-            
+
             GameState->CurrentPlaylistData = Playlist;
             GameState->OnRep_CurrentPlaylistData();
         }
-        
+
         GameMode->FriendlyFireType = EFriendlyFireType::On;
 
         GameMode->StartPlay();

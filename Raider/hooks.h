@@ -47,16 +47,16 @@ namespace Hooks
     }
 
     APlayerController* SpawnPlayActor(UWorld* World, UPlayer* NewPlayer, ENetRole RemoteRole, FURL& URL, void* UniqueId, SDK::FString& Error, uint8 NetPlayerIndex)
-    {		
+    {
         auto PlayerController = (AFortPlayerControllerAthena*)Native::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex);
         NewPlayer->PlayerController = PlayerController;
 
-        AFortPlayerStateAthena* PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
-        
+        auto PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
+
         InitInventory(PlayerController);
 
         auto Pawn = (APlayerPawn_Athena_C*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), GetPlayerStart(PlayerController), PlayerController);
-		
+
         PlayerController->Pawn = Pawn;
         PlayerController->AcknowledgedPawn = Pawn;
         Pawn->Owner = PlayerController;
@@ -140,7 +140,7 @@ namespace Hooks
         {
             Bunch[7] += (16 * 1024 * 1024);
 
-            FString OnlinePlatformName = FString(L"");
+            auto OnlinePlatformName = FString(L"");
 
             Native::NetConnection::ReceiveFString(Bunch, Connection->ClientResponse);
             Native::NetConnection::ReceiveFString(Bunch, Connection->RequestURL);
@@ -234,7 +234,7 @@ namespace Hooks
             {
                 if (Function == UFunctionHooks::toHook[i])
                 {
-                    if(UFunctionHooks::toCall[i](Object, Parameters))
+                    if (UFunctionHooks::toCall[i](Object, Parameters))
                     {
                         return;
                     }
