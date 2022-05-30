@@ -111,7 +111,7 @@ namespace UFunctionHooks
                                 ClientMessage(PC, L"Requested item is not a pickaxe!\n");
                         }
 
-                        else if (Command == "revive" && Pawn->bIsDBNO)
+                        else if (Command == "revive" && Pawn && Pawn->bIsDBNO)
                         {
                             Pawn->bIsDBNO = false;
                             Pawn->OnRep_IsDBNO();
@@ -268,46 +268,49 @@ namespace UFunctionHooks
             auto DeadPC = (AFortPlayerControllerAthena*)Object;
             auto DeadPlayerState = (AFortPlayerStateAthena*)DeadPC->PlayerState;
 
-            if (false && DeadPC && Params) // this crashes like 9/10
+            if (DeadPC && Params) // this crashes like 9/10
             {
                 auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
                 GameState->PlayersLeft--;
                 // GameState->PlayerArray.RemoveAt(DeadPC->NetPlayerIndex);
 
-                if (DeadPC && DeadPC->Pawn)
+				if (false)
                 {
-                    // TODO: Show death drone
-                    DeadPC->Pawn->K2_DestroyActor();
-                }
-
-                auto KillerPawn = Params->DeathReport.KillerPawn;
-                auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
-
-                DeadPlayerState->OnRep_DeathInfo();
-
-                if (KillerPlayerState && KillerPawn && KillerPlayerState != DeadPlayerState)
-                {
-                    KillerPlayerState->KillScore++;
-                    KillerPlayerState->OnRep_Kills();
-                    Spectate(DeadPC->NetConnection, KillerPlayerState);
-                    DeadPC->K2_DestroyActor();
-                }
-
-                else
-                {
-                    TArray<AActor*> Pawns;
-                    static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
-                    GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
-                    if (Pawns.Num() != 0)
+                    if (DeadPC && DeadPC->Pawn)
                     {
-                        auto PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
-
-                        if (PawnToUse)
-                        {
-                            PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
-                            Spectate(DeadPC->NetConnection, (AFortPlayerStateAthena*)PawnToUse->PlayerState);
-                        }
+                        // TODO: Show death drone
+                        DeadPC->Pawn->K2_DestroyActor();
                     }
+
+                    auto KillerPawn = Params->DeathReport.KillerPawn;
+                    auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
+
+                    DeadPlayerState->OnRep_DeathInfo();
+
+                    if (KillerPlayerState && KillerPawn && KillerPlayerState != DeadPlayerState)
+                    {
+                        KillerPlayerState->KillScore++;
+                        KillerPlayerState->OnRep_Kills();
+                        Spectate(DeadPC->NetConnection, KillerPlayerState);
+                        DeadPC->K2_DestroyActor();
+                    }
+
+                    else
+                    {
+                        TArray<AActor*> Pawns;
+                        static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
+                        GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
+                        if (Pawns.Num() != 0)
+                        {
+                            auto PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
+
+                            if (PawnToUse)
+                            {
+                                PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
+                                Spectate(DeadPC->NetConnection, (AFortPlayerStateAthena*)PawnToUse->PlayerState);
+                            }
+                        }
+                    }                
                 }
             }
 
@@ -364,7 +367,7 @@ namespace UFunctionHooks
 
                     // ExitLocation.Z -= 500;
 
-                    InitPawn(PC, ExitLocation);
+                    InitPawn(PC, ExitLocation, FQuat(), false);
                     ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped();
                     PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
 
@@ -411,6 +414,7 @@ namespace UFunctionHooks
                 if (DBNOPawn && DBNOPC && DBNOPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
                 {
                     DBNOPawn->ReviveFromDBNO(PC);
+                    ApplyAbilities(DBNOPawn);
                 }
             }
 
@@ -525,17 +529,6 @@ namespace UFunctionHooks
             return false;
         })
 
-        DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerLoadingScreenDropped", {
-            auto Pawn = (APlayerPawn_Athena_C*)((AFortPlayerController*)Object)->Pawn;
-
-            if (Pawn && Pawn->AbilitySystemComponent)
-            {
-                ApplyAbilities(Pawn);
-            }
-
-            return false;
-        })
-
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerPawn.ServerChoosePart", {
             auto Params = (AFortPlayerPawn_ServerChoosePart_Params*)Parameters;
             auto Pawn = (APlayerPawn_Athena_C*)Object;
@@ -584,6 +577,51 @@ namespace UFunctionHooks
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCheatAll", {
             KickPlayer((AFortPlayerControllerAthena*)Object, L"Please do not do that!");
             return true;
+        })
+
+        DEFINE_PEHOOK("Function FortniteGame.FortPlayerControllerAthena.ClientNotifyWon", {
+            auto PlayerWhoWon = (AFortPlayerControllerAthena*)Object;
+
+            if (PlayerWhoWon)
+            {
+                // look away
+                auto PlayerName = PlayerWhoWon->PlayerState->GetPlayerName().c_str();
+                wchar_t KickMessageW[200] = L"";
+                wcsncpy_s(KickMessageW, PlayerName, std::wcslen(KickMessageW) + std::wcslen(PlayerName));
+				const wchar_t* Message = L" has won the game!";
+                wcsncat_s(KickMessageW, Message, std::wcslen(KickMessageW) + std::wcslen(Message));
+				
+                FString KickMessage = KickMessageW;
+
+				std::wcout << KickMessageW << '\n';
+				
+                if (GetWorld() && GetWorld()->NetDriver && GetWorld()->NetDriver->ClientConnections.Data)
+                {
+                    auto Connections = HostBeacon->NetDriver->ClientConnections;
+
+                    for (int i = 0; i < Connections.Num(); i++)
+                    {
+                        auto Controller = (AFortPlayerControllerAthena*)Connections[i]->PlayerController;
+
+                        if (!Controller) // || Controller == PlayerWhoWon)
+                            continue;
+
+                        if (!KickPlayer(Controller, KickMessage)) { }                        
+
+                    }
+                }
+
+                // if (KickMessageW)
+                    // free(KickMessageW); // crashes??
+            }
+			
+			// i don't
+
+            // GetPlayerController()->SwitchLevel(L"Athena_Terrain?game=/Game/Athena/Athena_GameMode.Athena_GameMode_C"); // we can't do this cuz we dont got a playercontroller lol
+            ExecuteConsoleCommand(L"open Athena_Terrain?game=/Game/Athena/Athena_GameMode.Athena_GameMode_C");
+            printf("Loading Athena_Terrain!\n");
+            bTraveled = true;
+            return false;
         })
 
         printf("[+] Hooked %zu UFunction(s)\n", toHook.size());

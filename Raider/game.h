@@ -33,6 +33,7 @@ namespace Game
         if (Playlist)
         {
             Playlist->bNoDBNO = false;
+            Playlist->GarbageCollectionFrequency = 0.f;
             Playlist->bIsLargeTeamGame = true;
 
             Playlist->FriendlyFireType = EFriendlyFireType::On;

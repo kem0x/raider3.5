@@ -643,8 +643,9 @@ void Listen()
 
     // GameState->SpectatorClass = ABP_SpectatorPawn_C::StaticClass();
     // sGameState->OnRep_SpectatorClass();
-
-    ((AAthena_GameMode_C*)GetWorld()->AuthorityGameMode)->GameSession->MaxPlayers = 100;
+	
+    std::cout << "[PLAYLIST] MaxPlayers: " << std::to_string(GameState->CurrentPlaylistData->MaxPlayers) << '\n';
+    ((AAthena_GameMode_C*)GetWorld()->AuthorityGameMode)->GameSession->MaxPlayers = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState)->CurrentPlaylistData->MaxPlayers;
 }
 
 static AFortPickup* SummonPickup(AFortPlayerPawn* Pawn, auto ItemDef, int Count, FVector Location)
@@ -880,7 +881,7 @@ auto TryActivateAbility(UAbilitySystemComponent* AbilitySystemComponent, FGamepl
     Native::AbilitySystemComponent::MarkAbilitySpecDirty(AbilitySystemComponent, *Spec);
 }
 
-static auto GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* GameplayAbilityClass)
+static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* GameplayAbilityClass)
 {
     auto AbilitySystemComponent = TargetPawn->AbilitySystemComponent;
 
@@ -891,12 +892,25 @@ static auto GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
     {
         FGameplayAbilitySpecHandle Handle{ rand() };
 
-        FGameplayAbilitySpec Spec{ -1, -1, -1, Handle, (UGameplayAbility*)GameplayAbilityClass->CreateDefaultObject(), 1, -1, nullptr, 0, false, false, false };
+        FGameplayAbilitySpec Spec
+        {
+            -1, -1, -1, Handle, (UGameplayAbility*)GameplayAbilityClass->CreateDefaultObject(),
+            1, -1, nullptr, 0, false, false, false
+        };
 
         return Spec;
     };
 
     auto Spec = GenerateNewSpec();
+
+    for (int i = 0; i < AbilitySystemComponent->ActivatableAbilities.Items.Num(); i++)
+    {
+        auto& CurrentSpec = AbilitySystemComponent->ActivatableAbilities.Items[i];
+
+        if (CurrentSpec.Ability->GetFullName() == Spec.Ability->GetFullName()) // Player already has this ability // TODO: not do getfullname
+			return;
+    }
+
     auto Handle = Native::AbilitySystemComponent::GiveAbility(AbilitySystemComponent, &Spec.Handle, Spec);
 }
 
@@ -979,6 +993,11 @@ static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
     } */
 }
 
+static void ExecuteConsoleCommand(FString Message)
+{
+    GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), Message, nullptr);
+}
+
 static bool KickPlayer(AFortPlayerControllerAthena* PC, FString Message)
 {
     FText text = reinterpret_cast<UKismetTextLibrary*>(UKismetTextLibrary::StaticClass())->STATIC_Conv_StringToText(Message);
@@ -1049,6 +1068,7 @@ FVector RotToVec(const FRotator& Rotator)
 inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already has the ability.
 {
     auto Pawn = (APlayerPawn_Athena_C*)_Pawn;
+
     static auto SprintAbility = UObject::FindClass("Class FortniteGame.FortGameplayAbility_Sprint");
     static auto ReloadAbility = UObject::FindClass("Class FortniteGame.FortGameplayAbility_Reload");
     static auto RangedWeaponAbility = UObject::FindClass("Class FortniteGame.FortGameplayAbility_RangedWeapon");
@@ -1056,7 +1076,11 @@ inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already ha
     static auto DeathAbility = UObject::FindClass("BlueprintGeneratedClass GA_DefaultPlayer_Death.GA_DefaultPlayer_Death_C");
     static auto InteractUseAbility = UObject::FindClass("BlueprintGeneratedClass GA_DefaultPlayer_InteractUse.GA_DefaultPlayer_InteractUse_C");
     static auto InteractSearchAbility = UObject::FindClass("BlueprintGeneratedClass GA_DefaultPlayer_InteractSearch.GA_DefaultPlayer_InteractSearch_C");
-    static auto EmoteAbility = UObject::FindClass("BlueprintGeneratedClass GAB_Emote_Generic.GAB_Emote_Generic_C");
+    // static auto EmoteAbility = UObject::FindClass("BlueprintGeneratedClass GAB_Emote_Generic.GAB_Emote_Generic_C");
+    static auto ReviveAbility = UObject::FindClass("BlueprintGeneratedClass GAB_AthenaDBNORevive.GAB_AthenaDBNORevive_C");
+    static auto ResurrectAbility = UObject::FindClass("BlueprintGeneratedClass GAB_PlayerDBNOResurrect.GAB_PlayerDBNOResurrect_C");
+    static auto AthenaDBNOAbility = UObject::FindClass("BlueprintGeneratedClass GAB_AthenaDBNO.GAB_AthenaDBNO_C");
+    static auto PlayerDBNOAbility = UObject::FindClass("BlueprintGeneratedClass GAB_PlayerDBNO.GAB_PlayerDBNO_C");
 
     GrantGameplayAbility(Pawn, SprintAbility);
     GrantGameplayAbility(Pawn, ReloadAbility);
@@ -1065,10 +1089,19 @@ inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already ha
     GrantGameplayAbility(Pawn, DeathAbility);
     GrantGameplayAbility(Pawn, InteractUseAbility);
     GrantGameplayAbility(Pawn, InteractSearchAbility);
-    GrantGameplayAbility(Pawn, EmoteAbility);
+    // GrantGameplayAbility(Pawn, ReviveAbility);
+    // GrantGameplayAbility(Pawn, AthenaDBNOAbility);
+    // GrantGameplayAbility(Pawn, ResurrectAbility);
+    // GrantGameplayAbility(Pawn, PlayerDBNOAbility);
+    // GrantGameplayAbility(Pawn, EmoteAbility);
 }
 
-static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector{ 1250, 1818, 3284 }, FQuat Rotation = FQuat())
+void Emote(AFortPlayerControllerAthena* Controller, UAnimMontage* Montage)
+{
+	
+}
+
+static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector{ 1250, 1818, 3284 }, FQuat Rotation = FQuat(), bool bRefreshLoadout = true)
 {
     if (PlayerController->Pawn)
         PlayerController->Pawn->K2_DestroyActor();
@@ -1094,29 +1127,30 @@ static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc 
 
     Pawn->bReplicateMovement = true;
     Pawn->OnRep_ReplicateMovement();
-
-    static auto FortRegisteredPlayerInfo = UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
-
-    auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
-
-    PlayerController->StrongMyHero = Hero;
-
-    auto PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
-
-    PlayerState->HeroType = Hero->GetHeroTypeBP();
-    PlayerState->OnRep_HeroType();
-
-    for (auto i = 0; i < Hero->CharacterParts.Num(); i++)
+	
+    if (bRefreshLoadout)
     {
-        auto Part = Hero->CharacterParts[i];
+        static auto FortRegisteredPlayerInfo = UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
 
-        if (!Part)
-            continue;
+        auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
 
-        PlayerState->CharacterParts[i] = Part;
+        auto PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
+
+        PlayerState->HeroType = Hero->GetHeroTypeBP();
+        PlayerState->OnRep_HeroType();
+
+        for (auto i = 0; i < Hero->CharacterParts.Num(); i++)
+        {
+            auto Part = Hero->CharacterParts[i];
+
+            if (!Part)
+                continue;
+
+            PlayerState->CharacterParts[i] = Part;
+        }
+
+        PlayerState->OnRep_CharacterParts();	
     }
-
-    PlayerState->OnRep_CharacterParts();
 
     PlayerController->OnRep_QuickBar();
     PlayerController->QuickBars->OnRep_PrimaryQuickBar();
