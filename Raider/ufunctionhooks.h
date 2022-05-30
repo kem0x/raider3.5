@@ -51,7 +51,7 @@ namespace UFunctionHooks
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerPawn.ServerHandlePickup", { 
-            Inventory::OnPickup((AFortPlayerControllerAthena*)((APawn*)Object)->Controller, Parameters, true);
+            Inventory::OnPickup((AFortPlayerControllerAthena*)((APawn*)Object)->Controller, Parameters);
             return false;
         })
 
@@ -560,7 +560,7 @@ namespace UFunctionHooks
 
         DEFINE_PEHOOK("Function FortniteGame.FortGameModeAthena.OnAircraftExitedDropZone", { // To make this faster we could loop through client connections and get their controllers
 
-			if (GetWorld() && GetWorld()->NetDriver && GetWorld()->NetDriver->ClientConnections[0])
+			if (GetWorld() && GetWorld()->NetDriver && GetWorld()->NetDriver->ClientConnections.Data)
             {
                 auto Connections = HostBeacon->NetDriver->ClientConnections;
 
@@ -580,6 +580,7 @@ namespace UFunctionHooks
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCheatAll", {
+            KickPlayer((AFortPlayerControllerAthena*)Object, L"Please do not do that!");
             return true;
         })
 

@@ -1298,14 +1298,19 @@ namespace Inventory // includes quickbars
         return false;
     }
 
-    UFortItemDefinition* GetDefinitionInSlot(AFortPlayerControllerAthena* Controller, int Slot, int Item = 0)
+    inline UFortItemDefinition* GetDefinitionInSlot(AFortPlayerControllerAthena* Controller, int Slot, int Item = 0, EFortQuickBars QuickBars = EFortQuickBars::Primary)
     {
         if (!Controller)
             return nullptr;
 
         auto& ItemInstances = Controller->WorldInventory->Inventory.ItemInstances;
-        auto& QuickBarSlots = Controller->QuickBars->PrimaryQuickBar.Slots;
-        auto& ToFindGuid = QuickBarSlots[Slot].Items[Item];
+
+        FGuid ToFindGuid;
+
+        if (QuickBars == EFortQuickBars::Primary)
+            ToFindGuid = Controller->QuickBars->PrimaryQuickBar.Slots[Slot].Items[Item];
+        else if (QuickBars == EFortQuickBars::Secondary)
+            ToFindGuid = Controller->QuickBars->SecondaryQuickBar.Slots[Slot].Items[Item];
 
         for (int j = 0; j < ItemInstances.Num(); j++)
         {
@@ -1378,7 +1383,7 @@ namespace Inventory // includes quickbars
             return;
     }
 
-    bool RemoveItemFromSlot(AFortPlayerControllerAthena* Controller, int Slot, EFortQuickBars Quickbars = EFortQuickBars::Primary, int Amount = -1) // -1 for all items in the slot
+    inline bool RemoveItemFromSlot(AFortPlayerControllerAthena* Controller, int Slot, EFortQuickBars Quickbars = EFortQuickBars::Primary, int Amount = -1) // -1 for all items in the slot
     {
         if (!Controller)
             return false;
@@ -1411,10 +1416,7 @@ namespace Inventory // includes quickbars
 				if (!ItemInstance)
 					continue;
 
-				auto Def = ItemInstance->ItemEntry.ItemDefinition;
 				auto Guid = ItemInstance->ItemEntry.ItemGuid;
-
-                std::cout << std::format("[{}] {} {}", i, j, Def->GetFullName()) << '\n';
 
 				if (ToRemoveGuid == Guid)
 				{
@@ -1427,8 +1429,6 @@ namespace Inventory // includes quickbars
 			for (int x = 0; x < Controller->WorldInventory->Inventory.ReplicatedEntries.Num(); x++)
             {
                 auto& ItemEntry = Controller->WorldInventory->Inventory.ReplicatedEntries[x];
-
-                std::cout << std::format("[{}] {} {}", i, x, ItemEntry.ItemDefinition->GetFullName()) << '\n';
 
 				if (ItemEntry.ItemGuid == ToRemoveGuid)
 				{
@@ -1483,12 +1483,11 @@ namespace Inventory // includes quickbars
                 {
                     if (PrimaryQuickBarSlots[i].Items[j] == Params->ItemGuid)
                     {
-                        auto Definition = GetDefinitionInSlot(Controller, i, j);
+                        auto Definition = GetDefinitionInSlot(Controller, i, j, EFortQuickBars::Primary);
                         Inventory::RemoveItemFromSlot(Controller, i, EFortQuickBars::Primary, j + 1);
 						
                         if (Definition)
                         {
-                            std::cout << "Matching Guid for " << Definition->GetFullName() << '\n';
                             SummonPickup((AFortPlayerPawn*)Controller->Pawn, Definition, 1, Controller->Pawn->K2_GetActorLocation());
                             bWasSuccessful = true;
                             break;
@@ -1500,35 +1499,34 @@ namespace Inventory // includes quickbars
             }
         }
 
-        for (int i = 0; i < SecondaryQuickBarSlots.Num(); i++)
+        if (!bWasSuccessful)
         {
-            if (SecondaryQuickBarSlots[i].Items.Data)
+            for (int i = 0; i < SecondaryQuickBarSlots.Num(); i++)
             {
-                for (int j = 0; j < SecondaryQuickBarSlots[i].Items.Num(); j++)
+                if (SecondaryQuickBarSlots[i].Items.Data)
                 {
-                    if (SecondaryQuickBarSlots[i].Items[j] == Params->ItemGuid)
+                    for (int j = 0; j < SecondaryQuickBarSlots[i].Items.Num(); j++)
                     {
-                        auto Definition = Inventory::GetDefinitionInSlot(Controller, i, j);
-                        Inventory::RemoveItemFromSlot(Controller, i, EFortQuickBars::Secondary, j + 1);
-						
-                        if (Definition)
+                        if (SecondaryQuickBarSlots[i].Items[j] == Params->ItemGuid)
                         {
-                            std::cout << "Matching Guid for " << Definition->GetFullName() << '\n';
-                            SummonPickup((AFortPlayerPawn*)Controller->Pawn, Definition, 1, Controller->Pawn->K2_GetActorLocation());
-                            bWasSuccessful = true;
-                            break;
+                            auto Definition = Inventory::GetDefinitionInSlot(Controller, i, j);
+                            Inventory::RemoveItemFromSlot(Controller, i, EFortQuickBars::Secondary, j + 1);
+
+                            if (Definition)
+                            {
+                                SummonPickup((AFortPlayerPawn*)Controller->Pawn, Definition, 1, Controller->Pawn->K2_GetActorLocation());
+                                bWasSuccessful = true;
+                                break;
+                            }
+                            else
+                                std::cout << "Could not find Definition!\n";
                         }
-                        else
-                            std::cout << "Could not find Definition!\n";
                     }
                 }
             }
         }
 
-        std::cout << "ItemInstances: " << ItemInstances.Num() << '\n';
-        std::cout << "ReplicatedEntries: " << Controller->WorldInventory->Inventory.ReplicatedEntries.Num() << '\n';
-
-        if (bWasSuccessful = true && PrimaryQuickBarSlots[0].Items.Data)
+        if (bWasSuccessful && PrimaryQuickBarSlots[0].Items.Data)
             EquipInventoryItem(Controller, PrimaryQuickBarSlots[0].Items[0]); // just select pickaxe for now
 
         /* for (int i = ItemInstances.Num(); i > 0; i--) // equip the item before until its valid
@@ -1552,7 +1550,7 @@ namespace Inventory // includes quickbars
         return bWasSuccessful;
     }
 
-    inline void OnPickup(AFortPlayerControllerAthena* Controller, void* params, bool bEquip = false) // TODO: Add secondary quickbar adding
+    inline void OnPickup(AFortPlayerControllerAthena* Controller, void* params)
     {
         auto Params = (AFortPlayerPawn_ServerHandlePickup_Params*)params;
 
@@ -1563,61 +1561,83 @@ namespace Inventory // includes quickbars
 
         if (Params->Pickup)
         {
-            if (bEquip && !Params->Pickup->PrimaryPickupItemEntry.ItemDefinition->IsA(UFortWeaponItemDefinition::StaticClass())) // dont equip anything that is not a weapon
-                bEquip = false;
+            bool bCanGoInSecondary = true; // todo: rename
+
+            if (Params->Pickup->PrimaryPickupItemEntry.ItemDefinition->IsA(UFortWeaponItemDefinition::StaticClass()))
+                bCanGoInSecondary = false;
 
             auto WorldItemDefinition = (UFortWorldItemDefinition*)Params->Pickup->PrimaryPickupItemEntry.ItemDefinition;
-            auto& QuickBarSlots = Controller->QuickBars->PrimaryQuickBar.Slots;
 
-            for (int i = 1; i < QuickBarSlots.Num(); i++)
+            if (!bCanGoInSecondary)
             {
-                if (!QuickBarSlots[i].Items.Data) // Checks if the slot is empty
+                auto& PrimaryQuickBarSlots = Controller->QuickBars->PrimaryQuickBar.Slots;
+
+                for (int i = 1; i < PrimaryQuickBarSlots.Num(); i++)
                 {
-                    if (i >= 6)
+                    if (!PrimaryQuickBarSlots[i].Items.Data) // Checks if the slot is empty
                     {
-                        auto QuickBars = Controller->QuickBars;
-
-                        auto FocusedSlot = QuickBars->PrimaryQuickBar.CurrentFocusedSlot;
-
-                        if (FocusedSlot == 0) // don't replace the pickaxe
-                            continue;
-
-                        i = FocusedSlot;
-
-                        FGuid& FocusedGuid = QuickBarSlots[FocusedSlot].Items[0];
-
-                        for (int j = 0; i < ItemInstances.Num(); j++)
+                        if (i >= 6)
                         {
-                            auto ItemInstance = ItemInstances[j];
+                            auto QuickBars = Controller->QuickBars;
 
-                            if (!ItemInstance)
+                            auto FocusedSlot = QuickBars->PrimaryQuickBar.CurrentFocusedSlot;
+
+                            if (FocusedSlot == 0) // don't replace the pickaxe
                                 continue;
 
-                            auto Def = ItemInstance->ItemEntry.ItemDefinition;
-                            auto Guid = ItemInstance->ItemEntry.ItemGuid;
+                            i = FocusedSlot;
 
-                            if (FocusedGuid == Guid)
+                            FGuid& FocusedGuid = PrimaryQuickBarSlots[FocusedSlot].Items[0];
+
+                            for (int j = 0; i < ItemInstances.Num(); j++)
                             {
-                                SummonPickup((APlayerPawn_Athena_C*)Controller->Pawn, Def, 1 /* ItemInstance->ItemEntry.Count */, Controller->Pawn->K2_GetActorLocation());
-                                break;
+                                auto ItemInstance = ItemInstances[j];
+
+                                if (!ItemInstance)
+                                    continue;
+
+                                auto Def = ItemInstance->ItemEntry.ItemDefinition;
+                                auto Guid = ItemInstance->ItemEntry.ItemGuid;
+
+                                if (FocusedGuid == Guid)
+                                {
+                                    SummonPickup((APlayerPawn_Athena_C*)Controller->Pawn, Def, 1 /* ItemInstance->ItemEntry.Count */, Controller->Pawn->K2_GetActorLocation());
+                                    break;
+                                }
                             }
+
+                            Inventory::RemoveItemFromSlot(Controller, FocusedSlot, EFortQuickBars::Primary);
+
+                            Inventory::Update(Controller, 0, true); // I don't think this is needed
                         }
 
-                        Inventory::RemoveItemFromSlot(Controller, FocusedSlot, EFortQuickBars::Primary);
-						
-                        Inventory::Update(Controller, 0, true); // I don't think this is needed
+                        int Idx = 0;
+                        auto entry = Inventory::AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Primary, 1, &Idx); // Params->Pickup->PrimaryPickupItemEntry.Count);
+                        Params->Pickup->K2_DestroyActor();
+
+                        Inventory::Update(Controller, Idx);
+
+                        break;
                     }
+                }
+            }
 
-                    int Idx = 0;
-                    auto entry = Inventory::AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Primary, 1, &Idx); // Params->Pickup->PrimaryPickupItemEntry.Count);
-                    Params->Pickup->K2_DestroyActor();
+            else
+            {
+                auto& SecondaryQuickBarSlots = Controller->QuickBars->SecondaryQuickBar.Slots;
 
-                    if (bEquip)
-                        EquipInventoryItem(Controller, entry.ItemGuid);
+                for (int i = 0; i < SecondaryQuickBarSlots.Num(); i++)
+                {
+                    if (!SecondaryQuickBarSlots[i].Items.Data) // Checks if the slot is empty
+                    {
+                        int Idx = 0;
+                        auto entry = Inventory::AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Secondary, 1, &Idx); // Params->Pickup->PrimaryPickupItemEntry.Count);
+                        Params->Pickup->K2_DestroyActor();
 
-                    Inventory::Update(Controller, Idx);
+                        Inventory::Update(Controller, Idx);
 
-                    break;
+                        break;
+                    }
                 }
             }
         }
