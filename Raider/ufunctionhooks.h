@@ -240,13 +240,13 @@ namespace UFunctionHooks
                 auto RotationIterations = Params->RotationIterations;
 
                 printf("RotationIterations: %i\n", RotationIterations);
-
+				
                 if (BuildingActor && NewBuildingClass)
                 {
                     auto rotation = BuildingActor->K2_GetActorRotation(); //Not correct, this is not centered.
 
-                    rotation.Yaw += rotation.Yaw * RotationIterations;                    
-					
+                    rotation.Yaw += rotation.Yaw * RotationIterations;
+
                     //  BuildingActor->K2_DestroyActor();					
                     BuildingActor->SilentDie();
 
@@ -341,7 +341,7 @@ namespace UFunctionHooks
 
             if (Controller && Pawn && Params->BuildingActorToRepair)
             {
-                Params->BuildingActorToRepair->RepairBuilding(Controller, 10); // figure out how to get the repair amount
+                Params->BuildingActorToRepair->RepairBuilding(Controller, 10); // TODO: Figure out how to get the repair amount
             }
 
             return false;
@@ -352,9 +352,8 @@ namespace UFunctionHooks
             auto PC = (AFortPlayerControllerAthena*)Object;
             auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
 
-            if (PC && Params && !PC->Pawn && PC->IsInAircraft()) // TODO: Teleport the player's pawn instead of making a new one.
+            if (PC && Params && !PC->Pawn && PC->IsInAircraft())
             {
-                // ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped();
                 auto Aircraft = (AFortAthenaAircraft*)GameState->Aircrafts[0];
 
                 if (Aircraft)
@@ -364,6 +363,7 @@ namespace UFunctionHooks
                     // ExitLocation.Z -= 500;
 
                     InitPawn(PC, ExitLocation);
+                    ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped();
                     PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
 
                     bool bFound = false;

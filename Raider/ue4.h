@@ -317,12 +317,10 @@ bool CanBuild(UClass* BuildingClass, FVector& Location)
             // return false;
 
             bool bIsAStair = BuildingClass->IsA(APBWA_W1_StairW_C::StaticClass());
-            if (!bIsAStair || (bIsAStair && Building->BuildingType == EFortBuildingType::Stairs))
+            if ((!bIsAStair && !Building->IsA(APBWA_W1_StairW_C::StaticClass())) || (bIsAStair && Building->IsA(APBWA_W1_StairW_C::StaticClass())))
             {
                 return false;
             }
-            else
-                std::cout << "AAA\n";
         }
     }
 
@@ -336,11 +334,18 @@ bool IsCurrentlyDisconnecting(UNetConnection* Connection)
 
 void Spectate(UNetConnection* SpectatingConnection, AFortPlayerStateAthena* StateToSpectate)
 {
+    if (!SpectatingConnection || !StateToSpectate)
+        return;
+
     auto PawnToSpectate = StateToSpectate->GetCurrentPawn();
     auto DeadPC = (AFortPlayerControllerAthena*)SpectatingConnection->PlayerController;
+
+    if (!DeadPC)
+        return;
+
     auto DeadPlayerState = (AFortPlayerStateAthena*)DeadPC->PlayerState;
 
-    if (!IsCurrentlyDisconnecting(SpectatingConnection) && SpectatingConnection && StateToSpectate && DeadPlayerState && DeadPC && PawnToSpectate)
+    if (!IsCurrentlyDisconnecting(SpectatingConnection) && DeadPlayerState && PawnToSpectate)
     {
         DeadPC->PlayerToSpectateOnDeath = PawnToSpectate;
         DeadPC->SpectateOnDeath();
@@ -1509,7 +1514,7 @@ namespace Inventory // includes quickbars
                     {
                         if (SecondaryQuickBarSlots[i].Items[j] == Params->ItemGuid)
                         {
-                            auto Definition = Inventory::GetDefinitionInSlot(Controller, i, j);
+                            auto Definition = Inventory::GetDefinitionInSlot(Controller, i, j, EFortQuickBars::Secondary);
                             Inventory::RemoveItemFromSlot(Controller, i, EFortQuickBars::Secondary, j + 1);
 
                             if (Definition)
