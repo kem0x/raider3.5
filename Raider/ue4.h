@@ -314,14 +314,7 @@ bool CanBuild(UClass* BuildingClass, FVector& Location)
 
         if (Building->K2_GetActorLocation() == Location) // If we use a vector of locations, I do not know how to track if the actor has been destroyed.
         {
-<<<<<<< Updated upstream
-            // return false;
-
-            bool bIsAStair = BuildingClass->IsA(APBWA_W1_StairW_C::StaticClass());
-            if ((!bIsAStair && !Building->IsA(APBWA_W1_StairW_C::StaticClass())) || (bIsAStair && Building->IsA(APBWA_W1_StairW_C::StaticClass())))
-=======
             if (!BuildingClass->IsA(APBWA_W1_StairW_C::StaticClass()) || (BuildingClass->IsA(APBWA_W1_StairW_C::StaticClass()) && Building->BuildingType == EFortBuildingType::Stairs))
->>>>>>> Stashed changes
             {
                 return false;
             }

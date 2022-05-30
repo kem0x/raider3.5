@@ -41,15 +41,12 @@ namespace GUI
                         bStartedBus = true; // Instead of relying on a variable, we should check if the aircraft has started or is planning to start (potentially by checking the gamephase?).
                     }
                 }
-<<<<<<< Updated upstream
-=======
 
                 if (ZeroGUI::Button((char*)"Summon FloorLoot", FVector2D{ 100, 25 })) // this isn't a great idea due to no relevancy...
                 {
                     CreateThread(0, 0, SummonFloorLoot, 0, 0, 0);
                     printf("Spawning Floor Loot!\n");
                 }
->>>>>>> Stashed changes
             }
             else
             {
