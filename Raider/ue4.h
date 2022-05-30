@@ -368,7 +368,9 @@ void Spectate(UNetConnection* SpectatingConnection, AFortPlayerStateAthena* Stat
         SpectatorPC->Possess(SpectatorPawn); */
 
         if (DeadPC->QuickBars)
+        {
             DeadPC->QuickBars->K2_DestroyActor();
+        }
     }
 }
 
@@ -391,9 +393,6 @@ inline void UpdateInventory(AFortPlayerController* PlayerController, int Dirty =
 
 inline auto AddItem(AFortPlayerController* PC, UFortItemDefinition* Def, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1, int* Idx = nullptr)
 {
-    if (!PC || !Def)
-        return FFortItemEntry();
-
     if (Def->IsA(UFortWeaponItemDefinition::StaticClass()))
         Count = 1;
 
@@ -403,11 +402,9 @@ inline auto AddItem(AFortPlayerController* PC, UFortItemDefinition* Def, int Slo
     if (Bars == EFortQuickBars::Primary && Slot >= 6)
         Slot = 5;
 
-    auto& QuickBarSlots = PC->QuickBars->PrimaryQuickBar.Slots;
-
     auto TempItemInstance = (UFortWorldItem*)Def->CreateTemporaryItemInstanceBP(Count, 1);
 
-    if (TempItemInstance)
+    if (TempItemInstance && (PC || Def))
     {
         TempItemInstance->SetOwningControllerForTemporaryItem(PC);
 
@@ -416,12 +413,10 @@ inline auto AddItem(AFortPlayerController* PC, UFortItemDefinition* Def, int Slo
 
         auto& ItemEntry = TempItemInstance->ItemEntry;
 
-        auto _Idx = PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
-
         if (Idx)
-            *Idx = _Idx;
+            *Idx = PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
 
-        GetItemInstances(PC).Add((UFortWorldItem*)TempItemInstance);
+        GetItemInstances(PC).Add(TempItemInstance);
         PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
 
         return ItemEntry;
