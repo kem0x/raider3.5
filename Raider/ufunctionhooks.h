@@ -7,8 +7,8 @@
 #include "ue4.h"
 
 // #define LOGGING
-static bool bDeveloperCheats = true;
-    
+#define CHEATS
+
 //Define the hook with ufunction full name
 //Return true in the lambda to prevent the original function call
 
@@ -55,6 +55,7 @@ namespace UFunctionHooks
             return false;
         })
 
+#ifdef CHEATS
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCheat", {
             if (Object->IsA(AFortPlayerControllerAthena::StaticClass()))
             {
@@ -110,7 +111,7 @@ namespace UFunctionHooks
                                 ClientMessage(PC, L"Requested item is not a pickaxe!\n");
                         }
 
-                        else if (bDeveloperCheats && Command == "revive" && Pawn->bIsDBNO)
+                        else if (Command == "revive" && Pawn->bIsDBNO)
                         {
                             Pawn->bIsDBNO = false;
                             Pawn->OnRep_IsDBNO();
@@ -119,7 +120,7 @@ namespace UFunctionHooks
                             Pawn->SetHealth(100);
                         }
 
-                        else if (bDeveloperCheats && Command == "respawn" && !Pawn) // ISSUE: Player is unable to shoot.
+                        else if (Command == "respawn" && !Pawn) // ISSUE: Player is unable to shoot.
                         {
                             InitPawn(PC);
                             PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
@@ -133,13 +134,13 @@ namespace UFunctionHooks
                             ApplyAbilities(PC->Pawn);
                         }
 
-                        else if (bDeveloperCheats && Command == "togglegodmode")
+                        else if (Command == "togglegodmode")
                         {
                             Pawn->bCanBeDamaged = !Pawn->bCanBeDamaged;
                             std::cout << "Godmode enabled for " << Pawn->GetName() << '\n';
                         }
 
-                        else if (bDeveloperCheats && Command == "giveweapon" && NumArgs >= 1)
+                        else if (Command == "giveweapon" && NumArgs >= 1)
                         {
                             auto& weaponName = Arguments[1];
                             int slot = 1;
@@ -176,6 +177,7 @@ namespace UFunctionHooks
 
             return false;
         })
+#endif
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCreateBuildingActor", {
             auto PC = (AFortPlayerControllerAthena*)Object;
