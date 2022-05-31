@@ -105,7 +105,7 @@ namespace Native
     namespace PlayerController
     {
         inline bool (*SendClientAdjustment)(APlayerController* Controller);
-        inline void (*GetPlayerViewPoint)(FVector* Location, FRotator* Rotation);
+        inline void (*GetPlayerViewPoint)(APlayerController* Controller, FVector* Location, FRotator* Rotation);
     }
 
     namespace AbilitySystemComponent
