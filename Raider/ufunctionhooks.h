@@ -100,7 +100,7 @@ namespace UFunctionHooks
 
                                 if (bFound)
                                 {
-                                    ChangeItem(PC, PickaxeEntry.ItemDefinition, PID, 0);
+                                    Inventory::ChangeItemInSlot(PC, 0, (UFortWorldItemDefinition*)PickaxeEntry.ItemDefinition);
                                     ClientMessage(PC, (L"Changed pickaxe to " + toWStr(PickaxeName) + L"!").c_str());
                                 }
 
@@ -129,7 +129,7 @@ namespace UFunctionHooks
                             auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
 
                             if (bFound)
-                                EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
+                                Inventory::EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
 
                             ApplyAbilities(PC->Pawn);
                         }
@@ -375,7 +375,7 @@ namespace UFunctionHooks
                     auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
 
                     if (bFound)
-                        EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
+                        Inventory::EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
 
                     // PC->Pawn->K2_TeleportTo(ExitLocation, Params->ClientRotation);
                 }
@@ -519,7 +519,7 @@ namespace UFunctionHooks
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerExecuteInventoryItem", {
-            EquipInventoryItem((AFortPlayerControllerAthena*)Object, *(FGuid*)Parameters);
+            Inventory::EquipInventoryItem((AFortPlayerControllerAthena*)Object, *(FGuid*)Parameters);
 
             return false;
         })

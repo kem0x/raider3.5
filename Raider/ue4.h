@@ -452,30 +452,6 @@ inline AFortWeapon* EquipWeaponDefinition(APawn* dPawn, UFortWeaponItemDefinitio
     return nullptr;
 }
 
-inline void EquipInventoryItem(AFortPlayerControllerAthena* PC, FGuid& Guid)
-{
-    if (!PC || PC->IsInAircraft())
-        return;
-
-    auto& ItemInstances = GetItemInstances(PC);
-
-    for (int i = 0; i < ItemInstances.Num(); i++)
-    {
-        auto CurrentItemInstance = ItemInstances[i];
-
-        if (!CurrentItemInstance)
-            continue;
-
-        auto Def = (UFortWeaponItemDefinition*)CurrentItemInstance->GetItemDefinitionBP();
-
-        if (CurrentItemInstance->GetItemGuid() == Guid && Def)
-        {
-            EquipWeaponDefinition((APlayerPawn_Athena_C*)PC->Pawn, Def, Guid);
-            break;
-        }
-    }
-}
-
 inline void DumpObjects()
 {
     std::ofstream objects("ObjectsDump.txt");
@@ -986,6 +962,8 @@ namespace Inventory // includes quickbars
             {
                 auto items = QuickBarSlots[i].Items;
 
+                // items.Contains(Guid);
+                
                 for (int i = 0; items.Num(); i++)
                 {
                     if (items[i] == Guid)
@@ -995,6 +973,48 @@ namespace Inventory // includes quickbars
         }
 
         return false;
+    }
+
+    inline void EquipInventoryItem(AFortPlayerControllerAthena* Controller, FGuid& Guid)
+    {
+        if (!Controller || Controller->IsInAircraft())
+            return;
+
+        auto& ItemInstances = GetItemInstances(Controller);
+
+        for (int i = 0; i < ItemInstances.Num(); i++)
+        {
+            auto CurrentItemInstance = ItemInstances[i];
+
+            if (!CurrentItemInstance)
+                continue;
+
+            auto Definition = (UFortWeaponItemDefinition*)CurrentItemInstance->GetItemDefinitionBP();
+
+            if (CurrentItemInstance->GetItemGuid() == Guid && Definition)
+            {
+                auto Pawn = (APlayerPawn_Athena_C*)Controller->Pawn;
+                if (Pawn && Definition)
+                {
+                    if (!IsGuidInInventory(Controller, Guid))
+                        return;
+
+                    auto Weapon = Pawn->EquipWeaponDefinition(Definition, Guid);
+
+                    if (Weapon)
+                    {
+                        Weapon->WeaponData = Definition;
+                        Weapon->ItemEntryGuid = Guid;
+                        // Weapon->SetOwner(Pawn);
+                        Weapon->OnRep_ReplicatedWeaponData();
+                        Weapon->ClientGivenTo(Pawn);
+                        Pawn->ClientInternalEquipWeapon(Weapon);
+                        Pawn->OnRep_CurrentWeapon(); // i dont think this is needed but alr
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     inline UFortItemDefinition* GetDefinitionInSlot(AFortPlayerControllerAthena* Controller, int Slot, int Item = 0, EFortQuickBars QuickBars = EFortQuickBars::Primary)
@@ -1156,6 +1176,19 @@ namespace Inventory // includes quickbars
         Inventory::Update(Controller, true);
 
         return bWasSuccessful;
+    }
+
+	void ChangeItemInSlot(AFortPlayerControllerAthena* Controller, int Slot, UFortWorldItemDefinition* Definition, EFortQuickBars Quickbars = EFortQuickBars::Primary)
+    {
+        if (!Controller || !Definition)
+			return;
+
+        if (Inventory::RemoveItemFromSlot(Controller, Slot, Quickbars))
+        {
+            Inventory::AddItemToSlot(Controller, Definition, Slot, Quickbars);
+
+            Inventory::Update(Controller);
+        }
     }
 
     inline bool OnDrop(AFortPlayerControllerAthena* Controller, void* params)
@@ -1374,18 +1407,7 @@ namespace Inventory // includes quickbars
     }
 }
 
-void ChangeItem(AFortPlayerControllerAthena* PC, UFortItemDefinition* Old, UFortItemDefinition* New, int Slot, bool bEquip = false) // we can find the slot too
-{
-    Inventory::RemoveItemFromSlot(PC, Slot, EFortQuickBars::Primary);
-    auto NewEntry = Inventory::AddItemToSlot(PC, (UFortWorldItemDefinition*)New, Slot);
-
-    if (bEquip)
-        EquipInventoryItem(PC, NewEntry.ItemGuid);
-
-	Inventory::Update(PC);
-}
-
-void EquipLoadout(AFortPlayerControllerAthena* Controller, std::vector<UFortWeaponRangedItemDefinition*> WIDS)
+void EquipGunLoadout(AFortPlayerControllerAthena* Controller, std::vector<UFortWeaponRangedItemDefinition*> WIDS)
 {
     FFortItemEntry pickaxeEntry;
 
@@ -1405,5 +1427,5 @@ void EquipLoadout(AFortPlayerControllerAthena* Controller, std::vector<UFortWeap
         }
     }
 
-    EquipInventoryItem(Controller, pickaxeEntry.ItemGuid);
+    Inventory::EquipInventoryItem(Controller, pickaxeEntry.ItemGuid);
 }

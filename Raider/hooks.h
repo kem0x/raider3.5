@@ -56,9 +56,9 @@ namespace Hooks
 
         Inventory::InitController(PlayerController);
 
-        auto Pawn = (APlayerPawn_Athena_C*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), GetPlayerStart(PlayerController), PlayerController);
-        Pawn->IsMale = false;
 		InitPawn(PlayerController, GetPlayerStart(PlayerController).Translation);
+        auto Pawn = (APlayerPawn_Athena_C*)PlayerController->Pawn;
+        Pawn->IsMale = false;
 
         Pawn->SetMaxHealth(100);
         Pawn->SetMaxShield(100);
@@ -82,7 +82,7 @@ namespace Hooks
             FindWID("Athena_Shields") // Big Shield Potion
         };
 
-        EquipLoadout(PlayerController, doublePumpLoadout);
+        EquipGunLoadout(PlayerController, doublePumpLoadout);
 
         PlayerController->OverriddenBackpackSize = 100;
 
@@ -97,7 +97,7 @@ namespace Hooks
 
             if (PlayerController->Pawn->PlayerState) // UFortPlaylist::MaxTeamSize
             {
-                static int Team = 2;
+                static int Team = 2; // TODO: Add team removing
 
                 if (Team < 2 || Team > 102)
                     std::cout << "Team is a invalid number: " << Team << "!\n";
