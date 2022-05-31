@@ -658,7 +658,7 @@ static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
     {
         auto& CurrentSpec = AbilitySystemComponent->ActivatableAbilities.Items[i];
 
-        if (CurrentSpec.Ability->GetFullName() == Spec.Ability->GetFullName()) // Player already has this ability // TODO: not do getfullname
+        if (CurrentSpec.Ability == Spec.Ability)
 			return;
     }
 
