@@ -108,16 +108,6 @@ namespace SDK
             return false;
         }
 
-        FORCEINLINE bool Contains(const T& InData)
-        {
-			for (int i = 0; i < Count; i++)
-			{
-				if (Data[i] == InData)
-					return true;
-			}
-			return false;
-        }
-
         FORCEINLINE void RemoveAt(int Index, int Length = 1)
         {
             for (; Length != 0; --Length)

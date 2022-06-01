@@ -50,7 +50,6 @@ namespace Hooks
     {
         auto PlayerController = (AFortPlayerControllerAthena*)Native::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex);
         NewPlayer->PlayerController = PlayerController;
-        ((UNetConnection*)NewPlayer)->OwningActor = PlayerController;
 
         auto PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
 
@@ -58,7 +57,12 @@ namespace Hooks
 
         auto Pawn = (APlayerPawn_Athena_C*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), GetPlayerStart(PlayerController), PlayerController);
 
-		InitPawn(PlayerController, GetPlayerStart(PlayerController).Translation);
+        PlayerController->Pawn = Pawn;
+        PlayerController->AcknowledgedPawn = Pawn;
+        Pawn->Owner = PlayerController;
+        Pawn->OnRep_Owner();
+        PlayerController->OnRep_Pawn();
+        PlayerController->Possess(Pawn);
 
         Pawn->SetMaxHealth(100);
         Pawn->SetMaxShield(100);
@@ -71,6 +75,25 @@ namespace Hooks
         PlayerState->bHasFinishedLoading = true;
         PlayerState->bHasStartedPlaying = true;
         PlayerState->OnRep_bHasStartedPlaying();
+
+        static auto FortRegisteredPlayerInfo = UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
+
+        auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
+
+        PlayerState->HeroType = Hero->GetHeroTypeBP();
+        PlayerState->OnRep_HeroType();
+
+        for (auto i = 0; i < Hero->CharacterParts.Num(); i++)
+        {
+            auto Part = Hero->CharacterParts[i];
+
+            if (!Part)
+                continue;
+
+            Pawn->ServerChoosePart((EFortCustomPartType)i, Part);
+        }
+
+        PlayerState->OnRep_CharacterParts();
 
         static std::vector<UFortWeaponRangedItemDefinition*> doublePumpLoadout = {
             FindWID("WID_Harvest_Pickaxe_HolidayCandyCane_Athena"), // Candy Axe
@@ -90,7 +113,7 @@ namespace Hooks
 
         if (PlayerController->Pawn)
         {
-            if (PlayerController->Pawn->PlayerState) // UFortPlaylist::MaxTeamSize
+            if (PlayerController->Pawn->PlayerState)
             {
                 PlayerState->TeamIndex = EFortTeam(2); // GetMath()->STATIC_RandomIntegerInRange(2, 102));
                 PlayerState->OnRep_PlayerTeam();

@@ -26,11 +26,6 @@ namespace GUI
                 std::string ConnectedPlayers = std::format("Connected Players: {}!\n", GameState->PlayerArray.Num());
 
                 ZeroGUI::Text((char*)ConnectedPlayers.c_str());
-                
-                for (int i = 0; i < GameState->PlayerArray.Num(); i++)
-                {
-                    ZeroGUI::Text((char*)GameState->PlayerArray[i]->GetPlayerName().ToString().c_str());
-                }
 
                 if (!bStartedBus)
                 {
@@ -40,7 +35,7 @@ namespace GUI
                         GameState->AircraftStartTime = 0;
                         GameState->WarmupCountdownEndTime = 0;
 
-                        ExecuteConsoleCommand(L"startaircraft");
+                        ((UKismetSystemLibrary*)UKismetSystemLibrary::StaticClass())->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
 
                         printf("Started Aircraft!\n");
                         bStartedBus = true; // Instead of relying on a variable, we should check if the aircraft has started or is planning to start (potentially by checking the gamephase?).
@@ -49,7 +44,7 @@ namespace GUI
 
                 if (ZeroGUI::Button((char*)"Summon FloorLoot", FVector2D{ 100, 25 })) // this isn't a great idea due to no relevancy...
                 {
-                    // CreateThread(0, 0, SummonFloorLoot, 0, 0, 0); // crashes 99% of the time
+                    CreateThread(0, 0, SummonFloorLoot, 0, 0, 0);
                     printf("Spawning Floor Loot!\n");
                 }
             }
