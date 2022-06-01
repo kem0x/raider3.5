@@ -54,10 +54,10 @@ namespace Hooks
 
         auto PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
 
-        Inventory::InitController(PlayerController);
+        InitInventory(PlayerController);
 
         auto Pawn = (APlayerPawn_Athena_C*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), GetPlayerStart(PlayerController), PlayerController);
-        Pawn->IsMale = false;
+
 		InitPawn(PlayerController, GetPlayerStart(PlayerController).Translation);
 
         Pawn->SetMaxHealth(100);
@@ -84,53 +84,18 @@ namespace Hooks
 
         EquipLoadout(PlayerController, doublePumpLoadout);
 
-        PlayerController->OverriddenBackpackSize = 100;
-
         auto CheatManager = CreateCheatManager(PlayerController);
         CheatManager->ToggleInfiniteAmmo();
         CheatManager->ToggleInfiniteDurability();
 
         if (PlayerController->Pawn)
         {
-            auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
-            auto MaxPlayersPerTeam = GameState->CurrentPlaylistData->MaxTeamSize;
-
             if (PlayerController->Pawn->PlayerState) // UFortPlaylist::MaxTeamSize
             {
-                static int Team = 2;
-
-                if (Team < 2 || Team > 102)
-                    std::cout << "Team is a invalid number: " << Team << "!\n";
-
-                else
-                {
-                    std::cout << "Before Team: " << Team << '\n';
-                    std::cout << "Before Team Size: " << GameState->Teams[Team]->TeamMembers.Num() << '\n';
-                    std::cout << "Team X: " << GameState->Teams[Team] << '\n';
-					
-                    if (GameState->Teams[Team]->TeamMembers.Num()>= MaxPlayersPerTeam)
-                        Team++;
-
-                    std::cout << "After Team: " << Team << '\n';
-                    std::cout << "Team A: " << GameState->Teams[Team] << '\n';
-                    std::cout << "Old Team Size: " << GameState->Teams[Team]->TeamMembers.Num() << "\n";
-
-                    PlayerState->TeamIndex = EFortTeam(Team); // GetMath()->STATIC_RandomIntegerInRange(2, GameState->CurrentPlaylistData->MaxTeamCount));
-                    PlayerState->OnRep_PlayerTeam();
-                    PlayerState->PlayerTeam = GameState->Teams[Team];
-                    PlayerState->PlayerTeamPrivate->TeamInfo = PlayerState->PlayerTeam;
-                    std::cout << "Player Team: " << PlayerState->PlayerTeam << '\n';
-
-                    std::cout << "After OnRep Team Size: " << PlayerState->PlayerTeam->TeamMembers.Num() << "\n";
-
-                    PlayerState->PlayerTeam->TeamMembers.Add(PlayerController);
-                    // GameState->Teams[Team]->TeamMembers.Add(PlayerController);
-                    std::cout << "New Team Size: " << PlayerState->PlayerTeam->TeamMembers.Num() << "\n";
-                    std::cout << "After Team Size: " << GameState->Teams[Team]->TeamMembers.Num() << '\n';
-                    PlayerState->SquadId = PlayerState->PlayerTeam->TeamMembers.Num();
-                    PlayerState->OnRep_SquadId();
-                    // PlayerState->FriendsInSquad.Num()
-                }	
+                PlayerState->TeamIndex = EFortTeam(2); // GetMath()->STATIC_RandomIntegerInRange(2, 102));
+                PlayerState->OnRep_PlayerTeam();
+                PlayerState->SquadId = PlayerState->PlayerTeam->TeamMembers.Num() + 1;
+                PlayerState->OnRep_SquadId();
             }
         }
 

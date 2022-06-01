@@ -374,6 +374,68 @@ void Spectate(UNetConnection* SpectatingConnection, AFortPlayerStateAthena* Stat
     }
 }
 
+inline void UpdateInventory(AFortPlayerController* PlayerController, int Dirty = 0, bool bRemovedItem = false)
+{
+    PlayerController->WorldInventory->bRequiresLocalUpdate = true;
+    PlayerController->WorldInventory->HandleInventoryLocalUpdate();
+    PlayerController->HandleWorldInventoryLocalUpdate();
+    PlayerController->ForceUpdateQuickbar(EFortQuickBars::Primary);
+    PlayerController->QuickBars->OnRep_PrimaryQuickBar();
+    PlayerController->QuickBars->OnRep_SecondaryQuickBar();
+    PlayerController->QuickBars->ForceNetUpdate();
+
+    if (RemoveDuplicatesFromInventory(PlayerController) != 0 || bRemovedItem)
+        PlayerController->WorldInventory->Inventory.MarkArrayDirty();
+
+    if (Dirty != 0 && PlayerController->WorldInventory->Inventory.ReplicatedEntries.Num() >= Dirty)
+        PlayerController->WorldInventory->Inventory.MarkItemDirty(PlayerController->WorldInventory->Inventory.ReplicatedEntries[Dirty]);
+}
+
+inline auto AddItem(AFortPlayerController* PC, UFortItemDefinition* Def, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1, int* Idx = nullptr)
+{
+    if (Def->IsA(UFortWeaponItemDefinition::StaticClass()))
+        Count = 1;
+
+    if (Slot < 0)
+        Slot = 1;
+
+    if (Bars == EFortQuickBars::Primary && Slot >= 6)
+        Slot = 5;
+
+    auto TempItemInstance = (UFortWorldItem*)Def->CreateTemporaryItemInstanceBP(Count, 1);
+
+    if (TempItemInstance && (PC || Def))
+    {
+        TempItemInstance->SetOwningControllerForTemporaryItem(PC);
+
+        TempItemInstance->ItemEntry.Count = Count;
+        TempItemInstance->OwnerInventory = PC->WorldInventory;
+
+        auto& ItemEntry = TempItemInstance->ItemEntry;
+
+        if (Idx)
+            *Idx = PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
+
+        GetItemInstances(PC).Add(TempItemInstance);
+        PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
+
+        return ItemEntry;
+    }
+
+    return FFortItemEntry();
+}
+
+inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortItemDefinition* Def, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1)
+{
+    int Idx = 0;
+
+    auto ItemEntry = AddItem(PC, Def, Slot, Bars, Count, &Idx);
+
+    UpdateInventory(PC, Idx);
+
+    return ItemEntry;
+}
+
 inline UFortItemDefinition* GetDefInSlot(AFortPlayerControllerAthena* PC, int Slot, int Item = 0)
 {
     auto& ItemInstances = GetItemInstances(PC);
@@ -397,6 +459,59 @@ inline UFortItemDefinition* GetDefInSlot(AFortPlayerControllerAthena* PC, int Sl
     }
 
     return nullptr;
+}
+
+inline auto RemoveItem(AFortPlayerControllerAthena* PC, EFortQuickBars QuickBars, int Slot) // IMPORTANT TO FIX THIS
+{
+    if (Slot == 0 || !PC || PC->IsInAircraft())
+        return;
+
+    // UpdateInventory(PC, 0, true);
+
+    auto pcQuickBars = PC->QuickBars;
+
+    // if (false)
+    {
+        // pcQuickBars->PrimaryQuickBar.Slots[Slot].Items.FreeArray();
+        pcQuickBars->EmptySlot(QuickBars, Slot);
+        auto& QuickBarSlot = pcQuickBars->PrimaryQuickBar.Slots[Slot];
+        // pcQuickBars->PrimaryQuickBar.Slots.RemoveAt(Slot);
+        for (int i = 0; i < QuickBarSlot.Items.Num(); i++) // this is what emptyslot does ig
+        {
+            auto& Item = QuickBarSlot.Items[i];
+
+            Item.A = 0;
+            Item.B = 0;
+            Item.C = 0;
+            Item.D = 0;
+
+            pcQuickBars->PrimaryQuickBar.Slots.RemoveAt(i);
+        }
+
+        // QuickBarSlot.Items.Reset();
+
+        auto& Inventory = PC->WorldInventory->Inventory;
+
+        if (Inventory.ReplicatedEntries.Num() >= Slot)
+        {
+            Inventory.ReplicatedEntries.RemoveAt(Slot);
+            std::cout << "Removed from ReplicatedEntries!\n";
+        }
+
+        if (Inventory.ItemInstances.Num() >= Slot)
+        {
+            Inventory.ItemInstances.RemoveAt(Slot);
+            std::cout << "Removed from ItemInstances!\n";
+        }
+    }
+
+    // GetFortKismet()->STATIC_K2_RemoveItemFromPlayer(PC, (UFortWorldItemDefinition*)GetDefInSlot(PC, Slot), 1, true);
+    // GetFortKismet()->STATIC_EmptyQuickBarSlot(GetWorld(), EFortQuickBars::Primary, Slot);
+    // PC->RemoveItemFromQuickBars((UFortWorldItemDefinition*)GetDefInSlot(PC, Slot));
+    // pcQuickBars->ServerRemoveItemInternal(pcQuickBars->PrimaryQuickBar.Slots[Slot].Items[0], false, true);
+    // pcQuickBars->EmptySlot(QuickBars, Slot);
+
+    UpdateInventory(PC, 0, true);
 }
 
 inline bool IsGuidInInventory(AFortPlayerControllerAthena* Controller, const FGuid& Guid)
@@ -524,13 +639,8 @@ void Listen()
     // GameState->SpectatorClass = ABP_SpectatorPawn_C::StaticClass();
     // sGameState->OnRep_SpectatorClass();
 	
-    std::cout << "[PLAYLIST] Max Players: " << std::to_string(GameState->CurrentPlaylistData->MaxPlayers) << '\n';
-    std::cout << "[PLAYLIST] Amount of Players Per Team: " << GameState->CurrentPlaylistData->MaxTeamSize << '\n';
-    GameState->CurrentPlaylistData->MaxTeamCount = std::ceil((double)(GameState->CurrentPlaylistData->MaxPlayers / GameState->CurrentPlaylistData->MaxTeamSize)); // for some reason this is not set by the game
-    std::cout << "[PLAYLIST] Amount of Teams: " << GameState->CurrentPlaylistData->MaxTeamCount << '\n';
-
-    ((AAthena_GameMode_C*)GetWorld()->AuthorityGameMode)->GameSession->MaxPlayers = GameState->CurrentPlaylistData->MaxPlayers;
-    GameState->OnRep_Teams();
+    std::cout << "[PLAYLIST] MaxPlayers: " << std::to_string(GameState->CurrentPlaylistData->MaxPlayers) << '\n';
+    ((AAthena_GameMode_C*)GetWorld()->AuthorityGameMode)->GameSession->MaxPlayers = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState)->CurrentPlaylistData->MaxPlayers;
 }
 
 static AFortPickup* SummonPickup(AFortPlayerPawn* Pawn, auto ItemDef, int Count, FVector Location)
@@ -572,6 +682,116 @@ inline void SpawnPickupFromFloorLoot(auto ItemDef, int Count, FVector Location)
     FortPickup->PrimaryPickupItemEntry.ItemDefinition = ItemDef;
 
     FortPickup->OnRep_PrimaryPickupItemEntry();
+}
+
+static void HandlePickup(AFortPlayerPawn* Pawn, void* params, bool bEquip = false)
+{
+    if (!Pawn || !params)
+        return;
+
+    auto Params = (AFortPlayerPawn_ServerHandlePickup_Params*)params;
+
+    auto& ItemInstances = GetItemInstances((AFortPlayerController*)Pawn->Controller);
+
+    if (Params->Pickup)
+    {
+        if (bEquip && !Params->Pickup->PrimaryPickupItemEntry.ItemDefinition->IsA(UFortWeaponItemDefinition::StaticClass()))
+            bEquip = false;
+
+        auto WorldItemDefinition = (UFortWorldItemDefinition*)Params->Pickup->PrimaryPickupItemEntry.ItemDefinition;
+        auto Controller = (AFortPlayerControllerAthena*)Pawn->Controller;
+        auto& QuickBarSlots = Controller->QuickBars->PrimaryQuickBar.Slots;
+
+        for (int i = 1; i < QuickBarSlots.Num(); i++)
+        {
+            std::cout << "On Slot: " << i << '\n';
+
+            if (!QuickBarSlots[i].Items.Data) // Checks if the slot is empty
+            {
+                std::cout << "Empty Slot: " << i << '\n';
+
+                if (i >= 6)
+                {
+                    auto QuickBars = Controller->QuickBars;
+
+                    auto FocusedSlot = QuickBars->PrimaryQuickBar.CurrentFocusedSlot;
+
+                    if (FocusedSlot == 0)
+                        continue;
+
+                    i = FocusedSlot;
+
+                    FGuid& FocusedGuid = QuickBarSlots[FocusedSlot].Items[0];
+
+                    for (int j = 0; i < ItemInstances.Num(); j++)
+                    {
+                        auto ItemInstance = ItemInstances[j];
+
+                        if (!ItemInstance)
+                            continue;
+
+                        auto Def = ItemInstance->ItemEntry.ItemDefinition;
+                        auto Guid = ItemInstance->ItemEntry.ItemGuid;
+
+                        if (FocusedGuid == Guid)
+                        {
+                            SummonPickup((APlayerPawn_Athena_C*)Pawn, Def, 1/* ItemInstance->ItemEntry.Count */, Pawn->K2_GetActorLocation());
+                            break;
+                        }
+                    }
+
+                    RemoveItem(Controller, EFortQuickBars::Primary, FocusedSlot);
+                }
+
+                auto entry = AddItem((AFortPlayerController*)Pawn->Controller, WorldItemDefinition, i, EFortQuickBars::Primary, 1); // Params->Pickup->PrimaryPickupItemEntry.Count);
+                Params->Pickup->K2_DestroyActor();
+
+                if (bEquip)
+                    EquipInventoryItem(Controller, entry.ItemGuid);
+
+                UpdateInventory((AFortPlayerController*)Pawn->Controller, 0, false);
+
+                break;
+            }
+        }
+    }
+}
+
+static void InitInventory(AFortPlayerController* PlayerController)
+{
+    PlayerController->QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
+    auto QuickBars = PlayerController->QuickBars;
+    PlayerController->OnRep_QuickBar();
+
+    static auto Wall = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall");
+    static auto Stair = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W");
+    static auto Cone = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_RoofS.BuildingItemData_RoofS");
+    static auto Floor = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Floor.BuildingItemData_Floor");
+    static auto Wood = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition WoodItemData.WoodItemData");
+    static auto Stone = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition StoneItemData.StoneItemData");
+    static auto Metal = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition MetalItemData.MetalItemData");
+    static auto Medium = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsMedium.AthenaAmmoDataBulletsMedium");
+    static auto Light = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsLight.AthenaAmmoDataBulletsLight");
+    static auto Heavy = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsHeavy.AthenaAmmoDataBulletsHeavy");
+    static auto EditTool = UObject::FindObject<UFortEditToolItemDefinition>("FortEditToolItemDefinition EditTool.EditTool");
+
+    // we should probably only update once
+
+    AddItem(PlayerController, Wall, 0, EFortQuickBars::Secondary, 1);
+    AddItem(PlayerController, Floor, 1, EFortQuickBars::Secondary, 1);
+    AddItem(PlayerController, Stair, 2, EFortQuickBars::Secondary, 1);
+    AddItem(PlayerController, Cone, 3, EFortQuickBars::Secondary, 1);
+
+    AddItem(PlayerController, Wood, 0, EFortQuickBars::Secondary, 999);
+    AddItem(PlayerController, Stone, 0, EFortQuickBars::Secondary, 999);
+    AddItem(PlayerController, Metal, 0, EFortQuickBars::Secondary, 999);
+    AddItem(PlayerController, Medium, 0, EFortQuickBars::Secondary, 999);
+    AddItem(PlayerController, Light, 0, EFortQuickBars::Secondary, 999);
+    AddItem(PlayerController, Heavy, 0, EFortQuickBars::Secondary, 999);
+
+    AddItemWithUpdate(PlayerController, EditTool, 0, EFortQuickBars::Primary, 1);
+
+    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
 }
 
 template <typename Class>
@@ -689,6 +909,85 @@ static void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
     auto Handle = Native::AbilitySystemComponent::GiveAbility(AbilitySystemComponent, &Spec.Handle, Spec);
 }
 
+static void HandleInventoryDrop(AFortPlayerPawn* Pawn, void* params)
+{
+    auto Params = (AFortPlayerController_ServerAttemptInventoryDrop_Params*)params;
+
+    auto& ItemInstances = GetItemInstances((AFortPlayerControllerAthena*)Pawn->Controller);
+    auto Controller = (AFortPlayerControllerAthena*)Pawn->Controller;
+    auto QuickBars = Controller->QuickBars;
+
+    auto& PrimaryQuickBarSlots = QuickBars->PrimaryQuickBar.Slots;
+    auto& SecondaryQuickBarSlots = QuickBars->SecondaryQuickBar.Slots;
+
+    for (int i = 1; i < PrimaryQuickBarSlots.Num(); i++)
+    {
+        if (PrimaryQuickBarSlots[i].Items.Data)
+        {
+            if (PrimaryQuickBarSlots[i].Items[0] == Params->ItemGuid)
+            {
+                RemoveItem(Controller, EFortQuickBars::Primary, i);
+                break;
+            }
+        }
+    }
+
+    for (int i = 0; i < SecondaryQuickBarSlots.Num(); i++)
+    {
+        if (SecondaryQuickBarSlots[i].Items.Data)
+        {
+            if (SecondaryQuickBarSlots[i].Items[0] == Params->ItemGuid)
+            {
+                RemoveItem(Controller, EFortQuickBars::Secondary, i);
+                break;
+            }
+        }
+    }
+
+    for (int i = 1; i < ItemInstances.Num(); i++)
+    {
+        auto ItemInstance = ItemInstances[i];
+
+        if (!ItemInstance)
+            continue;
+
+        auto Guid = ItemInstance->GetItemGuid();
+
+        if (Guid == Params->ItemGuid)
+        {
+            auto def = ItemInstance->ItemEntry.ItemDefinition;
+
+            if (def)
+            {
+                std::cout << "Matching Guid for " << def->GetFullName() << '\n';
+                SummonPickup(Pawn, def, 1, Pawn->K2_GetActorLocation());
+                break;
+            }
+        }
+    }
+
+    if (PrimaryQuickBarSlots[0].Items.Data)
+        EquipInventoryItem(Controller, PrimaryQuickBarSlots[0].Items[0]); // just select pickaxe for now
+
+    /* for (int i = ItemInstances.Num(); i > 0; i--) // equip the item before until its valid
+    {
+        auto ItemInstance = ItemInstances[i];
+
+        if (!ItemInstance)
+            continue;
+
+        auto Def = ItemInstance->ItemEntry.ItemDefinition;
+
+        if (Def) // && Def->IsA(UFortWeaponItemDefinition::StaticClass()))
+        {
+            QuickBars->PrimaryQuickBar.CurrentFocusedSlot = i;
+            // EquipInventoryItem(Controller, ItemInstance->ItemEntry.ItemGuid, ItemInstance->ItemEntry.Count);
+            QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
+            break;
+        }
+    } */
+}
+
 static void ExecuteConsoleCommand(FString Message)
 {
     GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), Message, nullptr);
@@ -790,8 +1089,6 @@ inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already ha
     // GrantGameplayAbility(Pawn, ResurrectAbility);
     // GrantGameplayAbility(Pawn, PlayerDBNOAbility);
     // GrantGameplayAbility(Pawn, EmoteAbility);
-
-    std::cout << "Pawn Amount of Abilities: " << Pawn->AbilitySystemComponent->ActivatableAbilities.Items.Num() << '\n';;
 }
 
 void Emote(AFortPlayerControllerAthena* Controller, UAnimMontage* Montage)
@@ -857,6 +1154,15 @@ static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc 
     ApplyAbilities(Pawn);
 }
 
+void ChangeItem(AFortPlayerControllerAthena* PC, UFortItemDefinition* Old, UFortItemDefinition* New, int Slot, bool bEquip = false) // we can find the slot too
+{
+    RemoveItem(PC, EFortQuickBars::Primary, Slot);
+    auto NewEntry = AddItemWithUpdate(PC, (UFortWorldItemDefinition*)New, Slot);
+
+    if (bEquip)
+        EquipInventoryItem(PC, NewEntry.ItemGuid);
+}
+
 void ClientMessage(AFortPlayerControllerAthena* PC, FString Message) // Send a message to the user's console.
 {
     PC->ClientMessage(Message, FName(-1), 10000);
@@ -879,6 +1185,29 @@ inline UFortWeaponRangedItemDefinition* FindWID(const std::string& WID)
     }
 
     return Def;
+}
+
+void EquipLoadout(AFortPlayerControllerAthena* Controller, std::vector<UFortWeaponRangedItemDefinition*> WIDS)
+{
+    FFortItemEntry pickaxeEntry;
+
+    for (int i = 0; i < WIDS.size(); i++)
+    {
+        // if (i >= 6)
+        // break;
+
+        auto Def = WIDS[i];
+
+        if (Def)
+        {
+            auto Entry = AddItemWithUpdate(Controller, Def, i);
+
+            if (i == 0)
+                pickaxeEntry = Entry;
+        }
+    }
+
+    EquipInventoryItem(Controller, pickaxeEntry.ItemGuid);
 }
 
 auto RandomIntInRange(int min, int max)
@@ -953,7 +1282,7 @@ for (int i = 0; i < 100; i++)
 namespace Inventory // includes quickbars
 {
     // todo?: choose a quickbar to update
-    inline void Update(AFortPlayerController* Controller, bool bRemovedItem = false) // we automatically do the updating in the inventory so no point of calling this function (besides when adding an item)
+    inline void Update(AFortPlayerController* Controller, int Dirty = 0, bool bRemovedItem = false) // we automatically do the updating in the inventory so no point of calling this function (besides when adding an item)
     {
         if (!Controller)
             return;
@@ -971,6 +1300,9 @@ namespace Inventory // includes quickbars
 
         if (bRemovedItem)
             Controller->WorldInventory->Inventory.MarkArrayDirty();
+
+        if (Dirty != 0 && Controller->WorldInventory->Inventory.ReplicatedEntries.Num() >= Dirty)
+            Controller->WorldInventory->Inventory.MarkItemDirty(Controller->WorldInventory->Inventory.ReplicatedEntries[Dirty]);
     }
 
     inline bool IsValidGuid(AFortPlayerControllerAthena* Controller, const FGuid& Guid)
@@ -1028,7 +1360,8 @@ namespace Inventory // includes quickbars
         return nullptr;
     }
 
-    inline FFortItemEntry AddItemToSlot(AFortPlayerControllerAthena* Controller, UFortWorldItemDefinition* Definition, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1)
+    // The Idx is so we can mark it dirty.
+    inline FFortItemEntry AddItemToSlot(AFortPlayerControllerAthena* Controller, UFortWorldItemDefinition* Definition, int Slot, EFortQuickBars Bars = EFortQuickBars::Primary, int Count = 1, int* Idx = nullptr)
     {
         if (!Controller || !Definition)
             return FFortItemEntry();
@@ -1055,13 +1388,13 @@ namespace Inventory // includes quickbars
 
             auto& ItemEntry = TempItemInstance->ItemEntry;
 
-            auto Idx = Controller->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
-			
+            auto _Idx = Controller->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
+
+            if (Idx)
+                *Idx = _Idx;
+
             Controller->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
             Controller->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
-
-            if (Idx != 0 && Controller->WorldInventory->Inventory.ReplicatedEntries.Num() >= Idx)
-                Controller->WorldInventory->Inventory.MarkItemDirty(Controller->WorldInventory->Inventory.ReplicatedEntries[Idx]);
 
             return ItemEntry;
         }
@@ -1153,7 +1486,7 @@ namespace Inventory // includes quickbars
             // bPrimaryQuickBar ? PrimarySlots[Slot].Items.FreeArray() : SecondarySlots[Slot].Items.FreeArray();
         }
 
-        Inventory::Update(Controller, true);
+        Inventory::Update(Controller, 0, true);
 
         return bWasSuccessful;
     }
@@ -1304,14 +1637,17 @@ namespace Inventory // includes quickbars
                                 }
                             }
 
-                            Inventory::RemoveItemFromSlot(Controller, i, EFortQuickBars::Primary);
+                            Inventory::RemoveItemFromSlot(Controller, FocusedSlot, EFortQuickBars::Primary);
 
-                            Inventory::Update(Controller,true); // I don't think this is needed
+                            Inventory::Update(Controller, 0, true); // I don't think this is needed
                         }
 
-                        auto entry = Inventory::AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Primary, 1); // Params->Pickup->PrimaryPickupItemEntry.Count);
+                        int Idx = 0;
+                        auto entry = Inventory::AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Primary, 1, &Idx); // Params->Pickup->PrimaryPickupItemEntry.Count);
                         Params->Pickup->K2_DestroyActor();
-						
+
+                        Inventory::Update(Controller, Idx);
+
                         break;
                     }
                 }
@@ -1325,10 +1661,11 @@ namespace Inventory // includes quickbars
                 {
                     if (!SecondaryQuickBarSlots[i].Items.Data) // Checks if the slot is empty
                     {
-                        auto entry = Inventory::AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Secondary, 1); // Params->Pickup->PrimaryPickupItemEntry.Count);
+                        int Idx = 0;
+                        auto entry = Inventory::AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Secondary, 1, &Idx); // Params->Pickup->PrimaryPickupItemEntry.Count);
                         Params->Pickup->K2_DestroyActor();
 
-                        Inventory::Update(Controller);
+                        Inventory::Update(Controller, Idx);
 
                         break;
                     }
@@ -1336,74 +1673,4 @@ namespace Inventory // includes quickbars
             }
         }
     }
-
-    void InitController(AFortPlayerControllerAthena* Controller)
-    {
-        Controller->QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, Controller);
-        auto QuickBars = Controller->QuickBars;
-        Controller->OnRep_QuickBar();
-
-        static auto Wall = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall");
-        static auto Stair = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W");
-        static auto Cone = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_RoofS.BuildingItemData_RoofS");
-        static auto Floor = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Floor.BuildingItemData_Floor");
-        static auto Wood = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition WoodItemData.WoodItemData");
-        static auto Stone = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition StoneItemData.StoneItemData");
-        static auto Metal = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition MetalItemData.MetalItemData");
-        static auto Medium = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsMedium.AthenaAmmoDataBulletsMedium");
-        static auto Light = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsLight.AthenaAmmoDataBulletsLight");
-        static auto Heavy = UObject::FindObject<UFortResourceItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsHeavy.AthenaAmmoDataBulletsHeavy");
-        static auto EditTool = UObject::FindObject<UFortEditToolItemDefinition>("FortEditToolItemDefinition EditTool.EditTool");
-
-        Inventory::AddItemToSlot(Controller, Wall, 0, EFortQuickBars::Secondary, 1);
-        Inventory::AddItemToSlot(Controller, Floor, 1, EFortQuickBars::Secondary, 1);
-        Inventory::AddItemToSlot(Controller, Stair, 2, EFortQuickBars::Secondary, 1);
-        Inventory::AddItemToSlot(Controller, Cone, 3, EFortQuickBars::Secondary, 1);
-
-        Inventory::AddItemToSlot(Controller, Wood, 0, EFortQuickBars::Secondary, 999);
-        Inventory::AddItemToSlot(Controller, Stone, 0, EFortQuickBars::Secondary, 999);
-        Inventory::AddItemToSlot(Controller, Metal, 0, EFortQuickBars::Secondary, 999);
-        Inventory::AddItemToSlot(Controller, Medium, 0, EFortQuickBars::Secondary, 999);
-        Inventory::AddItemToSlot(Controller, Light, 0, EFortQuickBars::Secondary, 999);
-        Inventory::AddItemToSlot(Controller, Heavy, 0, EFortQuickBars::Secondary, 999);
-
-        Inventory::AddItemToSlot(Controller, EditTool, 0, EFortQuickBars::Primary, 1);
-        Inventory::Update(Controller);
-
-        QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);	
-    }
-}
-
-void ChangeItem(AFortPlayerControllerAthena* PC, UFortItemDefinition* Old, UFortItemDefinition* New, int Slot, bool bEquip = false) // we can find the slot too
-{
-    Inventory::RemoveItemFromSlot(PC, Slot, EFortQuickBars::Primary);
-    auto NewEntry = Inventory::AddItemToSlot(PC, (UFortWorldItemDefinition*)New, Slot);
-
-    if (bEquip)
-        EquipInventoryItem(PC, NewEntry.ItemGuid);
-
-	Inventory::Update(PC);
-}
-
-void EquipLoadout(AFortPlayerControllerAthena* Controller, std::vector<UFortWeaponRangedItemDefinition*> WIDS)
-{
-    FFortItemEntry pickaxeEntry;
-
-    for (int i = 0; i < WIDS.size(); i++)
-    {
-        // if (i >= 6)
-        // break;
-
-        auto Def = WIDS[i];
-
-        if (Def)
-        {
-            auto Entry = Inventory::AddItemToSlot(Controller, Def, i);
-
-            if (i == 0)
-                pickaxeEntry = Entry;
-        }
-    }
-
-    EquipInventoryItem(Controller, pickaxeEntry.ItemGuid);
 }

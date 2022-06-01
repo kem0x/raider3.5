@@ -14,8 +14,7 @@ namespace Game
     {
         auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
         auto GameMode = reinterpret_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode);
-        static auto SoloPlaylist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");
-        static auto DuoPlaylist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultDuo.Playlist_DefaultDuo");
+        auto Playlist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");
         auto InProgress = GetKismetString()->STATIC_Conv_StringToName(L"InProgress");
 
         GameState->bGameModeWillSkipAircraft = true;
@@ -31,21 +30,19 @@ namespace Game
         GameMode->MatchState = InProgress;
         GameMode->K2_OnSetMatchState(InProgress);
 
-		auto Playlist = DuoPlaylist;
-
         if (Playlist)
         {
-            // Playlist->bNoDBNO = false;
+            Playlist->bNoDBNO = false;
             Playlist->GarbageCollectionFrequency = 0.f;
-            // Playlist->bIsLargeTeamGame = true;
+            Playlist->bIsLargeTeamGame = true;
 
-            // Playlist->FriendlyFireType = EFriendlyFireType::On;
+            Playlist->FriendlyFireType = EFriendlyFireType::On;
 
             GameState->CurrentPlaylistData = Playlist;
             GameState->OnRep_CurrentPlaylistData();
         }
 
-        // GameMode->FriendlyFireType = EFriendlyFireType::On;
+        GameMode->FriendlyFireType = EFriendlyFireType::On;
 
         GameMode->StartPlay();
 
@@ -53,6 +50,6 @@ namespace Game
         GameState->OnRep_ReplicatedHasBegunPlay();
 
         GameMode->StartMatch();
-        // GameMode->bAlwaysDBNO = true;
+        GameMode->bAlwaysDBNO = true;
     }
 }

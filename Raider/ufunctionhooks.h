@@ -162,7 +162,7 @@ namespace UFunctionHooks
 
                             if (WID && WID->IsA(UFortWeaponRangedItemDefinition::StaticClass()))
                             {
-                                Inventory::AddItemToSlot(PC, WID, slot, EFortQuickBars::Primary, count);
+                                AddItemWithUpdate(PC, WID, slot, EFortQuickBars::Primary, count);
                                 ClientMessage(PC, std::wstring(L"Successfully gave " + count + std::wstring(L" ") + toWStr(weaponName) + L" to slot " + std::to_wstring(slot)).c_str());
                             }
                             else
@@ -480,7 +480,6 @@ namespace UFunctionHooks
                             RepAnimMontageInfo.NextSectionID = 0;
 
                             // CurrentPawn->Mesh->SetAnimation(Montage);
-                            // CurrentPawn->PlayLocalAnimMontage(Montage, 1.0f, FName(-1));
                             CurrentPawn->OnRep_ReplicatedMovement();
                             CurrentPawn->OnRep_RepAnimMontageStartSection();
                             CurrentPawn->OnRep_CharPartAnimMontageInfo();
@@ -616,13 +615,12 @@ namespace UFunctionHooks
                     // free(KickMessageW); // crashes??
             }
 			
-			// i don't know if this part works
+			// i don't
 
             // GetPlayerController()->SwitchLevel(L"Athena_Terrain?game=/Game/Athena/Athena_GameMode.Athena_GameMode_C"); // we can't do this cuz we dont got a playercontroller lol
             ExecuteConsoleCommand(L"open Athena_Terrain?game=/Game/Athena/Athena_GameMode.Athena_GameMode_C");
             printf("Loading Athena_Terrain!\n");
             bTraveled = true;
-            bListening = false;
             return false;
         })
 

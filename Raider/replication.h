@@ -23,7 +23,6 @@ FNetViewer::FNetViewer(UNetConnection* InConnection)
     if (ViewingController)
     {
         FRotator ViewRotation = ViewingController->GetControlRotation();
-        Native::PlayerController::GetPlayerViewPoint(ViewingController, &ViewLocation, &ViewRotation);
         ViewDir = RotToVec(ViewRotation);
     }
 }
@@ -199,9 +198,9 @@ namespace Replication
                     if (Channel)
                     {
                         //if (IsActorRelevantToConnection(Actor, FNetViewer(Connection)))
-                        {
+                        //{
                             Native::ActorChannel::ReplicateActor(Channel);
-                        }
+                        //}
                     }
                 }
             }

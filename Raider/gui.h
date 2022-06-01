@@ -29,7 +29,7 @@ namespace GUI
                 
                 for (int i = 0; i < GameState->PlayerArray.Num(); i++)
                 {
-                    ZeroGUI::Text((char*)GameState->PlayerArray[i]->GetPlayerName().ToString().c_str()); // this works sometimes
+                    ZeroGUI::Text((char*)GameState->PlayerArray[i]->GetPlayerName().ToString().c_str());
                 }
 
                 if (!bStartedBus)
