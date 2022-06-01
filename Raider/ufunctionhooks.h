@@ -189,13 +189,13 @@ namespace UFunctionHooks
 
             if (PC && Params && CurrentBuildClass)
             {
-                if (auto bCanBuild = CanBuild(CurrentBuildClass, Params->BuildLoc))
+                //if (auto bCanBuild = CanBuild(CurrentBuildClass, Params->BuildLoc))
                 {
                     auto BuildingActor = (ABuildingSMActor*)SpawnActor(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, PC, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
                         // SpawnBuilding(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, (APlayerPawn_Athena_C*)PC->Pawn);
                     if (BuildingActor)
                     {
-                        Buildings.insert(BuildingActor); // Add as soon as possible to make sure there is no time to double build.
+                        //Buildings.insert(BuildingActor); // Add as soon as possible to make sure there is no time to double build.
 
                         BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::DestroyAnythingThatCollides;
                         BuildingActor->SetMirrored(Params->bMirrored);
