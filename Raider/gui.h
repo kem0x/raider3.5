@@ -23,18 +23,13 @@ namespace GUI
             if (bListening && HostBeacon)
             {
                 static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
-                static auto GameInstance = (UFortGameInstance*)GetWorld()->OwningGameInstance;
+                std::string ConnectedPlayers = std::format("Connected Players: {}!\n", GameState->PlayerArray.Num());
 
-                ZeroGUI::Text((char*)std::format("Connected Players: {}!\n", GameState->PlayerArray.Num()).c_str());
+                ZeroGUI::Text((char*)ConnectedPlayers.c_str());
                 
-                for (int i = 1; i < GameInstance->RegisteredPlayers.Num(); i++)
+                for (int i = 0; i < GameState->PlayerArray.Num(); i++)
                 {
-                    if (GameInstance->RegisteredPlayers[i])
-                    {
-                        auto name = GameInstance->RegisteredPlayers[i]->GetPlayerName();
-
-					    ZeroGUI::Text((char*)name.ToString().c_str()); // this works sometimes	
-                    }
+                    ZeroGUI::Text((char*)GameState->PlayerArray[i]->GetPlayerName().ToString().c_str()); // this works sometimes
                 }
 
                 if (!bStartedBus)

@@ -17,15 +17,7 @@ bool FWeakObjectPtr::IsValid() const
 //---------------------------------------------------------------------------
 UObject* FWeakObjectPtr::Get() const
 {
-    if (ObjectSerialNumber == 0 || ObjectIndex < 0)
-        return nullptr;
-
-	auto Object = UObject::GObjects->GetByIndex(ObjectIndex);
-	
-	if (!Object) // || Object-> != ObjectSerialNumber)
-		return nullptr;
-
-	return Object;
+	return nullptr;
 }
 //---------------------------------------------------------------------------
 }

@@ -50,7 +50,7 @@ namespace Hooks
     {
         auto PlayerController = (AFortPlayerControllerAthena*)Native::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex);
         NewPlayer->PlayerController = PlayerController;
-        // ((UNetConnection*)NewPlayer)->OwningActor = PlayerController;
+        ((UNetConnection*)NewPlayer)->OwningActor = PlayerController;
 
         auto PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
 
