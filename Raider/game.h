@@ -31,7 +31,7 @@ namespace Game
         GameMode->MatchState = InProgress;
         GameMode->K2_OnSetMatchState(InProgress);
 
-		auto Playlist = SoloPlaylist;
+		auto Playlist = DuoPlaylist;
 
         if (Playlist)
         {
@@ -39,13 +39,13 @@ namespace Game
             Playlist->GarbageCollectionFrequency = 0.f;
             // Playlist->bIsLargeTeamGame = true;
 
-            Playlist->FriendlyFireType = EFriendlyFireType::Off;
+            // Playlist->FriendlyFireType = EFriendlyFireType::On;
 
             GameState->CurrentPlaylistData = Playlist;
             GameState->OnRep_CurrentPlaylistData();
         }
 
-        GameMode->FriendlyFireType = EFriendlyFireType::Off;
+        // GameMode->FriendlyFireType = EFriendlyFireType::On;
 
         GameMode->StartPlay();
 
