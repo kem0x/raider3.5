@@ -100,7 +100,7 @@ namespace UFunctionHooks
 
                                 if (bFound)
                                 {
-                                    Inventory::ChangeItemInSlot(PC, 0, (UFortWorldItemDefinition*)PickaxeEntry.ItemDefinition);
+                                    // Inventory::ChangeItemInSlot(PC, 0, (UFortWorldItemDefinition*)PickaxeEntry.ItemDefinition);
                                     ClientMessage(PC, (L"Changed pickaxe to " + toWStr(PickaxeName) + L"!").c_str());
                                 }
 
@@ -129,7 +129,7 @@ namespace UFunctionHooks
                             auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
 
                             if (bFound)
-                                Inventory::EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
+                                EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
 
                             ApplyAbilities(PC->Pawn);
                         }
@@ -201,6 +201,7 @@ namespace UFunctionHooks
                         BuildingActor->SetMirrored(Params->bMirrored);
                         BuildingActor->PlacedByPlacementTool();
                         BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);
+                        std::cout << "New Build: " << BuildingActor->GetFullName() << '\n';
                     }
                 }
             }
@@ -355,29 +356,25 @@ namespace UFunctionHooks
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerControllerAthena.ServerAttemptAircraftJump", {
             auto Params = (AFortPlayerControllerAthena_ServerAttemptAircraftJump_Params*)Parameters;
             auto PC = (AFortPlayerControllerAthena*)Object;
-            auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
+            static auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
 
             if (PC && Params && !PC->Pawn && PC->IsInAircraft())
             {
-                auto Aircraft = (AFortAthenaAircraft*)GameState->Aircrafts[0];
+                auto Aircraft = (AFortAthenaAircraft*)GameState->Aircrafts[0]; // we should get the aircraft the player is in instead
 
                 if (Aircraft)
                 {
                     auto ExitLocation = Aircraft->K2_GetActorLocation();
 
-                    // ExitLocation.Z -= 500;
-
-                    InitPawn(PC, ExitLocation, FQuat(), false);
-                    ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped();
+                    InitPawn(PC, ExitLocation, RotToQuat(Params->ClientRotation), false);
+                    ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped(); // does this do anything? idk
                     PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
 
                     bool bFound = false;
                     auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
 
                     if (bFound)
-                        Inventory::EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
-
-                    // PC->Pawn->K2_TeleportTo(ExitLocation, Params->ClientRotation);
+                        EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
                 }
             }
 
@@ -519,7 +516,7 @@ namespace UFunctionHooks
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerExecuteInventoryItem", {
-            Inventory::EquipInventoryItem((AFortPlayerControllerAthena*)Object, *(FGuid*)Parameters);
+            EquipInventoryItem((AFortPlayerControllerAthena*)Object, *(FGuid*)Parameters);
 
             return false;
         })
