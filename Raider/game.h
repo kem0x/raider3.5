@@ -14,7 +14,8 @@ namespace Game
     {
         auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
         auto GameMode = reinterpret_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode);
-        auto Playlist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");
+        static auto SoloPlaylist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");
+        static auto DuoPlaylist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultDuo.Playlist_DefaultDuo");
         auto InProgress = GetKismetString()->STATIC_Conv_StringToName(L"InProgress");
 
         GameState->bGameModeWillSkipAircraft = true;
@@ -29,6 +30,8 @@ namespace Game
 
         GameMode->MatchState = InProgress;
         GameMode->K2_OnSetMatchState(InProgress);
+
+        auto Playlist = SoloPlaylist;
 
         if (Playlist)
         {

@@ -100,7 +100,7 @@ namespace UFunctionHooks
 
                                 if (bFound)
                                 {
-                                    ChangeItem(PC, PickaxeEntry.ItemDefinition, PID, 0);
+                                    // ChangeItem(PC, PickaxeEntry.ItemDefinition, PID, 0);
                                     ClientMessage(PC, (L"Changed pickaxe to " + toWStr(PickaxeName) + L"!").c_str());
                                 }
 
@@ -111,6 +111,11 @@ namespace UFunctionHooks
                                 ClientMessage(PC, L"Requested item is not a pickaxe!\n");
                         }
 
+                        else if (Command == "equiptraptool")
+                        {
+                            EquipTrapTool(PC);
+                        }
+
                         else if (Command == "revive" && Pawn->bIsDBNO)
                         {
                             Pawn->bIsDBNO = false;
@@ -118,20 +123,6 @@ namespace UFunctionHooks
 
                             // PC->ClientOnPawnRevived(InstigatorPC);
                             Pawn->SetHealth(100);
-                        }
-
-                        else if (Command == "respawn" && !Pawn) // ISSUE: Player is unable to shoot.
-                        {
-                            InitPawn(PC);
-                            PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
-
-                            bool bFound = false;
-                            auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
-
-                            if (bFound)
-                                EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
-
-                            ApplyAbilities(PC->Pawn);
                         }
 
                         else if (Command == "togglegodmode")
@@ -199,7 +190,7 @@ namespace UFunctionHooks
 
                         BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::DestroyAnythingThatCollides;
                         BuildingActor->SetMirrored(Params->bMirrored);
-                        BuildingActor->PlacedByPlacementTool();
+                        // BuildingActor->PlacedByPlacementTool();
                         BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);
                     }
                 }
@@ -228,6 +219,11 @@ namespace UFunctionHooks
                 }
             }
 
+            return false;
+        })
+
+        DEFINE_PEHOOK("Function FortniteGame.FortDecoTool.ServerSpawnDeco", {
+            SpawnDeco((AFortDecoTool*)Object, Parameters);
             return false;
         })
 
@@ -543,7 +539,7 @@ namespace UFunctionHooks
             if (Params && Pawn)
             {
                 if (!Params->ChosenCharacterPart)
-                    return false;
+                    return true;
             }
 
             return false;

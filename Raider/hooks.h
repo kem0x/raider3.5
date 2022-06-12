@@ -3,6 +3,8 @@
 #include "gui.h"
 #include "ufunctionhooks.h"
 
+#define LOGGING
+
 namespace Hooks
 {
     bool LocalPlayerSpawnPlayActor(ULocalPlayer* Player, const FString& URL, FString& OutError, UWorld* World) // prevent server's pc from spawning
@@ -67,7 +69,7 @@ namespace Hooks
         Pawn->SetMaxHealth(100);
         Pawn->SetMaxShield(100);
 
-        PlayerController->bHasClientFinishedLoading = true;
+        PlayerController->bHasClientFinishedLoading = true; // should we do this on ServerSetClientHasFinishedLoading 
         PlayerController->bHasServerFinishedLoading = true;
         PlayerController->bHasInitiallySpawned = true;
         PlayerController->OnRep_bHasServerFinishedLoading();
@@ -76,24 +78,31 @@ namespace Hooks
         PlayerState->bHasStartedPlaying = true;
         PlayerState->OnRep_bHasStartedPlaying();
 
-        static auto FortRegisteredPlayerInfo = UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
+        static auto FortRegisteredPlayerInfo = ((UFortGameInstance*)GetWorld()->OwningGameInstance)->RegisteredPlayers[0]; // UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
 
-        auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
-
-        PlayerState->HeroType = Hero->GetHeroTypeBP();
-        PlayerState->OnRep_HeroType();
-
-        for (auto i = 0; i < Hero->CharacterParts.Num(); i++)
+        if (FortRegisteredPlayerInfo)
         {
-            auto Part = Hero->CharacterParts[i];
+            auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
 
-            if (!Part)
-                continue;
+            PlayerState->HeroType = Hero->GetHeroTypeBP();
+            PlayerState->OnRep_HeroType();
 
-            Pawn->ServerChoosePart((EFortCustomPartType)i, Part);
+            for (auto i = 0; i < Hero->CharacterParts.Num(); i++)
+            {
+                auto Part = Hero->CharacterParts[i];
+
+                if (!Part)
+                    continue;
+
+                PlayerState->CharacterParts[i] =  Part;
+            }
+
+            PlayerState->CharacterBodyType = Hero->CharacterParts[1]->BodyTypesPermitted;
+            Pawn->CharacterBodyType = Hero->CharacterParts[1]->BodyTypesPermitted;
+            Pawn->CharacterGender = Hero->CharacterParts[1]->GenderPermitted;
+            PlayerState->OnRep_CharacterBodyType();
+            PlayerState->OnRep_CharacterParts();
         }
-
-        PlayerState->OnRep_CharacterParts();
 
         static std::vector<UFortWeaponRangedItemDefinition*> doublePumpLoadout = {
             FindWID("WID_Harvest_Pickaxe_HolidayCandyCane_Athena"), // Candy Axe
@@ -121,6 +130,8 @@ namespace Hooks
                 PlayerState->OnRep_SquadId();
             }
         }
+
+        PlayerController->OverriddenBackpackSize = 100;
 
         // Pawn->K2_TeleportTo({ 37713, -52942, 461 }, { 0, 0, 0 }); // Tilted
 
@@ -221,6 +232,7 @@ namespace Hooks
         if (bTraveled)
         {
 #ifdef LOGGING
+            auto FunctionName = Function->GetName();
             if (Function->FunctionFlags & 0x00200000 || (Function->FunctionFlags & 0x01000000 && FunctionName.find("Ack") == -1 && FunctionName.find("AdjustPos") == -1))
             {
                 if (FunctionName.find("ServerUpdateCamera") == -1 && FunctionName.find("ServerMove") == -1)
