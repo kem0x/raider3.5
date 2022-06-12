@@ -2,6 +2,7 @@
 #include "ue4.h"
 
 #define invptr (void*)0xffffffff
+// #define RELEVANCY
 
 FNetViewer::FNetViewer(UNetConnection* InConnection)
     : Connection(InConnection)
@@ -32,11 +33,17 @@ namespace Replication
 {
     static FORCEINLINE bool IsActorRelevantToConnection(AActor* Actor, TArray<FNetViewer>& ConnectionViewers)
     {
-        // return true;
-        // Native::Actor::IsNetRelevantFor = decltype(Native::Actor::IsNetRelevantFor)(Actor->Vtable[0x149]); // this offset is probably wrong
+        // if (!Actor)
+           // return false;
+		
+        // Native::Actor::IsNetRelevantFor = decltype(Native::Actor::IsNetRelevantFor)(Actor->Vtable[0x132]); // this offset may be wrong
 
         for (int32 viewerIdx = 0; viewerIdx < ConnectionViewers.Num(); viewerIdx++)
         {
+            // if (!ConnectionViewers[viewerIdx].InViewer || !ConnectionViewers[viewerIdx].ViewTarget)
+                // continue;
+			
+            // if (decltype(Native::Actor::IsNetRelevantFor)(Actor->Vtable[0x132])(Actor, ConnectionViewers[viewerIdx].InViewer, ConnectionViewers[viewerIdx].ViewTarget, ConnectionViewers[viewerIdx].ViewLocation))
             if (Native::Actor::IsNetRelevantFor(Actor, ConnectionViewers[viewerIdx].InViewer, ConnectionViewers[viewerIdx].ViewTarget, ConnectionViewers[viewerIdx].ViewLocation))
             {
                 return true;
@@ -183,8 +190,8 @@ namespace Replication
 
             else if (Connection->ViewTarget)
             {
-                /*
-                static auto ConnectionViewers = GetWorld()->PersistentLevel->WorldSettings->ReplicationViewers;
+                #ifdef RELEVANCY
+                auto ConnectionViewers = GetWorld()->PersistentLevel->WorldSettings->ReplicationViewers;
                 ConnectionViewers.Reset();
                 ConnectionViewers.Add(FNetViewer(Connection));
 
@@ -195,7 +202,8 @@ namespace Replication
                         ConnectionViewers.Add(FNetViewer(Connection->Children[ViewerIndex]));
                     }
                 }
-                */
+
+                #endif
 
                 if (Connection->PlayerController)
                     Native::PlayerController::SendClientAdjustment(Connection->PlayerController); // Sending adjustments to children is for splitscreen
@@ -209,16 +217,18 @@ namespace Replication
 
                     if (!Channel)
                     {
-                        /*
-                        if (!IsActorRelevantToConnection(Actor, ConnectionViewers) && !Actor->bAlwaysRelevant)
+                        #ifdef RELEVANCY
+                        if (!IsActorRelevantToConnection(Actor, ConnectionViewers)) // && !Actor->bAlwaysRelevant)
                         {
+                            // std::cout << Actor->GetFullName() << " is NOT relevant!\n";
                             // If not relevant (and we don't have a channel), skip
                             continue;
                         }
-                        */
+                        #endif
 
                         Channel = (UActorChannel*)(Native::NetConnection::CreateChannel(Connection, 2, true, -1));
-                        Native::ActorChannel::SetChannelActor(Channel, Actor);
+                        if (Channel)
+                            Native::ActorChannel::SetChannelActor(Channel, Actor);
                     }
 
                     if (Channel)

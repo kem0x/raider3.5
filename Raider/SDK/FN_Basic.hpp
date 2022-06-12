@@ -152,7 +152,8 @@ namespace SDK
             Max = MinSizeAfterReset;
             Count = 0;
 
-            FMemory_Free(Data);
+			if (Data)
+                FMemory_Free(Data);
         }
 
     public:

@@ -304,6 +304,10 @@ namespace Native
         CheckNullFatal(Address, "Failed to find GetPlayerViewPoint");
         AddressToFunction(Address, PlayerController::GetPlayerViewPoint);
 
+        Address = Utils::FindPattern(Patterns::IsNetRelevantFor);
+        CheckNullFatal(Address, "Failed to find IsNetRelevantFor");
+        AddressToFunction(Address, Actor::IsNetRelevantFor);
+
         ProcessEvent = reinterpret_cast<decltype(ProcessEvent)>(GetEngine()->Vtable[0x40]);
     }
 }
