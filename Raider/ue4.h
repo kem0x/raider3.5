@@ -238,10 +238,9 @@ inline auto CreateCheatManager(APlayerController* Controller)
     return (UFortCheatManager*)Controller->CheatManager;
 }
 
-bool CanBuild(UClass* BuildingClass, FVector& Location)
+bool CanBuild(ABuildingSMActor* BuildingActor)
 {
-    /* static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
-
+    /*
     FBuildingGridActorFilter filter { true, true, true, true};
     FBuildingNeighboringActorInfo OutActors;
     GameState->StructuralSupportSystem->K2_GetBuildingActorsInGridCell(Location, filter, &OutActors);
@@ -263,9 +262,9 @@ bool CanBuild(UClass* BuildingClass, FVector& Location)
             break;
         }
 
-        if (Building->K2_GetActorLocation() == Location) // If we use a vector of locations, I do not know how to track if the actor has been destroyed.
+        if (Building->K2_GetActorLocation() == BuildingActor->K2_GetActorLocation()) // If we use a vector of locations, I do not know how to track if the actor has been destroyed. // Maybe we could use a map so we dont get the location everytime
         {
-            if (!BuildingClass->IsA(APBWA_W1_StairW_C::StaticClass()) || (BuildingClass->IsA(APBWA_W1_StairW_C::StaticClass()) && Building->BuildingType == EFortBuildingType::Stairs))
+            // if (!BuildingClass->IsA(APBWA_W1_StairW_C::StaticClass()) || (BuildingClass->IsA(APBWA_W1_StairW_C::StaticClass()) && Building->BuildingType == EFortBuildingType::Stairs))
             {
                 return false;
             }
@@ -273,6 +272,19 @@ bool CanBuild(UClass* BuildingClass, FVector& Location)
     }
 
     return true;
+}
+
+bool CanBuild2(ABuildingSMActor* BuildingActor)
+{
+    static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+
+    TArray<ABuildingActor*> ExistingBuildings;
+    EFortStructuralGridQueryResults bCanBuild = GameState->StructuralSupportSystem->K2_CanAddBuildingActorToGrid(GetWorld(), BuildingActor, BuildingActor->K2_GetActorLocation(), BuildingActor->K2_GetActorRotation(), false, false, &ExistingBuildings);
+
+	if (bCanBuild == EFortStructuralGridQueryResults::CanAdd)
+        return true;
+	
+    return false;
 }
 
 bool IsCurrentlyDisconnecting(UNetConnection* Connection)

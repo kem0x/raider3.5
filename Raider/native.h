@@ -105,6 +105,7 @@ namespace Native
     namespace PlayerController
     {
         inline bool (*SendClientAdjustment)(APlayerController* Controller);
+        inline void (*GetPlayerViewPoint)(APlayerController* Controller, FVector* Location, FRotator* Rotation);
     }
 
     namespace AbilitySystemComponent
@@ -294,6 +295,14 @@ namespace Native
         Address = Utils::FindPattern(Patterns::CollectGarbage, true, 1);
         CheckNullFatal(Address, "Failed to find CollectGarbage");
         AddressToFunction(Address, GC::CollectGarbage);
+
+        Address = Utils::FindPattern(Patterns::ActorChannelClose);
+        CheckNullFatal(Address, "Failed to find UActorChannel::Close");
+        AddressToFunction(Address, ActorChannel::Close);
+
+        Address = Utils::FindPattern(Patterns::GetPlayerViewPoint);
+        CheckNullFatal(Address, "Failed to find GetPlayerViewPoint");
+        AddressToFunction(Address, PlayerController::GetPlayerViewPoint);
 
         ProcessEvent = reinterpret_cast<decltype(ProcessEvent)>(GetEngine()->Vtable[0x40]);
     }
