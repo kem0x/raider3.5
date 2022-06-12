@@ -40,8 +40,8 @@ namespace Replication
 
         for (int32 viewerIdx = 0; viewerIdx < ConnectionViewers.Num(); viewerIdx++)
         {
-            // if (!ConnectionViewers[viewerIdx].InViewer || !ConnectionViewers[viewerIdx].ViewTarget)
-                // continue;
+            if (!ConnectionViewers[viewerIdx].InViewer || !ConnectionViewers[viewerIdx].ViewTarget)
+                continue;
 			
             // if (decltype(Native::Actor::IsNetRelevantFor)(Actor->Vtable[0x132])(Actor, ConnectionViewers[viewerIdx].InViewer, ConnectionViewers[viewerIdx].ViewTarget, ConnectionViewers[viewerIdx].ViewLocation))
             if (Native::Actor::IsNetRelevantFor(Actor, ConnectionViewers[viewerIdx].InViewer, ConnectionViewers[viewerIdx].ViewTarget, ConnectionViewers[viewerIdx].ViewLocation))
