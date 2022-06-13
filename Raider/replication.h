@@ -227,6 +227,7 @@ namespace Replication
                         #endif
 
                         Channel = (UActorChannel*)(Native::NetConnection::CreateChannel(Connection, 2, true, -1));
+						
                         if (Channel)
                             Native::ActorChannel::SetChannelActor(Channel, Actor);
                     }

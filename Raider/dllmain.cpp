@@ -22,7 +22,11 @@ DWORD WINAPI Main(LPVOID lpParam)
     DetourAttachE(Native::NetDriver::TickFlush, Hooks::TickFlush);
     DetourAttachE(Native::LocalPlayer::SpawnPlayActor, Hooks::LocalPlayerSpawnPlayActor);
 
-    void* (*NetDebug)(void* _this) = (void* (*)(void* _this))(Offsets::Imagebase + 0x5CDAD0);
+    auto Address = Utils::FindPattern(Patterns::NetDebug);
+    CheckNullFatal(Address, "Failed to find NetDebug");
+    void* (*NetDebug)(void* _this) = nullptr;
+    AddressToFunction(Address, NetDebug);
+
     DetourAttachE(NetDebug, Hooks::NetDebug);
     DETOUR_END
 
