@@ -185,7 +185,7 @@ namespace UFunctionHooks
                     // SpawnBuilding(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, (APlayerPawn_Athena_C*)PC->Pawn);
                     if (BuildingActor && CanBuild2(BuildingActor))
                     {
-                        Buildings.insert(BuildingActor); // Add as soon as possible to make sure there is no time to double build.
+                        //Buildings.insert(BuildingActor); // Add as soon as possible to make sure there is no time to double build.
 
                         BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::DestroyAnythingThatCollides;
                         BuildingActor->SetMirrored(Params->bMirrored);
@@ -247,7 +247,8 @@ namespace UFunctionHooks
                 {
                     auto rotation = BuildingActor->K2_GetActorRotation(); //Not correct, this is not centered.
 
-                    rotation.Yaw += rotation.Yaw * RotationIterations;
+                    if (BuildingActor->BuildingType == EFortBuildingType::Wall) // this only works for walls
+                        rotation.Yaw += /* rotation.Yaw */ 90 * RotationIterations;
 
                     //  BuildingActor->K2_DestroyActor();					
                     BuildingActor->SilentDie();
@@ -268,7 +269,7 @@ namespace UFunctionHooks
             auto DeadPC = (AFortPlayerControllerAthena*)Object;
             auto DeadPlayerState = (AFortPlayerStateAthena*)DeadPC->PlayerState;
 
-            if (false && DeadPC && Params) // this crashes like 9/10
+            if (false && DeadPC && Params) // this might work now idk
             {
                 auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
                 GameState->PlayersLeft--;
@@ -276,7 +277,7 @@ namespace UFunctionHooks
 
                 if (DeadPC && DeadPC->Pawn)
                 {
-                    // TODO: Show death drone
+                    // TODO: Show death drone/death animation
                     DeadPC->Pawn->K2_DestroyActor();
                 }
 
@@ -285,15 +286,27 @@ namespace UFunctionHooks
 
                 DeadPlayerState->OnRep_DeathInfo();
 
+                bool bChooseRandomPawn = false;
+
                 if (KillerPlayerState && KillerPawn && KillerPlayerState != DeadPlayerState)
                 {
-                    KillerPlayerState->KillScore++;
-                    KillerPlayerState->OnRep_Kills();
-                    Spectate(DeadPC->NetConnection, KillerPlayerState);
-                    DeadPC->K2_DestroyActor();
+                    if (KillerPlayerState->IsA(AFortPlayerStateAthena::StaticClass()) && KillerPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
+                    {
+                        KillerPlayerState->KillScore++;
+                        KillerPlayerState->OnRep_Kills();
+                        Spectate(DeadPC->NetConnection, KillerPlayerState);
+                        DeadPC->K2_DestroyActor();
+                    }
+                    else
+                        bChooseRandomPawn = true;
                 }
 
                 else
+                {
+                    bChooseRandomPawn = true;
+                }
+
+                if (bChooseRandomPawn)
                 {
                     TArray<AActor*> Pawns;
                     static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();

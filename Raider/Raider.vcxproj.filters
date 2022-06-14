@@ -62,6 +62,9 @@
     <ClInclude Include="native.h" />
     <ClInclude Include="ufunctionhooks.h" />
     <ClInclude Include="gui.h" />
+    <ClInclude Include="wipreplication.h">
+      <Filter>UE4</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

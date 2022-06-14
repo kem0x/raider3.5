@@ -131,7 +131,9 @@ namespace Hooks
             }
         }
 
-        PlayerController->OverriddenBackpackSize = 100;
+        PlayerController->OverriddenBackpackSize = 100; // i hate stw
+
+		// TODO: Remove healing GameplayEffects
 
         // Pawn->K2_TeleportTo({ 37713, -52942, 461 }, { 0, 0, 0 }); // Tilted
 

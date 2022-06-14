@@ -125,6 +125,7 @@
     <ClInclude Include="ue4.h" />
     <ClInclude Include="ufunctionhooks.h" />
     <ClInclude Include="util.h" />
+    <ClInclude Include="wipreplication.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

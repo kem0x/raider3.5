@@ -53,6 +53,11 @@ struct FNetworkObjectInfo
     TSet<TWeakObjectPtr<UNetConnection>> DormantConnections;
 
     TSet<TWeakObjectPtr<UNetConnection>> RecentlyDormantConnections;
+
+    bool operator==(const FNetworkObjectInfo& Other)
+    {
+        return Actor == Other.Actor;
+    }
 };
 
 class FNetworkObjectList

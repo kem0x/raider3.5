@@ -152,7 +152,7 @@ namespace SDK
             Max = MinSizeAfterReset;
             Count = 0;
 
-			if (Data)
+            if (Data)
                 FMemory_Free(Data);
         }
 
@@ -228,6 +228,16 @@ namespace SDK
             }
 
             return name.substr(pos + 1);
+        }
+
+        bool operator==(const FName& Other)
+        {
+            return ComparisonIndex == Other.ComparisonIndex;
+        }
+
+        bool operator!=(const FName& Other)
+        {
+            return ComparisonIndex != Other.ComparisonIndex;
         }
 
         std::wstring ToWString()
@@ -735,34 +745,42 @@ namespace SDK
                 // InlineData is the first 16-bytes of TBitArray
                 const uint32* ArrayData = (IteratedArray.NumBits < IteratedArray.Data.NumInlineBits() ? (uint32*)(&IteratedArray) : IteratedArray.Data.SecondaryData);
 
-                const int32 ArrayNum = IteratedArray.NumBits;
-                const int32 LastDWORDIndex = (ArrayNum - 1) / NumBitsPerDWORD;
-
-                uint32 RemainingBitMask = ArrayData[this->DWORDIndex] & UnvisitedBitMask;
-                while (!RemainingBitMask)
+                if (ArrayData)
                 {
-                    ++this->DWORDIndex;
-                    BaseBitIndex += NumBitsPerDWORD;
+                    const int32 ArrayNum = IteratedArray.NumBits;
+                    const int32 LastDWORDIndex = (ArrayNum - 1) / NumBitsPerDWORD;
 
-                    if (this->DWORDIndex > LastDWORDIndex)
+                    // std::cout << "ArrayNum: " << ArrayNum << " DWORDIndex: " << this->DWORDIndex << '\n';
+
+                    if (ArrayNum > this->DWORDIndex)
                     {
-                        CurrentBitIndex += ArrayNum;
-                        return;
+                        uint32 RemainingBitMask = ArrayData[this->DWORDIndex] & UnvisitedBitMask;
+                        while (!RemainingBitMask)
+                        {
+                            ++this->DWORDIndex;
+                            BaseBitIndex += NumBitsPerDWORD;
+
+                            if (this->DWORDIndex > LastDWORDIndex)
+                            {
+                                CurrentBitIndex += ArrayNum;
+                                return;
+                            }
+
+                            RemainingBitMask = ArrayData[this->DWORDIndex];
+                            UnvisitedBitMask = ~0;
+                        }
+
+                        const uint32 NewRemainingBitMask = RemainingBitMask & (RemainingBitMask - 1);
+
+                        this->Mask = NewRemainingBitMask ^ RemainingBitMask;
+
+                        CurrentBitIndex = BaseBitIndex + NumBitsPerDWORD - 1 - CountLeadingZeros(this->Mask);
+
+                        if (CurrentBitIndex > ArrayNum)
+                        {
+                            CurrentBitIndex = ArrayNum;
+                        }
                     }
-
-                    RemainingBitMask = ArrayData[this->DWORDIndex];
-                    UnvisitedBitMask = ~0;
-                }
-
-                const uint32 NewRemainingBitMask = RemainingBitMask & (RemainingBitMask - 1);
-
-                this->Mask = NewRemainingBitMask ^ RemainingBitMask;
-
-                CurrentBitIndex = BaseBitIndex + NumBitsPerDWORD - 1 - CountLeadingZeros(this->Mask);
-
-                if (CurrentBitIndex > ArrayNum)
-                {
-                    CurrentBitIndex = ArrayNum;
                 }
             }
         };
@@ -1557,6 +1575,11 @@ namespace SDK
         FORCEINLINE ObjectType* operator->()
         {
             return Object;
+        }
+
+        FORCEINLINE bool operator==(const TSharedPtr<ObjectType>& Other)
+        {
+            return Object == Other.Object;
         }
     };
 }
