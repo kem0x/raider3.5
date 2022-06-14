@@ -200,7 +200,7 @@ namespace Native
         CheckNullFatal(Address, "Failed to find FNameToString");
         AddressToFunction(Address, FNameToString);
 
-        Address = Utils::FindPattern(Patterns::CallPreReplication);
+        Address = Utils::FindPattern(Patterns::CallPreReplication, true, 1);
         CheckNullFatal(Address, "Failed to find CallPreReplication");
         AddressToFunction(Address, Actor::CallPreReplication);
 
@@ -209,26 +209,16 @@ namespace Native
         AddressToFunction(Address, PlayerController::SendClientAdjustment);
 
         Address = Utils::FindPattern(Patterns::TickFlush);
-		
-        if (!Address)
-        {
-            Address = Utils::FindPattern(Patterns::TickFlush2);
-            CheckNullFatal(Address, "Failed to find TickFlush");
-            AddressToFunction(Address, NetDriver::TickFlush);
-        }
+        CheckNullFatal(Address, "Failed to find TickFlush");
+        AddressToFunction(Address, NetDriver::TickFlush);
 
         Address = Utils::FindPattern(Patterns::CreateChannel);
         CheckNullFatal(Address, "Failed to find CreateChannel");
         AddressToFunction(Address, NetConnection::CreateChannel);
 
         Address = Utils::FindPattern(Patterns::ReplicateActor);
-		
-        if (!Address)
-        {
-            Address = Utils::FindPattern(Patterns::ReplicateActor2);
-            CheckNullFatal(Address, "Failed to find ReplicateActor");
-            AddressToFunction(Address, ActorChannel::ReplicateActor);
-        }
+        CheckNullFatal(Address, "Failed to find ReplicateActor");
+        AddressToFunction(Address, ActorChannel::ReplicateActor);
 
         Address = Utils::FindPattern(Patterns::SetChannelActor);
         CheckNullFatal(Address, "Failed to find SetChannelActor");
@@ -259,13 +249,8 @@ namespace Native
         AddressToFunction(Address, World::SpawnPlayActor);
 
         Address = Utils::FindPattern(Patterns::ReceiveUniqueIdRepl);
-
-        if (!Address)
-        {
-            Address = Utils::FindPattern(Patterns::ReceiveUniqueIdRepl2);
-            CheckNullFatal(Address, "Failed to find ReceiveUniqueIdRepl");
-            AddressToFunction(Address, NetConnection::ReceiveUniqueIdRepl);
-        }
+        CheckNullFatal(Address, "Failed to find ReceiveUniqueIdRepl");
+        AddressToFunction(Address, NetConnection::ReceiveUniqueIdRepl);
 
         Address = Utils::FindPattern(Patterns::ReceiveFString);
         CheckNullFatal(Address, "Failed to find ReceiveFString");
@@ -279,9 +264,9 @@ namespace Native
         CheckNullFatal(Address, "Failed to find InternalGetNetMode");
         AddressToFunction(Address, Actor::GetNetMode);
 
-        // Address = Utils::FindPattern(Patterns::AddNetworkActor);
-        // CheckNullFatal(Address, "Failed to find AddNetworkActor");
-        // AddressToFunction(Address, World::AddNetworkActor);
+        Address = Utils::FindPattern(Patterns::AddNetworkActor);
+        CheckNullFatal(Address, "Failed to find AddNetworkActor");
+        AddressToFunction(Address, World::AddNetworkActor);
 
         Address = Utils::FindPattern(Patterns::GiveAbility);
         CheckNullFatal(Address, "Failed to find GiveAbility");
@@ -307,11 +292,10 @@ namespace Native
         CheckNullFatal(Address, "Failed to find PostRender");
         AddressToFunction(Address, GameViewportClient::PostRender);
 
-        // Address = Utils::FindPattern(Patterns::CollectGarbage, true, 1);
-        // CheckNullFatal(Address, "Failed to find CollectGarbage");
-        // AddressToFunction(Address, GC::CollectGarbage);
+        Address = Utils::FindPattern(Patterns::CollectGarbage, true, 1);
+        CheckNullFatal(Address, "Failed to find CollectGarbage");
+        AddressToFunction(Address, GC::CollectGarbage);
 
-#ifdef RELEVANCY
         Address = Utils::FindPattern(Patterns::ActorChannelClose);
         CheckNullFatal(Address, "Failed to find UActorChannel::Close");
         AddressToFunction(Address, ActorChannel::Close);
@@ -323,7 +307,6 @@ namespace Native
         Address = Utils::FindPattern(Patterns::IsNetRelevantFor);
         CheckNullFatal(Address, "Failed to find IsNetRelevantFor");
         AddressToFunction(Address, Actor::IsNetRelevantFor);
-#endif
 
         ProcessEvent = reinterpret_cast<decltype(ProcessEvent)>(GetEngine()->Vtable[0x40]);
     }

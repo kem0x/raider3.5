@@ -553,8 +553,30 @@ namespace UFunctionHooks
             if (!bListening)
             {
                 Game::OnReadyToStartMatch();
-                Listen();
+
+                HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
+                HostBeacon->ListenPort = 7777;
+                auto bInitBeacon = Native::OnlineBeaconHost::InitHost(HostBeacon);
+                CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");
+
+                HostBeacon->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
+                HostBeacon->NetDriver->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
+                HostBeacon->NetDriver->World = GetWorld();
+
+                GetWorld()->NetDriver = HostBeacon->NetDriver;
+                GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;
+                GetWorld()->LevelCollections[1].NetDriver = HostBeacon->NetDriver;
+
+                Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
+
+                auto GameState = (AAthena_GameState_C*)GetWorld()->GameState;
+
+                // GameState->SpectatorClass = ABP_SpectatorPawn_C::StaticClass();
+                // sGameState->OnRep_SpectatorClass();
+
+                ((AAthena_GameMode_C*)GetWorld()->AuthorityGameMode)->GameSession->MaxPlayers = 100;
                 bListening = true;
+                std::cout << "\n\nListening on port " << HostBeacon->ListenPort << "\n\n";
             }
 
             return false;

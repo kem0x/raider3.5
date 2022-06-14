@@ -18,7 +18,6 @@ DWORD WINAPI Main(LPVOID lpParam)
     UFunctionHooks::Initialize();
 
     DETOUR_START
-    DetourAttachE(ProcessEvent, Hooks::ProcessEventHook);
     DetourAttachE(Native::NetDriver::TickFlush, Hooks::TickFlush);
     DetourAttachE(Native::LocalPlayer::SpawnPlayActor, Hooks::LocalPlayerSpawnPlayActor);
 
@@ -28,6 +27,7 @@ DWORD WINAPI Main(LPVOID lpParam)
     AddressToFunction(Address, NetDebug);
 
     DetourAttachE(NetDebug, Hooks::NetDebug);
+    DetourAttachE(ProcessEvent, Hooks::ProcessEventHook);
     DETOUR_END
 
     printf("[+] Hooked ProcessEvent\n");

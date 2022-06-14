@@ -3,7 +3,7 @@
 #include "gui.h"
 #include "ufunctionhooks.h"
 
-#define LOGGING
+// #define LOGGING
 
 namespace Hooks
 {
@@ -217,15 +217,17 @@ namespace Hooks
     {
         if (!bPlayButton)
         {
-            auto ObjectName = Object->GetName();
-            auto FunctionName = Function->GetName();
-            if (FunctionName.find("BP_PlayButton") != -1)
+            static auto PlayButtonFn = UObject::FindObject<UFunction>("BndEvt__BP_PlayButton_K2Node_ComponentBoundEvent_1_CommonButtonClicked__DelegateSignature");
+
+            // if (FunctionName.find("BP_PlayButton") != -1)
+            if (Function == PlayButtonFn)
             {
                 bPlayButton = true;
                 Game::Start();
                 printf("[Game::Start] Done\n");
 
                 InitNetworkHooks();
+                printf("[InitNetworkHooks] Done\n");
             }
         }
 

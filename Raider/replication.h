@@ -218,26 +218,33 @@ namespace Replication
                     if (!Channel)
                     {
                         #ifdef RELEVANCY
-                        if (!IsActorRelevantToConnection(Actor, ConnectionViewers)) // && !Actor->bAlwaysRelevant)
+                        if (!Actor->bAlwaysRelevant && !Actor->bNetUseOwnerRelevancy && !Actor->bOnlyRelevantToOwner)
                         {
-                            // std::cout << Actor->GetFullName() << " is NOT relevant!\n";
-                            // If not relevant (and we don't have a channel), skip
-                            continue;
+                            if (!IsActorRelevantToConnection(Actor, ConnectionViewers))
+                            {
+                                continue;
+                            }
                         }
                         #endif
-
                         Channel = (UActorChannel*)(Native::NetConnection::CreateChannel(Connection, 2, true, -1));
-						
+
                         if (Channel)
-                            Native::ActorChannel::SetChannelActor(Channel, Actor);
+                            Native::ActorChannel::SetChannelActor(Channel, Actor);	
                     }
 
                     if (Channel)
                     {
-                        // if (IsActorRelevantToConnection(Actor, ConnectionViewers) || Actor->bAlwaysRelevant) // temporary
+                        #ifdef RELEVANCY
+                        if (!Actor->bAlwaysRelevant && !Actor->bNetUseOwnerRelevancy && !Actor->bOnlyRelevantToOwner)
                         {
-                            Native::ActorChannel::ReplicateActor(Channel);
+                            if (!IsActorRelevantToConnection(Actor, ConnectionViewers))
+                            {
+                                Native::ActorChannel::Close(Channel);
+                            }
                         }
+                        #endif
+                        Native::ActorChannel::ReplicateActor(Channel);
+
                         // else // techinally we should wait like 5 seconds but whatever.
                         {
                             // todo get pattern
