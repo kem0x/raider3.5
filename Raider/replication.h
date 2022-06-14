@@ -14,7 +14,7 @@ FNetViewer::FNetViewer(UNetConnection* InConnection)
     if (!InConnection->OwningActor)
         return;
 
-    // if (!InConnection->PlayerController || (InConnection->PlayerController == InConnection->OwningActor)) return;
+    if (!InConnection->PlayerController || (InConnection->PlayerController == InConnection->OwningActor)) return;
 
     APlayerController* ViewingController = InConnection->PlayerController;
 
@@ -29,12 +29,25 @@ FNetViewer::FNetViewer(UNetConnection* InConnection)
     }
 }
 
+void CloseChannel(UActorChannel* Channel, int index)
+{
+    #if 1
+    if (Channel->Actor)
+    {
+        Channel->Connection->OpenChannels.RemoveSingle(index);
+        Channel->Actor = nullptr;
+    }
+	#else
+	Native::ActorChannel::Close(Channel);
+	#endif
+}
+
 namespace Replication
 {
     static FORCEINLINE bool IsActorRelevantToConnection(AActor* Actor, TArray<FNetViewer>& ConnectionViewers)
     {
-        // if (!Actor)
-           // return false;
+        if (!Actor)
+           return false;
 		
         // Native::Actor::IsNetRelevantFor = decltype(Native::Actor::IsNetRelevantFor)(Actor->Vtable[0x132]); // this offset may be wrong
 
@@ -108,7 +121,7 @@ namespace Replication
         return ReadyConnections;
     }
 
-    UActorChannel* FindChannel(AActor* Actor, UNetConnection* Connection)
+    UActorChannel* FindChannel(AActor* Actor, UNetConnection* Connection, int* ChannelIndex = nullptr)
     {
         for (int i = 0; i < Connection->OpenChannels.Num(); i++)
         {
@@ -119,7 +132,12 @@ namespace Replication
                 if (Channel->Class == UActorChannel::StaticClass())
                 {
                     if (((UActorChannel*)Channel)->Actor == Actor)
+                    {
+                        if (ChannelIndex)
+                            *ChannelIndex = i;
+						
                         return ((UActorChannel*)Channel);
+                    }
                 }
             }
         }
@@ -195,6 +213,7 @@ namespace Replication
                 ConnectionViewers.Reset();
                 ConnectionViewers.Add(FNetViewer(Connection));
 
+                /*
                 for (int32 ViewerIndex = 0; ViewerIndex < Connection->Children.Num(); ViewerIndex++)
                 {
                     if (Connection->Children[ViewerIndex]->ViewTarget)
@@ -202,18 +221,23 @@ namespace Replication
                         ConnectionViewers.Add(FNetViewer(Connection->Children[ViewerIndex]));
                     }
                 }
+                */
 
                 #endif
 
                 if (Connection->PlayerController)
                     Native::PlayerController::SendClientAdjustment(Connection->PlayerController); // Sending adjustments to children is for splitscreen
 
-                for (auto Actor : ConsiderList)
+                for (int i = 0; i < ConsiderList.size(); i++)
                 {
-                    if (Actor->IsA(APlayerController::StaticClass()) && Actor != Connection->PlayerController)
+                    auto Actor = ConsiderList[i];
+					
+                    if (!Actor || Actor->IsA(APlayerController::StaticClass()) && Actor != Connection->PlayerController)
                         continue;
 
-                    auto Channel = FindChannel(Actor, Connection);
+					int Index = 0;
+
+                    auto Channel = FindChannel(Actor, Connection, &Index);
 
                     if (!Channel)
                     {
@@ -232,14 +256,15 @@ namespace Replication
                             Native::ActorChannel::SetChannelActor(Channel, Actor);	
                     }
 
-                    if (Channel)
+                    if (Channel && Channel->Actor)
                     {
                         #ifdef RELEVANCY
                         if (!Actor->bAlwaysRelevant && !Actor->bNetUseOwnerRelevancy && !Actor->bOnlyRelevantToOwner)
                         {
                             if (!IsActorRelevantToConnection(Actor, ConnectionViewers))
                             {
-                                Native::ActorChannel::Close(Channel);
+                                CloseChannel(Channel, Index);
+                                ConsiderList.erase(ConsiderList.begin() + i);
                             }
                         }
                         #endif
