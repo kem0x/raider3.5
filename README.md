@@ -8,3 +8,8 @@ As the project is going to be OSS, everyone can contribute by making his own iss
 
 
 <h3 align="center">We please ask you to contribute if you can, report issues as we are going to still work on this.</h3>
+
+
+## - License
+
+- This project is licensed under the [MIT License](/LICENSE), You are allowed to use this project in any way you want **with credit**.
