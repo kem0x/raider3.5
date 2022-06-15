@@ -17,6 +17,6 @@ As the project is going to be OSS, everyone can contribute by making his own iss
 ## - The Raider Team
 [Samuel](https://twitter.com/samuelsiv__)<br>
 [Kemo](https://twitter.com/kem0x)<br>
-[Fischsalat](https://twitter.com/Fischsalat)<br>
+[Fischsalat](https://twitter.com/FischsaIat)<br>
 [Milxnor](https://twitter.com/Milxnor_)<br>
 
