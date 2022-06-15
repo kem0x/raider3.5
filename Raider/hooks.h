@@ -82,10 +82,8 @@ namespace Hooks
 
         Pawn->SetMaxHealth(Health);
         Pawn->SetMaxShield(Shield);
-
-        std::cout << "Original Pawn UpdateFrequency: " << Pawn->NetUpdateFrequency << '\n';
 		
-		Pawn->NetUpdateFrequency *= 2;
+		Pawn->NetUpdateFrequency *= 2; // Original is 100.0f;
         auto CM = Pawn->CharacterMovement;
 
         if (CM)
