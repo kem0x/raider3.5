@@ -5,6 +5,16 @@
 
 // #define LOGGING
 
+enum CustomMode
+{
+	JUGGERNAUT,
+    LATEGAME,
+	LIFESTEAL,
+    NONE
+};
+
+constexpr CustomMode Mode = NONE;
+
 namespace Hooks
 {
     bool LocalPlayerSpawnPlayActor(ULocalPlayer* Player, const FString& URL, FString& OutError, UWorld* World) // prevent server's pc from spawning
@@ -66,8 +76,11 @@ namespace Hooks
         PlayerController->OnRep_Pawn();
         PlayerController->Possess(Pawn);
 
-        Pawn->SetMaxHealth(100);
-        Pawn->SetMaxShield(100);
+        constexpr static auto Health = (Mode == CustomMode::JUGGERNAUT) ? 500 : 100;
+        const static auto Shield = 100;
+
+        Pawn->SetMaxHealth(Health);
+        Pawn->SetMaxShield(Shield);
 
         PlayerController->bHasClientFinishedLoading = true; // should we do this on ServerSetClientHasFinishedLoading 
         PlayerController->bHasServerFinishedLoading = true;

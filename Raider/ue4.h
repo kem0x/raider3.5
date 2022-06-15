@@ -286,7 +286,7 @@ bool CanBuild2(ABuildingSMActor* BuildingActor)
     TArray<ABuildingActor*> ExistingBuildings;
     EFortStructuralGridQueryResults bCanBuild = GameState->StructuralSupportSystem->K2_CanAddBuildingActorToGrid(GetWorld(), BuildingActor, BuildingActor->K2_GetActorLocation(), BuildingActor->K2_GetActorRotation(), false, false, &ExistingBuildings);
 
-	if (bCanBuild == EFortStructuralGridQueryResults::CanAdd)
+	if (bCanBuild == EFortStructuralGridQueryResults::CanAdd || ExistingBuildings.Num() == 0)
         return true;
 	
     return false;
@@ -402,6 +402,12 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortItemDefinition* De
     UpdateInventory(PC);
 
     return ItemEntry;
+}
+
+void SetPartsFromCID(AFortPlayerControllerAthena* PC, UAthenaCharacterItemDefinition* CID)
+{
+	if (!PC || !CID)
+		return;
 }
 
 inline UFortItemDefinition* GetDefInSlot(AFortPlayerControllerAthena* PC, int Slot, int Item = 0)

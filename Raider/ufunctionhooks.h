@@ -8,6 +8,7 @@
 
 // #define LOGGING
 #define CHEATS
+#define MAXPLAYERS 100
 
 //Define the hook with ufunction full name
 //Return true in the lambda to prevent the original function call
@@ -109,6 +110,11 @@ namespace UFunctionHooks
                             }
                             else
                                 ClientMessage(PC, L"Requested item is not a pickaxe!\n");
+                        }
+
+                        else if (Command == "setcid" && NumArgs >= 1)
+                        {
+                        
                         }
 
                         else if (Command == "equiptraptool")
@@ -587,7 +593,7 @@ namespace UFunctionHooks
                 // GameState->SpectatorClass = ABP_SpectatorPawn_C::StaticClass();
                 // sGameState->OnRep_SpectatorClass();
 
-                ((AAthena_GameMode_C*)GetWorld()->AuthorityGameMode)->GameSession->MaxPlayers = 100;
+                ((AAthena_GameMode_C*)GetWorld()->AuthorityGameMode)->GameSession->MaxPlayers = MAXPLAYERS;
                 bListening = true;
                 std::cout << "\n\nListening on port " << HostBeacon->ListenPort << "\n\n";
             }
