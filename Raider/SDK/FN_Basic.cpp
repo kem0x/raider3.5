@@ -17,6 +17,17 @@ bool FWeakObjectPtr::IsValid() const
 //---------------------------------------------------------------------------
 UObject* FWeakObjectPtr::Get() const
 {
+	for (int i = 0; i < UObject::GObjects->NumElements; i++)
+	{
+		auto Object = UObject::GObjects->GetByIndex(i);
+
+		if (!Object)
+			continue;
+		
+		if (i == ObjectIndex)
+			return Object;
+	}
+	
 	return nullptr;
 }
 //---------------------------------------------------------------------------

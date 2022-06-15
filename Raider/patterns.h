@@ -43,4 +43,5 @@ namespace Patterns
     constexpr const char* GetPlayerViewPoint = "48 89 5C 24 ? 48 89 74 24 ? 55 41 56 41 57 48 8B EC 48 83 EC 50";
     constexpr const char* ActorChannelClose = "48 89 5C 24 ? 55 57 41 57 48 83 EC 50 33 FF 48 8B D9 89 7C 24 70 80 3D ? ? ? ? ? 44 8D 7F 01 0F 82 ? ? ? ? 48";
     constexpr const char* NetDebug = "40 55 56 41 56 48 8D AC 24 ? ? ? ? 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 85 ? ? ? ? 48 8B 01 48 8B F1 FF 90 ? ? ? ? 4C 8B F0 48 85 C0 0F";
+    constexpr const char* StartBecomingDormant = "48 8B C4 55 53 48 8D 68 A1 48 81 EC ? ? ? ? F6 41 30 84";
 }

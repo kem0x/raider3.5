@@ -586,7 +586,9 @@ namespace UFunctionHooks
                 GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;
                 GetWorld()->LevelCollections[1].NetDriver = HostBeacon->NetDriver;
 
-                Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
+                // Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
+
+                CreateThread(0, 0, MapLoadThread, 0, 0, 0);
 
                 auto GameState = (AAthena_GameState_C*)GetWorld()->GameState;
 

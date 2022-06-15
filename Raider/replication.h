@@ -2,9 +2,7 @@
 #include "ue4.h"
 
 #define invptr (void*)0xffffffff
-// #define RELEVANCY
-
-// Idea: To temporarily fix relevancy, we could maybe could just set the InViewer to the ViewTarget.
+#define RELEVANCY
 
 FNetViewer::FNetViewer(UNetConnection* InConnection)
     : Connection(InConnection)
@@ -13,10 +11,14 @@ FNetViewer::FNetViewer(UNetConnection* InConnection)
       , ViewLocation(FVector())
       , ViewDir(FVector())
 {
+    /*
+    
     if (!InConnection->OwningActor)
         return;
 
     if (!InConnection->PlayerController || (InConnection->PlayerController == InConnection->OwningActor)) return;
+
+    */
 
     APlayerController* ViewingController = InConnection->PlayerController;
 
@@ -31,23 +33,101 @@ FNetViewer::FNetViewer(UNetConnection* InConnection)
     }
 }
 
+AActor* GetNetOwner(const AActor* Actor)
+{
+    if (Actor->IsA(APawn::StaticClass()) || Actor->IsA(APlayerController::StaticClass()))
+        return (AActor*)Actor;
+
+    if (Actor->IsA(AOnlineBeaconClient::StaticClass()))
+        return ((AOnlineBeaconClient*)Actor)->BeaconOwner;
+
+    return Actor->Owner;
+}
+
+static FORCEINLINE UNetConnection* IsActorOwnedByAndRelevantToConnection(const AActor* Actor, const TArray<FNetViewer>& ConnectionViewers, bool& bOutHasNullViewTarget)
+{
+    const AActor* ActorOwner = GetNetOwner(Actor);
+
+    bOutHasNullViewTarget = false;
+
+    for (int i = 0; i < ConnectionViewers.Num(); i++)
+    {
+        UNetConnection* ViewerConnection = ConnectionViewers[i].Connection;
+
+        if (ViewerConnection->ViewTarget == nullptr)
+        {
+            bOutHasNullViewTarget = true;
+        }
+
+        if (ActorOwner == ViewerConnection->PlayerController || (ViewerConnection->PlayerController && ActorOwner == ViewerConnection->PlayerController->Pawn))
+        // || (ViewerConnection->ViewTarget && ViewerConnection->ViewTarget->IsRelevancyOwnerFor(Actor, ActorOwner, ViewerConnection->OwningActor)))
+        {
+            return ViewerConnection;
+        }
+    }
+
+    return nullptr;
+}
+
 float GetWorldTimeSeconds(UWorld* World)
 {
     static auto GameplayStatics = GetGameplayStatics();
     return GameplayStatics->STATIC_GetTimeSeconds(World);
 }
 
-void CloseChannel(UActorChannel* Channel, int index)
+void CloseChannel(UActorChannel* Channel, int index = -1)
 {
-    #if 1
+    #if 0
     if (Channel->Actor)
     {
-        Channel->Connection->OpenChannels.RemoveSingle(index);
+        if (index != -1)
+            Channel->Connection->OpenChannels.RemoveSingle(index);
         Channel->Actor = nullptr;
     }
 	#else
-	Native::ActorChannel::Close(Channel);
+    if (Channel && Channel->Actor)
+	    Native::ActorChannel::Close(Channel);
 	#endif
+}
+
+static FORCEINLINE bool IsActorDormant(FNetworkObjectInfo* ActorInfo, const UNetConnection* Connection)
+{
+    // If actor is already dormant on this channel, then skip replication entirely
+
+    for (int i = 0; i < ActorInfo->DormantConnections.Num(); i++)
+    {
+        auto& DormantConnection = ActorInfo->DormantConnections[i];
+ 
+		if (DormantConnection->InternalIndex == Connection->InternalIndex)
+            return true;
+    }
+       
+    return false;
+}
+
+void StartTickingChannel(UNetConnection* Connection, UChannel* Channel) { Connection->ChannelsToTick.Add(Channel); }
+
+static FORCEINLINE bool ShouldActorGoDormant(AActor* Actor, const TArray<FNetViewer>& ConnectionViewers, UActorChannel* Channel, const float Time, const bool bLowNetBandwidth = false)
+{
+    if (Actor->NetDormancy <= ENetDormancy::DORM_Awake || !Channel) // || Channel->bPendingDormancy || Channel->Dormant)
+    {
+        // Either shouldn't go dormant, or is already dormant
+        return false;
+    }
+
+    if (Actor->NetDormancy == ENetDormancy::DORM_DormantPartial)
+    {
+        for (int32 viewerIdx = 0; viewerIdx < ConnectionViewers.Num(); viewerIdx++)
+        {
+            // if (!Actor->GetNetDormancy(ConnectionViewers[viewerIdx].ViewLocation, ConnectionViewers[viewerIdx].ViewDir, ConnectionViewers[viewerIdx].InViewer, ConnectionViewers[viewerIdx].ViewTarget, Channel, Time, bLowNetBandwidth))
+            if (!false) // GetNetDormancy just always returns false
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 namespace Replication
@@ -65,6 +145,9 @@ namespace Replication
                 continue;
 			
             // if (decltype(Native::Actor::IsNetRelevantFor)(Actor->Vtable[0x132])(Actor, ConnectionViewers[viewerIdx].InViewer, ConnectionViewers[viewerIdx].ViewTarget, ConnectionViewers[viewerIdx].ViewLocation))
+            ConnectionViewers[viewerIdx].InViewer = ConnectionViewers[viewerIdx].ViewTarget; // TEMPORARY
+            ConnectionViewers[viewerIdx].ViewLocation = ConnectionViewers[viewerIdx].InViewer->K2_GetActorLocation(); // TEMPORARY
+			
             if (Native::Actor::IsNetRelevantFor(Actor, ConnectionViewers[viewerIdx].InViewer, ConnectionViewers[viewerIdx].ViewTarget, ConnectionViewers[viewerIdx].ViewLocation))
             {
                 return true;
@@ -129,7 +212,7 @@ namespace Replication
         return ReadyConnections;
     }
 
-    UActorChannel* FindChannel(AActor* Actor, UNetConnection* Connection, int* ChannelIndex = nullptr)
+    UActorChannel* FindChannel(AActor* Actor, UNetConnection* Connection)
     {
         for (int i = 0; i < Connection->OpenChannels.Num(); i++)
         {
@@ -140,10 +223,7 @@ namespace Replication
                 if (Channel->Class == UActorChannel::StaticClass())
                 {
                     if (((UActorChannel*)Channel)->Actor == Actor)
-                    {
-                        if (ChannelIndex)
-                            *ChannelIndex = i;
-						
+                    {	
                         return ((UActorChannel*)Channel);
                     }
                 }
@@ -319,23 +399,55 @@ namespace Replication
 
                 for (int i = 0; i < ConsiderList.size(); i++)
                 {
-                    auto Actor = ConsiderList[i]->Actor;
+                    auto ActorInfo = ConsiderList[i];
+                    auto Actor = ActorInfo->Actor;
 					
                     if (!Actor || Actor->IsA(APlayerController::StaticClass()) && Actor != Connection->PlayerController)
                         continue;
 
-					int Index = 0;
-
-                    auto Channel = FindChannel(Actor, Connection, &Index);
+                    auto Channel = FindChannel(Actor, Connection);
 
                     if (!Channel)
                     {
                         #ifdef RELEVANCY
-                        if (!Actor->bAlwaysRelevant && !Actor->bNetUseOwnerRelevancy && !Actor->bOnlyRelevantToOwner)
+                        if (!Actor->bOnlyRelevantToOwner)
                         {
                             if (!IsActorRelevantToConnection(Actor, ConnectionViewers))
                             {
                                 continue;
+                            }
+                        }
+                        else if (Actor->bOnlyRelevantToOwner)
+                        {
+                            // This actor should be owned by a particular connection, see if that connection is the one passed in
+                            bool bHasNullViewTarget = false;
+
+                            auto PriorityConnection = IsActorOwnedByAndRelevantToConnection(Actor, ConnectionViewers, bHasNullViewTarget);
+
+                            if (!PriorityConnection)
+                            {
+                                if (!bHasNullViewTarget && Channel) // && NetDriver->Time - Channel->RelevantTime >= RelevantTimeout )
+                                {
+                                    // CloseChannel(Channel);
+                                }
+
+                                // This connection doesn't own this actor
+                                continue;
+                            }
+                        }
+                        else if (true) // CVarSetNetDormancyEnabled.GetValueOnGameThread() != 0)
+                        {
+                            // Skip Actor if dormant
+                            if (IsActorDormant(ActorInfo, Connection))
+                            {
+                                continue;
+                            }
+
+                            // See of actor wants to try and go dormant
+                            if (ShouldActorGoDormant(Actor, ConnectionViewers, Channel, NetDriver->Time, false))
+                            {
+                                // Channel is marked to go dormant now once all properties have been replicated (but is not dormant yet)
+                                Native::ActorChannel::StartBecomingDormant(Channel);
                             }
                         }
                         #endif
@@ -348,12 +460,30 @@ namespace Replication
                     if (Channel && Channel->Actor)
                     {
                         #ifdef RELEVANCY
-                        if (!Actor->bAlwaysRelevant && !Actor->bNetUseOwnerRelevancy && !Actor->bOnlyRelevantToOwner)
+                        if (!Actor->bOnlyRelevantToOwner)
                         {
                             if (!IsActorRelevantToConnection(Actor, ConnectionViewers))
                             {
-                                CloseChannel(Channel, Index);
-                                // ConsiderList.erase(ConsiderList.begin() + i);
+                                CloseChannel(Channel);
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            // This actor should be owned by a particular connection, see if that connection is the one passed in
+                            bool bHasNullViewTarget = false;
+
+                            auto PriorityConnection = IsActorOwnedByAndRelevantToConnection(Actor, ConnectionViewers, bHasNullViewTarget);
+
+                            if (!PriorityConnection)
+                            {
+                                if (!bHasNullViewTarget && Channel) // && NetDriver->Time - Channel->RelevantTime >= RelevantTimeout )
+                                {
+                                    CloseChannel(Channel);
+                                }
+
+                                // This connection doesn't own this actor
+                                continue;
                             }
                         }
                         #endif
@@ -369,11 +499,9 @@ namespace Replication
                             ConsiderList[i]->OptimalNetUpdateDelta = Math->STATIC_Clamp(DeltaBetweenReplications * 0.7f, MinOptimalDelta, MaxOptimalDelta);
                             ConsiderList[i]->LastNetReplicateTime = GetWorldTimeSeconds(NetDriver->World);
                         }
-
-                        // else // techinally we should wait like 5 seconds but whatever.
+                        else
                         {
-                            // todo get pattern
-                            // Native::ActorChannel::Close(Channel);
+                            // std::cout << "Failed to replicate: " << Actor->GetFullName() << '\n';
                         }
                     }
                 }

@@ -308,6 +308,10 @@ namespace Native
         CheckNullFatal(Address, "Failed to find IsNetRelevantFor");
         AddressToFunction(Address, Actor::IsNetRelevantFor);
 
+        Address = Utils::FindPattern(Patterns::StartBecomingDormant);
+        CheckNullFatal(Address, "Failed to find StartBecomingDormant");
+        AddressToFunction(Address, ActorChannel::StartBecomingDormant);
+
         ProcessEvent = reinterpret_cast<decltype(ProcessEvent)>(GetEngine()->Vtable[0x40]);
     }
 }

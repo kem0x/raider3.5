@@ -370,11 +370,11 @@ namespace SDK
     };
 
     template <class T, class TWeakObjectPtrBase = FWeakObjectPtr>
-    struct TWeakObjectPtr : private TWeakObjectPtrBase
+    struct TWeakObjectPtr : public TWeakObjectPtrBase
     {
     public:
         inline T* Get() const
-        {
+        {		    
             return (T*)TWeakObjectPtrBase::Get();
         }
 

@@ -5,15 +5,16 @@
 
 // #define LOGGING
 
-enum CustomMode
+enum class CustomMode
 {
-	JUGGERNAUT,
-    LATEGAME,
-	LIFESTEAL,
-    NONE
+    NONE,
+	JUGGERNAUT, // Gives the players 500 health and makes you slower.
+    LATEGAME, // TODO: You know what late game is.
+	LIFESTEAL, // TODO: You know what life steal is, but this might be a stupid idea.
+    SPACE // Sets gravity like the moon // BUG: Unfortunately, the gravityscale variable doesn't update for the client, making them rubberband and making it look weird.
 };
 
-constexpr CustomMode Mode = NONE;
+constexpr CustomMode Mode = CustomMode::NONE;
 
 namespace Hooks
 {
@@ -82,6 +83,27 @@ namespace Hooks
         Pawn->SetMaxHealth(Health);
         Pawn->SetMaxShield(Shield);
 
+        std::cout << "Original Pawn UpdateFrequency: " << Pawn->NetUpdateFrequency << '\n';
+		
+		Pawn->NetUpdateFrequency *= 2;
+        auto CM = Pawn->CharacterMovement;
+
+        if (CM)
+        {
+            switch (Mode)
+            {
+            case CustomMode::SPACE:
+                CM->GravityScale -= 0.5f; // Default is 1.0f
+                break;
+            case CustomMode::JUGGERNAUT:
+                // CM->Mass += 200; // Default is 100.0f // this does nothing for some reason
+				// CM->MaxAcceleration -= 500.0f; // Default is 1000f // this does nothing for some reason
+                break;
+            }
+        }
+        else
+            std::cout << "Could not find CharacterMovementComponent!\n";
+
         PlayerController->bHasClientFinishedLoading = true; // should we do this on ServerSetClientHasFinishedLoading 
         PlayerController->bHasServerFinishedLoading = true;
         PlayerController->bHasInitiallySpawned = true;
@@ -97,24 +119,27 @@ namespace Hooks
         {
             auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
 
-            PlayerState->HeroType = Hero->GetHeroTypeBP();
-            PlayerState->OnRep_HeroType();
-
-            for (auto i = 0; i < Hero->CharacterParts.Num(); i++)
+            if (Hero)
             {
-                auto Part = Hero->CharacterParts[i];
+                PlayerState->HeroType = Hero->GetHeroTypeBP();
+                PlayerState->OnRep_HeroType();
 
-                if (!Part)
-                    continue;
+                for (auto i = 0; i < Hero->CharacterParts.Num(); i++)
+                {
+                    auto Part = Hero->CharacterParts[i];
 
-                PlayerState->CharacterParts[i] =  Part;
+                    if (!Part)
+                        continue;
+
+                    PlayerState->CharacterParts[i] = Part;
+                }
+
+                PlayerState->CharacterBodyType = Hero->CharacterParts[1]->BodyTypesPermitted;
+                Pawn->CharacterBodyType = Hero->CharacterParts[1]->BodyTypesPermitted;
+                Pawn->CharacterGender = Hero->CharacterParts[1]->GenderPermitted;
+                PlayerState->OnRep_CharacterBodyType();
+                PlayerState->OnRep_CharacterParts();
             }
-
-            PlayerState->CharacterBodyType = Hero->CharacterParts[1]->BodyTypesPermitted;
-            Pawn->CharacterBodyType = Hero->CharacterParts[1]->BodyTypesPermitted;
-            Pawn->CharacterGender = Hero->CharacterParts[1]->GenderPermitted;
-            PlayerState->OnRep_CharacterBodyType();
-            PlayerState->OnRep_CharacterParts();
         }
 
         static std::vector<UFortWeaponRangedItemDefinition*> doublePumpLoadout = {

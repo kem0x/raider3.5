@@ -12,7 +12,10 @@ constexpr auto HALF_PI = 1.57079632679f;
 inline bool bTraveled = false;
 inline bool bPlayButton = false;
 inline bool bListening = false;
+static bool bSpawnedFloorLoot = false;
+
 static std::unordered_set<ABuildingSMActor*> Buildings;
+static AFortOnlineBeaconHost* HostBeacon = nullptr;
 
 inline UWorld* GetWorld()
 {
@@ -241,6 +244,30 @@ inline auto CreateCheatManager(APlayerController* Controller)
     }
 
     return (UFortCheatManager*)Controller->CheatManager;
+}
+
+DWORD WINAPI MapLoadThread(LPVOID) // thnak you mr rythm for giving me this
+{
+    // std::cout << "There is " << GetWorld()->StreamingLevels.Num() << " currently loading" << '\n';
+
+    for (int i = 0; i < GetWorld()->StreamingLevels.Num(); i++)
+    {
+        auto StreamingLevel = GetWorld()->StreamingLevels[i];
+
+        // std::cout << StreamingLevel->GetName() << " state: " << (StreamingLevel->IsLevelLoaded() ? "Loaded" : "Loading") << '\n';
+
+        if (StreamingLevel->IsLevelLoaded())
+            continue;
+
+        Sleep(1000);
+    }
+		
+	Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
+
+    // Beacon->BeaconState = EBeaconState::AllowRequests;
+    std::cout << "People can join now!\n";
+
+	return 0;
 }
 
 bool CanBuild(ABuildingSMActor* BuildingActor)
@@ -549,8 +576,6 @@ inline void DumpObjects()
 
     std::cout << "Finished dumping objects!\n";
 }
-
-AFortOnlineBeaconHost* HostBeacon = nullptr;
 
 static AFortPickup* SummonPickup(AFortPlayerPawn* Pawn, auto ItemDef, int Count, FVector Location)
 {
@@ -968,52 +993,57 @@ auto GetRandomWID(int skip = 0)
 
 DWORD WINAPI SummonFloorLoot(LPVOID)
 {
-    static auto FloorLootClass = UObject::FindObject<UClass>("BlueprintGeneratedClass Tiered_Athena_FloorLoot_01.Tiered_Athena_FloorLoot_01_C");
-
-    if (!FloorLootClass)
-        return 0;
-
-    static auto Scar = FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03");
-    auto FloorLootActors = GetAllActorsOfClass(FloorLootClass);
-
-    /*
-
-static std::vector<UFortWeaponRangedItemDefinition*> Weapons = {
-    GetRandomWID(7),
-    GetRandomWID(11),
-    GetRandomWID(15),
-    GetRandomWID(19),
-};
-
-for (int i = 0; i < 100; i++)
-{
-    // Weapons.push_back(GetRandomWID());
-}
-
-*/
-
-    // it also crashes sometimes if you spawn alot on like constructionscript
-    auto AmountOfActorsToSpawn = 20; // FloorLootActors.Num(); // For now, without relevancy we just spawn some.
-    int AmountSpawned = 0;
-
-    for (int i = 0; i < AmountOfActorsToSpawn; i++)
+    if (!bSpawnedFloorLoot)
     {
-        auto FloorLootActor = FloorLootActors[i];
-        auto weaponToSpawn = Scar; // Weapons[RandomIntInRange(0, 3)];
-        auto Location = FloorLootActor->K2_GetActorLocation();
+        static auto FloorLootClass = UObject::FindObject<UClass>("BlueprintGeneratedClass Tiered_Athena_FloorLoot_01.Tiered_Athena_FloorLoot_01_C");
 
-        if (!FloorLootActor || !weaponToSpawn)
-            continue;
+        if (!FloorLootClass)
+            return 0;
 
-        // SpawnPickupFromFloorLoot(weaponToSpawn, 1, Location);
-        SummonPickupFromChest(weaponToSpawn, 1, Location);
-        AmountSpawned++;
+        static auto Scar = FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03");
+        auto FloorLootActors = GetAllActorsOfClass(FloorLootClass);
 
-        if (false) // (auto Ammo = weaponToSpawn->GetAmmoWorldItemDefinition_BP())
-            SpawnPickupFromFloorLoot(nullptr, 10, Location); // Crashes sometimes idk why
+        /*
+
+    static std::vector<UFortWeaponRangedItemDefinition*> Weapons = {
+        GetRandomWID(7),
+        GetRandomWID(11),
+        GetRandomWID(15),
+        GetRandomWID(19),
+    };
+
+    for (int i = 0; i < 100; i++)
+    {
+        // Weapons.push_back(GetRandomWID());
     }
 
-    std::cout << "Spawned " << AmountSpawned << " pickups!\n";
+    */
+
+        // it also crashes sometimes if you spawn alot on like constructionscript
+        auto AmountOfActorsToSpawn = 20; // FloorLootActors.Num(); // For now, without relevancy we just spawn some.
+        int AmountSpawned = 0;
+
+        for (int i = 0; i < AmountOfActorsToSpawn; i++)
+        {
+            auto FloorLootActor = FloorLootActors[i];
+            auto weaponToSpawn = Scar; // Weapons[RandomIntInRange(0, 3)];
+            auto Location = FloorLootActor->K2_GetActorLocation();
+
+            if (!FloorLootActor || !weaponToSpawn)
+                continue;
+
+            // SpawnPickupFromFloorLoot(weaponToSpawn, 1, Location);
+            SummonPickupFromChest(weaponToSpawn, 1, Location);
+            AmountSpawned++;
+
+            if (false) // (auto Ammo = weaponToSpawn->GetAmmoWorldItemDefinition_BP())
+                SpawnPickupFromFloorLoot(nullptr, 10, Location); // Crashes sometimes idk why
+        }
+
+        std::cout << "Spawned " << AmountSpawned << " pickups!\n";
+    }
+
+    bSpawnedFloorLoot = true;
 
     return 0;
 }

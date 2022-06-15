@@ -18,7 +18,7 @@ FNetViewer::FNetViewer(UNetConnection* InConnection)
         return;
 
     APlayerController* ViewingController = InConnection->PlayerController;
-
+    RF
     // Get viewer coordinates.
     ViewLocation = ViewTarget->K2_GetActorLocation();
 
