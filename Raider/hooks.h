@@ -86,8 +86,8 @@ namespace Hooks
 		Pawn->NetUpdateFrequency *= 2; // Original is 100.0f;
         auto CM = Pawn->CharacterMovement;
 
-        if (CM)
-        {
+        if (CM && Mode > CustomMode::NONE)
+		{
             switch (Mode)
             {
             case CustomMode::SPACE:
@@ -99,8 +99,6 @@ namespace Hooks
                 break;
             }
         }
-        else
-            std::cout << "Could not find CharacterMovementComponent!\n";
 
         PlayerController->bHasClientFinishedLoading = true; // should we do this on ServerSetClientHasFinishedLoading 
         PlayerController->bHasServerFinishedLoading = true;
@@ -119,29 +117,21 @@ namespace Hooks
 
             if (Hero)
             {
-                PlayerState->HeroType = Hero->GetHeroTypeBP();
+                UFortHeroType* HeroType = Hero->GetHeroTypeBP(); // UObject::FindObject<UFortHeroType>("FortHeroType HID_Outlander_015_F_V1_SR_T04.HID_Outlander_015_F_V1_SR_T04");
+                PlayerState->HeroType = HeroType;
                 PlayerState->OnRep_HeroType();
 
-                for (auto i = 0; i < Hero->CharacterParts.Num(); i++)
-                {
-                    auto Part = Hero->CharacterParts[i];
+                static auto Head = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
+                static auto Body = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
 
-                    if (!Part)
-                        continue;
-
-                    PlayerState->CharacterParts[i] = Part;
-                }
-
-                PlayerState->CharacterBodyType = Hero->CharacterParts[1]->BodyTypesPermitted;
-                Pawn->CharacterBodyType = Hero->CharacterParts[1]->BodyTypesPermitted;
-                Pawn->CharacterGender = Hero->CharacterParts[1]->GenderPermitted;
-                PlayerState->OnRep_CharacterBodyType();
+				PlayerState->CharacterParts[(uint8_t)EFortCustomPartType::Head] = Head;
+                PlayerState->CharacterParts[(uint8_t)EFortCustomPartType::Body] = Body;
                 PlayerState->OnRep_CharacterParts();
             }
         }
 
         static std::vector<UFortWeaponRangedItemDefinition*> doublePumpLoadout = {
-            FindWID("WID_Harvest_Pickaxe_HolidayCandyCane_Athena"), // Candy Axe
+            FindWID("WID_Harvest_Pickaxe_Athena_C_T01"),
             FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
             FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
             FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03"), // Gold AR
@@ -153,8 +143,7 @@ namespace Hooks
         EquipLoadout(PlayerController, doublePumpLoadout);
 
         auto CheatManager = CreateCheatManager(PlayerController);
-        CheatManager->ToggleInfiniteAmmo();
-        CheatManager->ToggleInfiniteDurability();
+        // CheatManager->ToggleInfiniteAmmo();
 
         if (PlayerController->Pawn)
         {

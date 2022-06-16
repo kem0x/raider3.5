@@ -56,6 +56,6 @@ namespace Game
 
 		// https://github.com/EpicGames/UnrealEngine/blob/46544fa5e0aa9e6740c19b44b0628b72e7bbd5ce/Engine/Source/Runtime/Engine/Private/ActorReplication.cpp#L300
         // By default the NetCullDistanceSquared is very low, I don't know why.
-        GetWorld()->NetworkManager->NetCullDistanceSquared *= 3;// 2.5;
+        GetWorld()->NetworkManager->NetCullDistanceSquared *= 3;
     }
 }

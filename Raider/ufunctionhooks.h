@@ -80,61 +80,16 @@ namespace UFunctionHooks
 
                     if (NumArgs >= 0)
                     {
-                        auto& Command = Arguments[0]; // TODO: Make the string all lower case.
+                        auto& Command = Arguments[0];
                         std::transform(Command.begin(), Command.end(), Command.begin(), ::tolower);
 
-                        if (Command == "setpickaxe" && NumArgs >= 1)
-                        {
-                            auto& PickaxeName = Arguments[1];
-                            UFortWeaponMeleeItemDefinition* PID = UObject::FindObject<UFortWeaponMeleeItemDefinition>("WID_Harvest_" + PickaxeName + "_Athena_C_T01" + ".WID_Harvest_" + PickaxeName + "_Athena_C_T01");
-
-							// if (!PID)
-                               // PID = UObject::FindObject<UFortWeaponMeleeItemDefinition>(PickaxeName + "." + PickaxeName); // UAthenaPickaxeItemDefinition
-
-                            if (PID && (PID->IsA(UFortWeaponMeleeItemDefinition::StaticClass()) || PID->IsA(UAthenaPickaxeItemDefinition::StaticClass())))
-                            {
-                                bool bFound = false;
-                                auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
-
-                                if (!bFound)
-                                    PickaxeEntry = FindItemInInventory<UAthenaPickaxeItemDefinition>(PC, bFound);
-
-                                if (bFound)
-                                {
-                                    // ChangeItem(PC, PickaxeEntry.ItemDefinition, PID, 0);
-                                    ClientMessage(PC, (L"Changed pickaxe to " + toWStr(PickaxeName) + L"!").c_str());
-                                }
-
-                                else
-                                    ClientMessage(PC, L"Unable to find your pickaxe!\n");
-                            }
-                            else
-                                ClientMessage(PC, L"Requested item is not a pickaxe!\n");
-                        }
-
-                        else if (Command == "setcid" && NumArgs >= 1)
-                        {
-                        
-                        }
-
-                        else if (Command == "equiptraptool")
-                        {
-                            EquipTrapTool(PC);
-                        }
-
-                        else if (Command == "revive" && Pawn->bIsDBNO)
+                        if (Command == "revive" && Pawn->bIsDBNO)
                         {
                             Pawn->bIsDBNO = false;
                             Pawn->OnRep_IsDBNO();
 
                             // PC->ClientOnPawnRevived(InstigatorPC);
                             Pawn->SetHealth(100);
-                        }
-
-                        else if (Command == "togglegodmode")
-                        {
-                            Pawn->bCanBeDamaged = !Pawn->bCanBeDamaged;
-                            std::cout << "Godmode enabled for " << Pawn->GetName() << '\n';
                         }
 
                         else if (Command == "giveweapon" && NumArgs >= 1)
@@ -175,6 +130,10 @@ namespace UFunctionHooks
             return false;
         })
 #endif
+
+        DEFINE_PEHOOK("Function Engine.CheatManager.CheatScript", {
+            return false;
+        })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCreateBuildingActor", {
             auto PC = (AFortPlayerControllerAthena*)Object;
@@ -412,7 +371,7 @@ namespace UFunctionHooks
                 DBNOPawn->OnRep_IsDBNO();
 
                 DBNOPC->ClientOnPawnRevived(InstigatorPC);
-                DBNOPawn->SetHealth(100);
+                DBNOPawn->SetHealth(30);
             }
 
             return false;
@@ -592,9 +551,6 @@ namespace UFunctionHooks
 
                 auto GameState = (AAthena_GameState_C*)GetWorld()->GameState;
 
-                // GameState->SpectatorClass = ABP_SpectatorPawn_C::StaticClass();
-                // sGameState->OnRep_SpectatorClass();
-
                 ((AAthena_GameMode_C*)GetWorld()->AuthorityGameMode)->GameSession->MaxPlayers = MAXPLAYERS;
                 bListening = true;
                 std::cout << "\n\nListening on port " << HostBeacon->ListenPort << "\n\n";
@@ -603,7 +559,7 @@ namespace UFunctionHooks
             return false;
         })
 
-        DEFINE_PEHOOK("Function FortniteGame.FortGameModeAthena.OnAircraftExitedDropZone", { // To make this faster we could loop through client connections and get their controllers
+        DEFINE_PEHOOK("Function FortniteGame.FortGameModeAthena.OnAircraftExitedDropZone", {
 
 			if (GetWorld() && GetWorld()->NetDriver && GetWorld()->NetDriver->ClientConnections.Data)
             {
@@ -625,7 +581,10 @@ namespace UFunctionHooks
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCheatAll", {
-            KickPlayer((AFortPlayerControllerAthena*)Object, L"Please do not do that!");
+            auto PlayerController = (AFortPlayerControllerAthena*)Object;
+
+            if (PlayerController)
+                KickPlayer((AFortPlayerControllerAthena*)Object, L"Please do not do that!");
             return true;
         })
 
