@@ -231,6 +231,18 @@ namespace UFunctionHooks
 
                     if (auto NewBuildingActor = (ABuildingSMActor*)SpawnActor(NewBuildingClass, BuildingActor->K2_GetActorLocation(), rotation, PC))
                     {
+                        auto NewLocation = NewBuildingActor->K2_GetActorLocation();
+
+						// Print X, Y, Z of NewLOcation
+						printf("X: %f\n", NewLocation.X);
+						printf("Y: %f\n", NewLocation.Y);
+						printf("Z: %f\n", NewLocation.Z);
+						
+                        // Print X, Y, Z of NewBuildingActor->GetCentroid()
+						printf("X: %f\n", NewBuildingActor->GetCentroid().X);
+						printf("Y: %f\n", NewBuildingActor->GetCentroid().Y);
+						printf("Z: %f\n", NewBuildingActor->GetCentroid().Z);
+						
                         NewBuildingActor->SetMirrored(Params->bMirrored);
                         NewBuildingActor->InitializeKismetSpawnedBuildingActor(NewBuildingActor, PC);
                     }

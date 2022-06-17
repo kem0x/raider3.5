@@ -15,7 +15,7 @@ enum class CustomMode
     SIPHON // Gives 50 shield/health whenever you finish someone. (Late game also has this)
 };
 
-constexpr CustomMode Mode = CustomMode::NONE;
+constexpr CustomMode Mode = CustomMode::LATEGAME;
 
 namespace GUI
 {
@@ -48,7 +48,7 @@ namespace GUI
                             std::cout << "The bus is already started!\n";
                             bStartedBus = true;
                         }
-						
+			                                                              			
                         GameState->bGameModeWillSkipAircraft = false;
                         GameState->AircraftStartTime = 0;
                         GameState->WarmupCountdownEndTime = 0;
@@ -61,11 +61,12 @@ namespace GUI
 						if constexpr (Mode == CustomMode::LATEGAME)
                         {
                             AFortAthenaAircraft* Aircraft = ((AAthena_GameState_C*)GetWorld()->GameState)->Aircrafts[0];
-                            auto GameMode = (AAthena_GameMode_C*)GetWorld()->AuthorityGameMode;
+                            static const auto GameMode = (AAthena_GameMode_C*)GetWorld()->AuthorityGameMode;
+							
                             if (Aircraft)
                             {
                                 auto& AircraftInfo = Aircraft->FlightInfo;
-                                const int Speed = 2;
+                                const int Speed = 1;
                                 Aircraft->DropStartTime / Speed;
                                 Aircraft->DropEndTime / Speed;
                                 Aircraft->FlightStartTime / Speed;
@@ -77,11 +78,9 @@ namespace GUI
                                 const int StartSafeZonePhase = 3;
                                 auto Rotation = Aircraft->K2_GetActorRotation();
                                 auto Location = Aircraft->K2_GetActorLocation();
-                                Rotation.Pitch = -90.f;
+                                Rotation.Pitch = -90.0f;
+                                // Rotation.Roll = -40.0f;
 								
-                                if (GameMode->SafeZoneLocations.Data && GameMode->SafeZoneLocations[StartSafeZonePhase])
-                                    Location = GameMode->SafeZoneLocations[StartSafeZonePhase];
-
                                 Aircraft->K2_TeleportTo(Location, Rotation);
                                 GameMode->SafeZonePhase = StartSafeZonePhase;
                             }

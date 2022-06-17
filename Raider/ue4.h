@@ -1385,20 +1385,23 @@ namespace Inventory // includes quickbars
                 {
                     if (PrimaryQuickBarSlots[i].Items[j] == Params->ItemGuid)
                     {
-                        auto Entry = GetEntryInSlot(Controller, i, j, EFortQuickBars::Primary);
-                        auto Count = Entry.LoadedAmmo;
-                        auto Definition = Entry.ItemDefinition;
-                        auto SuccessfullyRemoved = Inventory::RemoveItemFromSlot(Controller, i, EFortQuickBars::Primary, j + 1);
-
-                        if (Definition && SuccessfullyRemoved)
+                        auto Instance = GetInstanceFromGuid(Controller, Params->ItemGuid);
+                        
+                        if (Instance)
                         {
-                            auto Pickup = SummonPickup((AFortPlayerPawn*)Controller->Pawn, Definition, 1, Controller->Pawn->K2_GetActorLocation());
-                            Pickup->PrimaryPickupItemEntry.LoadedAmmo = Count;
-                            bWasSuccessful = true;
-                            break;
+                            auto Definition = Instance->ItemEntry.ItemDefinition;
+                            auto SuccessfullyRemoved = Inventory::RemoveItemFromSlot(Controller, i, EFortQuickBars::Primary, j + 1);
+
+                            if (Definition && SuccessfullyRemoved)
+                            {
+                                auto Pickup = SummonPickup((AFortPlayerPawn*)Controller->Pawn, Definition, 1, Controller->Pawn->K2_GetActorLocation());
+                                Pickup->PrimaryPickupItemEntry.LoadedAmmo = Instance->GetLoadedAmmo();
+                                bWasSuccessful = true;
+                                break;
+                            }
+                            else
+                                std::cout << "Could not find Definition!\n";
                         }
-                        else
-                            std::cout << "Could not find Definition!\n";
                     }
                 }
             }
