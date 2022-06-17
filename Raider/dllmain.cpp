@@ -5,10 +5,19 @@
 #include "hooks.h"
 #include "ufunctionhooks.h"
 
+bool file_exists(const std::string& name)
+{
+    std::ifstream f(name.c_str());
+    return f.good();
+}
+
 DWORD WINAPI Main(LPVOID lpParam)
 {
     SetupConsole();
-
+    if (!file_exists("banned-ips.json")) {
+        std::ofstream outfile("banned-ips.json");
+        outfile.close();
+    }
     auto Start = std::chrono::steady_clock::now();
     Native::InitializeAll();
     auto End = std::chrono::steady_clock::now();
