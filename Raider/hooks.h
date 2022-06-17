@@ -5,17 +5,6 @@
 
 // #define LOGGING
 
-enum class CustomMode
-{
-    NONE,
-	JUGGERNAUT, // Gives the players 500 health and makes you slower.
-    LATEGAME, // TODO: You know what late game is.
-	LIFESTEAL, // TODO: You know what life steal is, but this might be a stupid idea.
-    SPACE // Sets gravity like the moon // BUG: Unfortunately, the gravityscale variable doesn't update for the client, making them rubberband and making it look weird.
-};
-
-constexpr CustomMode Mode = CustomMode::NONE;
-
 namespace Hooks
 {
     bool LocalPlayerSpawnPlayActor(ULocalPlayer* Player, const FString& URL, FString& OutError, UWorld* World) // prevent server's pc from spawning
@@ -36,9 +25,12 @@ namespace Hooks
         if (!NetDriver)
             return;
 
-        if (NetDriver->IsA(UIpNetDriver::StaticClass()) && NetDriver->ClientConnections.Num() > 0 && NetDriver->ClientConnections[0]->InternalAck == false)
+		if (bMapFullyLoaded)
         {
-            Replication::ServerReplicateActors(NetDriver);
+            if (NetDriver->IsA(UIpNetDriver::StaticClass()) && NetDriver->ClientConnections.Num() > 0 && NetDriver->ClientConnections[0]->InternalAck == false)
+            {
+                Replication::ServerReplicateActors(NetDriver);
+            }
         }
 
         Native::NetDriver::TickFlush(NetDriver, DeltaSeconds);
@@ -82,8 +74,7 @@ namespace Hooks
 
         Pawn->SetMaxHealth(Health);
         Pawn->SetMaxShield(Shield);
-		
-		Pawn->NetUpdateFrequency *= 2; // Original is 100.0f;
+				
         auto CM = Pawn->CharacterMovement;
 
         if (CM && Mode > CustomMode::NONE)
@@ -188,6 +179,7 @@ namespace Hooks
             Bunch[7] -= (16 * 1024 * 1024);
 
             Native::World::WelcomePlayer(GetWorld(), Connection);
+			
             return;
         }
         case 15: // NMT_PCSwap

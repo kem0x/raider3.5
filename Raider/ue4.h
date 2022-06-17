@@ -3,7 +3,7 @@
 #include <unordered_set>
 #include <random>
 
-// #include "json.hpp"
+#include "json.hpp"
 #include "native.h"
 
 constexpr auto PI = 3.1415926535897932f;
@@ -256,6 +256,9 @@ DWORD WINAPI MapLoadThread(LPVOID) // thnak you mr rythm for giving me this
     {
         auto StreamingLevel = GetWorld()->StreamingLevels[i];
 
+		if (!StreamingLevel)
+            continue;
+
         // std::cout << StreamingLevel->GetName() << " state: " << (StreamingLevel->IsLevelLoaded() ? "Loaded" : "Loading") << '\n';
 
         if (StreamingLevel->IsLevelLoaded())
@@ -374,27 +377,47 @@ void Spectate(UNetConnection* SpectatingConnection, AFortPlayerStateAthena* Stat
     if (!IsCurrentlyDisconnecting(SpectatingConnection) && DeadPlayerState && PawnToSpectate)
     {
         DeadPC->PlayerToSpectateOnDeath = PawnToSpectate;
+        DeadPC->ClientSetSpectatorCamera(PawnToSpectate->K2_GetActorLocation(), PawnToSpectate->K2_GetActorRotation());
         DeadPC->SpectateOnDeath();
 
         DeadPlayerState->SpectatingTarget = StateToSpectate;
         DeadPlayerState->bIsSpectator = true;
         DeadPlayerState->OnRep_SpectatingTarget();
 
+		// 95% of the code below here is useless, it was my attempt to fix the camera.
+
         auto SpectatorPC = SpawnActor<ABP_SpectatorPC_C>(PawnToSpectate->K2_GetActorLocation());
         SpectatorPC->SetNewCameraType(ESpectatorCameraType::DroneAttach, true);
         SpectatorPC->CurrentCameraType = ESpectatorCameraType::DroneAttach;
         SpectatorPC->ResetCamera();
         SpectatingConnection->PlayerController = SpectatorPC;
+        SpectatingConnection->ViewTarget = PawnToSpectate;
+		SpectatorPC->FollowedPlayerPrivate = StateToSpectate;
+		SpectatorPC->HoveredPlayerPrivate = StateToSpectate;
+        // SpectatorPC->ToggleSpectatorHUD();
 
-        // auto SpectatorPawn = SpawnActor<ABP_SpectatorPawn_C>(PawnToSpectate->K2_GetActorLocation(), PawnToSpectate);
+		if (SpectatorPC->CurrentSpectatorCamComp)
+           SpectatorPC->CurrentSpectatorCamComp->IntendedViewTarget = PawnToSpectate;
 
-        /* SpectatorPC->SpectatorPawn = SpectatorPawn;
+        auto SpectatorPawn = SpawnActor<AArenaCamPawn>(PawnToSpectate->K2_GetActorLocation(), PawnToSpectate);
+
+        SpectatorPawn->SpectatorController = SpectatorPC;
+
+        if (SpectatorPawn->SpectatorCameraComponent)
+            SpectatorPawn->SpectatorCameraComponent->IntendedViewTarget = PawnToSpectate;
+		
+        SpectatorPC->SpectatorPawn = SpectatorPawn;
         SpectatorPC->Pawn = SpectatorPawn;
         SpectatorPC->AcknowledgedPawn = SpectatorPawn;
         SpectatorPawn->Owner = SpectatorPC;
         SpectatorPawn->OnRep_Owner();
         SpectatorPC->OnRep_Pawn();
-        SpectatorPC->Possess(SpectatorPawn); */
+        SpectatorPC->Possess(SpectatorPawn);
+        DeadPC->K2_DestroyActor();
+
+		SpectatorPC->Pawn->bUseControllerRotationPitch = true;
+        SpectatorPC->Pawn->bUseControllerRotationYaw = true;
+		SpectatorPC->Pawn->bUseControllerRotationRoll = true;
 
         if (DeadPC->QuickBars)
             DeadPC->QuickBars->K2_DestroyActor();
@@ -465,7 +488,7 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortItemDefinition* De
     return ItemEntry;
 }
 
-inline FFortItemEntry GetEntryFromGuid(AController* PC, const FGuid& ToFindGuid)
+inline UFortWorldItem* GetInstanceFromGuid(AController* PC, const FGuid& ToFindGuid)
 {
     auto& ItemInstances = GetItemInstances((AFortPlayerController*)PC);
     for (int j = 0; j < ItemInstances.Num(); j++)
@@ -479,11 +502,16 @@ inline FFortItemEntry GetEntryFromGuid(AController* PC, const FGuid& ToFindGuid)
 
         if (ToFindGuid == Guid)
         {
-            return ItemInstance->ItemEntry;
+            return ItemInstance;
         }
     }
 
-    return FFortItemEntry();
+    return nullptr;
+}
+
+inline FFortItemEntry GetEntryFromGuid(AController* PC, const FGuid& ToFindGuid)
+{
+    return GetInstanceFromGuid(PC, ToFindGuid)->ItemEntry;
 }
 
 inline UFortItemDefinition* GetDefInSlot(AFortPlayerControllerAthena* PC, int Slot, int Item = 0)
@@ -519,7 +547,7 @@ inline AFortWeapon* EquipWeaponDefinition(APawn* dPawn, UFortWeaponItemDefinitio
     if (Pawn && Definition && weaponClass)
     {
         auto Controller = (AFortPlayerControllerAthena*)Pawn->Controller;
-		auto Entry = GetEntryFromGuid(Controller, Guid);
+        auto Instance = GetInstanceFromGuid(Controller, Guid);
 
         if (!IsGuidInInventory(Controller, Guid))
             return nullptr;
@@ -552,10 +580,13 @@ inline AFortWeapon* EquipWeaponDefinition(APawn* dPawn, UFortWeaponItemDefinitio
             if (bEquipWithMaxAmmo)
                 Weapon->AmmoCount = Weapon->GetBulletsPerClip();
 			else if (Ammo != -1)
-				Weapon->AmmoCount = Entry.LoadedAmmo;
+				Weapon->AmmoCount = Instance->ItemEntry.LoadedAmmo;
+
+            Instance->ItemEntry.LoadedAmmo = Weapon->AmmoCount;
 
             Weapon->SetOwner(dPawn);
             Weapon->OnRep_ReplicatedWeaponData();
+            Weapon->OnRep_AmmoCount();
             Weapon->ClientGivenTo(Pawn);
             Pawn->ClientInternalEquipWeapon(Weapon);
             Pawn->OnRep_CurrentWeapon(); // i dont think this is needed but alr
@@ -810,10 +841,39 @@ static auto GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
     auto Handle = Native::AbilitySystemComponent::GiveAbility(AbilitySystemComponent, &Spec.Handle, Spec);
 }
 
-static bool KickPlayer(AFortPlayerControllerAthena* PC, FString Message)
+static bool KickController(APlayerController* PC, FString Message)
 {
-    FText text = reinterpret_cast<UKismetTextLibrary*>(UKismetTextLibrary::StaticClass())->STATIC_Conv_StringToText(Message);
-    return Native::OnlineSession::KickPlayer(GetWorld()->AuthorityGameMode->GameSession, PC, text);
+    if (PC && Message.Data)
+    {
+        FText text = reinterpret_cast<UKismetTextLibrary*>(UKismetTextLibrary::StaticClass())->STATIC_Conv_StringToText(Message);
+        return Native::OnlineSession::KickPlayer(GetWorld()->AuthorityGameMode->GameSession, PC, text);	
+    }
+
+    return false;
+}
+
+// template <typename SoftType>
+UObject* SoftObjectToObject(TSoftObjectPtr<UObject*> SoftPtr)
+{
+    static auto KismetSystem = GetKismetSystem();
+    static auto fn = UObject::FindObject<UFunction>("Function Engine.KismetSystemLibrary.Conv_SoftClassReferenceToClass");
+
+    struct
+    {
+        TSoftObjectPtr<UObject*> SoftClassReference;
+        UObject* Class;
+    } params;
+
+    params.SoftClassReference = SoftPtr;
+
+    auto flags = fn->FunctionFlags;
+    fn->FunctionFlags |= 0x400;
+
+    ProcessEvent(KismetSystem, fn, &params);
+
+    fn->FunctionFlags = flags;
+
+    return params.Class;
 }
 
 auto GetAllActorsOfClass(UClass* Class)
@@ -927,6 +987,7 @@ Ability: BlueprintGeneratedClass GA_AthenaInVehicle.GA_AthenaInVehicle_C
     static auto InteractSearchAbility = UObject::FindClass("BlueprintGeneratedClass GA_DefaultPlayer_InteractSearch.GA_DefaultPlayer_InteractSearch_C");
     static auto EmoteAbility = UObject::FindClass("BlueprintGeneratedClass GAB_Emote_Generic.GAB_Emote_Generic_C");
     static auto TrapAbility = UObject::FindClass("BlueprintGeneratedClass GA_TrapBuildGeneric.GA_TrapBuildGeneric_C");
+    static auto DanceGrenadeAbility = UObject::FindClass("BlueprintGeneratedClass GA_DanceGrenade_Stun.GA_DanceGrenade_Stun_C");
 
     GrantGameplayAbility(Pawn, SprintAbility);
     GrantGameplayAbility(Pawn, ReloadAbility);
@@ -937,6 +998,7 @@ Ability: BlueprintGeneratedClass GA_AthenaInVehicle.GA_AthenaInVehicle_C
     GrantGameplayAbility(Pawn, InteractSearchAbility);
     GrantGameplayAbility(Pawn, EmoteAbility);
     GrantGameplayAbility(Pawn, TrapAbility);
+    GrantGameplayAbility(Pawn, DanceGrenadeAbility);
 }
 
 static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector{ 1250, 1818, 3284 }, FQuat Rotation = FQuat(), bool bResetCharacterParts = true)
@@ -988,9 +1050,16 @@ static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc 
     ApplyAbilities(Pawn);
 }
 
-void ClientMessage(AFortPlayerControllerAthena* PC, FString Message) // Send a message to the user's console.
+void ClientMessage(AFortPlayerControllerAthena* PC, FString Message, bool bSay = false) // Send a message to the user's console.
 {
-    PC->ClientMessage(Message, FName(-1), 10000);
+    FName Type = FName(-1);
+
+	if (bSay)
+    {
+        // https://github.com/EpicGames/UnrealEngine/blob/46544fa5e0aa9e6740c19b44b0628b72e7bbd5ce/Engine/Source/Runtime/Engine/Private/PlayerController.cpp#L1379
+    }
+	
+    PC->ClientMessage(Message, Type, 10000);
 }
 
 auto toWStr(const std::string& str)
@@ -1026,11 +1095,13 @@ void EquipLoadout(AFortPlayerControllerAthena* Controller, std::vector<UFortWeap
 
         if (Def)
         {
-            auto Entry = AddItemWithUpdate(Controller, Def, i);
-            EquipWeaponDefinition(Controller->Pawn, Def, Entry.ItemGuid, -1, true); // kms
+            auto entry = AddItemWithUpdate(Controller, Def, i);
+            // auto Instance = GetInstanceFromGuid(Controller, entry.ItemGuid); // todo: not get the entry twice
+            // Instance->ItemEntry.LoadedAmmo = 
+            EquipWeaponDefinition(Controller->Pawn, Def, entry.ItemGuid, -1, true); // kms
 
             if (i == 0)
-                pickaxeEntry = Entry;
+                pickaxeEntry = entry;
         }
     }
 
@@ -1061,7 +1132,7 @@ DWORD WINAPI SummonFloorLoot(LPVOID)
         static auto FloorLootClass = UObject::FindObject<UClass>("BlueprintGeneratedClass Tiered_Athena_FloorLoot_01.Tiered_Athena_FloorLoot_01_C");
 
         if (!FloorLootClass) // your summoning it too early
-            return 0;
+            return 1;
 
         static auto Scar = FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03");
         auto FloorLootActors = GetAllActorsOfClass(FloorLootClass);
@@ -1195,6 +1266,9 @@ namespace Inventory // includes quickbars
 
             auto _Idx = Controller->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
 
+            if (Idx)
+                *Idx = _Idx;
+
             Controller->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
             Controller->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
 
@@ -1313,7 +1387,6 @@ namespace Inventory // includes quickbars
                     {
                         auto Entry = GetEntryInSlot(Controller, i, j, EFortQuickBars::Primary);
                         auto Count = Entry.LoadedAmmo;
-                        std::cout << "Count: " << Count << '\n';
                         auto Definition = Entry.ItemDefinition;
                         auto SuccessfullyRemoved = Inventory::RemoveItemFromSlot(Controller, i, EFortQuickBars::Primary, j + 1);
 
@@ -1333,21 +1406,18 @@ namespace Inventory // includes quickbars
 
         if (!bWasSuccessful)
         {
-            std::cout << "Searching Secondary!\n";
-            std::cout << "QuickBarSlots Num: " << SecondaryQuickBarSlots.Num() << "\n";
             for (int i = 0; i < SecondaryQuickBarSlots.Num(); i++)
             {
                 if (SecondaryQuickBarSlots[i].Items.Data)
                 {
-                    std::cout << "Num: " << SecondaryQuickBarSlots[i].Items.Num() << '\n';
                     for (int j = 0; j < SecondaryQuickBarSlots[i].Items.Num(); j++)
                     {
                         if (SecondaryQuickBarSlots[i].Items[j] == Params->ItemGuid)
                         {
                             auto Definition = Inventory::GetDefinitionInSlot(Controller, i, j, EFortQuickBars::Secondary);
-                            Inventory::RemoveItemFromSlot(Controller, i, EFortQuickBars::Secondary, j + 1);
+                            auto bSucceeded = Inventory::RemoveItemFromSlot(Controller, i, EFortQuickBars::Secondary, j + 1);
 
-                            if (Definition)
+                            if (Definition && bSucceeded)
                             {
                                 SummonPickup((AFortPlayerPawn*)Controller->Pawn, Definition, 1, Controller->Pawn->K2_GetActorLocation());
                                 bWasSuccessful = true;
@@ -1411,6 +1481,9 @@ namespace Inventory // includes quickbars
                 {
                     if (!PrimaryQuickBarSlots[i].Items.Data) // Checks if the slot is empty
                     {
+                        if (Params->Pickup->IsActorBeingDestroyed() || Params->Pickup->bPickedUp)
+                            return;
+						
                         if (i >= 6)
                         {
                             auto QuickBars = Controller->QuickBars;
@@ -1436,6 +1509,7 @@ namespace Inventory // includes quickbars
 
                                 if (FocusedGuid == Guid)
                                 {
+                                    // if (Params->Pickup->MultiItemPickupEntries)
                                     SummonPickup((APlayerPawn_Athena_C*)Controller->Pawn, Def, 1 /* ItemInstance->ItemEntry.Count */, Controller->Pawn->K2_GetActorLocation());
                                     break;
                                 }
@@ -1444,11 +1518,16 @@ namespace Inventory // includes quickbars
                             Inventory::RemoveItemFromSlot(Controller, FocusedSlot, EFortQuickBars::Primary);
                         }
 
-                        auto entry = Inventory::AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Primary, Params->Pickup->PrimaryPickupItemEntry.Count);
+						int Idx = 0;
+                        auto entry = Inventory::AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Primary, Params->Pickup->PrimaryPickupItemEntry.Count, &Idx);
+                        // auto& Entry = Controller->WorldInventory->Inventory.ReplicatedEntries[Idx];
+                        auto Instance = GetInstanceFromGuid(Controller, entry.ItemGuid);
                         Params->Pickup->K2_DestroyActor();
 
-                        std::cout << "Entry LoadedAmmo: " << Params->Pickup->PrimaryPickupItemEntry.LoadedAmmo << '\n';
-                        entry.LoadedAmmo = Params->Pickup->PrimaryPickupItemEntry.LoadedAmmo;
+						Params->Pickup->bPickedUp = true;
+                        Params->Pickup->OnRep_bPickedUp();
+
+                        Instance->ItemEntry.LoadedAmmo = Params->Pickup->PrimaryPickupItemEntry.LoadedAmmo;
 						
                         Inventory::Update(Controller);
 
@@ -1551,18 +1630,18 @@ void SpawnDeco(AFortDecoTool* Tool, void* _Params)
     }
 }
 
-/* void Ban(const std::wstring& IP, const std::wstring& Reason) // this isn't mcp banning or anything
+void Ban(const std::wstring& IP, const std::wstring& Reason) // this isn't mcp banning or anything
 {
     nlohmann::json json;
-    json["IP"] = IP.c_str();
-    json["Reason"] = Reason.c_str();
+    json["IP"] = IP;
+    json["Reason"] = Reason;
     auto Json = json.dump(4);
 
     std::ofstream stream("banned-ips.json", std::ios::app);
 
     stream << Json << '\n';
 
-    stream.close();
+    stream.close(); 
 }
 
 void Unban(const std::wstring& IP) // TODO
@@ -1571,7 +1650,20 @@ void Unban(const std::wstring& IP) // TODO
 
 bool IsBanned(const std::wstring& IP)
 {
+	/*
+    
+    {
+        "IP": "IP",
+        "Reason": ""
+    }
+    
+    */
+
     std::ifstream input_file("banned-ips.json");
+    
+    if (!input_file.is_open())
+		return false;
+	
     std::string line;
 
     while (std::getline(input_file, line))
@@ -1581,4 +1673,6 @@ bool IsBanned(const std::wstring& IP)
             return true;
         }
     }
-} */
+
+    return false;
+}

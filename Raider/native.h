@@ -90,6 +90,7 @@ namespace Native
         inline void (*ForceNetUpdate)(AActor* Actor);
         inline bool (*IsNetRelevantFor)(AActor* _this, const AActor* RealViewer, const AActor* ViewTarget, const FVector& SrcLocation);
         inline __int64 (*GetNetMode)(__int64* a1);
+        inline float(__fastcall* GetNetPriority)(AActor* a1, const FVector* a2, const FVector* a3, AActor* a4, AActor* a5, UActorChannel* a6, float Time);
     }
 
     namespace LocalPlayer
@@ -128,6 +129,7 @@ namespace Native
 
         inline void (*ReceiveFString)(void* Bunch, FString& Str);
         inline void (*ReceiveUniqueIdRepl)(void* Bunch, FUniqueNetIdRepl& Str);
+        inline FString (*LowLevelGetRemoteAddress)(UNetConnection* Connection, bool bAppendPort);
     }
 
     namespace ActorChannel
@@ -311,6 +313,10 @@ namespace Native
         Address = Utils::FindPattern(Patterns::StartBecomingDormant);
         CheckNullFatal(Address, "Failed to find StartBecomingDormant");
         AddressToFunction(Address, ActorChannel::StartBecomingDormant);
+
+        Address = Utils::FindPattern(Patterns::GetNetPriority);
+        CheckNullFatal(Address, "Failed to find GetNetPriority");
+        AddressToFunction(Address, Actor::GetNetPriority);
 
         ProcessEvent = reinterpret_cast<decltype(ProcessEvent)>(GetEngine()->Vtable[0x40]);
     }

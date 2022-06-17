@@ -328,6 +328,36 @@ struct FVector
 	{
 		return X == Vector.X && Y == Vector.Y && Z == Vector.Z;
 	}
+
+    auto operator-(FVector A)
+    {
+        return FVector { this->X - A.X, this->Y - A.Y, this->Z - A.Z };
+    }
+
+    auto operator+(FVector A)
+    {
+        return FVector { this->X + A.X, this->Y + A.Y, this->Z + A.Z };
+    }
+
+    auto operator!=(FVector A) const
+    {
+        return (this->X != A.X && this->Y != A.Y && this->Z != A.Z);
+    }
+
+    auto operator|(const FVector& V) const
+    {
+        return X * V.X + Y * V.Y + Z * V.Z;
+    }
+
+    operator bool() const
+    {
+        return X != 0 && Y != 0 && Z != 0;
+    }
+
+	auto SizeSquared() const
+    {
+        return X * X + Y * Y + Z * Z;
+    }
 };
 
 // ScriptStruct CoreUObject.Vector4
@@ -687,14 +717,6 @@ struct FDateTime
 struct FTimespan
 {
 	unsigned char                                      UnknownData00[0x8];                                       // 0x0000(0x0008) MISSED OFFSET
-};
-
-// ScriptStruct CoreUObject.SoftObjectPath
-// 0x0018
-struct FSoftObjectPath
-{
-	struct FName                                       AssetPathName;                                            // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
-	struct FString                                     SubPathString;                                            // 0x0008(0x0010) (ZeroConstructor)
 };
 
 // ScriptStruct CoreUObject.SoftClassPath

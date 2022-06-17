@@ -162,7 +162,7 @@ namespace SDK
         int32_t Max;
     };
 
-    struct FString : private TArray<wchar_t>
+    struct FString : public TArray<wchar_t>
     {
         inline FString() {};
 
@@ -427,6 +427,23 @@ namespace SDK
         FWeakObjectPtr WeakPtr;
         int32_t TagAtLastTest;
         TObjectID ObjectID;
+    };
+
+    // ScriptStruct CoreUObject.SoftObjectPath
+    // 0x0018
+    struct FSoftObjectPath
+    {
+        FName AssetPathName; // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
+        FString SubPathString; // 0x0008(0x0010) (ZeroConstructor)
+    };
+
+    class FSoftObjectPtr : public TPersistentObjectPtr<FSoftObjectPath>
+    {
+    };
+
+    template <typename ObjectType>
+    class TSoftObjectPtr : FSoftObjectPtr
+    {
     };
 
     struct FStringAssetReference_

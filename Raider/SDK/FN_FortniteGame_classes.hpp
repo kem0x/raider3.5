@@ -25027,11 +25027,11 @@ public:
 	unsigned char                                      UnknownData04[0x10];                                      // 0x0061(0x0010) UNKNOWN PROPERTY: ArrayProperty FortniteGame.FortPlaylist.ModifierList
 	struct FText                                       UIDisplayName;                                            // 0x0078(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
 	struct FText                                       UIDescription;                                            // 0x0090(0x0018) (Edit, BlueprintVisible)
-	unsigned char                                      UnknownData05[0x28];                                      // 0x00A8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortPlaylist.LootTierData
-	unsigned char                                      UnknownData06[0x28];                                      // 0x00D0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortPlaylist.LootPackages
-	unsigned char                                      UnknownData07[0x28];                                      // 0x00F8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortPlaylist.RangedWeapons
-	unsigned char                                      UnknownData08[0x28];                                      // 0x0120(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortPlaylist.GameData
-	unsigned char                                      UnknownData09[0x28];                                      // 0x0148(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortPlaylist.ResourceRates
+	struct TSoftObjectPtr<struct UObject*>			   LootTierData;											 // 0x00A8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortPlaylist.LootTierData
+    struct TSoftObjectPtr<struct UObject*>		       LootPackages;											 // 0x00D0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortPlaylist.LootPackages
+    struct TSoftObjectPtr<struct UObject*>		       RangedWeapons;											 // 0x00F8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortPlaylist.RangedWeapons
+	struct TSoftObjectPtr<struct UObject*>			   GameData;												 // 0x0120(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortPlaylist.GameData
+    struct TSoftObjectPtr<struct UObject*>			   ResourceRates;											 // 0x0148(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortPlaylist.ResourceRates
 	float                                              GarbageCollectionFrequency;                               // 0x0170(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData10[0x4];                                       // 0x0174(0x0004) MISSED OFFSET
 

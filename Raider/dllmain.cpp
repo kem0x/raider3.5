@@ -25,7 +25,7 @@ DWORD WINAPI Main(LPVOID lpParam)
     CheckNullFatal(Address, "Failed to find NetDebug");
     void* (*NetDebug)(void* _this) = nullptr;
     AddressToFunction(Address, NetDebug);
-
+    
     DetourAttachE(NetDebug, Hooks::NetDebug);
     DetourAttachE(ProcessEvent, Hooks::ProcessEventHook);
     DETOUR_END

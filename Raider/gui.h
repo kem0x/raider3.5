@@ -5,6 +5,18 @@
 
 static bool bStartedBus = false;
 
+enum class CustomMode
+{
+    NONE,
+    JUGGERNAUT, // Gives the players 500 health and makes you slower.
+    LATEGAME, // TODO: You know what late game is.
+    LIFESTEAL, // TODO: You know what life steal is, but this might be a stupid idea.
+    SPACE, // Sets gravity like the moon // BUG: Unfortunately, the gravityscale variable doesn't update for the client, making them rubberband and making it look weird.
+    SIPHON // Gives 50 shield/health whenever you finish someone. (Late game also has this)
+};
+
+constexpr CustomMode Mode = CustomMode::NONE;
+
 namespace GUI
 {
     void Tick()
@@ -45,6 +57,37 @@ namespace GUI
 
                         printf("Started Aircraft!\n");
                         bStartedBus = true;
+
+						if constexpr (Mode == CustomMode::LATEGAME)
+                        {
+                            AFortAthenaAircraft* Aircraft = ((AAthena_GameState_C*)GetWorld()->GameState)->Aircrafts[0];
+                            auto GameMode = (AAthena_GameMode_C*)GetWorld()->AuthorityGameMode;
+                            if (Aircraft)
+                            {
+                                auto& AircraftInfo = Aircraft->FlightInfo;
+                                const int Speed = 2;
+                                Aircraft->DropStartTime / Speed;
+                                Aircraft->DropEndTime / Speed;
+                                Aircraft->FlightStartTime / Speed;
+								Aircraft->FlightEndTime / Speed;
+                                AircraftInfo.FlightSpeed *= Speed;
+                                AircraftInfo.TimeTillDropStart / Speed;
+								AircraftInfo.TimeTillDropEnd / Speed;
+
+                                const int StartSafeZonePhase = 3;
+                                auto Rotation = Aircraft->K2_GetActorRotation();
+                                auto Location = Aircraft->K2_GetActorLocation();
+                                Rotation.Pitch = -90.f;
+								
+                                if (GameMode->SafeZoneLocations.Data && GameMode->SafeZoneLocations[StartSafeZonePhase])
+                                    Location = GameMode->SafeZoneLocations[StartSafeZonePhase];
+
+                                Aircraft->K2_TeleportTo(Location, Rotation);
+                                GameMode->SafeZonePhase = StartSafeZonePhase;
+                            }
+                            else
+                                std::cout << "Could not find Aircraft!\n";
+                        }
                     }
                 }
 

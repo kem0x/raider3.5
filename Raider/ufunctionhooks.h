@@ -92,6 +92,17 @@ namespace UFunctionHooks
                             Pawn->SetHealth(100);
                         }
 
+                        else if (Command == "testindicator") // It doesn't replicate to teammates for some reason.
+                        {
+							auto PlayerState = (AFortPlayerStateAthena*)PC->PlayerState;
+
+                            if (PlayerState)
+                            {
+                                PlayerState->OnRep_MapIndicatorPos();
+								ClientMessage(PC, L"Updated Minimap Indicator!");
+                            }
+                        }
+						
                         else if (Command == "giveweapon" && NumArgs >= 1)
                         {
                             auto& weaponName = Arguments[1];
@@ -234,10 +245,11 @@ namespace UFunctionHooks
             auto DeadPC = (AFortPlayerControllerAthena*)Object;
             auto DeadPlayerState = (AFortPlayerStateAthena*)DeadPC->PlayerState;
 
-            if (false && DeadPC && Params) // this might work now idk
+            if (DeadPC && Params)
             {
                 auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
                 GameState->PlayersLeft--;
+                GameState->OnRep_PlayersLeft();
                 // GameState->PlayerArray.RemoveAt(DeadPC->NetPlayerIndex);
 
                 if (DeadPC && DeadPC->Pawn)
@@ -251,41 +263,71 @@ namespace UFunctionHooks
 
                 DeadPlayerState->OnRep_DeathInfo();
 
-                bool bChooseRandomPawn = false;
-
-                if (KillerPlayerState && KillerPawn && KillerPlayerState != DeadPlayerState)
+				if (Mode == CustomMode::SIPHON || Mode == CustomMode::LATEGAME)
                 {
-                    if (KillerPlayerState->IsA(AFortPlayerStateAthena::StaticClass()) && KillerPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
+                    if (KillerPawn && KillerPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
                     {
-                        KillerPlayerState->KillScore++;
-                        KillerPlayerState->OnRep_Kills();
-                        Spectate(DeadPC->NetConnection, KillerPlayerState);
-                        DeadPC->K2_DestroyActor();
+                        float AmountToAddToHealth = 50;
+						
+                        auto& HealthSet = KillerPawn->HealthSet;
+
+						if (KillerPawn->GetHealth() > 50)
+                            AmountToAddToHealth = KillerPawn->GetHealth() - 50;
+
+                        float AmountToAddToShield = (KillerPawn->GetHealth() + 50) - 100;
+						
+                        if (AmountToAddToShield > 0)
+						{
+                            const auto CurrentShield = HealthSet->CurrentShield.CurrentValue;
+							HealthSet->CurrentShield.CurrentValue = (CurrentShield + AmountToAddToShield);
+                            KillerPlayerState->CurrentShield = (CurrentShield + AmountToAddToShield);
+                            // HealthSet->Shield.CurrentValue = (CurrentShield + AmountToAddToShield);
+                            HealthSet->OnRep_CurrentShield();
+						}
+						
+						KillerPawn->SetHealth(KillerPawn->GetHealth() + AmountToAddToHealth);
+                        HealthSet->OnRep_Health();
                     }
-                    else
-                        bChooseRandomPawn = true;
                 }
 
-                else
+				// if (false)
                 {
-                    bChooseRandomPawn = true;
-                }
+                    bool bChooseRandomPawn = false;
 
-                if (bChooseRandomPawn)
-                {
-                    TArray<AActor*> Pawns;
-                    static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
-                    GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
-                    if (Pawns.Num() != 0)
+                    if (KillerPlayerState && KillerPawn && KillerPlayerState != DeadPlayerState)
                     {
-                        auto PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
-
-                        if (PawnToUse)
+                        if (KillerPlayerState->IsA(AFortPlayerStateAthena::StaticClass()) && KillerPawn->IsA(APlayerPawn_Athena_C::StaticClass()) && Params->DeathReport.DamageCauser->IsA(APlayerPawn_Athena_C::StaticClass()))
                         {
-                            PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
-                            Spectate(DeadPC->NetConnection, (AFortPlayerStateAthena*)PawnToUse->PlayerState);
+                            KillerPlayerState->KillScore++;
+                            KillerPlayerState->OnRep_Kills();
+                            Spectate(DeadPC->NetConnection, KillerPlayerState);
+                            DeadPC->K2_DestroyActor();
                         }
+                        else
+                            bChooseRandomPawn = true;
                     }
+
+                    else
+                    {
+                        bChooseRandomPawn = true;
+                    }
+
+                    if (bChooseRandomPawn)
+                    {
+                        TArray<AActor*> Pawns;
+                        static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
+                        GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
+                        if (Pawns.Num() != 0)
+                        {
+                            auto PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
+
+                            if (PawnToUse)
+                            {
+                                PawnToUse = (APlayerPawn_Athena_C*)Pawns[rand() % Pawns.Num()];
+                                Spectate(DeadPC->NetConnection, (AFortPlayerStateAthena*)PawnToUse->PlayerState);
+                            }
+                        }
+                    }                
                 }
             }
 
@@ -455,9 +497,9 @@ namespace UFunctionHooks
 
                             // CurrentPawn->Mesh->SetAnimation(Montage);
                             CurrentPawn->OnRep_ReplicatedMovement();
-                            CurrentPawn->OnRep_RepAnimMontageStartSection();
                             CurrentPawn->OnRep_CharPartAnimMontageInfo();
                             CurrentPawn->OnRep_ReplicatedAnimMontage();
+                            CurrentPawn->OnRep_RepAnimMontageStartSection();
                             CurrentPawn->OnRep_ReplayRepAnimMontageInfo();
                             CurrentPawn->ForceNetUpdate();
                         }
@@ -506,6 +548,14 @@ namespace UFunctionHooks
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerLoadingScreenDropped", {
             auto Pawn = (APlayerPawn_Athena_C*)((AFortPlayerController*)Object)->Pawn;
 
+            if (IsBanned(std::wstring(Pawn->PlayerState->SavedNetworkAddress.c_str())))
+            {
+                std::cout << "Player is banned!\n";
+                KickController((APlayerController*)Pawn->Controller, L"You are banned."); // TODO: Add ban reason to here too.
+                // Should we change their name to "Banned" or something?
+                return true;
+            }
+	
             if (Pawn && Pawn->AbilitySystemComponent)
             {
                 ApplyAbilities(Pawn);
@@ -515,16 +565,7 @@ namespace UFunctionHooks
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerPawn.ServerChoosePart", {
-            auto Params = (AFortPlayerPawn_ServerChoosePart_Params*)Parameters;
-            auto Pawn = (APlayerPawn_Athena_C*)Object;
-
-            if (Params && Pawn)
-            {
-                if (!Params->ChosenCharacterPart)
-                    return true;
-            }
-
-            return false;
+            return true;
         })
 
         DEFINE_PEHOOK("Function Engine.GameMode.ReadyToStartMatch", {
@@ -584,7 +625,7 @@ namespace UFunctionHooks
             auto PlayerController = (AFortPlayerControllerAthena*)Object;
 
             if (PlayerController)
-                KickPlayer((AFortPlayerControllerAthena*)Object, L"Please do not do that!");
+                KickController((AFortPlayerControllerAthena*)Object, L"Please do not do that!");
             return true;
         })
 
