@@ -1,22 +1,13 @@
-<p align="center">
-<h1 align="center">Raider (3.5)</h1>
+# Raider (3.5)
 
-Hi there.
-This is such an unexpected release but we have finally chosen to open source this project, even if we are sure someone will download it and just let their own fans play it with no recognition to us.
+- Fortnite 3.5 Custom Gameserver
 
-As the project is going to be OSS, everyone can contribute by making his own issues / pull requests to improve the code and make a better gameplay to be enjoyable.
+## - Disclaimer
 
+_This project was made for fun and it doesn't aim to harm the original game by any means and it's not Affiliated, Associated, Authorized, Endorsed by, or in any way officially connected with EpicGames. This project does **not** allow any paid cosmetics as requested [here](https://media.discordapp.net/attachments/976192654901665832/987031689094119505/unknown.png) by MagmaReef and doesn't aim to compete with the original game and never will, We're just a bunch of passionate fortnite lovers who wanted to re-live a small part of their memories with this amazing game, If you want full fortnite experince please go play official fortnite and suppor them <3. If you are an Epic Games employee and you have any problems with this project, please do not hesitate to contact me through your official business email here: `kareemolim@gmail.com` or my discord:`kemo#1337`. We're more than ready to take this project down and we understand and respect any of those requests._
 
-<h3 align="center">We please ask you to contribute if you can, report issues as we are going to still work on this.</h3>
-
+<h3 align="center">We ask you to contribute if you can, report issues as this repo is still in active development.</h3>
 
 ## - License
 
-- This project is licensed under the [MIT License](/LICENSE), You are allowed to use this project in any way you want **with credit**.
-
-## - The Raider Team
-[Samuel](https://twitter.com/samuelsiv__)<br>
-[Kemo](https://twitter.com/kem0x)<br>
-[Fischsalat](https://twitter.com/FischsaIat)<br>
-[Milxnor](https://twitter.com/Milxnor_)<br>
-
+- This project is licensed under the [MIT License](/LICENSE)
