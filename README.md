@@ -15,5 +15,7 @@ _This project was made for fun and it doesn't aim to harm the original game by a
 ## - Additional notes
 
 1 - reinstall detours
+
 2 - make sure to use release x64
+
 3 - enjoy
