@@ -15,7 +15,7 @@ enum class CustomMode
     SIPHON // Gives 50 shield/health whenever you finish someone. (Late game also has this)
 };
 
-constexpr CustomMode Mode = CustomMode::LATEGAME;
+constexpr CustomMode Mode = CustomMode::NONE;
 
 namespace GUI
 {

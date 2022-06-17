@@ -231,18 +231,6 @@ namespace UFunctionHooks
 
                     if (auto NewBuildingActor = (ABuildingSMActor*)SpawnActor(NewBuildingClass, BuildingActor->K2_GetActorLocation(), rotation, PC))
                     {
-                        auto NewLocation = NewBuildingActor->K2_GetActorLocation();
-
-						// Print X, Y, Z of NewLOcation
-						printf("X: %f\n", NewLocation.X);
-						printf("Y: %f\n", NewLocation.Y);
-						printf("Z: %f\n", NewLocation.Z);
-						
-                        // Print X, Y, Z of NewBuildingActor->GetCentroid()
-						printf("X: %f\n", NewBuildingActor->GetCentroid().X);
-						printf("Y: %f\n", NewBuildingActor->GetCentroid().Y);
-						printf("Z: %f\n", NewBuildingActor->GetCentroid().Z);
-						
                         NewBuildingActor->SetMirrored(Params->bMirrored);
                         NewBuildingActor->InitializeKismetSpawnedBuildingActor(NewBuildingActor, PC);
                     }
@@ -252,7 +240,7 @@ namespace UFunctionHooks
             return false;
         })
 
-        DEFINE_PEHOOK("Function FortniteGame.FortPlayerControllerZone.ClientOnPawnDied", {
+        DEFINE_PEHOOK("Function FortniteGame.FortPlayerControllerZone.ClientOnPawnDied", { // Spectating hasn't been majorly testing
             auto Params = (AFortPlayerControllerZone_ClientOnPawnDied_Params*)Parameters;
             auto DeadPC = (AFortPlayerControllerAthena*)Object;
             auto DeadPlayerState = (AFortPlayerStateAthena*)DeadPC->PlayerState;
@@ -279,6 +267,8 @@ namespace UFunctionHooks
                 {
                     if (KillerPawn && KillerPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
                     {
+						// this math is so wrong it was late ok
+
                         float AmountToAddToHealth = 50;
 						
                         auto& HealthSet = KillerPawn->HealthSet;
@@ -514,6 +504,8 @@ namespace UFunctionHooks
                             CurrentPawn->OnRep_RepAnimMontageStartSection();
                             CurrentPawn->OnRep_ReplayRepAnimMontageInfo();
                             CurrentPawn->ForceNetUpdate();
+
+							// Look into ACharacter::FRepRootMotionMontage
                         }
                     }
                 }

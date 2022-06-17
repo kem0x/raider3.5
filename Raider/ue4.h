@@ -394,7 +394,7 @@ void Spectate(UNetConnection* SpectatingConnection, AFortPlayerStateAthena* Stat
         SpectatingConnection->ViewTarget = PawnToSpectate;
 		SpectatorPC->FollowedPlayerPrivate = StateToSpectate;
 		SpectatorPC->HoveredPlayerPrivate = StateToSpectate;
-        // SpectatorPC->ToggleSpectatorHUD();
+        SpectatorPC->ToggleSpectatorHUD();
 
 		if (SpectatorPC->CurrentSpectatorCamComp)
            SpectatorPC->CurrentSpectatorCamComp->IntendedViewTarget = PawnToSpectate;
