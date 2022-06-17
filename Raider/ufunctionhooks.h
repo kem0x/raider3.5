@@ -7,7 +7,7 @@
 #include "ue4.h"
 
 // #define LOGGING
-#define CHEATS
+//#define CHEATS
 #define MAXPLAYERS 100
 
 //Define the hook with ufunction full name
