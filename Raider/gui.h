@@ -61,36 +61,6 @@ namespace GUI
 
                         printf("Started Aircraft!\n");
                         bStartedBus = true;
-
-                        /*if constexpr (Mode == CustomMode::LATEGAME)
-                        {
-                            AFortAthenaAircraft* Aircraft = ((AAthena_GameState_C*)GetWorld()->GameState)->Aircrafts[0];
-                            static const auto GameMode = (AAthena_GameMode_C*)GetWorld()->AuthorityGameMode;
-                                                        
-                            if (Aircraft)
-                            {
-                                auto& AircraftInfo = Aircraft->FlightInfo;
-                                const int Speed = 1;
-                                Aircraft->DropStartTime / Speed;
-                                Aircraft->DropEndTime / Speed;
-                                Aircraft->FlightStartTime / Speed;
-                                                                Aircraft->FlightEndTime / Speed;
-                                AircraftInfo.FlightSpeed *= Speed;
-                                AircraftInfo.TimeTillDropStart / Speed;
-                                                                AircraftInfo.TimeTillDropEnd / Speed;
-
-                                const int StartSafeZonePhase = 3;
-                                auto Rotation = Aircraft->K2_GetActorRotation();
-                                auto Location = Aircraft->K2_GetActorLocation();
-                                Rotation.Pitch = -90.0f;
-                                // Rotation.Roll = -40.0f;
-                                                                
-                                Aircraft->K2_TeleportTo(Location, Rotation);
-                                GameMode->SafeZonePhase = StartSafeZonePhase;
-                            }
-                            else
-                                std::cout << "Could not find Aircraft!\n";
-                        }*/
                     }
                 }
 

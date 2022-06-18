@@ -251,15 +251,13 @@ namespace UFunctionHooks
 
             if (DeadPC && Params)
             {
-                auto GameState = static_cast<AAthena_GameState_C*>(GetWorld()->AuthorityGameMode->GameState);
-                GameState->PlayersLeft--;
-                GameState->OnRep_PlayersLeft();
+                Game::Mode->HandlePlayerDeath(DeadPC);
                 // GameState->PlayerArray.RemoveAt(DeadPC->NetPlayerIndex);
 
                 if (DeadPC && DeadPC->Pawn)
                 {
-                // TODO: Show death drone/death animation
-                DeadPC->Pawn->K2_DestroyActor();
+                    // TODO: Show death drone/death animation
+                    DeadPC->Pawn->K2_DestroyActor();
                 }
 
                 auto KillerPawn = Params->DeathReport.KillerPawn;
@@ -275,7 +273,6 @@ namespace UFunctionHooks
                         KillerPlayerState->KillScore++;
                         KillerPlayerState->OnRep_Kills();
                         Spectate(DeadPC->NetConnection, KillerPlayerState);
-                        DeadPC->K2_DestroyActor();
                     } else {
                         bChooseRandomPawn = true;
                     }
@@ -285,17 +282,13 @@ namespace UFunctionHooks
 
                 if (bChooseRandomPawn)
                 {
-                    TArray<AActor*> Pawns;
-                    static auto GameplayStatics = static_cast<UGameplayStatics*>(UGameplayStatics::StaticClass()->CreateDefaultObject());
-                    GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
-                    if (Pawns.Num() != 0)
+                    auto Players = GetWorld()->GameState->PlayerArray;
+                    if (Players.Num() > 2)
                     {
-                        auto PawnToUse = static_cast<APlayerPawn_Athena_C*>(Pawns[rand() % Pawns.Num()]);
-
-                        if (PawnToUse)
+                        auto PlayerState = static_cast<AFortPlayerStateAthena*>(Players[rand() % Players.Num()]);
+                        if (PlayerState)
                         {
-                            PawnToUse = static_cast<APlayerPawn_Athena_C*>(Pawns[rand() % Pawns.Num()]);
-                            Spectate(DeadPC->NetConnection, static_cast<AFortPlayerStateAthena*>(PawnToUse->PlayerState));
+                            Spectate(DeadPC->NetConnection, PlayerState);
                         }
                     }
                 }
@@ -381,10 +374,13 @@ namespace UFunctionHooks
             if (InstigatorPC && DBNOPawn && DBNOPC)
             {
                 DBNOPawn->bIsDBNO = false;
-                DBNOPawn->OnRep_IsDBNO();
-
                 DBNOPC->ClientOnPawnRevived(InstigatorPC);
                 DBNOPawn->SetHealth(30);
+                DBNOPawn->OnRep_IsDBNO();
+                if (DBNOPawn && DBNOPawn->AbilitySystemComponent)
+                {
+                    ApplyAbilities(DBNOPawn, true);
+                }
             }
 
             return false;
@@ -566,8 +562,8 @@ namespace UFunctionHooks
                 // Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
 
                 CreateThread(0, 0, MapLoadThread, 0, 0, 0);
-
                 GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = MAXPLAYERS;
+                
                 bListening = true;
                 std::cout << "\n\nListening on port " << HostBeacon->ListenPort << "\n\n";
             }

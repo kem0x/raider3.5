@@ -689,37 +689,41 @@ void SpawnPickupFromFloorLoot(auto ItemDef, int Count, FVector Location)
 static void InitInventory(AFortPlayerController* PlayerController)
 {
     PlayerController->QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
-    auto QuickBars = PlayerController->QuickBars;
     PlayerController->OnRep_QuickBar();
 
-    static auto Wall = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall");
-    static auto Stair = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W");
-    static auto Cone = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_RoofS.BuildingItemData_RoofS");
-    static auto Floor = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Floor.BuildingItemData_Floor");
-    static auto Wood = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition WoodItemData.WoodItemData");
-    static auto Stone = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition StoneItemData.StoneItemData");
-    static auto Metal = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition MetalItemData.MetalItemData");
-    static auto Shells = UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataShells.AthenaAmmoDataShells");
-    static auto Medium = UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsMedium.AthenaAmmoDataBulletsMedium");
-    static auto Light = UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsLight.AthenaAmmoDataBulletsLight");
-    static auto Heavy = UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsHeavy.AthenaAmmoDataBulletsHeavy");
-    static auto EditTool = UObject::FindObject<UFortAmmoItemDefinition>("FortEditToolItemDefinition EditTool.EditTool");
+    static std::vector<UFortWorldItemDefinition*> Items = {
+        UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall"),
+        UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W"),
+        UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_RoofS.BuildingItemData_RoofS"),
+        UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Floor.BuildingItemData_Floor"),
+        
+        UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition WoodItemData.WoodItemData"),
+        UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition StoneItemData.StoneItemData"),
+        UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition MetalItemData.MetalItemData"),
+        
+        UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataShells.AthenaAmmoDataShells"),
+        UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsMedium.AthenaAmmoDataBulletsMedium"),
+        UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsLight.AthenaAmmoDataBulletsLight"),
+        UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsHeavy.AthenaAmmoDataBulletsHeavy"),
+    };
 
-    AddItem(PlayerController, Wall, 0, EFortQuickBars::Secondary, 1);
-    AddItem(PlayerController, Floor, 1, EFortQuickBars::Secondary, 1);
-    AddItem(PlayerController, Stair, 2, EFortQuickBars::Secondary, 1);
-    AddItem(PlayerController, Cone, 3, EFortQuickBars::Secondary, 1);
-    AddItem(PlayerController, Wood, 0, EFortQuickBars::Secondary, 999);
-    AddItem(PlayerController, Stone, 0, EFortQuickBars::Secondary, 999);
-    AddItem(PlayerController, Metal, 0, EFortQuickBars::Secondary, 999);
-    AddItem(PlayerController, Shells, 0, EFortQuickBars::Secondary, 999);
-    AddItem(PlayerController, Medium, 0, EFortQuickBars::Secondary, 999);
-    AddItem(PlayerController, Light, 0, EFortQuickBars::Secondary, 999);
-    AddItem(PlayerController, Heavy, 0, EFortQuickBars::Secondary, 999);
+    int Slot = 0;
+    for (auto& Item : Items)
+    {
+        if (Item->IsA(UFortAmmoItemDefinition::StaticClass()) || Item->IsA(UFortResourceItemDefinition::StaticClass()))
+        {
+            AddItem(PlayerController, Item, 0, EFortQuickBars::Secondary, 999);
+            continue;
+        }
 
+        AddItem(PlayerController, Item, Slot, EFortQuickBars::Secondary, 1);
+        Slot++;
+    }
+
+    static UFortAmmoItemDefinition* EditTool = UObject::FindObject<UFortAmmoItemDefinition>("FortEditToolItemDefinition EditTool.EditTool");
     AddItemWithUpdate(PlayerController, EditTool, 0, EFortQuickBars::Primary, 1);
 
-    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
+    PlayerController->QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, false);
 }
 
 template <typename Class>
@@ -821,7 +825,6 @@ static auto GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
     };
 
     auto Spec = GenerateNewSpec();
-
     for (int i = 0; i < AbilitySystemComponent->ActivatableAbilities.Items.Num(); i++)
     {
         auto& CurrentSpec = AbilitySystemComponent->ActivatableAbilities.Items[i];
@@ -829,8 +832,6 @@ static auto GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
         if (CurrentSpec.Ability == Spec.Ability)
             return;
     }
-
-    auto Handle = Native::AbilitySystemComponent::GiveAbility(AbilitySystemComponent, &Spec.Handle, Spec);
 }
 
 static bool KickController(APlayerController* PC, FString Message)
@@ -929,7 +930,7 @@ FVector RotToVec(const FRotator& Rotator)
     return V;
 }
 
-inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already has the ability.
+inline auto ApplyAbilities(APawn* _Pawn, bool bFromDBNO = false) // TODO: Check if the player already has the ability.
 {
     auto Pawn = static_cast<APlayerPawn_Athena_C*>(_Pawn);
 
@@ -977,6 +978,7 @@ inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already ha
     static auto EmoteAbility = UObject::FindClass("BlueprintGeneratedClass GAB_Emote_Generic.GAB_Emote_Generic_C");
     static auto TrapAbility = UObject::FindClass("BlueprintGeneratedClass GA_TrapBuildGeneric.GA_TrapBuildGeneric_C");
     static auto DanceGrenadeAbility = UObject::FindClass("BlueprintGeneratedClass GA_DanceGrenade_Stun.GA_DanceGrenade_Stun_C");
+    static auto KnockbackAbility = UObject::FindClass("BlueprintGeneratedClass GA_DefaultPlayer_ApplyKnockback.GA_DefaultPlayer_ApplyKnockback_C");
 
     static auto DBNOPlayerAbility = UObject::FindClass("BlueprintGeneratedClass GAB_PlayerDBNO.GAB_PlayerDBNO_C");
     static auto DBNOAthenaAbility = UObject::FindClass("BlueprintGeneratedClass GAB_AthenaDBNO.GAB_AthenaDBNO_C");
@@ -993,11 +995,15 @@ inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already ha
     GrantGameplayAbility(Pawn, EmoteAbility);
     GrantGameplayAbility(Pawn, TrapAbility);
     GrantGameplayAbility(Pawn, DanceGrenadeAbility);
+    GrantGameplayAbility(Pawn, KnockbackAbility);
 
-    GrantGameplayAbility(Pawn, DBNOPlayerAbility);
-    GrantGameplayAbility(Pawn, DBNOAthenaAbility);
-    GrantGameplayAbility(Pawn, AthenaDBNORevive);
-    GrantGameplayAbility(Pawn, PlayerDBNOResurrect);
+    if (!bFromDBNO)
+    {
+        GrantGameplayAbility(Pawn, DBNOPlayerAbility);
+        GrantGameplayAbility(Pawn, DBNOAthenaAbility);
+        GrantGameplayAbility(Pawn, AthenaDBNORevive);
+        GrantGameplayAbility(Pawn, PlayerDBNOResurrect);
+    }
 }
 
 static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector{ 1250, 1818, 3284 }, FQuat Rotation = FQuat(), bool bResetCharacterParts = true)

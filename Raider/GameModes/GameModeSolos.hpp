@@ -5,7 +5,7 @@ class GameModeSolos : GameModeBase
 {
 public:
     GameModeSolos()
-        : GameModeBase(nullptr, DefaultLoadout, true, true /* respawn enabled*/)
+        : GameModeBase(nullptr, DefaultLoadout, true, true /* respawn enabled*/, true /* spectating enabled */)
     {
         this->teamIdx = 2;
     }
@@ -27,6 +27,15 @@ public:
         PlayerState->OnRep_SquadId();
 
         teamIdx++;
+    }
+
+    void HandlePlayerDeath(AFortPlayerControllerAthena* Controller) override
+    {
+        GameModeBase::HandlePlayerDeath(Controller);
+
+        // solo code
+        Controller->RespawnPlayerAfterDeath();
+
     }
 
 private:

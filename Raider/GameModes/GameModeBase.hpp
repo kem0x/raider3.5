@@ -5,16 +5,8 @@
 
 class GameModeBase
 {
-private:
-    bool bIsSolo = true;
-    int maxHealth = 100;
-    int maxShield = 100;
-
-    UFortPlaylistAthena* BasePlaylist;
-    std::vector<UFortWeaponRangedItemDefinition*> DefaultLoadout;
-
 public:
-    GameModeBase(UFortPlaylistAthena* BasePlaylist = nullptr, std::vector<UFortWeaponRangedItemDefinition*> Loadout = {}, bool bIsSolo = true, bool bRespawnEnabled = false)
+    GameModeBase(UFortPlaylistAthena* BasePlaylist = nullptr, std::vector<UFortWeaponRangedItemDefinition*> Loadout = {}, bool bIsSolo = true, bool bRespawnEnabled = false, bool bSpectatingEnabled = true)
     {
         if (!BasePlaylist)
             this->BasePlaylist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");
@@ -32,11 +24,13 @@ public:
 
         if (bRespawnEnabled)
         {
-            this->BasePlaylist->FriendlyFireType = EFriendlyFireType::On;
+            this->bRespawnEnabled = bRespawnEnabled;
             this->BasePlaylist->RespawnLocation = EAthenaRespawnLocation::Air;
             this->BasePlaylist->RespawnType = EAthenaRespawnType::InfiniteRespawn;
         }
 
+        this->bSpectatingEnabled = bSpectatingEnabled;
+        
         auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
         GameState->OnRep_CurrentPlaylistData();
     }
@@ -49,7 +43,6 @@ public:
     virtual void HandleJoiningPlayer(AFortPlayerControllerAthena* Controller)
     {
         //auto Pawn = (APlayerPawn_Athena_C*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), GetPlayerStart(Controller), Controller);
-
         auto Pawn = SpawnActor<APlayerPawn_Athena_C>(GetPlayerStart(Controller).Translation, Controller, {});
         Pawn->Owner = Controller;
         Pawn->OnRep_Owner();
@@ -72,7 +65,7 @@ public:
         PlayerState->bHasStartedPlaying = true;
         PlayerState->OnRep_bHasStartedPlaying();
 
-        static auto FortRegisteredPlayerInfo = static_cast<UFortGameInstance*>(GetWorld()->OwningGameInstance)->RegisteredPlayers[0]; // UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
+        static auto FortRegisteredPlayerInfo = static_cast<UFortGameInstance*>(GetWorld()->OwningGameInstance)->RegisteredPlayers[0];
 
         if (FortRegisteredPlayerInfo)
         {
@@ -96,4 +89,29 @@ public:
         InitInventory(Controller);
         EquipLoadout(Controller, this->DefaultLoadout);
     }
+
+    virtual void HandlePlayerDeath(AFortPlayerControllerAthena* Controller)
+    {
+        if (!this->bRespawnEnabled)
+        {
+            auto GameState = static_cast<AAthena_GameState_C*>(GetWorld()->AuthorityGameMode->GameState);
+            GameState->PlayersLeft--;
+            GameState->OnRep_PlayersLeft();
+
+            /*if (this->bSpectatingEnabled)
+            {
+            
+            }*/
+        }
+    }
+private:
+    bool bIsSolo = true;
+    bool bRespawnEnabled = false;
+    bool bSpectatingEnabled = true;
+    
+    int maxHealth = 100;
+    int maxShield = 100;
+
+    UFortPlaylistAthena* BasePlaylist;
+    std::vector<UFortWeaponRangedItemDefinition*> DefaultLoadout;
 };
