@@ -58,75 +58,7 @@ namespace Hooks
         auto PlayerController = (AFortPlayerControllerAthena*)Native::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex);
         NewPlayer->PlayerController = PlayerController;
 
-        auto PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
-
-        InitInventory(PlayerController);
-
-        auto Pawn = (APlayerPawn_Athena_C*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), GetPlayerStart(PlayerController), PlayerController);
-
-        PlayerController->Pawn = Pawn;
-        PlayerController->AcknowledgedPawn = Pawn;
-        Pawn->Owner = PlayerController;
-        Pawn->OnRep_Owner();
-        PlayerController->OnRep_Pawn();
-        PlayerController->Possess(Pawn);
-
-        constexpr static auto Health = (Mode == CustomMode::JUGGERNAUT) ? 500 : 100;
-        const static auto Shield = 100;
-
-        Pawn->SetMaxHealth(Health);
-        Pawn->SetMaxShield(Shield);
-
-        auto CM = Pawn->CharacterMovement;
-        CM->bNetworkSkipProxyPredictionOnNetUpdate = 0;
-
-        PlayerController->bHasClientFinishedLoading = true; // should we do this on ServerSetClientHasFinishedLoading 
-        PlayerController->bHasServerFinishedLoading = true;
-        PlayerController->bHasInitiallySpawned = true;
-        PlayerController->OnRep_bHasServerFinishedLoading();
-
-        PlayerState->bHasFinishedLoading = true;
-        PlayerState->bHasStartedPlaying = true;
-        PlayerState->OnRep_bHasStartedPlaying();
-
-        static auto FortRegisteredPlayerInfo = ((UFortGameInstance*)GetWorld()->OwningGameInstance)->RegisteredPlayers[0]; // UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
-
-        if (FortRegisteredPlayerInfo)
-        {
-            auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
-
-            if (Hero)
-            {
-                UFortHeroType* HeroType = Hero->GetHeroTypeBP(); // UObject::FindObject<UFortHeroType>("FortHeroType HID_Outlander_015_F_V1_SR_T04.HID_Outlander_015_F_V1_SR_T04");
-                PlayerState->HeroType = HeroType;
-                PlayerState->OnRep_HeroType();
-
-                static auto Head = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
-                static auto Body = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
-
-                PlayerState->CharacterParts[(uint8_t)EFortCustomPartType::Head] = Head;
-                PlayerState->CharacterParts[(uint8_t)EFortCustomPartType::Body] = Body;
-                PlayerState->OnRep_CharacterParts();
-            }
-        }
-
-        static std::vector<UFortWeaponRangedItemDefinition*> doublePumpLoadout = {
-            FindWID("WID_Harvest_Pickaxe_Athena_C_T01"),
-            FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
-            FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
-            FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03"), // Gold AR
-            FindWID("WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03"), // Blue Bolt Action
-            // "Athena_KnockGrenade" // Impulse Grenades
-            FindWID("Athena_Shields") // Big Shield Potion
-        };
-
-        EquipLoadout(PlayerController, doublePumpLoadout);
-
-        PlayerState->TeamIndex = EFortTeam(teamIdx);
-        teamIdx++;
-        PlayerState->OnRep_PlayerTeam();
-        PlayerState->SquadId = PlayerState->PlayerTeam->TeamMembers.Num() + 1;
-        PlayerState->OnRep_SquadId();
+        Game::Mode->HandleJoiningPlayer(PlayerController);
 
         PlayerController->OverriddenBackpackSize = 100;
         return PlayerController;
@@ -196,14 +128,14 @@ namespace Hooks
     void InitNetworkHooks()
     {
         DETOUR_START
-        DetourAttachE(Native::World::WelcomePlayer, WelcomePlayer);
-        DetourAttachE(Native::Actor::GetNetMode, GetNetMode);
-        DetourAttachE(Native::World::NotifyControlMessage, World_NotifyControlMessage);
-        DetourAttachE(Native::World::SpawnPlayActor, SpawnPlayActor);
-        DetourAttachE(Native::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage);
-        DetourAttachE(Native::OnlineSession::KickPlayer, KickPlayer);
-        DetourAttachE(Native::GameViewportClient::PostRender, PostRender);
-        DetourAttachE(Native::GC::CollectGarbage, CollectGarbage);
+        DetourAttachE(Native::World::WelcomePlayer, WelcomePlayer)
+        DetourAttachE(Native::Actor::GetNetMode, GetNetMode)
+        DetourAttachE(Native::World::NotifyControlMessage, World_NotifyControlMessage)
+        DetourAttachE(Native::World::SpawnPlayActor, SpawnPlayActor)
+        DetourAttachE(Native::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage)
+        DetourAttachE(Native::OnlineSession::KickPlayer, KickPlayer)
+        DetourAttachE(Native::GameViewportClient::PostRender, PostRender)
+        DetourAttachE(Native::GC::CollectGarbage, CollectGarbage)
         DETOUR_END
     }
 

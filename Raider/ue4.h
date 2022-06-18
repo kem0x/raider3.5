@@ -178,6 +178,7 @@ static auto VecToRot(FVector Vector)
     return R;
 }
 
+
 static AActor* SpawnActorTrans(UClass* StaticClass, FTransform SpawnTransform, AActor* Owner = nullptr, ESpawnActorCollisionHandlingMethod Flags = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn)
 {
     AActor* FirstActor = GetGameplayStatics()->STATIC_BeginDeferredActorSpawnFromClass(GetWorld(), StaticClass, SpawnTransform, Flags, Owner);
@@ -703,20 +704,11 @@ static void InitInventory(AFortPlayerController* PlayerController)
     static auto Light = UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsLight.AthenaAmmoDataBulletsLight");
     static auto Heavy = UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsHeavy.AthenaAmmoDataBulletsHeavy");
     static auto EditTool = UObject::FindObject<UFortAmmoItemDefinition>("FortEditToolItemDefinition EditTool.EditTool");
-    // static auto Trap = UObject::FindObject<UFortTrapItemDefinition>("FortTrapItemDefinition TID_Floor_Player_Launch_Pad_Athena.TID_Floor_Player_Launch_Pad_Athena");
-    // static auto Trap2 = UObject::FindObject<UFortTrapItemDefinition>("FortTrapItemDefinition TID_Wall_Electric_Athena_R_T03.TID_Wall_Electric_Athena_R_T03");
-    // static auto Trap3 = UObject::FindObject<UFortTrapItemDefinition>("FortTrapItemDefinition TID_Floor_Spikes_Athena_R_T03.TID_Floor_Spikes_Athena_R_T03");
-
-    // we should probably only update once
 
     AddItem(PlayerController, Wall, 0, EFortQuickBars::Secondary, 1);
     AddItem(PlayerController, Floor, 1, EFortQuickBars::Secondary, 1);
     AddItem(PlayerController, Stair, 2, EFortQuickBars::Secondary, 1);
     AddItem(PlayerController, Cone, 3, EFortQuickBars::Secondary, 1);
-    // AddItem(PlayerController, Trap, 4, EFortQuickBars::Secondary, 1);
-    // AddItem(PlayerController, Trap2, 5, EFortQuickBars::Secondary, 1);
-    // AddItem(PlayerController, Trap3, 6, EFortQuickBars::Secondary, 1);
-
     AddItem(PlayerController, Wood, 0, EFortQuickBars::Secondary, 999);
     AddItem(PlayerController, Stone, 0, EFortQuickBars::Secondary, 999);
     AddItem(PlayerController, Metal, 0, EFortQuickBars::Secondary, 999);
