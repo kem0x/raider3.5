@@ -11,3 +11,7 @@ _This project was made for fun and it doesn't aim to harm the original game by a
 ## - License
 
 - This project is licensed under the [MIT License](/LICENSE)
+
+## - Discord Server
+
+- Join [here](https://discord.gg/nCSFHtRMUs) to ask some questions about setting up Raider.
