@@ -41,7 +41,8 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ github.event.repository.updated_at}} - Build
+        name: Raider.dll
         path: ${{env.SOLUTION_FILE_PATH}}/Raider/bin/Release/Raider.dll
+        if-no-files-found: warn
         retention-days: 60
   
