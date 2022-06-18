@@ -25,7 +25,7 @@ DWORD WINAPI Main(LPVOID lpParam)
     CheckNullFatal(Address, "Failed to find NetDebug");
     void* (*NetDebug)(void* _this) = nullptr;
     AddressToFunction(Address, NetDebug);
-    
+
     DetourAttachE(NetDebug, Hooks::NetDebug);
     DetourAttachE(ProcessEvent, Hooks::ProcessEventHook);
     DETOUR_END
@@ -35,14 +35,14 @@ DWORD WINAPI Main(LPVOID lpParam)
     printf("[+] Base Address: %p\n", Offsets::Imagebase);
 
     CreateConsole();
-	
+
     return 1;
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 {
     if (dwReason == DLL_PROCESS_ATTACH)
-        CreateThread(0, 0, Main, hModule, 0, 0);
+        CreateThread(nullptr, 0, Main, hModule, 0, nullptr);
 
     return true;
 }

@@ -13,8 +13,7 @@ namespace Hooks
     {
         if (bTraveled)
             return true;
-        else
-            return Native::LocalPlayer::SpawnPlayActor(Player, URL, OutError, World);
+        return Native::LocalPlayer::SpawnPlayActor(Player, URL, OutError, World);
     }
 
     uint64 GetNetMode(UWorld* World)
@@ -53,9 +52,9 @@ namespace Hooks
         Native::World::NotifyControlMessage(GetWorld(), Connection, MessageType, Bunch);
     }
 
-    APlayerController* SpawnPlayActor(UWorld* World, UPlayer* NewPlayer, ENetRole RemoteRole, FURL& URL, void* UniqueId, SDK::FString& Error, uint8 NetPlayerIndex)
+    APlayerController* SpawnPlayActor(UWorld* World, UPlayer* NewPlayer, ENetRole RemoteRole, FURL& URL, void* UniqueId, FString& Error, uint8 NetPlayerIndex)
     {
-        auto PlayerController = (AFortPlayerControllerAthena*)Native::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex);
+        auto PlayerController = static_cast<AFortPlayerControllerAthena*>(Native::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex));
         NewPlayer->PlayerController = PlayerController;
 
         Game::Mode->HandleJoiningPlayer(PlayerController);

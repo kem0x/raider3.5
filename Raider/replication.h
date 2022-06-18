@@ -5,10 +5,10 @@
 
 FNetViewer::FNetViewer(UNetConnection* InConnection)
     : Connection(InConnection)
-    , InViewer(InConnection->PlayerController ? InConnection->PlayerController : InConnection->OwningActor)
-    , ViewTarget(InConnection->ViewTarget)
-    , ViewLocation(FVector())
-    , ViewDir(FVector())
+      , InViewer(InConnection->PlayerController ? InConnection->PlayerController : InConnection->OwningActor)
+      , ViewTarget(InConnection->ViewTarget)
+      , ViewLocation(FVector())
+      , ViewDir(FVector())
 {
     if (!InConnection->OwningActor)
         return;
@@ -111,13 +111,13 @@ namespace Replication
             {
                 if (Channel->Class == UActorChannel::StaticClass())
                 {
-                    if (((UActorChannel*)Channel)->Actor == Actor)
-                        return ((UActorChannel*)Channel);
+                    if (static_cast<UActorChannel*>(Channel)->Actor == Actor)
+                        return static_cast<UActorChannel*>(Channel);
                 }
             }
         }
 
-        return NULL;
+        return nullptr;
     }
 
     UNetConnection* GetOwningConnection(AActor* Actor)
@@ -126,7 +126,7 @@ namespace Replication
         {
             if (Actor->IsA(APlayerController::StaticClass()))
             {
-                return ((APlayerController*)Actor)->NetConnection;
+                return static_cast<APlayerController*>(Actor)->NetConnection;
             }
         }
     }
@@ -135,7 +135,7 @@ namespace Replication
     {
         static auto World = NetDriver->World;
 
-        if (!World || !&OutConsiderList || !NetDriver)
+        if (!World || !true || !NetDriver)
             return;
 
         auto& List = GetNetworkObjectList(NetDriver).ActiveNetworkObjects;
@@ -180,8 +180,7 @@ namespace Replication
 
             if (i >= NumClientsToTick)
                 break; // Only tick on ready connections
-
-            else if (Connection->ViewTarget)
+            if (Connection->ViewTarget)
             {
                 /*
                 static auto ConnectionViewers = GetWorld()->PersistentLevel->WorldSettings->ReplicationViewers;
@@ -217,7 +216,7 @@ namespace Replication
                         }
                         */
 
-                        Channel = (UActorChannel*)(Native::NetConnection::CreateChannel(Connection, 2, true, -1));
+                        Channel = static_cast<UActorChannel*>(Native::NetConnection::CreateChannel(Connection, 2, true, -1));
                         Native::ActorChannel::SetChannelActor(Channel, Actor);
                     }
 

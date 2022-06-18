@@ -90,7 +90,7 @@ namespace Native
         inline void (*ForceNetUpdate)(AActor* Actor);
         inline bool (*IsNetRelevantFor)(AActor* _this, const AActor* RealViewer, const AActor* ViewTarget, const FVector& SrcLocation);
         inline __int64 (*GetNetMode)(__int64* a1);
-        inline float(__fastcall* GetNetPriority)(AActor* a1, const FVector* a2, const FVector* a3, AActor* a4, AActor* a5, UActorChannel* a6, float Time);
+        inline float (__fastcall* GetNetPriority)(AActor* a1, const FVector* a2, const FVector* a3, AActor* a4, AActor* a5, UActorChannel* a6, float Time);
     }
 
     namespace LocalPlayer
@@ -162,7 +162,7 @@ namespace Native
         inline void (*RemoveNetworkActor)(UWorld* World, AActor* Actor);
         inline void (*WelcomePlayer)(UWorld* World, UNetConnection* Connection);
         inline void (*NotifyControlMessage)(UWorld* World, UNetConnection* Connection, uint8 MessageType, void* Bunch);
-        inline APlayerController* (*SpawnPlayActor)(UWorld* World, UPlayer* NewPlayer, ENetRole RemoteRole, FURL& URL, void* UniqueId, SDK::FString& Error, uint8 NetPlayerIndex);
+        inline APlayerController* (*SpawnPlayActor)(UWorld* World, UPlayer* NewPlayer, ENetRole RemoteRole, FURL& URL, void* UniqueId, FString& Error, uint8 NetPlayerIndex);
         inline uint8 (*NotifyAcceptingConnection)(UWorld* World);
         inline void* (*AddNetworkActor)(UWorld*, AActor*);
     }
@@ -180,7 +180,7 @@ namespace Native
 
     void InitializeAll()
     {
-        Offsets::Imagebase = (uintptr_t)GetModuleHandleA(0);
+        Offsets::Imagebase = (uintptr_t)GetModuleHandleA(nullptr);
 
         uintptr_t Address = Utils::FindPattern(Patterns::GObjects, true, 3);
         CheckNullFatal(Address, "Failed to find GObjects");
