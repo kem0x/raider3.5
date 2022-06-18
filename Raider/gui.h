@@ -15,7 +15,7 @@ enum class CustomMode
     SIPHON // Gives 50 shield/health whenever you finish someone. (Late game also has this)
 };
 
-constexpr CustomMode Mode = CustomMode::NONE;
+//constexpr CustomMode Mode = CustomMode::NONE;
 
 namespace GUI
 {
@@ -58,7 +58,7 @@ namespace GUI
                         printf("Started Aircraft!\n");
                         bStartedBus = true;
 
-						if constexpr (Mode == CustomMode::LATEGAME)
+			/*if constexpr (Mode == CustomMode::LATEGAME)
                         {
                             AFortAthenaAircraft* Aircraft = ((AAthena_GameState_C*)GetWorld()->GameState)->Aircrafts[0];
                             static const auto GameMode = (AAthena_GameMode_C*)GetWorld()->AuthorityGameMode;
@@ -86,7 +86,7 @@ namespace GUI
                             }
                             else
                                 std::cout << "Could not find Aircraft!\n";
-                        }
+                        }*/
                     }
                 }
 

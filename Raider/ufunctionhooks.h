@@ -267,7 +267,7 @@ namespace UFunctionHooks
 
                 DeadPlayerState->OnRep_DeathInfo();
 
-				if (Mode == CustomMode::SIPHON || Mode == CustomMode::LATEGAME)
+		/*if (Mode == CustomMode::SIPHON || Mode == CustomMode::LATEGAME)
                 {
                     if (KillerPawn && KillerPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
                     {
@@ -294,7 +294,7 @@ namespace UFunctionHooks
 						KillerPawn->SetHealth(KillerPawn->GetHealth() + AmountToAddToHealth);
                         HealthSet->OnRep_Health();
                     }
-                }
+                }*/
 
 				// if (false)
                 {
@@ -597,10 +597,8 @@ namespace UFunctionHooks
                 // Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
 
                 CreateThread(0, 0, MapLoadThread, 0, 0, 0);
-
-                auto GameState = (AAthena_GameState_C*)GetWorld()->GameState;
-
-                ((AAthena_GameMode_C*)GetWorld()->AuthorityGameMode)->GameSession->MaxPlayers = MAXPLAYERS;
+                
+                GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = MAXPLAYERS;
                 bListening = true;
                 std::cout << "\n\nListening on port " << HostBeacon->ListenPort << "\n\n";
             }
@@ -610,7 +608,7 @@ namespace UFunctionHooks
 
         DEFINE_PEHOOK("Function FortniteGame.FortGameModeAthena.OnAircraftExitedDropZone", {
 
-			if (GetWorld() && GetWorld()->NetDriver && GetWorld()->NetDriver->ClientConnections.Data)
+            if (GetWorld() && GetWorld()->NetDriver && GetWorld()->NetDriver->ClientConnections.Data)
             {
                 auto Connections = HostBeacon->NetDriver->ClientConnections;
 
@@ -630,10 +628,11 @@ namespace UFunctionHooks
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCheatAll", {
-            auto PlayerController = (AFortPlayerControllerAthena*)Object;
+            //auto PlayerController = (AFortPlayerControllerAthena*)Object;
 
-            if (PlayerController)
-                KickController((AFortPlayerControllerAthena*)Object, L"Please do not do that!");
+            //if (PlayerController)
+            //    KickController((AFortPlayerControllerAthena*)Object, L"Please do not do that!");
+            
             return true;
         })
 
