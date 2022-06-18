@@ -227,11 +227,14 @@ namespace UFunctionHooks
                     if (BuildingActor->BuildingType == EFortBuildingType::Wall) // this only works for walls
                         rotation.Yaw += /* rotation.Yaw */ 90 * RotationIterations;
 
+                    auto HealthPercent = BuildingActor->GetHealthPercent();
+
                     //  BuildingActor->K2_DestroyActor();					
                     BuildingActor->SilentDie();
 
                     if (auto NewBuildingActor = (ABuildingSMActor*)SpawnActor(NewBuildingClass, BuildingActor->K2_GetActorLocation(), rotation, PC))
                     {
+                        NewBuildingActor->ForceBuildingHealth(NewBuildingActor->GetMaxHealth() * HealthPercent);
                         NewBuildingActor->SetMirrored(Params->bMirrored);
                         NewBuildingActor->InitializeKismetSpawnedBuildingActor(NewBuildingActor, PC);
                     }
