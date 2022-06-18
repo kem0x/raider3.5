@@ -7,7 +7,9 @@
 
 namespace Hooks
 {
-    bool LocalPlayerSpawnPlayActor(ULocalPlayer* Player, const FString& URL, FString& OutError, UWorld* World) // prevent server's pc from spawning
+    static int teamIdx = 2;
+
+    bool LocalPlayerSpawnPlayActor(ULocalPlayer* Player, const FString& URL, FString& OutError, UWorld* World)
     {
         if (bTraveled)
             return true;
@@ -15,7 +17,7 @@ namespace Hooks
             return Native::LocalPlayer::SpawnPlayActor(Player, URL, OutError, World);
     }
 
-    uint64 GetNetMode(UWorld* World) // PlayerController::SendClientAdjustment checks if the netmode is not client
+    uint64 GetNetMode(UWorld* World)
     {
         return 2; // ENetMode::NM_ListenServer;
     }
@@ -25,7 +27,7 @@ namespace Hooks
         if (!NetDriver)
             return;
 
-		if (bMapFullyLoaded)
+        if (bMapFullyLoaded)
         {
             if (NetDriver->IsA(UIpNetDriver::StaticClass()) && NetDriver->ClientConnections.Num() > 0 && NetDriver->ClientConnections[0]->InternalAck == false)
             {
@@ -74,22 +76,9 @@ namespace Hooks
 
         Pawn->SetMaxHealth(Health);
         Pawn->SetMaxShield(Shield);
-				
-        auto CM = Pawn->CharacterMovement;
 
-        if (CM && Mode > CustomMode::NONE)
-		{
-            switch (Mode)
-            {
-            case CustomMode::SPACE:
-                CM->GravityScale -= 0.5f; // Default is 1.0f
-                break;
-            case CustomMode::JUGGERNAUT:
-                // CM->Mass += 200; // Default is 100.0f // this does nothing for some reason
-				// CM->MaxAcceleration -= 500.0f; // Default is 1000f // this does nothing for some reason
-                break;
-            }
-        }
+        auto CM = Pawn->CharacterMovement;
+        CM->bNetworkSkipProxyPredictionOnNetUpdate = 0;
 
         PlayerController->bHasClientFinishedLoading = true; // should we do this on ServerSetClientHasFinishedLoading 
         PlayerController->bHasServerFinishedLoading = true;
@@ -115,7 +104,7 @@ namespace Hooks
                 static auto Head = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
                 static auto Body = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
 
-				PlayerState->CharacterParts[(uint8_t)EFortCustomPartType::Head] = Head;
+                PlayerState->CharacterParts[(uint8_t)EFortCustomPartType::Head] = Head;
                 PlayerState->CharacterParts[(uint8_t)EFortCustomPartType::Body] = Body;
                 PlayerState->OnRep_CharacterParts();
             }
@@ -133,26 +122,13 @@ namespace Hooks
 
         EquipLoadout(PlayerController, doublePumpLoadout);
 
-        auto CheatManager = CreateCheatManager(PlayerController);
-        // CheatManager->ToggleInfiniteAmmo();
+        PlayerState->TeamIndex = EFortTeam(teamIdx);
+        teamIdx++;
+        PlayerState->OnRep_PlayerTeam();
+        PlayerState->SquadId = PlayerState->PlayerTeam->TeamMembers.Num() + 1;
+        PlayerState->OnRep_SquadId();
 
-        if (PlayerController->Pawn)
-        {
-            if (PlayerController->Pawn->PlayerState)
-            {
-                PlayerState->TeamIndex = EFortTeam(2); // GetMath()->STATIC_RandomIntegerInRange(2, 102));
-                PlayerState->OnRep_PlayerTeam();
-                PlayerState->SquadId = PlayerState->PlayerTeam->TeamMembers.Num() + 1;
-                PlayerState->OnRep_SquadId();
-            }
-        }
-
-        PlayerController->OverriddenBackpackSize = 100; // i hate stw
-
-		// TODO: Remove healing GameplayEffects
-
-        // Pawn->K2_TeleportTo({ 37713, -52942, 461 }, { 0, 0, 0 }); // Tilted
-
+        PlayerController->OverriddenBackpackSize = 100;
         return PlayerController;
     }
 
@@ -179,11 +155,10 @@ namespace Hooks
             Bunch[7] -= (16 * 1024 * 1024);
 
             Native::World::WelcomePlayer(GetWorld(), Connection);
-			
+
             return;
         }
         case 15: // NMT_PCSwap
-            // return;
             break;
         }
 
@@ -237,8 +212,6 @@ namespace Hooks
         if (!bPlayButton)
         {
             static auto PlayButtonFn = UObject::FindObject<UFunction>("BndEvt__BP_PlayButton_K2Node_ComponentBoundEvent_1_CommonButtonClicked__DelegateSignature");
-
-            // if (FunctionName.find("BP_PlayButton") != -1)
             if (Function == PlayButtonFn)
             {
                 bPlayButton = true;

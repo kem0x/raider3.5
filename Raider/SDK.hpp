@@ -20,6 +20,11 @@
 #include "SDK/FN_Basic.hpp"
 
 inline void (*ProcessEvent)(void*, void*, void*);
+#pragma warning(disable:4099)
+#pragma warning(disable:4477)
+#pragma warning(disable:4018)
+#pragma warning(disable:4552)
+#pragma warning(disable:4477)
 
 namespace Offsets
 {

@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable:4099)
 
 #include <functional>
 
@@ -552,13 +553,13 @@ namespace UFunctionHooks
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerLoadingScreenDropped", {
             auto Pawn = (APlayerPawn_Athena_C*)((AFortPlayerController*)Object)->Pawn;
 
-            if (IsBanned(std::wstring(Pawn->PlayerState->SavedNetworkAddress.c_str())))
+            /*if (IsBanned(std::wstring(Pawn->PlayerState->SavedNetworkAddress.c_str())))
             {
                 std::cout << "Player is banned!\n";
                 KickController((APlayerController*)Pawn->Controller, L"You are banned."); // TODO: Add ban reason to here too.
                 // Should we change their name to "Banned" or something?
                 return true;
-            }
+            }*/
 	
             if (Pawn && Pawn->AbilitySystemComponent)
             {

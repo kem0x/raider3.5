@@ -256,7 +256,7 @@ DWORD WINAPI MapLoadThread(LPVOID) // thnak you mr rythm for giving me this
     {
         auto StreamingLevel = GetWorld()->StreamingLevels[i];
 
-		if (!StreamingLevel)
+        if (!StreamingLevel)
             continue;
 
         // std::cout << StreamingLevel->GetName() << " state: " << (StreamingLevel->IsLevelLoaded() ? "Loaded" : "Loading") << '\n';
@@ -266,15 +266,15 @@ DWORD WINAPI MapLoadThread(LPVOID) // thnak you mr rythm for giving me this
 
         Sleep(1000);
     }
-		
-	Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
+
+    Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
 
     // Beacon->BeaconState = EBeaconState::AllowRequests;
     std::cout << "People can join now!\n";
-	
+
     bMapFullyLoaded = true;
 
-	return 0;
+    return 0;
 }
 
 bool CanBuild(ABuildingSMActor* BuildingActor)
@@ -320,9 +320,9 @@ bool CanBuild2(ABuildingSMActor* BuildingActor)
     TArray<ABuildingActor*> ExistingBuildings;
     EFortStructuralGridQueryResults bCanBuild = GameState->StructuralSupportSystem->K2_CanAddBuildingActorToGrid(GetWorld(), BuildingActor, BuildingActor->K2_GetActorLocation(), BuildingActor->K2_GetActorRotation(), false, false, &ExistingBuildings);
 
-	if (bCanBuild == EFortStructuralGridQueryResults::CanAdd || ExistingBuildings.Num() == 0)
+    if (bCanBuild == EFortStructuralGridQueryResults::CanAdd || ExistingBuildings.Num() == 0)
         return true;
-	
+
     return false;
 }
 
@@ -384,7 +384,7 @@ void Spectate(UNetConnection* SpectatingConnection, AFortPlayerStateAthena* Stat
         DeadPlayerState->bIsSpectator = true;
         DeadPlayerState->OnRep_SpectatingTarget();
 
-		// 95% of the code below here is useless, it was my attempt to fix the camera.
+        // 95% of the code below here is useless, it was my attempt to fix the camera.
 
         auto SpectatorPC = SpawnActor<ABP_SpectatorPC_C>(PawnToSpectate->K2_GetActorLocation());
         SpectatorPC->SetNewCameraType(ESpectatorCameraType::DroneAttach, true);
@@ -392,12 +392,12 @@ void Spectate(UNetConnection* SpectatingConnection, AFortPlayerStateAthena* Stat
         SpectatorPC->ResetCamera();
         SpectatingConnection->PlayerController = SpectatorPC;
         SpectatingConnection->ViewTarget = PawnToSpectate;
-		SpectatorPC->FollowedPlayerPrivate = StateToSpectate;
-		SpectatorPC->HoveredPlayerPrivate = StateToSpectate;
+        SpectatorPC->FollowedPlayerPrivate = StateToSpectate;
+        SpectatorPC->HoveredPlayerPrivate = StateToSpectate;
         SpectatorPC->ToggleSpectatorHUD();
 
-		if (SpectatorPC->CurrentSpectatorCamComp)
-           SpectatorPC->CurrentSpectatorCamComp->IntendedViewTarget = PawnToSpectate;
+        if (SpectatorPC->CurrentSpectatorCamComp)
+            SpectatorPC->CurrentSpectatorCamComp->IntendedViewTarget = PawnToSpectate;
 
         auto SpectatorPawn = SpawnActor<AArenaCamPawn>(PawnToSpectate->K2_GetActorLocation(), PawnToSpectate);
 
@@ -405,7 +405,7 @@ void Spectate(UNetConnection* SpectatingConnection, AFortPlayerStateAthena* Stat
 
         if (SpectatorPawn->SpectatorCameraComponent)
             SpectatorPawn->SpectatorCameraComponent->IntendedViewTarget = PawnToSpectate;
-		
+
         SpectatorPC->SpectatorPawn = SpectatorPawn;
         SpectatorPC->Pawn = SpectatorPawn;
         SpectatorPC->AcknowledgedPawn = SpectatorPawn;
@@ -415,9 +415,9 @@ void Spectate(UNetConnection* SpectatingConnection, AFortPlayerStateAthena* Stat
         SpectatorPC->Possess(SpectatorPawn);
         DeadPC->K2_DestroyActor();
 
-		SpectatorPC->Pawn->bUseControllerRotationPitch = true;
+        SpectatorPC->Pawn->bUseControllerRotationPitch = true;
         SpectatorPC->Pawn->bUseControllerRotationYaw = true;
-		SpectatorPC->Pawn->bUseControllerRotationRoll = true;
+        SpectatorPC->Pawn->bUseControllerRotationRoll = true;
 
         if (DeadPC->QuickBars)
             DeadPC->QuickBars->K2_DestroyActor();
@@ -552,35 +552,35 @@ inline AFortWeapon* EquipWeaponDefinition(APawn* dPawn, UFortWeaponItemDefinitio
         if (!IsGuidInInventory(Controller, Guid))
             return nullptr;
 
-		AFortWeapon* Weapon = nullptr;
+        AFortWeapon* Weapon = nullptr;
 
-		// we have to do this for the traptool idk why
+        // we have to do this for the traptool idk why
 
-		if (weaponClass->GetFullName() == "BlueprintGeneratedClass TrapTool.TrapTool_C") // (weaponClass->IsA(AFortTrapTool::StaticClass()))
+        if (weaponClass->GetFullName() == "BlueprintGeneratedClass TrapTool.TrapTool_C") // (weaponClass->IsA(AFortTrapTool::StaticClass()))
         {
             Weapon = (AFortWeapon*)SpawnActorTrans(weaponClass, {}, Pawn); // Other people can't see their weapon.
-			
+
             if (Weapon)
             {
                 Weapon->bReplicates = true;
                 Weapon->bOnlyRelevantToOwner = false;
 
-                ((AFortTrapTool*)Weapon)->ItemDefinition = Definition;	
+                ((AFortTrapTool*)Weapon)->ItemDefinition = Definition;
             }
         }
-		
+
         else
-          Weapon = Pawn->EquipWeaponDefinition(Definition, Guid);
+            Weapon = Pawn->EquipWeaponDefinition(Definition, Guid);
 
         if (Weapon)
         {
             Weapon->WeaponData = Definition;
             Weapon->ItemEntryGuid = Guid;
-			
+
             if (bEquipWithMaxAmmo)
                 Weapon->AmmoCount = Weapon->GetBulletsPerClip();
-			else if (Ammo != -1)
-				Weapon->AmmoCount = Instance->ItemEntry.LoadedAmmo;
+            else if (Ammo != -1)
+                Weapon->AmmoCount = Instance->ItemEntry.LoadedAmmo;
 
             Instance->ItemEntry.LoadedAmmo = Weapon->AmmoCount;
 
@@ -604,7 +604,7 @@ inline void EquipInventoryItem(AFortPlayerControllerAthena* PC, FGuid& Guid)
         return;
 
     auto& ItemInstances = GetItemInstances(PC);
-	
+
     for (int i = 0; i < ItemInstances.Num(); i++)
     {
         auto CurrentItemInstance = ItemInstances[i];
@@ -690,7 +690,7 @@ static void InitInventory(AFortPlayerController* PlayerController)
     PlayerController->QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
     auto QuickBars = PlayerController->QuickBars;
     PlayerController->OnRep_QuickBar();
-    
+
     static auto Wall = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall");
     static auto Stair = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W");
     static auto Cone = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_RoofS.BuildingItemData_RoofS");
@@ -829,7 +829,7 @@ static auto GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
     };
 
     auto Spec = GenerateNewSpec();
-	
+
     for (int i = 0; i < AbilitySystemComponent->ActivatableAbilities.Items.Num(); i++)
     {
         auto& CurrentSpec = AbilitySystemComponent->ActivatableAbilities.Items[i];
@@ -846,7 +846,7 @@ static bool KickController(APlayerController* PC, FString Message)
     if (PC && Message.Data)
     {
         FText text = reinterpret_cast<UKismetTextLibrary*>(UKismetTextLibrary::StaticClass())->STATIC_Conv_StringToText(Message);
-        return Native::OnlineSession::KickPlayer(GetWorld()->AuthorityGameMode->GameSession, PC, text);	
+        return Native::OnlineSession::KickPlayer(GetWorld()->AuthorityGameMode->GameSession, PC, text);
     }
 
     return false;
@@ -940,7 +940,7 @@ FVector RotToVec(const FRotator& Rotator)
 inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already has the ability.
 {
     auto Pawn = (APlayerPawn_Athena_C*)_Pawn;
-	
+
     /*
     
 Ability: Class FortniteGame.FortGameplayAbility_Jump
@@ -966,18 +966,18 @@ Ability: BlueprintGeneratedClass GA_AthenaInVehicle.GA_AthenaInVehicle_C
     
     */
 
-	/* auto DefaultAbilityKit = UObject::FindObject<UFortAbilitySet>("FortAbilitySet GAS_DefaultPlayer.GAS_DefaultPlayer");
-	
-    for (int i = 0; i < DefaultAbilityKit->GameplayAbilities.Num(); i++)
-    {
-        auto Ability = DefaultAbilityKit->GameplayAbilities[i];
+    /* auto DefaultAbilityKit = UObject::FindObject<UFortAbilitySet>("FortAbilitySet GAS_DefaultPlayer.GAS_DefaultPlayer");
+    
+for (int i = 0; i < DefaultAbilityKit->GameplayAbilities.Num(); i++)
+{
+    auto Ability = DefaultAbilityKit->GameplayAbilities[i];
 
-		if (!Ability)
-            continue;
+            if (!Ability)
+        continue;
 
-		GrantGameplayAbility(Pawn, Ability);
-    } */
-	
+            GrantGameplayAbility(Pawn, Ability);
+} */
+
     static auto SprintAbility = UObject::FindClass("Class FortniteGame.FortGameplayAbility_Sprint");
     static auto ReloadAbility = UObject::FindClass("Class FortniteGame.FortGameplayAbility_Reload");
     static auto RangedWeaponAbility = UObject::FindClass("Class FortniteGame.FortGameplayAbility_RangedWeapon");
@@ -1052,13 +1052,13 @@ static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc 
 
 void ClientMessage(AFortPlayerControllerAthena* PC, FString Message, bool bSay = false) // Send a message to the user's console.
 {
-    FName Type = FName(-1);
+    auto Type = FName(-1);
 
-	if (bSay)
+    if (bSay)
     {
         // https://github.com/EpicGames/UnrealEngine/blob/46544fa5e0aa9e6740c19b44b0628b72e7bbd5ce/Engine/Source/Runtime/Engine/Private/PlayerController.cpp#L1379
     }
-	
+
     PC->ClientMessage(Message, Type, 10000);
 }
 
@@ -1074,7 +1074,7 @@ inline UFortWeaponRangedItemDefinition* FindWID(const std::string& WID)
     if (!Def)
     {
         Def = UObject::FindObject<UFortWeaponRangedItemDefinition>("WID_Harvest_" + WID + "_Athena_C_T01" + ".WID_Harvest_" + WID + "_Athena_C_T01");
-		
+
         if (!Def)
             Def = UObject::FindObject<UFortWeaponRangedItemDefinition>(WID + "." + WID);
     }
@@ -1272,7 +1272,7 @@ namespace Inventory // includes quickbars
             Controller->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
             Controller->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
 
-			Inventory::Update(Controller, _Idx);
+            Inventory::Update(Controller, _Idx);
 
             return ItemEntry;
         }
@@ -1376,7 +1376,7 @@ namespace Inventory // includes quickbars
         auto& SecondaryQuickBarSlots = QuickBars->SecondaryQuickBar.Slots;
 
         bool bWasSuccessful = false;
-		
+
         for (int i = 1; i < PrimaryQuickBarSlots.Num(); i++)
         {
             if (PrimaryQuickBarSlots[i].Items.Data)
@@ -1386,7 +1386,7 @@ namespace Inventory // includes quickbars
                     if (PrimaryQuickBarSlots[i].Items[j] == Params->ItemGuid)
                     {
                         auto Instance = GetInstanceFromGuid(Controller, Params->ItemGuid);
-                        
+
                         if (Instance)
                         {
                             auto Definition = Instance->ItemEntry.ItemDefinition;
@@ -1486,7 +1486,7 @@ namespace Inventory // includes quickbars
                     {
                         if (Params->Pickup->IsActorBeingDestroyed() || Params->Pickup->bPickedUp)
                             return;
-						
+
                         if (i >= 6)
                         {
                             auto QuickBars = Controller->QuickBars;
@@ -1521,17 +1521,17 @@ namespace Inventory // includes quickbars
                             Inventory::RemoveItemFromSlot(Controller, FocusedSlot, EFortQuickBars::Primary);
                         }
 
-						int Idx = 0;
+                        int Idx = 0;
                         auto entry = Inventory::AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Primary, Params->Pickup->PrimaryPickupItemEntry.Count, &Idx);
                         // auto& Entry = Controller->WorldInventory->Inventory.ReplicatedEntries[Idx];
                         auto Instance = GetInstanceFromGuid(Controller, entry.ItemGuid);
                         Params->Pickup->K2_DestroyActor();
 
-						Params->Pickup->bPickedUp = true;
+                        Params->Pickup->bPickedUp = true;
                         Params->Pickup->OnRep_bPickedUp();
 
                         Instance->ItemEntry.LoadedAmmo = Params->Pickup->PrimaryPickupItemEntry.LoadedAmmo;
-						
+
                         Inventory::Update(Controller);
 
                         break;
@@ -1563,7 +1563,7 @@ void EquipTrapTool(AController* Controller)
     static auto TrapDef = UObject::FindObject<UFortTrapItemDefinition>("FortTrapItemDefinition TID_Floor_Player_Launch_Pad_Athena.TID_Floor_Player_Launch_Pad_Athena");
 
     auto TrapTool = (AFortTrapTool*)SpawnActorTrans(TrapDef->GetWeaponActorClass(), {}, Controller);
-	
+
     if (TrapTool && TrapDef)
     {
         TrapTool->ItemDefinition = TrapDef;
@@ -1580,7 +1580,7 @@ void EquipTrapTool(AController* Controller)
                 Pawn->ClientInternalEquipWeapon(TrapTool);
                 Pawn->OnRep_CurrentWeapon(); // i dont think this is needed but alr
             }
-        }	
+        }
     }
 }
 
@@ -1589,93 +1589,41 @@ void SpawnDeco(AFortDecoTool* Tool, void* _Params)
     if (!_Params)
         return;
 
-	auto Params = (AFortDecoTool_ServerSpawnDeco_Params*)_Params;
+    auto Params = (AFortDecoTool_ServerSpawnDeco_Params*)_Params;
 
-	FTransform Transform {};
+    FTransform Transform{};
     Transform.Scale3D = FVector(1, 1, 1);
     Transform.Rotation = RotToQuat(Params->Rotation);
     Transform.Translation = Params->Location;
 
-    // if (Params->AttachedActor->IsA(ABuildingTrap::StaticClass()))
+    auto TrapDef = (UFortTrapItemDefinition*)Tool->ItemDefinition;
+
+    if (TrapDef)
     {
-        // auto Trap = (ABuildingTrap*)Params->AttachedActor;
+        auto Trap = (ABuildingTrap*)SpawnActorTrans(TrapDef->GetBlueprintClass(), Transform);
 
-        auto TrapDef = (UFortTrapItemDefinition*)Tool->ItemDefinition;
-
-        if (TrapDef)
+        if (Trap)
         {
-            auto Trap = (ABuildingTrap*)SpawnActorTrans(TrapDef->GetBlueprintClass(), Transform);
+            Trap->TrapData = TrapDef;
 
-            if (Trap)
+            auto Pawn = (APlayerPawn_Athena_C*)Tool->Owner;
+
+            Trap->InitializeKismetSpawnedBuildingActor(Trap, (AFortPlayerController*)Pawn->Controller);
+
+            Trap->AttachedTo = Params->AttachedActor;
+            Trap->OnRep_AttachedTo();
+
+            auto TrapAbilitySet = Trap->AbilitySet;
+
+            for (int i = 0; i < TrapAbilitySet->GameplayAbilities.Num(); i++) // this fixes traps crashing the game // don't ask how
             {
-                Trap->TrapData = TrapDef;
+                auto Ability = TrapAbilitySet->GameplayAbilities[i];
 
-                auto Pawn = (APlayerPawn_Athena_C*)Tool->Owner;
+                if (!Ability)
+                    continue;
 
-                Trap->InitializeKismetSpawnedBuildingActor(Trap, (AFortPlayerController*)Pawn->Controller);
-
-				Trap->AttachedTo = Params->AttachedActor;
-                Trap->OnRep_AttachedTo();
-
-				auto TrapAbilitySet = Trap->AbilitySet;
-
-				for (int i = 0; i < TrapAbilitySet->GameplayAbilities.Num(); i++) // this fixes traps crashing the game // don't ask how
-                {
-                    auto Ability = TrapAbilitySet->GameplayAbilities[i];
-
-                    if (!Ability)
-                        continue;
-
-                    GrantGameplayAbility(Pawn, Ability);
-                }
-            }			
-        }	
-    }
-}
-
-void Ban(const std::wstring& IP, const std::wstring& Reason) // this isn't mcp banning or anything
-{
-    nlohmann::json json;
-    json["IP"] = IP;
-    json["Reason"] = Reason;
-    auto Json = json.dump(4);
-
-    std::ofstream stream("banned-ips.json", std::ios::app);
-
-    stream << Json << '\n';
-
-    stream.close(); 
-}
-
-void Unban(const std::wstring& IP) // TODO
-{
-}
-
-bool IsBanned(const std::wstring& IP)
-{
-	/*
-    
-    {
-        "IP": "IP",
-        "Reason": ""
-    }
-    
-    */
-
-    std::ifstream input_file("banned-ips.json");
-    
-    if (!input_file.is_open())
-		return false;
-	
-    std::string line;
-
-    while (std::getline(input_file, line))
-    {
-        if (std::wstring(line.begin(), line.end()).find(IP) != std::wstring::npos)
-        {
-            return true;
+                GrantGameplayAbility(Pawn, Ability);
+            }
         }
     }
-
-    return false;
 }
