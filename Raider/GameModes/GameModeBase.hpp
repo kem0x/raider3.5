@@ -5,14 +5,6 @@
 
 class GameModeBase
 {
-private:
-    bool bIsSolo = true;
-    int maxHealth = 100;
-    int maxShield = 100;
-    
-    UFortPlaylistAthena* BasePlaylist;
-    std::vector<UFortWeaponRangedItemDefinition*> DefaultLoadout;
-    
 public:
     GameModeBase(UFortPlaylistAthena* BasePlaylist = nullptr, std::vector<UFortWeaponRangedItemDefinition*> Loadout = {}, bool bIsSolo = true, bool bRespawnEnabled = false)
     {
@@ -27,7 +19,8 @@ public:
         };
         
         this->BasePlaylist->bNoDBNO = !bIsSolo;
-
+        this->bRespawnEnabled = bRespawnEnabled;
+        
         if (bRespawnEnabled)
         {
             this->BasePlaylist->FriendlyFireType = EFriendlyFireType::On;
@@ -97,4 +90,29 @@ public:
         InitInventory(Controller);
         EquipLoadout(Controller, this->DefaultLoadout);
     }
+
+    virtual void HandlePlayerDeath(AFortPlayerControllerAthena* Controller)
+    {
+        if (this->bRespawnEnabled)
+        {
+            InitPawn(Controller, {500, 500, 500});
+            Controller->ActivateSlot(EFortQuickBars::Primary, 0, 0, true);
+
+            bool bFound = false;
+            auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(Controller, bFound);
+            if (bFound)
+            {
+                EquipInventoryItem(Controller, PickaxeEntry.ItemGuid);
+            }
+        }
+    }
+    
+private:
+    bool bRespawnEnabled = false;
+    bool bIsSolo = true;
+    int maxHealth = 100;
+    int maxShield = 100;
+    
+    UFortPlaylistAthena* BasePlaylist;
+    std::vector<UFortWeaponRangedItemDefinition*> DefaultLoadout;
 };

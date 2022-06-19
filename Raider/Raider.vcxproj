@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
+    <ClInclude Include="GameModes\GameModeDuos.hpp" />
     <ClInclude Include="GameModes\GameModeSolos.hpp" />
     <ClInclude Include="gui.h" />
     <ClInclude Include="hooks.h" />

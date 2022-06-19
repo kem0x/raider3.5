@@ -1,10 +1,10 @@
 #pragma once
 #include "GameModeBase.hpp"
 
-class GameModeSolos : GameModeBase
+class GameModeDuos : GameModeBase
 {
 public:
-    GameModeSolos()
+    GameModeDuos()
         : GameModeBase(nullptr, DefaultLoadout, true, true /* respawn enabled*/)
     {
         this->teamIdx = 2;
