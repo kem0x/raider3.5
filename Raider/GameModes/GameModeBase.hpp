@@ -48,9 +48,6 @@ public:
         Pawn->Owner = Controller;
         Pawn->OnRep_Owner();
 
-        // ((__int64*)Pawn)[0x3DB] = (__int64)Controller->WorldInventory;
-        // Pawn->Role = 3;
-		
         Controller->Pawn = Pawn;
         Controller->AcknowledgedPawn = Pawn;
         Controller->OnRep_Pawn();
