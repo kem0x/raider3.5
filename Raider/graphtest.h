@@ -3,6 +3,30 @@
 #include "native.h"
 #include "ue4.h"
 
+inline EAcceptConnection::Type UWorld::NotifyAcceptingConnection()
+{
+    std::cout << "FNetworkNotify::NotifyAcceptingConnection()\n" << std::endl;
+    return EAcceptConnection::Accept;
+}
+
+inline bool UWorld::NotifyAcceptingChannel(UChannel* Channel)
+{
+    std::cout << "FNetworkNotify::NotifyAcceptingChannel()\n" << std::endl;
+    return Native::World::NotifyAcceptingChannel(GetWorld(), Channel);
+}
+
+inline void UWorld::NotifyAcceptedConnection(UNetConnection* Connection)
+{
+    std::cout << "FNetworkNotify::NotifyAcceptedConnection()\n" << std::endl;
+    Native::World::NotifyAcceptedConnection(GetWorld(), Connection);
+}
+
+inline void UWorld::NotifyControlMessage(UNetConnection* Connection, uint8 MessageType, void* Bunch)
+{
+    std::cout << "FNetworkNotify::NotifyControlMessage()\n" << std::endl;
+    Native::World::NotifyControlMessage(GetWorld(), Connection, MessageType, Bunch);
+}
+
 bool Listen( FURL& InURL  )
 {
     auto Driver = (UIpNetDriver*)SpawnActorTrans(UIpNetDriver::StaticClass(), {}, nullptr);
