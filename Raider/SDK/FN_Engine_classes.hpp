@@ -14,6 +14,52 @@ namespace SDK
 //Classes
 //---------------------------------------------------------------------------
 
+#define PURE_VIRTUAL(func,...) =0;
+namespace EAcceptConnection
+{
+    enum Type
+    {
+        /** Reject the connection */
+        Reject,
+        /** Accept the connection */
+        Accept,
+        /** Ignore the connection, sending no reply, while server traveling */
+        Ignore
+};
+
+    /** @return the stringified version of the enum passed in */
+    inline const TCHAR* ToString(EAcceptConnection::Type EnumVal)
+    {
+        switch (EnumVal)
+        {
+        case Reject:
+        {
+            return TEXT("Reject");
+        }
+        case Accept:
+        {
+            return TEXT("Accept");
+        }
+        case Ignore:
+        {
+            return TEXT("Ignore");
+        }
+        }
+        return TEXT("");
+    }
+};
+
+class UChannel;
+class UNetConnection;
+class FNetworkNotify
+{
+public:
+    virtual EAcceptConnection::Type NotifyAcceptingConnection() PURE_VIRTUAL(FNetworkNotify::NotifyAcceptedConnection, return EAcceptConnection::Ignore;);
+    virtual void NotifyAcceptedConnection(UNetConnection* Connection) PURE_VIRTUAL(FNetworkNotify::NotifyAcceptedConnection, );
+    virtual bool NotifyAcceptingChannel(UChannel* Channel) PURE_VIRTUAL(FNetworkNotify::NotifyAcceptingChannel, return false;);
+    virtual void NotifyControlMessage(UNetConnection* Connection, uint8 MessageType, void* Bunch) PURE_VIRTUAL(FNetworkNotify::NotifyReceivedText, );
+};
+
 // Class Engine.Engine
 // 0x0DD8 (0x0E00 - 0x0028)
 class UEngine : public UObject
@@ -2259,7 +2305,7 @@ public:
 
 // Class Engine.World
 // 0x0A98 (0x0AC0 - 0x0028)
-class UWorld : public UObject
+class UWorld : public UObject, public FNetworkNotify
 {
 public:
 	unsigned char                                      UnknownData00[0x8];                                       // 0x0028(0x0008) MISSED OFFSET

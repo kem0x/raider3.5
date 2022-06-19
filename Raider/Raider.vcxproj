@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClInclude Include="game.h" />
     <ClInclude Include="GameModes\GameModeSolos.hpp" />
+    <ClInclude Include="graphtest.h" />
     <ClInclude Include="gui.h" />
     <ClInclude Include="hooks.h" />
     <ClInclude Include="native.h" />
