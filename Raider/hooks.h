@@ -36,7 +36,7 @@ namespace Hooks
 
         Native::NetDriver::TickFlush(NetDriver, DeltaSeconds);
     }
-    
+
     void WelcomePlayer(UWorld* World, UNetConnection* IncomingConnection)
     {
         Native::World::WelcomePlayer(GetWorld(), IncomingConnection);
@@ -127,11 +127,11 @@ namespace Hooks
     void InitNetworkHooks()
     {
         DETOUR_START
-        DetourAttachE(Native::World::WelcomePlayer, WelcomePlayer)
+        //DetourAttachE(Native::World::WelcomePlayer, WelcomePlayer)
         DetourAttachE(Native::Actor::GetNetMode, GetNetMode)
-        DetourAttachE(Native::World::NotifyControlMessage, World_NotifyControlMessage)
+        //DetourAttachE(Native::World::NotifyControlMessage, World_NotifyControlMessage)
         DetourAttachE(Native::World::SpawnPlayActor, SpawnPlayActor)
-        DetourAttachE(Native::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage)
+        //DetourAttachE(Native::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage)
         DetourAttachE(Native::OnlineSession::KickPlayer, KickPlayer)
         DetourAttachE(Native::GameViewportClient::PostRender, PostRender)
         DetourAttachE(Native::GC::CollectGarbage, CollectGarbage)

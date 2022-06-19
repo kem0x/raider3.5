@@ -18,25 +18,21 @@ DWORD WINAPI Main(LPVOID lpParam)
     UFunctionHooks::Initialize();
 
     DETOUR_START
-    DetourAttachE(Native::NetDriver::TickFlush, Hooks::TickFlush)
-    DetourAttachE(Native::LocalPlayer::SpawnPlayActor, Hooks::LocalPlayerSpawnPlayActor)
+    DetourAttachE(Native::NetDriver::TickFlush, Hooks::TickFlush);
+    DetourAttachE(Native::LocalPlayer::SpawnPlayActor, Hooks::LocalPlayerSpawnPlayActor);
 
     auto Address = Utils::FindPattern(Patterns::NetDebug);
     CheckNullFatal(Address, "Failed to find NetDebug");
     void* (*NetDebug)(void* _this) = nullptr;
     AddressToFunction(Address, NetDebug);
 
-    DetourAttachE(NetDebug, Hooks::NetDebug)
-    DetourAttachE(ProcessEvent, Hooks::ProcessEventHook)
-    
+    DetourAttachE(NetDebug, Hooks::NetDebug);
+    DetourAttachE(ProcessEvent, Hooks::ProcessEventHook);
     DETOUR_END
 
     printf("[+] Hooked ProcessEvent\n");
 
     printf("[+] Base Address: %p\n", Offsets::Imagebase);
-
-    GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), L"log LogFortReplicationGraph VeryVerbose", GetPlayerController());
-    GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), L"log LogReplicationGraph VeryVerbose", GetPlayerController());
 
     CreateConsole();
 
