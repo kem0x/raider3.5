@@ -120,6 +120,8 @@ namespace Native
     {
         inline void (*TickFlush)(UNetDriver* NetDriver, float DeltaSeconds);
         inline bool (*IsLevelInitializedForActor)(UNetDriver* NetDriver, AActor* Actor, UNetConnection* Connection);
+
+        inline bool (*InitListen)(UObject* Driver, FNetworkNotify* InNotify, FURL& LocalURL, bool bReuseAddressAndPort, FString& Error);
     }
 
     namespace NetConnection
@@ -164,6 +166,9 @@ namespace Native
         inline void (*NotifyControlMessage)(UWorld* World, UNetConnection* Connection, uint8 MessageType, void* Bunch);
         inline APlayerController* (*SpawnPlayActor)(UWorld* World, UPlayer* NewPlayer, ENetRole RemoteRole, FURL& URL, void* UniqueId, FString& Error, uint8 NetPlayerIndex);
         inline uint8 (*NotifyAcceptingConnection)(UWorld* World);
+        inline uint8 (*NotifyAcceptingChannel)(UWorld* World, UObject* Channel);
+        inline void (*NotifyAcceptedConnection)(UWorld* World, UObject* Connection);
+
         inline void* (*AddNetworkActor)(UWorld*, AActor*);
     }
 
@@ -317,6 +322,18 @@ namespace Native
         Address = Utils::FindPattern(Patterns::GetNetPriority);
         CheckNullFatal(Address, "Failed to find GetNetPriority");
         AddressToFunction(Address, Actor::GetNetPriority);
+
+        Address = Utils::FindPattern(Patterns::World_NotifyAcceptingChannel);
+        CheckNullFatal(Address, "Failed to find World_NotifyAcceptingChannel");
+        AddressToFunction(Address, World::NotifyAcceptingChannel);
+
+        Address = Utils::FindPattern(Patterns::World_NotifyAcceptedConnection);
+        CheckNullFatal(Address, "Failed to find World_NotifyAcceptedConnection");
+        AddressToFunction(Address, World::NotifyAcceptedConnection);
+
+        Address = Utils::FindPattern(Patterns::InitListen);
+        CheckNullFatal(Address, "Failed to find NetDriver::InitListen");
+        AddressToFunction(Address, NetDriver::InitListen);
 
         ProcessEvent = reinterpret_cast<decltype(ProcessEvent)>(GetEngine()->Vtable[0x40]);
     }
