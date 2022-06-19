@@ -32,7 +32,7 @@ DWORD WINAPI Main(LPVOID lpParam)
 
     printf("[+] Hooked ProcessEvent\n");
 
-    printf("[+] Base Address: %p\n", Offsets::Imagebase);
+    printf("[+] Base Address: %p\n", Imagebase);
 
     CreateConsole();
 

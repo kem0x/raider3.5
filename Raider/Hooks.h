@@ -1,7 +1,7 @@
 #pragma once
 
-#include "gui.h"
-#include "ufunctionhooks.h"
+#include "GUI.h"
+#include "UFunctionHooks.h"
 
 // #define LOGGING
 

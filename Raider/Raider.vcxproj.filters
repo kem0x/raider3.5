@@ -51,23 +51,23 @@
     <ClInclude Include="SDK.hpp">
       <Filter>SDK</Filter>
     </ClInclude>
-    <ClInclude Include="ue4.h">
+    <ClInclude Include="UE4.h">
       <Filter>UE4</Filter>
     </ClInclude>
-    <ClInclude Include="util.h" />
-    <ClInclude Include="hooks.h">
+    <ClInclude Include="Util.h" />
+    <ClInclude Include="Hooks.h">
       <Filter>UE4</Filter>
     </ClInclude>
-    <ClInclude Include="patterns.h">
+    <ClInclude Include="Patterns.h">
       <Filter>UE4</Filter>
     </ClInclude>
-    <ClInclude Include="replication.h">
+    <ClInclude Include="Replication.h">
       <Filter>UE4</Filter>
     </ClInclude>
-    <ClInclude Include="native.h" />
-    <ClInclude Include="ufunctionhooks.h" />
-    <ClInclude Include="gui.h" />
-    <ClInclude Include="game.h">
+    <ClInclude Include="Native.h" />
+    <ClInclude Include="UFunctionHooks.h" />
+    <ClInclude Include="GUI.h" />
+    <ClInclude Include="Game.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="GameModes\GameModeSolos.hpp">

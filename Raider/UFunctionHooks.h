@@ -3,9 +3,9 @@
 
 #include <functional>
 
-#include "game.h"
-#include "replication.h"
-#include "ue4.h"
+#include "Game.h"
+#include "Replication.h"
+#include "UE4.h"
 
 // #define LOGGING
 //#define CHEATS

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ue4.h"
+#include "UE4.h"
 #include "GameModes/GameModeBase.hpp"
 #include "GameModes/GameModeSolos.hpp"
 

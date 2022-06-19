@@ -1,7 +1,7 @@
 #pragma once
 
-#include "patterns.h"
-#include "util.h"
+#include "Patterns.h"
+#include "Util.h"
 
 inline UFortEngine* GetEngine()
 {
@@ -180,7 +180,7 @@ namespace Native
 
     void InitializeAll()
     {
-        Offsets::Imagebase = (uintptr_t)GetModuleHandleA(nullptr);
+        Imagebase = (uintptr_t)GetModuleHandleA(nullptr);
 
         uintptr_t Address = Utils::FindPattern(Patterns::GObjects, true, 3);
         CheckNullFatal(Address, "Failed to find GObjects");

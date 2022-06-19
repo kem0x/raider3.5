@@ -5,7 +5,7 @@ class GameModeDuos : AbstractGameModeBase
 {
 public:
     GameModeDuos()
-        : AbstractGameModeBase(true, true)
+        : AbstractGameModeBase("FortPlaylistAthena Playlist_DefaultDuos.Playlist_DefaultDuos", true)
     {
         this->teamIdx = 2;
     }

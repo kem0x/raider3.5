@@ -4,7 +4,7 @@
 #include <random>
 
 #include "json.hpp"
-#include "native.h"
+#include "Native.h"
 
 typedef std::array<UFortWeaponRangedItemDefinition*, 6> PlayerLoadout;
 
