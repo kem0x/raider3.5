@@ -40,8 +40,6 @@ inline bool Listen()
     HostBeacon->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
     HostBeacon->NetDriver->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
     HostBeacon->NetDriver->World = GetWorld();
-    /* HostBeacon->NetDriver->ReplicationDriver = static_cast<UReplicationDriver*>(GetGameplayStatics()->STATIC_SpawnObject(UFortReplicationGraph::StaticClass(), HostBeacon->NetDriver));
-    ((UFortReplicationGraph*)HostBeacon->NetDriver->ReplicationDriver)->NetDriver = HostBeacon->NetDriver; */
     FString Error;
     auto InURL = FURL();
     InURL.Port = 7777;
@@ -50,16 +48,13 @@ inline bool Listen()
 
     if (HostBeacon->NetDriver->ReplicationDriver)
     {
-        std::cout << "Created ReplicationDriver!\n";
+        std::cout << "Initialized ReplicationDriver!\n";
         Native::ReplicationDriver::ServerReplicateActors = decltype(Native::ReplicationDriver::ServerReplicateActors)(HostBeacon->NetDriver->ReplicationDriver->Vtable[0x53]);
     }
-    else
-        std::cout << "No ReplicationDriver!\n";
 
     GetWorld()->NetDriver = HostBeacon->NetDriver;
     GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;
     GetWorld()->LevelCollections[1].NetDriver = HostBeacon->NetDriver;
-    //CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");
 
 	bListening = true;
 

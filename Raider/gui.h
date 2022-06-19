@@ -70,12 +70,6 @@ namespace GUI
                     CreateThread(nullptr, 0, SummonFloorLoot, nullptr, 0, nullptr);
                     printf("Spawning Floor Loot!\n");
                 }
-
-                if (ZeroGUI::Button((char*)"Start Replicating", FVector2D { 100, 25 }))
-                {
-                    bReplicate = true;
-                    printf("Replicating!\n");
-                }
             }
             else
             {

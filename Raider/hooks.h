@@ -3,7 +3,7 @@
 #include "gui.h"
 #include "ufunctionhooks.h"
 
-// #define LOGGING
+#define LOGGING
 
 namespace Hooks
 {
@@ -26,11 +26,11 @@ namespace Hooks
         if (!NetDriver)
             return;
 
-        if (bMapFullyLoaded)
+        if (bMapFullyLoaded && bListening)
         {
             if (NetDriver->IsA(UIpNetDriver::StaticClass()) && NetDriver->ClientConnections.Num() > 0 && NetDriver->ClientConnections[0]->InternalAck == false)
             {
-                if (NetDriver->ReplicationDriver && bReplicate)
+                if (NetDriver->ReplicationDriver)
                 {
 					Native::ReplicationDriver::ServerReplicateActors(NetDriver->ReplicationDriver);
                 }
