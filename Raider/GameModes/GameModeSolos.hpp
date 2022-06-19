@@ -35,6 +35,7 @@ public:
 
         // solo code
         Controller->RespawnPlayerAfterDeath();
+
     }
 
 private:

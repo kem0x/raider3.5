@@ -4,7 +4,6 @@
 #include <functional>
 
 #include "game.h"
-#include "graphtest.h"
 #include "replication.h"
 #include "ue4.h"
 
@@ -546,9 +545,8 @@ namespace UFunctionHooks
             if (!bListening)
             {
                 Game::OnReadyToStartMatch();
-                FURL a;
-                Listen(a);
-                /*HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
+
+                HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
                 HostBeacon->ListenPort = 7777;
                 auto bInitBeacon = Native::OnlineBeaconHost::InitHost(HostBeacon);
                 CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");
@@ -565,8 +563,9 @@ namespace UFunctionHooks
 
                 CreateThread(0, 0, MapLoadThread, 0, 0, 0);
                 GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = MAXPLAYERS;
+                
                 bListening = true;
-                std::cout << "\n\nListening on port " << HostBeacon->ListenPort << "\n\n";*/
+                std::cout << "\n\nListening on port " << HostBeacon->ListenPort << "\n\n";
             }
 
             return false;

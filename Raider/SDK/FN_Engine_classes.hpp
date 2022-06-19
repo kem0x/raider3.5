@@ -14,6 +14,7 @@ namespace SDK
 //Classes
 //---------------------------------------------------------------------------
 
+<<<<<<< HEAD
 #define PURE_VIRTUAL(func,...) =0;
 namespace EAcceptConnection
 {
@@ -49,6 +50,8 @@ namespace EAcceptConnection
     }
 };
 
+=======
+>>>>>>> parent of 6f0bc8c (perf(broken): replication graph attempt)
 // Class Engine.Engine
 // 0x0DD8 (0x0E00 - 0x0028)
 class UEngine : public UObject
@@ -2301,7 +2304,7 @@ public:
     
 // Class Engine.World
 // 0x0A98 (0x0AC0 - 0x0028)
-class UWorld : public UObject, public FNetworkNotify
+class UWorld : public UObject
 {
 public:
 	unsigned char                                      UnknownData00[0x8];                                       // 0x0028(0x0008) MISSED OFFSET
