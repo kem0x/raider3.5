@@ -5,7 +5,7 @@ class GameModeSolos : GameModeBase
 {
 public:
     GameModeSolos()
-        : GameModeBase(nullptr, DefaultLoadout, true, true /* respawn enabled*/, true /* spectating enabled */)
+        : GameModeBase(nullptr, DefaultLoadout, true, true /* respawn enabled*/)
     {
         this->teamIdx = 2;
     }

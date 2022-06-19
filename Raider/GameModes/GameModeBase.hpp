@@ -97,4 +97,8 @@ public:
         InitInventory(Controller);
         EquipLoadout(Controller, this->DefaultLoadout);
     }
+
+    virtual void HandlePlayerDeath(AFortPlayerControllerAthena* Controller)
+    {
+    }
 };
