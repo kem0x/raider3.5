@@ -724,6 +724,14 @@ static void InitInventory(AFortPlayerController* PlayerController)
     AddItemWithUpdate(PlayerController, EditTool, 0, EFortQuickBars::Primary, 1);
 
     PlayerController->QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, false);
+    PlayerController->bHasInitializedWorldInventory = true; 
+    std::cout << "WorldInventory: " << PlayerController->WorldInventory << '\n';
+    if (PlayerController->WorldInventory)
+        std::cout << "WorldInventory Name: " << PlayerController->WorldInventory->GetFullName() << '\n';
+    PlayerController->WorldInventory->bReplicates = true;
+    PlayerController->WorldInventory->NetDormancy = ENetDormancy::DORM_Awake;
+	PlayerController->WorldInventory->Owner = PlayerController;
+    PlayerController->WorldInventory->OnRep_Owner();
 }
 
 template <typename Class>

@@ -546,7 +546,8 @@ namespace UFunctionHooks
             if (!bListening)
             {
                 Game::OnReadyToStartMatch();
-                Listen(*new FURL({}));
+                Listen();
+                CreateThread(0, 0, MapLoadThread, 0, 0, 0);
                 /*HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
                 HostBeacon->ListenPort = 7777;
                 auto bInitBeacon = Native::OnlineBeaconHost::InitHost(HostBeacon);
@@ -562,7 +563,6 @@ namespace UFunctionHooks
 
                 // Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
 
-                CreateThread(0, 0, MapLoadThread, 0, 0, 0);
                 GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = MAXPLAYERS;
                 
                 bListening = true;

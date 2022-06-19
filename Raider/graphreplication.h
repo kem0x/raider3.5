@@ -28,55 +28,28 @@ inline void UWorld::NotifyControlMessage(UNetConnection* Connection, uint8 Messa
     Native::World::NotifyControlMessage(GetWorld(), Connection, MessageType, Bunch);
 }*/
 
-inline bool Listen(FURL& InURL)
+inline bool Listen()
 {
     HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
     HostBeacon->ListenPort = 7777;
     auto bInitBeacon = Native::OnlineBeaconHost::InitHost(HostBeacon);
     CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");
 
+    std::cout << "Listening!\n";
+
     HostBeacon->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
     HostBeacon->NetDriver->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
     HostBeacon->NetDriver->World = GetWorld();
+    HostBeacon->NetDriver->ReplicationDriver = static_cast<UReplicationDriver*>(GetGameplayStatics()->STATIC_SpawnObject(UFortReplicationGraph::StaticClass(), HostBeacon->NetDriver));
+    ((UFortReplicationGraph*)HostBeacon->NetDriver->ReplicationDriver)->NetDriver = HostBeacon->NetDriver;
+    Native::ReplicationDriver::ServerReplicateActors = decltype(Native::ReplicationDriver::ServerReplicateActors)(HostBeacon->NetDriver->ReplicationDriver->Vtable[0x53]);
 
     GetWorld()->NetDriver = HostBeacon->NetDriver;
     GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;
     GetWorld()->LevelCollections[1].NetDriver = HostBeacon->NetDriver;
     //CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");
 
-    FString Error;
-    InURL.Port = 7777;
-    
-    Native::NetDriver::InitListen(HostBeacon->NetDriver, GetWorld(), InURL, true, Error);
-    
-    if (HostBeacon->NetDriver->ReplicationDriver)
-    {
-        std::cout << "\n\n\nReplication Driver exists!\n\n\n" << std::endl;
-        std::cout << "\n\n\n\nDriver Name: " << HostBeacon->NetDriver->ReplicationDriver->GetFullName() << "\n\n\n" << std::endl;
-    }
-    
-    /*auto Driver = (UIpNetDriver*)SpawnActorTrans(UIpNetDriver::StaticClass(), {}, nullptr);
-    if (!Driver)
-    {
-        return false;
-    }
-    
-    Driver->World = GetWorld();
-    Driver->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
-
-    GetWorld()->NetDriver = Driver;
-    GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;
-    GetWorld()->LevelCollections[1].NetDriver = HostBeacon->NetDriver;
-
-    FString Error;
-    Native::NetDriver::InitListen(Driver, GetWorld(), InURL, true, Error);*/
-
-    //if (Error.IsValid()) return false;
-    
-    //CreateThread(nullptr, 0, MapLoadThread, nullptr, 0, nullptr);
-    //GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = 100;
-    //bListening = true;
-    //std::cout << "\n\nListening on port " << HostBeacon->ListenPort << "\n\n";
+	bListening = true;
 
     return true;
 }
