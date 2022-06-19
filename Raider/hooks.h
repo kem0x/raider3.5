@@ -30,10 +30,7 @@ namespace Hooks
         {
             if (NetDriver->IsA(UIpNetDriver::StaticClass()) && NetDriver->ClientConnections.Num() > 0 && NetDriver->ClientConnections[0]->InternalAck == false)
             {
-                if (NetDriver->ReplicationDriver && bReplicate)
-                {
-					Native::ReplicationDriver::ServerReplicateActors(NetDriver->ReplicationDriver);
-                }
+                //Replication::ServerReplicateActors(NetDriver);
             }
         }
 

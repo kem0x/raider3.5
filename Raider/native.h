@@ -124,11 +124,6 @@ namespace Native
         inline bool (*InitListen)(UObject* Driver, void* InNotify, FURL& LocalURL, bool bReuseAddressAndPort, FString& Error);
     }
 
-    namespace ReplicationDriver
-    {
-        inline void (*ServerReplicateActors)(UReplicationDriver* ReplicationDriver);
-    }
-
     namespace NetConnection
     {
         inline UChannel* (*CreateChannel)(UNetConnection* NetConnection, int32 ChType, bool bOpenedLocally, int32_t ChIndex);
