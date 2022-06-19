@@ -13,45 +13,6 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Classes
 //---------------------------------------------------------------------------
-
-<<<<<<< HEAD
-#define PURE_VIRTUAL(func,...) =0;
-namespace EAcceptConnection
-{
-    enum Type
-    {
-        /** Reject the connection */
-        Reject,
-        /** Accept the connection */
-        Accept,
-        /** Ignore the connection, sending no reply, while server traveling */
-        Ignore
-};
-
-    /** @return the stringified version of the enum passed in */
-    inline const TCHAR* ToString(EAcceptConnection::Type EnumVal)
-    {
-        switch (EnumVal)
-        {
-        case Reject:
-        {
-            return TEXT("Reject");
-        }
-        case Accept:
-        {
-            return TEXT("Accept");
-        }
-        case Ignore:
-        {
-            return TEXT("Ignore");
-        }
-        }
-        return TEXT("");
-    }
-};
-
-=======
->>>>>>> parent of 6f0bc8c (perf(broken): replication graph attempt)
 // Class Engine.Engine
 // 0x0DD8 (0x0E00 - 0x0028)
 class UEngine : public UObject
