@@ -2285,8 +2285,6 @@ public:
 	class APlayerController* CastToPlayerController();
 };
     
-<<<<<<< Updated upstream
-=======
 class FNetworkNotify
 {
 public:
@@ -2296,7 +2294,6 @@ public:
     virtual void NotifyControlMessage(UNetConnection* Connection, uint8 MessageType, void* Bunch) PURE_VIRTUAL(FNetworkNotify::NotifyReceivedText, );
 };
     
->>>>>>> Stashed changes
 // Class Engine.World
 // 0x0A98 (0x0AC0 - 0x0028)
 class UWorld : public UObject, public FNetworkNotify
@@ -2341,14 +2338,11 @@ public:
 	unsigned char                                      UnknownData06[0x7D];                                      // 0x09E3(0x007D) MISSED OFFSET
 	struct FWorldPSCPool                               PSCPool;                                                  // 0x0A60(0x0058)
 	unsigned char                                      UnknownData07[0x8];                                       // 0x0AB8(0x0008) MISSED OFFSET
-<<<<<<< Updated upstream
-=======
 
     virtual EAcceptConnection::Type NotifyAcceptingConnection() override;
     virtual void NotifyAcceptedConnection( class UNetConnection* Connection ) override;
     virtual bool NotifyAcceptingChannel( class UChannel* Channel ) override;
     virtual void NotifyControlMessage(UNetConnection* Connection, uint8 MessageType, void* Bunch) override;
->>>>>>> Stashed changes
     
 	static UClass* StaticClass()
 	{
