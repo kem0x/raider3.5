@@ -35,10 +35,12 @@ public:
             this->BasePlaylist->RespawnType = EAthenaRespawnType::InfiniteRespawn;
         }
 
-        auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+        auto GameState = static_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+        
         GameState->CurrentPlaylistId = this->BasePlaylist->PlaylistId;
-        GameState->OnRep_CurrentPlaylistId();
         GameState->CurrentPlaylistData = this->BasePlaylist;
+
+        GameState->OnRep_CurrentPlaylistId();
         GameState->OnRep_CurrentPlaylistData();
     }
     
@@ -49,8 +51,6 @@ public:
     
     virtual void HandleJoiningPlayer(AFortPlayerControllerAthena* Controller)
     {
-        //auto Pawn = (APlayerPawn_Athena_C*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), GetPlayerStart(Controller), Controller);
-
         auto Pawn = SpawnActor<APlayerPawn_Athena_C>(GetPlayerStart(Controller).Translation, Controller, {});
         Pawn->Owner = Controller;
         Pawn->OnRep_Owner();
