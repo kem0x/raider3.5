@@ -57,7 +57,7 @@ namespace Hooks
         auto PlayerController = static_cast<AFortPlayerControllerAthena*>(Native::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex));
         NewPlayer->PlayerController = PlayerController;
 
-        Game::Mode->HandleJoiningPlayer(PlayerController);
+        Game::Mode->LoadJoiningPlayer(PlayerController);
 
         PlayerController->OverriddenBackpackSize = 100;
         return PlayerController;

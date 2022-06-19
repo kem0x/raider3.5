@@ -79,6 +79,9 @@
     <ClInclude Include="GameModes\GameModeDuos.hpp">
       <Filter>Game\Modes</Filter>
     </ClInclude>
+    <ClInclude Include="Teams.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

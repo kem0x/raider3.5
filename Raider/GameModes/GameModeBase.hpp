@@ -3,20 +3,19 @@
 #include "../ue4.h"
 #include "../SDK.hpp"
 
-class GameModeBase
+class IGameModeBase
 {
 public:
-    GameModeBase(UFortPlaylistAthena* BasePlaylist = nullptr, std::vector<UFortWeaponRangedItemDefinition*> Loadout = {}, bool bIsSolo = true, bool bRespawnEnabled = false)
+    virtual void OnPlayerJoined(AFortPlayerControllerAthena*& Controller) = 0;
+    virtual void OnPlayerKilled(AFortPlayerControllerAthena*& Controller) = 0;
+};
+
+class AbstractGameModeBase : protected IGameModeBase
+{
+public:
+    AbstractGameModeBase(const std::string BasePlaylist, bool bIsSolo = true, bool bRespawnEnabled = false)
     {
-        if (!BasePlaylist) this->BasePlaylist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");
-        if (Loadout.size() <= 0) this->DefaultLoadout = {
-            FindWID("WID_Harvest_Pickaxe_Athena_C_T01"),
-            FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
-            FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
-            FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03"), // Gold AR
-            FindWID("WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03"), // Blue Bolt Action
-            FindWID("Athena_Shields") // Big Shield Potion
-        };
+        this->BasePlaylist = UObject::FindObject<UFortPlaylistAthena>(BasePlaylist);
         
         this->BasePlaylist->bNoDBNO = !bIsSolo;
         this->bRespawnEnabled = bRespawnEnabled;
@@ -37,12 +36,30 @@ public:
         GameState->OnRep_CurrentPlaylistData();
     }
     
-    ~GameModeBase()
+    ~AbstractGameModeBase()
     {
         GetWorld()->GameState->AuthorityGameMode->ResetLevel();
     }
+
+    void LoadKilledPlayer(AFortPlayerControllerAthena* Controller) 
+    {
+        if (this->bRespawnEnabled)
+        {
+            InitPawn(Controller, { 500, 500, 500 });
+            Controller->ActivateSlot(EFortQuickBars::Primary, 0, 0, true);
+
+            bool bFound = false;
+            auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(Controller, bFound);
+            if (bFound)
+            {
+                EquipInventoryItem(Controller, PickaxeEntry.ItemGuid);
+            }
+        }
+
+        OnPlayerKilled(Controller);
+    }
     
-    virtual void HandleJoiningPlayer(AFortPlayerControllerAthena* Controller)
+    void LoadJoiningPlayer(AFortPlayerControllerAthena* Controller)
     {
         auto Pawn = SpawnActor<APlayerPawn_Athena_C>(GetPlayerStart(Controller).Translation, Controller, {});
         Pawn->Owner = Controller;
@@ -88,31 +105,42 @@ public:
         }
         
         InitInventory(Controller);
-        EquipLoadout(Controller, this->DefaultLoadout);
+        EquipLoadout(Controller, this->GetPlaylistLoadout());
+
+        OnPlayerJoined(Controller);
     }
 
-    virtual void HandlePlayerDeath(AFortPlayerControllerAthena* Controller)
+    void OnPlayerJoined(AFortPlayerControllerAthena*& Controller) override //derived classes should implement these
     {
-        if (this->bRespawnEnabled)
-        {
-            InitPawn(Controller, {500, 500, 500});
-            Controller->ActivateSlot(EFortQuickBars::Primary, 0, 0, true);
-
-            bool bFound = false;
-            auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(Controller, bFound);
-            if (bFound)
-            {
-                EquipInventoryItem(Controller, PickaxeEntry.ItemGuid);
-            }
-        }
     }
+
+    virtual void OnPlayerKilled(AFortPlayerControllerAthena*& Controller) override
+    {
+    }
+
+    virtual PlayerLoadout& GetPlaylistLoadout()
+    {
+        static PlayerLoadout Ret = 
+        {
+            FindWID("WID_Harvest_Pickaxe_Athena_C_T01"),
+            FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
+            FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
+            FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03"), // Gold AR
+            FindWID("WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03"), // Blue Bolt Action
+            FindWID("Athena_Shields") // Big Shield Potion
+        };
+
+        return Ret;
+    }
+
+protected:
+    int teamIdx;
     
 private:
-    bool bRespawnEnabled = false;
-    bool bIsSolo = true;
     int maxHealth = 100;
     int maxShield = 100;
+    bool bRespawnEnabled = false;
+    bool bIsSolo = true;
     
     UFortPlaylistAthena* BasePlaylist;
-    std::vector<UFortWeaponRangedItemDefinition*> DefaultLoadout;
 };

@@ -6,6 +6,8 @@
 #include "json.hpp"
 #include "native.h"
 
+typedef std::array<UFortWeaponRangedItemDefinition*, 6> PlayerLoadout;
+
 constexpr auto PI = 3.1415926535897932f;
 constexpr auto INV_PI = 0.31830988618f;
 constexpr auto HALF_PI = 1.57079632679f;
@@ -1085,7 +1087,7 @@ inline UFortWeaponRangedItemDefinition* FindWID(const std::string& WID)
     return Def;
 }
 
-void EquipLoadout(AFortPlayerControllerAthena* Controller, std::vector<UFortWeaponRangedItemDefinition*> WIDS)
+void EquipLoadout(AFortPlayerControllerAthena* Controller, PlayerLoadout WIDS)
 {
     FFortItemEntry pickaxeEntry;
 
