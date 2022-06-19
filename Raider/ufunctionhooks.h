@@ -254,8 +254,11 @@ namespace UFunctionHooks
             if (DeadPC && Params)
             {
                 auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
-                GameState->PlayersLeft--;
-                GameState->OnRep_PlayersLeft();
+                if(bStartedBus) // If someone dies before bus is started they will respawn when you start the bus
+                {               // Another fix would be to give the infinite health people had on spawn island but idk how to give that
+                    GameState->PlayersLeft--;
+                    GameState->OnRep_PlayersLeft();
+                }
                 // GameState->PlayerArray.RemoveAt(DeadPC->NetPlayerIndex);
 
                 if (DeadPC && DeadPC->Pawn)
