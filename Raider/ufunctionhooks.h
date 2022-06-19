@@ -278,14 +278,11 @@ namespace UFunctionHooks
                     if (KillerPawn && KillerPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
                     {
 						// this math is so wrong it was late ok
-
                         float AmountToAddToHealth = 50;
 						
                         auto& HealthSet = KillerPawn->HealthSet;
-
 						if (KillerPawn->GetHealth() > 50)
                             AmountToAddToHealth = KillerPawn->GetHealth() - 50;
-
                         float AmountToAddToShield = (KillerPawn->GetHealth() + 50) - 100;
 						
                         if (AmountToAddToShield > 0)

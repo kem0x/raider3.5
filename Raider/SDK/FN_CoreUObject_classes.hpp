@@ -39,46 +39,46 @@ public:
 	template<typename T>
 	static T* FindObject(const std::string& name, int toSkip = 0)
 	{
-		for (int i = 0; i < GetGlobalObjects()->Num(); ++i)
-		{
-			auto object = GetGlobalObjects()->GetByIndex(i);
+	    for (int i = 0; i < GetGlobalObjects()->Num(); ++i)
+	    {
+	        auto object = GetGlobalObjects()->GetByIndex(i);
 	
-			if (!object)
-			{
-				continue;
-			}
+	        if (!object)
+	        {
+	            continue;
+	        }
 	
-			if (object->GetFullName().find(name) != std::string::npos)
-			{
-                if (toSkip > 0)
-				{
-					toSkip--;
-					continue;
-				}
+	        if (object->GetFullName().find(name) != std::string::npos)
+	        {
+	            if (toSkip > 0)
+	            {
+	                toSkip--;
+	                continue;
+	            }
 				
-				return static_cast<T*>(object);
-			}
-		}
-		return nullptr;
+	            return static_cast<T*>(object);
+	        }
+	    }
+	    return nullptr;
 	}
 
 	static UClass* FindClass(const std::string& name)
 	{
-		for (int i = 0; i < GetGlobalObjects()->Num(); ++i)
-		{
-			auto object = GetGlobalObjects()->GetByIndex(i);
+	    for (int i = 0; i < GetGlobalObjects()->Num(); ++i)
+	    {
+	        auto object = GetGlobalObjects()->GetByIndex(i);
 
-			if (object == nullptr)
-			{
-				continue;
-			}
+	        if (object == nullptr)
+	        {
+	            continue;
+	        }
 
-			if (object->GetFullName() == name)
-			{
-				return (UClass*)(object);
-			}
-		}
-		return nullptr;
+	        if (object->GetFullName() == name)
+	        {
+	            return (UClass*)(object);
+	        }
+	    }
+	    return nullptr;
 	}
 
 	template<typename T>

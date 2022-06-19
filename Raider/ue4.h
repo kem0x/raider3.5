@@ -31,10 +31,10 @@ inline AAthena_PlayerController_C* GetPlayerController(int32 Index = 0)
     {
         std::cout << "WARNING! PlayerController out of range! (" << Index << " out of " << GetWorld()->OwningGameInstance->LocalPlayers.Num() << ")" << '\n';
 
-        return (AAthena_PlayerController_C*)GetWorld()->OwningGameInstance->LocalPlayers[0]->PlayerController;
+        return static_cast<AAthena_PlayerController_C*>(GetWorld()->OwningGameInstance->LocalPlayers[0]->PlayerController);
     }
 
-    return (AAthena_PlayerController_C*)GetWorld()->OwningGameInstance->LocalPlayers[Index]->PlayerController;
+    return static_cast<AAthena_PlayerController_C*>(GetWorld()->OwningGameInstance->LocalPlayers[Index]->PlayerController);
 }
 
 struct FNetworkObjectInfo
@@ -112,11 +112,11 @@ static FORCEINLINE void sinCos(float* ScalarSin, float* ScalarCos, float Value)
     float quotient = (INV_PI * 0.5f) * Value;
     if (Value >= 0.0f)
     {
-        quotient = (float)((int)(quotient + 0.5f));
+        quotient = static_cast<float>(static_cast<int>(quotient + 0.5f));
     }
     else
     {
-        quotient = (float)((int)(quotient - 0.5f));
+        quotient = static_cast<float>(static_cast<int>(quotient - 0.5f));
     }
     float y = Value - (2.0f * PI) * quotient;
 
@@ -213,7 +213,7 @@ inline AActor* SpawnActor(UClass* ActorClass, FVector Location = { 0.0f, 0.0f, 0
 }
 
 template <typename RetActorType = AActor>
-inline RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor* Owner = nullptr, FQuat Rotation = { 0, 0, 0 }, ESpawnActorCollisionHandlingMethod Flags = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn)
+RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor* Owner = nullptr, FQuat Rotation = { 0, 0, 0 }, ESpawnActorCollisionHandlingMethod Flags = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn)
 {
     FTransform SpawnTransform;
 
@@ -221,7 +221,7 @@ inline RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor*
     SpawnTransform.Scale3D = FVector{ 1, 1, 1 };
     SpawnTransform.Rotation = Rotation;
 
-    return (RetActorType*)SpawnActorTrans(RetActorType::StaticClass(), SpawnTransform, Owner, Flags);
+    return static_cast<RetActorType*>(SpawnActorTrans(RetActorType::StaticClass(), SpawnTransform, Owner, Flags));
 }
 
 inline ABuildingSMActor* SpawnBuilding(UClass* BGAClass, FVector& Location, FRotator& Rotation, APlayerPawn_Athena_C* Pawn)
@@ -236,17 +236,17 @@ inline ABuildingSMActor* SpawnBuilding(UClass* BGAClass, FVector& Location, FRot
 
 inline void CreateConsole()
 {
-    GetEngine()->GameViewport->ViewportConsole = (UConsole*)GetGameplayStatics()->STATIC_SpawnObject(UConsole::StaticClass(), GetEngine()->GameViewport);
+    GetEngine()->GameViewport->ViewportConsole = static_cast<UConsole*>(GetGameplayStatics()->STATIC_SpawnObject(UConsole::StaticClass(), GetEngine()->GameViewport));
 }
 
 inline auto CreateCheatManager(APlayerController* Controller)
 {
     if (!Controller->CheatManager)
     {
-        Controller->CheatManager = (UCheatManager*)GetGameplayStatics()->STATIC_SpawnObject(UFortCheatManager::StaticClass(), Controller); // lets just assume its gamemode athena
+        Controller->CheatManager = static_cast<UCheatManager*>(GetGameplayStatics()->STATIC_SpawnObject(UFortCheatManager::StaticClass(), Controller)); // lets just assume its gamemode athena
     }
 
-    return (UFortCheatManager*)Controller->CheatManager;
+    return static_cast<UFortCheatManager*>(Controller->CheatManager);
 }
 
 DWORD WINAPI MapLoadThread(LPVOID) // thnak you mr rythm for giving me this
@@ -368,12 +368,12 @@ void Spectate(UNetConnection* SpectatingConnection, AFortPlayerStateAthena* Stat
         return;
 
     auto PawnToSpectate = StateToSpectate->GetCurrentPawn();
-    auto DeadPC = (AFortPlayerControllerAthena*)SpectatingConnection->PlayerController;
+    auto DeadPC = static_cast<AFortPlayerControllerAthena*>(SpectatingConnection->PlayerController);
 
     if (!DeadPC)
         return;
 
-    auto DeadPlayerState = (AFortPlayerStateAthena*)DeadPC->PlayerState;
+    auto DeadPlayerState = static_cast<AFortPlayerStateAthena*>(DeadPC->PlayerState);
 
     if (!IsCurrentlyDisconnecting(SpectatingConnection) && DeadPlayerState && PawnToSpectate)
     {
@@ -455,7 +455,7 @@ inline auto AddItem(AFortPlayerController* PC, UFortItemDefinition* Def, int Slo
 
     auto& QuickBarSlots = PC->QuickBars->PrimaryQuickBar.Slots;
 
-    auto TempItemInstance = (UFortWorldItem*)Def->CreateTemporaryItemInstanceBP(Count, 1);
+    auto TempItemInstance = static_cast<UFortWorldItem*>(Def->CreateTemporaryItemInstanceBP(Count, 1));
 
     if (TempItemInstance)
     {
@@ -468,7 +468,7 @@ inline auto AddItem(AFortPlayerController* PC, UFortItemDefinition* Def, int Slo
 
         auto Idx = PC->WorldInventory->Inventory.ReplicatedEntries.Add(ItemEntry);
 
-        GetItemInstances(PC).Add((UFortWorldItem*)TempItemInstance);
+        GetItemInstances(PC).Add(TempItemInstance);
         PC->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
 
         if (Idx && PC->WorldInventory->Inventory.ReplicatedEntries.Num() >= Idx)
@@ -491,7 +491,7 @@ inline auto AddItemWithUpdate(AFortPlayerController* PC, UFortItemDefinition* De
 
 inline UFortWorldItem* GetInstanceFromGuid(AController* PC, const FGuid& ToFindGuid)
 {
-    auto& ItemInstances = GetItemInstances((AFortPlayerController*)PC);
+    auto& ItemInstances = GetItemInstances(static_cast<AFortPlayerController*>(PC));
     for (int j = 0; j < ItemInstances.Num(); j++)
     {
         auto ItemInstance = ItemInstances[j];
@@ -544,10 +544,10 @@ inline bool IsGuidInInventory(AFortPlayerControllerAthena* Controller, const FGu
 inline AFortWeapon* EquipWeaponDefinition(APawn* dPawn, UFortWeaponItemDefinition* Definition, const FGuid& Guid, int Ammo = -1, bool bEquipWithMaxAmmo = false) // don't use, use EquipInventoryItem // not too secure
 {
     auto weaponClass = Definition->GetWeaponActorClass();
-    auto Pawn = (APlayerPawn_Athena_C*)dPawn;
+    auto Pawn = static_cast<APlayerPawn_Athena_C*>(dPawn);
     if (Pawn && Definition && weaponClass)
     {
-        auto Controller = (AFortPlayerControllerAthena*)Pawn->Controller;
+        auto Controller = static_cast<AFortPlayerControllerAthena*>(Pawn->Controller);
         auto Instance = GetInstanceFromGuid(Controller, Guid);
 
         if (!IsGuidInInventory(Controller, Guid))
@@ -559,14 +559,14 @@ inline AFortWeapon* EquipWeaponDefinition(APawn* dPawn, UFortWeaponItemDefinitio
 
         if (weaponClass->GetFullName() == "BlueprintGeneratedClass TrapTool.TrapTool_C") // (weaponClass->IsA(AFortTrapTool::StaticClass()))
         {
-            Weapon = (AFortWeapon*)SpawnActorTrans(weaponClass, {}, Pawn); // Other people can't see their weapon.
+            Weapon = static_cast<AFortWeapon*>(SpawnActorTrans(weaponClass, {}, Pawn)); // Other people can't see their weapon.
 
             if (Weapon)
             {
                 Weapon->bReplicates = true;
                 Weapon->bOnlyRelevantToOwner = false;
 
-                ((AFortTrapTool*)Weapon)->ItemDefinition = Definition;
+                static_cast<AFortTrapTool*>(Weapon)->ItemDefinition = Definition;
             }
         }
 
@@ -613,11 +613,11 @@ inline void EquipInventoryItem(AFortPlayerControllerAthena* PC, FGuid& Guid)
         if (!CurrentItemInstance)
             continue;
 
-        auto Def = (UFortWeaponItemDefinition*)CurrentItemInstance->GetItemDefinitionBP();
+        auto Def = static_cast<UFortWeaponItemDefinition*>(CurrentItemInstance->GetItemDefinitionBP());
 
         if (CurrentItemInstance->GetItemGuid() == Guid && Def)
         {
-            EquipWeaponDefinition((APlayerPawn_Athena_C*)PC->Pawn, Def, Guid); // CurrentItemInstance->ItemEntry.LoadedAmmo);
+            EquipWeaponDefinition(PC->Pawn, Def, Guid); // CurrentItemInstance->ItemEntry.LoadedAmmo);
             break;
         }
     }
@@ -674,7 +674,7 @@ static void SummonPickupFromChest(auto ItemDef, int Count, FVector Location)
     FortPickup->OnRep_TossedFromContainer();
 }
 
-inline void SpawnPickupFromFloorLoot(auto ItemDef, int Count, FVector Location)
+void SpawnPickupFromFloorLoot(auto ItemDef, int Count, FVector Location)
 {
     auto FortPickup = SpawnActor<AFortPickup>(Location);
 
@@ -689,37 +689,41 @@ inline void SpawnPickupFromFloorLoot(auto ItemDef, int Count, FVector Location)
 static void InitInventory(AFortPlayerController* PlayerController)
 {
     PlayerController->QuickBars = SpawnActor<AFortQuickBars>({ -280, 400, 3000 }, PlayerController);
-    auto QuickBars = PlayerController->QuickBars;
     PlayerController->OnRep_QuickBar();
 
-    static auto Wall = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall");
-    static auto Stair = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W");
-    static auto Cone = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_RoofS.BuildingItemData_RoofS");
-    static auto Floor = UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Floor.BuildingItemData_Floor");
-    static auto Wood = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition WoodItemData.WoodItemData");
-    static auto Stone = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition StoneItemData.StoneItemData");
-    static auto Metal = UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition MetalItemData.MetalItemData");
-    static auto Shells = UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataShells.AthenaAmmoDataShells");
-    static auto Medium = UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsMedium.AthenaAmmoDataBulletsMedium");
-    static auto Light = UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsLight.AthenaAmmoDataBulletsLight");
-    static auto Heavy = UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsHeavy.AthenaAmmoDataBulletsHeavy");
-    static auto EditTool = UObject::FindObject<UFortAmmoItemDefinition>("FortEditToolItemDefinition EditTool.EditTool");
+    static std::vector<UFortWorldItemDefinition*> Items = {
+        UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall"),
+        UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W"),
+        UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_RoofS.BuildingItemData_RoofS"),
+        UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Floor.BuildingItemData_Floor"),
+        
+        UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition WoodItemData.WoodItemData"),
+        UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition StoneItemData.StoneItemData"),
+        UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition MetalItemData.MetalItemData"),
+        
+        UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataShells.AthenaAmmoDataShells"),
+        UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsMedium.AthenaAmmoDataBulletsMedium"),
+        UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsLight.AthenaAmmoDataBulletsLight"),
+        UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsHeavy.AthenaAmmoDataBulletsHeavy"),
+    };
 
-    AddItem(PlayerController, Wall, 0, EFortQuickBars::Secondary, 1);
-    AddItem(PlayerController, Floor, 1, EFortQuickBars::Secondary, 1);
-    AddItem(PlayerController, Stair, 2, EFortQuickBars::Secondary, 1);
-    AddItem(PlayerController, Cone, 3, EFortQuickBars::Secondary, 1);
-    AddItem(PlayerController, Wood, 0, EFortQuickBars::Secondary, 999);
-    AddItem(PlayerController, Stone, 0, EFortQuickBars::Secondary, 999);
-    AddItem(PlayerController, Metal, 0, EFortQuickBars::Secondary, 999);
-    AddItem(PlayerController, Shells, 0, EFortQuickBars::Secondary, 999);
-    AddItem(PlayerController, Medium, 0, EFortQuickBars::Secondary, 999);
-    AddItem(PlayerController, Light, 0, EFortQuickBars::Secondary, 999);
-    AddItem(PlayerController, Heavy, 0, EFortQuickBars::Secondary, 999);
+    int Slot = 0;
+    for (auto& Item : Items)
+    {
+        if (Item->IsA(UFortAmmoItemDefinition::StaticClass()) || Item->IsA(UFortResourceItemDefinition::StaticClass()))
+        {
+            AddItem(PlayerController, Item, 0, EFortQuickBars::Secondary, 999);
+            continue;
+        }
 
+        AddItem(PlayerController, Item, Slot, EFortQuickBars::Secondary, 1);
+        Slot++;
+    }
+
+    static UFortAmmoItemDefinition* EditTool = UObject::FindObject<UFortAmmoItemDefinition>("FortEditToolItemDefinition EditTool.EditTool");
     AddItemWithUpdate(PlayerController, EditTool, 0, EFortQuickBars::Primary, 1);
 
-    QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, true);
+    PlayerController->QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, false);
 }
 
 template <typename Class>
@@ -815,13 +819,12 @@ static auto GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
     {
         FGameplayAbilitySpecHandle Handle{ rand() };
 
-        FGameplayAbilitySpec Spec{ -1, -1, -1, Handle, (UGameplayAbility*)GameplayAbilityClass->CreateDefaultObject(), 1, -1, nullptr, 0, false, false, false };
+        FGameplayAbilitySpec Spec{ -1, -1, -1, Handle, static_cast<UGameplayAbility*>(GameplayAbilityClass->CreateDefaultObject()), 1, -1, nullptr, 0, false, false, false };
 
         return Spec;
     };
 
     auto Spec = GenerateNewSpec();
-
     for (int i = 0; i < AbilitySystemComponent->ActivatableAbilities.Items.Num(); i++)
     {
         auto& CurrentSpec = AbilitySystemComponent->ActivatableAbilities.Items[i];
@@ -829,8 +832,6 @@ static auto GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
         if (CurrentSpec.Ability == Spec.Ability)
             return;
     }
-
-    auto Handle = Native::AbilitySystemComponent::GiveAbility(AbilitySystemComponent, &Spec.Handle, Spec);
 }
 
 static bool KickController(APlayerController* PC, FString Message)
@@ -872,7 +873,7 @@ auto GetAllActorsOfClass(UClass* Class)
 {
     TArray<AActor*> OutActors;
 
-    static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
+    static auto GameplayStatics = static_cast<UGameplayStatics*>(UGameplayStatics::StaticClass()->CreateDefaultObject());
     GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), Class, &OutActors);
 
     return OutActors;
@@ -889,7 +890,7 @@ FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
     SpawnTransform.Rotation = FQuat();
     SpawnTransform.Translation = FVector{ 1250, 1818, 3284 }; // Next to salty
 
-    auto GamePhase = ((AAthena_GameState_C*)GetWorld()->GameState)->GamePhase;
+    auto GamePhase = static_cast<AAthena_GameState_C*>(GetWorld()->GameState)->GamePhase;
 
     if (ActorsNum != 0
         && (GamePhase == EAthenaGamePhase::Setup || GamePhase == EAthenaGamePhase::Warmup))
@@ -906,7 +907,7 @@ FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
         auto Location = ActorToUse->K2_GetActorLocation();
         SpawnTransform.Translation = ActorToUse->K2_GetActorLocation();
 
-        PC->WarmupPlayerStart = (AFortPlayerStartWarmup*)ActorToUse;
+        PC->WarmupPlayerStart = static_cast<AFortPlayerStartWarmup*>(ActorToUse);
     }
 
     return SpawnTransform;
@@ -929,9 +930,9 @@ FVector RotToVec(const FRotator& Rotator)
     return V;
 }
 
-inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already has the ability.
+inline auto ApplyAbilities(APawn* _Pawn, bool bFromDBNO = false) // TODO: Check if the player already has the ability.
 {
-    auto Pawn = (APlayerPawn_Athena_C*)_Pawn;
+    auto Pawn = static_cast<APlayerPawn_Athena_C*>(_Pawn);
 
     /*
     
@@ -977,7 +978,7 @@ inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already ha
     static auto EmoteAbility = UObject::FindClass("BlueprintGeneratedClass GAB_Emote_Generic.GAB_Emote_Generic_C");
     static auto TrapAbility = UObject::FindClass("BlueprintGeneratedClass GA_TrapBuildGeneric.GA_TrapBuildGeneric_C");
     static auto DanceGrenadeAbility = UObject::FindClass("BlueprintGeneratedClass GA_DanceGrenade_Stun.GA_DanceGrenade_Stun_C");
-    
+
     static auto DBNOPlayerAbility = UObject::FindClass("BlueprintGeneratedClass GAB_PlayerDBNO.GAB_PlayerDBNO_C");
     static auto DBNOAthenaAbility = UObject::FindClass("BlueprintGeneratedClass GAB_AthenaDBNO.GAB_AthenaDBNO_C");
     static auto AthenaDBNORevive = UObject::FindClass("BlueprintGeneratedClass GAB_AthenaDBNORevive.GAB_AthenaDBNORevive_C");
@@ -993,12 +994,14 @@ inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already ha
     GrantGameplayAbility(Pawn, EmoteAbility);
     GrantGameplayAbility(Pawn, TrapAbility);
     GrantGameplayAbility(Pawn, DanceGrenadeAbility);
-    
-    GrantGameplayAbility(Pawn, DBNOPlayerAbility);
-    GrantGameplayAbility(Pawn, DBNOAthenaAbility);
-    GrantGameplayAbility(Pawn, AthenaDBNORevive);
-    GrantGameplayAbility(Pawn, PlayerDBNOResurrect);
 
+    if (!bFromDBNO)
+    {
+        GrantGameplayAbility(Pawn, DBNOPlayerAbility);
+        GrantGameplayAbility(Pawn, DBNOAthenaAbility);
+        GrantGameplayAbility(Pawn, AthenaDBNORevive);
+        GrantGameplayAbility(Pawn, PlayerDBNOResurrect);
+    }
 }
 
 static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector{ 1250, 1818, 3284 }, FQuat Rotation = FQuat(), bool bResetCharacterParts = true)
@@ -1013,7 +1016,7 @@ static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc 
 
     // SpawnTransform = GetPlayerStart(PlayerController);
 
-    auto Pawn = (APlayerPawn_Athena_C*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), SpawnTransform, PlayerController);
+    auto Pawn = static_cast<APlayerPawn_Athena_C*>(SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), SpawnTransform, PlayerController));
 
     PlayerController->Pawn = Pawn;
     PlayerController->AcknowledgedPawn = Pawn;
@@ -1028,11 +1031,11 @@ static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc 
     Pawn->bReplicateMovement = true;
     Pawn->OnRep_ReplicateMovement();
 
-    static auto FortRegisteredPlayerInfo = ((UFortGameInstance*)GetWorld()->OwningGameInstance)->RegisteredPlayers[0]; // UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
+    static auto FortRegisteredPlayerInfo = static_cast<UFortGameInstance*>(GetWorld()->OwningGameInstance)->RegisteredPlayers[0]; // UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
 
     if (bResetCharacterParts && FortRegisteredPlayerInfo)
     {
-        auto PlayerState = (AFortPlayerStateAthena*)PlayerController->PlayerState;
+        auto PlayerState = static_cast<AFortPlayerStateAthena*>(PlayerController->PlayerState);
         static auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
 
         PlayerState->HeroType = Hero->GetHeroTypeBP();
@@ -1041,8 +1044,8 @@ static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc 
         static auto Head = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
         static auto Body = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
 
-        PlayerState->CharacterParts[(uint8_t)EFortCustomPartType::Head] = Head;
-        PlayerState->CharacterParts[(uint8_t)EFortCustomPartType::Body] = Body;
+        PlayerState->CharacterParts[static_cast<uint8_t>(EFortCustomPartType::Head)] = Head;
+        PlayerState->CharacterParts[static_cast<uint8_t>(EFortCustomPartType::Body)] = Body;
     }
 
     UpdateInventory(PlayerController);
@@ -1137,22 +1140,6 @@ DWORD WINAPI SummonFloorLoot(LPVOID)
         static auto Scar = FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03");
         auto FloorLootActors = GetAllActorsOfClass(FloorLootClass);
 
-        /*
-
-    static std::vector<UFortWeaponRangedItemDefinition*> Weapons = {
-        GetRandomWID(7),
-        GetRandomWID(11),
-        GetRandomWID(15),
-        GetRandomWID(19),
-    };
-
-    for (int i = 0; i < 100; i++)
-    {
-        // Weapons.push_back(GetRandomWID());
-    }
-
-    */
-
         // it also crashes sometimes if you spawn alot on like constructionscript
         auto AmountOfActorsToSpawn = 20; // FloorLootActors.Num(); // For now, without relevancy we just spawn some.
         int AmountSpawned = 0;
@@ -1170,7 +1157,7 @@ DWORD WINAPI SummonFloorLoot(LPVOID)
             SummonPickupFromChest(weaponToSpawn, 1, Location);
             AmountSpawned++;
 
-            if (false) // (auto Ammo = weaponToSpawn->GetAmmoWorldItemDefinition_BP())
+            if constexpr (false) // (auto Ammo = weaponToSpawn->GetAmmoWorldItemDefinition_BP())
                 SpawnPickupFromFloorLoot(nullptr, 10, Location); // Crashes sometimes idk why
         }
 
@@ -1253,7 +1240,7 @@ namespace Inventory // includes quickbars
 
         auto& QuickBarSlots = Controller->QuickBars->PrimaryQuickBar.Slots;
 
-        auto TempItemInstance = (UFortWorldItem*)Definition->CreateTemporaryItemInstanceBP(Count, 1);
+        auto TempItemInstance = static_cast<UFortWorldItem*>(Definition->CreateTemporaryItemInstanceBP(Count, 1));
 
         if (TempItemInstance)
         {
@@ -1269,10 +1256,10 @@ namespace Inventory // includes quickbars
             if (Idx)
                 *Idx = _Idx;
 
-            Controller->WorldInventory->Inventory.ItemInstances.Add((UFortWorldItem*)TempItemInstance);
+            Controller->WorldInventory->Inventory.ItemInstances.Add(TempItemInstance);
             Controller->QuickBars->ServerAddItemInternal(ItemEntry.ItemGuid, Bars, Slot);
 
-            Inventory::Update(Controller, _Idx);
+            Update(Controller, _Idx);
 
             return ItemEntry;
         }
@@ -1357,14 +1344,14 @@ namespace Inventory // includes quickbars
             // bPrimaryQuickBar ? PrimarySlots[Slot].Items.FreeArray() : SecondarySlots[Slot].Items.FreeArray();
         }
 
-        Inventory::Update(Controller, 0, true);
+        Update(Controller, 0, true);
 
         return bWasSuccessful;
     }
 
     inline bool OnDrop(AFortPlayerControllerAthena* Controller, void* params)
     {
-        auto Params = (AFortPlayerController_ServerAttemptInventoryDrop_Params*)params;
+        auto Params = static_cast<AFortPlayerController_ServerAttemptInventoryDrop_Params*>(params);
 
         if (!Params || !Controller)
             return false;
@@ -1390,17 +1377,16 @@ namespace Inventory // includes quickbars
                         if (Instance)
                         {
                             auto Definition = Instance->ItemEntry.ItemDefinition;
-                            auto SuccessfullyRemoved = Inventory::RemoveItemFromSlot(Controller, i, EFortQuickBars::Primary, j + 1);
+                            auto SuccessfullyRemoved = RemoveItemFromSlot(Controller, i, EFortQuickBars::Primary, j + 1);
 
                             if (Definition && SuccessfullyRemoved)
                             {
-                                auto Pickup = SummonPickup((AFortPlayerPawn*)Controller->Pawn, Definition, 1, Controller->Pawn->K2_GetActorLocation());
+                                auto Pickup = SummonPickup(static_cast<AFortPlayerPawn*>(Controller->Pawn), Definition, 1, Controller->Pawn->K2_GetActorLocation());
                                 Pickup->PrimaryPickupItemEntry.LoadedAmmo = Instance->GetLoadedAmmo();
                                 bWasSuccessful = true;
                                 break;
                             }
-                            else
-                                std::cout << "Could not find Definition!\n";
+                            std::cout << "Could not find Definition!\n";
                         }
                     }
                 }
@@ -1417,17 +1403,16 @@ namespace Inventory // includes quickbars
                     {
                         if (SecondaryQuickBarSlots[i].Items[j] == Params->ItemGuid)
                         {
-                            auto Definition = Inventory::GetDefinitionInSlot(Controller, i, j, EFortQuickBars::Secondary);
-                            auto bSucceeded = Inventory::RemoveItemFromSlot(Controller, i, EFortQuickBars::Secondary, j + 1);
+                            auto Definition = GetDefinitionInSlot(Controller, i, j, EFortQuickBars::Secondary);
+                            auto bSucceeded = RemoveItemFromSlot(Controller, i, EFortQuickBars::Secondary, j + 1);
 
                             if (Definition && bSucceeded)
                             {
-                                SummonPickup((AFortPlayerPawn*)Controller->Pawn, Definition, 1, Controller->Pawn->K2_GetActorLocation());
+                                SummonPickup(static_cast<AFortPlayerPawn*>(Controller->Pawn), Definition, 1, Controller->Pawn->K2_GetActorLocation());
                                 bWasSuccessful = true;
                                 break;
                             }
-                            else
-                                std::cout << "Could not find Definition!\n";
+                            std::cout << "Could not find Definition!\n";
                         }
                     }
                 }
@@ -1460,7 +1445,7 @@ namespace Inventory // includes quickbars
 
     inline void OnPickup(AFortPlayerControllerAthena* Controller, void* params)
     {
-        auto Params = (AFortPlayerPawn_ServerHandlePickup_Params*)params;
+        auto Params = static_cast<AFortPlayerPawn_ServerHandlePickup_Params*>(params);
 
         if (!Controller || !Params)
             return;
@@ -1474,7 +1459,7 @@ namespace Inventory // includes quickbars
             if (Params->Pickup->PrimaryPickupItemEntry.ItemDefinition->IsA(UFortWeaponItemDefinition::StaticClass()) && !Params->Pickup->PrimaryPickupItemEntry.ItemDefinition->IsA(UFortDecoItemDefinition::StaticClass()))
                 bCanGoInSecondary = false;
 
-            auto WorldItemDefinition = (UFortWorldItemDefinition*)Params->Pickup->PrimaryPickupItemEntry.ItemDefinition;
+            auto WorldItemDefinition = static_cast<UFortWorldItemDefinition*>(Params->Pickup->PrimaryPickupItemEntry.ItemDefinition);
 
             if (!bCanGoInSecondary)
             {
@@ -1513,16 +1498,16 @@ namespace Inventory // includes quickbars
                                 if (FocusedGuid == Guid)
                                 {
                                     // if (Params->Pickup->MultiItemPickupEntries)
-                                    SummonPickup((APlayerPawn_Athena_C*)Controller->Pawn, Def, 1 /* ItemInstance->ItemEntry.Count */, Controller->Pawn->K2_GetActorLocation());
+                                    SummonPickup(static_cast<APlayerPawn_Athena_C*>(Controller->Pawn), Def, 1 /* ItemInstance->ItemEntry.Count */, Controller->Pawn->K2_GetActorLocation());
                                     break;
                                 }
                             }
 
-                            Inventory::RemoveItemFromSlot(Controller, FocusedSlot, EFortQuickBars::Primary);
+                            RemoveItemFromSlot(Controller, FocusedSlot, EFortQuickBars::Primary);
                         }
 
                         int Idx = 0;
-                        auto entry = Inventory::AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Primary, Params->Pickup->PrimaryPickupItemEntry.Count, &Idx);
+                        auto entry = AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Primary, Params->Pickup->PrimaryPickupItemEntry.Count, &Idx);
                         // auto& Entry = Controller->WorldInventory->Inventory.ReplicatedEntries[Idx];
                         auto Instance = GetInstanceFromGuid(Controller, entry.ItemGuid);
                         Params->Pickup->K2_DestroyActor();
@@ -1532,7 +1517,7 @@ namespace Inventory // includes quickbars
 
                         Instance->ItemEntry.LoadedAmmo = Params->Pickup->PrimaryPickupItemEntry.LoadedAmmo;
 
-                        Inventory::Update(Controller);
+                        Update(Controller);
 
                         break;
                     }
@@ -1547,7 +1532,7 @@ namespace Inventory // includes quickbars
                 {
                     if (!SecondaryQuickBarSlots[i].Items.Data) // Checks if the slot is empty
                     {
-                        auto entry = Inventory::AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Secondary, Params->Pickup->PrimaryPickupItemEntry.Count);
+                        auto entry = AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Secondary, Params->Pickup->PrimaryPickupItemEntry.Count);
                         Params->Pickup->K2_DestroyActor();
 
                         break;
@@ -1562,13 +1547,13 @@ void EquipTrapTool(AController* Controller)
 {
     static auto TrapDef = UObject::FindObject<UFortTrapItemDefinition>("FortTrapItemDefinition TID_Floor_Player_Launch_Pad_Athena.TID_Floor_Player_Launch_Pad_Athena");
 
-    auto TrapTool = (AFortTrapTool*)SpawnActorTrans(TrapDef->GetWeaponActorClass(), {}, Controller);
+    auto TrapTool = static_cast<AFortTrapTool*>(SpawnActorTrans(TrapDef->GetWeaponActorClass(), {}, Controller));
 
     if (TrapTool && TrapDef)
     {
         TrapTool->ItemDefinition = TrapDef;
 
-        auto Pawn = (APlayerPawn_Athena_C*)Controller->Pawn;
+        auto Pawn = static_cast<APlayerPawn_Athena_C*>(Controller->Pawn);
         if (Pawn) // && weaponClass)
         {
             if (TrapTool)
@@ -1589,26 +1574,26 @@ void SpawnDeco(AFortDecoTool* Tool, void* _Params)
     if (!_Params)
         return;
 
-    auto Params = (AFortDecoTool_ServerSpawnDeco_Params*)_Params;
+    auto Params = static_cast<AFortDecoTool_ServerSpawnDeco_Params*>(_Params);
 
     FTransform Transform{};
     Transform.Scale3D = FVector(1, 1, 1);
     Transform.Rotation = RotToQuat(Params->Rotation);
     Transform.Translation = Params->Location;
 
-    auto TrapDef = (UFortTrapItemDefinition*)Tool->ItemDefinition;
+    auto TrapDef = static_cast<UFortTrapItemDefinition*>(Tool->ItemDefinition);
 
     if (TrapDef)
     {
-        auto Trap = (ABuildingTrap*)SpawnActorTrans(TrapDef->GetBlueprintClass(), Transform);
+        auto Trap = static_cast<ABuildingTrap*>(SpawnActorTrans(TrapDef->GetBlueprintClass(), Transform));
 
         if (Trap)
         {
             Trap->TrapData = TrapDef;
 
-            auto Pawn = (APlayerPawn_Athena_C*)Tool->Owner;
+            auto Pawn = static_cast<APlayerPawn_Athena_C*>(Tool->Owner);
 
-            Trap->InitializeKismetSpawnedBuildingActor(Trap, (AFortPlayerController*)Pawn->Controller);
+            Trap->InitializeKismetSpawnedBuildingActor(Trap, static_cast<AFortPlayerController*>(Pawn->Controller));
 
             Trap->AttachedTo = Params->AttachedActor;
             Trap->OnRep_AttachedTo();

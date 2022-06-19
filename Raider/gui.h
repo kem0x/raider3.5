@@ -8,10 +8,14 @@ static bool bStartedBus = false;
 enum class CustomMode
 {
     NONE,
-    JUGGERNAUT, // Gives the players 500 health and makes you slower.
-    LATEGAME, // TODO: You know what late game is.
-    LIFESTEAL, // TODO: You know what life steal is, but this might be a stupid idea.
-    SPACE, // Sets gravity like the moon // BUG: Unfortunately, the gravityscale variable doesn't update for the client, making them rubberband and making it look weird.
+    JUGGERNAUT,
+    // Gives the players 500 health and makes you slower.
+    LATEGAME,
+    // TODO: You know what late game is.
+    LIFESTEAL,
+    // TODO: You know what life steal is, but this might be a stupid idea.
+    SPACE,
+    // Sets gravity like the moon // BUG: Unfortunately, the gravityscale variable doesn't update for the client, making them rubberband and making it look weird.
     SIPHON // Gives 50 shield/health whenever you finish someone. (Late game also has this)
 };
 
@@ -43,12 +47,12 @@ namespace GUI
                 {
                     if (ZeroGUI::Button((char*)"Start Bus", FVector2D{ 100, 25 }))
                     {
-                        if (((AAthena_GameState_C*)GetWorld()->GameState)->GamePhase >= EAthenaGamePhase::Aircraft)
+                        if (static_cast<AAthena_GameState_C*>(GetWorld()->GameState)->GamePhase >= EAthenaGamePhase::Aircraft)
                         {
                             std::cout << "The bus is already started!\n";
                             bStartedBus = true;
                         }
-			                                                              			
+
                         GameState->bGameModeWillSkipAircraft = false;
                         GameState->AircraftStartTime = 0;
                         GameState->WarmupCountdownEndTime = 0;
@@ -57,42 +61,12 @@ namespace GUI
 
                         printf("Started Aircraft!\n");
                         bStartedBus = true;
-
-			/*if constexpr (Mode == CustomMode::LATEGAME)
-                        {
-                            AFortAthenaAircraft* Aircraft = ((AAthena_GameState_C*)GetWorld()->GameState)->Aircrafts[0];
-                            static const auto GameMode = (AAthena_GameMode_C*)GetWorld()->AuthorityGameMode;
-							
-                            if (Aircraft)
-                            {
-                                auto& AircraftInfo = Aircraft->FlightInfo;
-                                const int Speed = 1;
-                                Aircraft->DropStartTime / Speed;
-                                Aircraft->DropEndTime / Speed;
-                                Aircraft->FlightStartTime / Speed;
-								Aircraft->FlightEndTime / Speed;
-                                AircraftInfo.FlightSpeed *= Speed;
-                                AircraftInfo.TimeTillDropStart / Speed;
-								AircraftInfo.TimeTillDropEnd / Speed;
-
-                                const int StartSafeZonePhase = 3;
-                                auto Rotation = Aircraft->K2_GetActorRotation();
-                                auto Location = Aircraft->K2_GetActorLocation();
-                                Rotation.Pitch = -90.0f;
-                                // Rotation.Roll = -40.0f;
-								
-                                Aircraft->K2_TeleportTo(Location, Rotation);
-                                GameMode->SafeZonePhase = StartSafeZonePhase;
-                            }
-                            else
-                                std::cout << "Could not find Aircraft!\n";
-                        }*/
                     }
                 }
 
-                if (ZeroGUI::Button((char*)"Summon FloorLoot", FVector2D { 100, 25 }))
+                if (ZeroGUI::Button((char*)"Summon FloorLoot", FVector2D{ 100, 25 }))
                 {
-                    CreateThread(0, 0, SummonFloorLoot, 0, 0, 0);
+                    CreateThread(nullptr, 0, SummonFloorLoot, nullptr, 0, nullptr);
                     printf("Spawning Floor Loot!\n");
                 }
             }

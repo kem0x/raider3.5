@@ -13,7 +13,6 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Classes
 //---------------------------------------------------------------------------
-
 // Class Engine.Engine
 // 0x0DD8 (0x0E00 - 0x0028)
 class UEngine : public UObject
@@ -370,7 +369,6 @@ public:
     }
 
 };
-
 
 // Class Engine.NetDriver
 // 0x04F8 (0x0520 - 0x0028)
@@ -2255,8 +2253,7 @@ public:
 	void ClientSetLocation(const struct FVector& NewLocation, const struct FRotator& NewRotation);
 	class APlayerController* CastToPlayerController();
 };
-
-
+    
 // Class Engine.World
 // 0x0A98 (0x0AC0 - 0x0028)
 class UWorld : public UObject
@@ -2301,7 +2298,7 @@ public:
 	unsigned char                                      UnknownData06[0x7D];                                      // 0x09E3(0x007D) MISSED OFFSET
 	struct FWorldPSCPool                               PSCPool;                                                  // 0x0A60(0x0058)
 	unsigned char                                      UnknownData07[0x8];                                       // 0x0AB8(0x0008) MISSED OFFSET
-
+    
 	static UClass* StaticClass()
 	{
 		static auto ptr = UObject::FindClass("Class Engine.World");
