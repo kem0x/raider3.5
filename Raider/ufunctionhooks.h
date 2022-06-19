@@ -168,6 +168,8 @@ namespace UFunctionHooks
                         BuildingActor->SetMirrored(Params->bMirrored);
                         // BuildingActor->PlacedByPlacementTool();
                         BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);
+                        auto PlayerState = (AFortPlayerStateAthena*)PC->PlayerState;
+                        BuildingActor->Team = PlayerState->TeamIndex;
                     }
                     else
                     {
@@ -431,12 +433,49 @@ namespace UFunctionHooks
 
             if (Params->ReceivingActor)
             {
-                auto DBNOPawn = (APlayerPawn_Athena_C*)Params->ReceivingActor;
-                auto DBNOPC = (AFortPlayerControllerAthena*)DBNOPawn->Controller;
-
-                if (DBNOPawn && DBNOPC && DBNOPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
+                if(Params->ReceivingActor->IsA(APlayerPawn_Athena_C::StaticClass()))
                 {
-                    DBNOPawn->ReviveFromDBNO(PC);
+                    auto DBNOPawn = (APlayerPawn_Athena_C*)Params->ReceivingActor;
+                    auto DBNOPC = (AFortPlayerControllerAthena*)DBNOPawn->Controller;
+
+                    if (DBNOPawn && DBNOPC)
+                    {
+                        DBNOPawn->ReviveFromDBNO(PC);
+                    }
+                }
+
+                if(Params->ReceivingActor->IsA(ABuildingContainer::StaticClass()))
+                {
+                    auto Container = (ABuildingContainer*)Params->ReceivingActor;
+
+                    Container->bAlreadySearched = true;
+                    Container->OnRep_bAlreadySearched();
+
+                    /*
+                     * Loot Tier Groups:
+                     *  - Chests: Loot_Treasure
+                     *  - Ammo Box: Loot_Ammo
+                     */
+
+                    //auto LootTierGroup = Container->SearchLootTierGroup;
+
+
+                    //printf("Loot Tier: %d\n", Container->GetLootTier());
+                    //printf("Loot Tier Group: %s\n", Container->SearchLootTierGroup.ToString().c_str());
+                    //printf("Loot Tier Key: %d\n", Container->ContainerLootTierKey.ToString().c_str());
+                    //printf("Quota Loot Tier: %d\n", Container->SearchLootTierChosenQuotaInfo.LootTier);
+                    //printf("Quota Loot Tier Key: %s\n", Container->SearchLootTierChosenQuotaInfo.LootTierKey.ToString().c_str());
+
+                    //auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+                    //TArray<FFortItemEntry> OutDrops;
+                    //GetFortKismet()->STATIC_PickLootDrops(Container->SearchLootTierGroup, -1, 0, &OutDrops);
+
+                    //printf("Size: %d\n", OutDrops.Num());
+                    //for(int i = 0; i < OutDrops.Num(); i++)
+                    //{
+                    //    FFortItemEntry Drop = OutDrops[i];
+                    //    printf("Drop: %s\n", Drop.ItemDefinition->GetName().c_str());
+                    //}
                 }
             }
 

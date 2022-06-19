@@ -36,6 +36,9 @@ public:
         }
 
         auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+        GameState->CurrentPlaylistId = this->BasePlaylist->PlaylistId;
+        GameState->OnRep_CurrentPlaylistId();
+        GameState->CurrentPlaylistData = this->BasePlaylist;
         GameState->OnRep_CurrentPlaylistData();
     }
     
