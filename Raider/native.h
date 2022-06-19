@@ -121,7 +121,7 @@ namespace Native
         inline void (*TickFlush)(UNetDriver* NetDriver, float DeltaSeconds);
         inline bool (*IsLevelInitializedForActor)(UNetDriver* NetDriver, AActor* Actor, UNetConnection* Connection);
 
-        inline bool (*InitListen)(UObject* Driver, FNetworkNotify* InNotify, FURL& LocalURL, bool bReuseAddressAndPort, FString& Error);
+        inline bool (*InitListen)(UObject* Driver, void* InNotify, FURL& LocalURL, bool bReuseAddressAndPort, FString& Error);
     }
 
     namespace NetConnection
@@ -176,12 +176,18 @@ namespace Native
     {
         inline void* (*SeamlessTravelHandlerForWorld)(UEngine* Engine, UWorld* World);
         inline __int64 (*TSetToTArray)(__int64 a1, __int64 OutArray);
+
+        inline bool (*CreateNamedNetDriver)(UEngine* Engine, UWorld *InWorld, FName NetDriverName, FName NetDriverDefinition);
+        inline UNetDriver* (*FindNamedNetDriver)(UEngine* Engine, UWorld * InWorld, FName NetDriverName);
+
     }
 
     namespace GameViewportClient
     {
         inline void (*PostRender)(UGameViewportClient* _this, UCanvas* Canvas);
     }
+
+    inline UObject* (*StaticConstructObject)(UClass* Class, UObject* Outer, void* Name, int Flags, unsigned int InternalFlags, UObject* Template, bool bCopyTransientsFromClassDefaults, void* InstanceGraph, bool bAssumeTemplateIsArchetype);
 
     void InitializeAll()
     {
@@ -334,7 +340,11 @@ namespace Native
         Address = Utils::FindPattern(Patterns::InitListen);
         CheckNullFatal(Address, "Failed to find NetDriver::InitListen");
         AddressToFunction(Address, NetDriver::InitListen);
-
+        
+        Address = Utils::FindPattern(Patterns::StaticConstructObject);
+        CheckNullFatal(Address, "Failed to find StaticConstructObject");
+        AddressToFunction(Address, StaticConstructObject);
+        
         ProcessEvent = reinterpret_cast<decltype(ProcessEvent)>(GetEngine()->Vtable[0x40]);
     }
 }
