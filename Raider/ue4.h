@@ -978,7 +978,6 @@ inline auto ApplyAbilities(APawn* _Pawn, bool bFromDBNO = false) // TODO: Check 
     static auto EmoteAbility = UObject::FindClass("BlueprintGeneratedClass GAB_Emote_Generic.GAB_Emote_Generic_C");
     static auto TrapAbility = UObject::FindClass("BlueprintGeneratedClass GA_TrapBuildGeneric.GA_TrapBuildGeneric_C");
     static auto DanceGrenadeAbility = UObject::FindClass("BlueprintGeneratedClass GA_DanceGrenade_Stun.GA_DanceGrenade_Stun_C");
-    static auto KnockbackAbility = UObject::FindClass("BlueprintGeneratedClass GA_DefaultPlayer_ApplyKnockback.GA_DefaultPlayer_ApplyKnockback_C");
 
     static auto DBNOPlayerAbility = UObject::FindClass("BlueprintGeneratedClass GAB_PlayerDBNO.GAB_PlayerDBNO_C");
     static auto DBNOAthenaAbility = UObject::FindClass("BlueprintGeneratedClass GAB_AthenaDBNO.GAB_AthenaDBNO_C");
@@ -995,7 +994,6 @@ inline auto ApplyAbilities(APawn* _Pawn, bool bFromDBNO = false) // TODO: Check 
     GrantGameplayAbility(Pawn, EmoteAbility);
     GrantGameplayAbility(Pawn, TrapAbility);
     GrantGameplayAbility(Pawn, DanceGrenadeAbility);
-    GrantGameplayAbility(Pawn, KnockbackAbility);
 
     if (!bFromDBNO)
     {

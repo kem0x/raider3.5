@@ -370,15 +370,6 @@ public:
 
 };
 
-class FNetworkNotify
-{
-    public:
-        virtual EAcceptConnection::Type NotifyAcceptingConnection() PURE_VIRTUAL(FNetworkNotify::NotifyAcceptedConnection, return EAcceptConnection::Ignore;);
-        virtual void NotifyAcceptedConnection(UNetConnection* Connection) PURE_VIRTUAL(FNetworkNotify::NotifyAcceptedConnection, );
-        virtual bool NotifyAcceptingChannel(UChannel* Channel) PURE_VIRTUAL(FNetworkNotify::NotifyAcceptingChannel, return false;);
-        virtual void NotifyControlMessage(UNetConnection* Connection, uint8 MessageType, void* Bunch) PURE_VIRTUAL(FNetworkNotify::NotifyReceivedText, );
-};
-
 // Class Engine.NetDriver
 // 0x04F8 (0x0520 - 0x0028)
 class UNetDriver : public UObject
@@ -2307,11 +2298,6 @@ public:
 	unsigned char                                      UnknownData06[0x7D];                                      // 0x09E3(0x007D) MISSED OFFSET
 	struct FWorldPSCPool                               PSCPool;                                                  // 0x0A60(0x0058)
 	unsigned char                                      UnknownData07[0x8];                                       // 0x0AB8(0x0008) MISSED OFFSET
-
-        virtual EAcceptConnection::Type NotifyAcceptingConnection() override;
-        virtual void NotifyAcceptedConnection( class UNetConnection* Connection ) override;
-        virtual bool NotifyAcceptingChannel( class UChannel* Channel ) override;
-        virtual void NotifyControlMessage(UNetConnection* Connection, uint8 MessageType, void* Bunch) override;
     
 	static UClass* StaticClass()
 	{
