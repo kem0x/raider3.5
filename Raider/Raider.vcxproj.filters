@@ -7,6 +7,12 @@
     <Filter Include="UE4">
       <UniqueIdentifier>{8c651f94-04a2-4bc2-9e7c-0ce7f4df2b38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{c2466e29-da1d-4ce4-9607-a348aede402c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Modes">
+      <UniqueIdentifier>{b7208936-748b-4400-8a0a-a51911fbce85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SDK\FN_PlayerPawn_Athena_Generic_functions.cpp">
@@ -55,14 +61,24 @@
     <ClInclude Include="patterns.h">
       <Filter>UE4</Filter>
     </ClInclude>
-    <ClInclude Include="game.h" />
     <ClInclude Include="replication.h">
       <Filter>UE4</Filter>
     </ClInclude>
     <ClInclude Include="native.h" />
     <ClInclude Include="ufunctionhooks.h" />
     <ClInclude Include="gui.h" />
-    <ClInclude Include="GameModes\GameModeBase.hpp" />
+    <ClInclude Include="game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModes\GameModeSolos.hpp">
+      <Filter>Game\Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModes\GameModeBase.hpp">
+      <Filter>Game\Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModes\GameModeDuos.hpp">
+      <Filter>Game\Modes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
