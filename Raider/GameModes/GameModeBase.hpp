@@ -1,7 +1,7 @@
 #pragma once
-#include <vector>
 #include "../ue4.h"
 #include "../SDK.hpp"
+#include  "../Teams.h"
 
 class IGameModeBase
 {
@@ -13,7 +13,7 @@ public:
 class AbstractGameModeBase : protected IGameModeBase
 {
 public:
-    AbstractGameModeBase(const std::string BasePlaylist, bool bIsSolo = true, bool bRespawnEnabled = false)
+    AbstractGameModeBase(const std::string BasePlaylist, bool bIsSolo = true, bool bRespawnEnabled = false, int maxTeamSize = 1)
     {
         this->BasePlaylist = UObject::FindObject<UFortPlaylistAthena>(BasePlaylist);
         
@@ -34,6 +34,8 @@ public:
 
         GameState->OnRep_CurrentPlaylistId();
         GameState->OnRep_CurrentPlaylistData();
+
+        this->Teams = std::make_unique<PlayerTeams>(maxTeamSize);
     }
     
     ~AbstractGameModeBase()
@@ -137,7 +139,10 @@ public:
 
         return Ret;
     }
-    
+
+protected:
+    std::unique_ptr<PlayerTeams> Teams;
+
 private:
     int maxHealth = 100;
     int maxShield = 100;

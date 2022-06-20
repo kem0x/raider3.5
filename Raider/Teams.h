@@ -9,7 +9,6 @@ public:
     {
         this->maxTeamSize = maxTeamSize;
         this->TeamPosition = TeamPosition;
-        this->bInitialized = false;
     }
 
     void AddPlayer(AFortPlayerController* Member)
@@ -56,18 +55,9 @@ public:
         static_cast<AFortPlayerStateAthena*>(Member->PlayerState)->OnRep_PlayerTeam();
     }
 
-    void TestWIP()
-    {
-        for (auto& _member : Members)
-        {
-            static_cast<AFortPlayerStateAthena*>(_member->PlayerState)->OnRep_SquadId();
-            static_cast<AFortPlayerStateAthena*>(_member->PlayerState)->OnRep_PlayerTeam();
-        }
-    }
 
 protected:
     int maxTeamSize;
-    bool bInitialized;
     std::vector<AFortPlayerController*> Members;
     EFortTeam TeamPosition;
 };
