@@ -219,9 +219,7 @@ namespace UFunctionHooks
                 auto BuildingActor = Params->BuildingActorToEdit;
                 auto NewBuildingClass = Params->NewBuildingClass;
                 auto RotationIterations = Params->RotationIterations;
-
-                printf("RotationIterations: %i\n", RotationIterations);
-				
+                
                 if (BuildingActor && NewBuildingClass)
                 {
                     auto rotation = BuildingActor->K2_GetActorRotation(); //Not correct, this is not centered.
@@ -255,51 +253,21 @@ namespace UFunctionHooks
             if (DeadPC && Params)
             {
                 auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
-                if(bStartedBus) // If someone dies before bus is started they will respawn when you start the bus
-                {               // Another fix would be to give the infinite health people had on spawn island but idk how to give that
-                    GameState->PlayersLeft--;
-                    GameState->OnRep_PlayersLeft();
-                }
-                // GameState->PlayerArray.RemoveAt(DeadPC->NetPlayerIndex);
+                auto DeathReport = Params->DeathReport;
+                GameState->PlayersLeft--;
+                GameState->OnRep_PlayersLeft();
 
                 if (DeadPC && DeadPC->Pawn)
                 {
-                    // TODO: Show death drone/death animation
-                    DeadPC->Pawn->K2_DestroyActor();
+                    ((AFortPlayerPawnAthena*)DeadPC->Pawn)->OnDeathServer(DeathReport.LethalDamage, DeathReport.Tags, { 5, 5, 5 }, FHitResult(), DeathReport.KillerPawn->Controller, DeathReport.DamageCauser, FGameplayEffectContextHandle());
+                    ((AFortPlayerPawnAthena*)DeadPC->Pawn)->OnDeathPlayEffects(DeathReport.LethalDamage, DeathReport.Tags, { 5, 5, 5 }, FHitResult(), DeathReport.KillerPawn, DeathReport.DamageCauser, FGameplayEffectContextHandle());
+                    ((AFortPlayerPawnAthena*)DeadPC->Pawn)->HideBodyOnDeath();
                 }
 
                 auto KillerPawn = Params->DeathReport.KillerPawn;
                 auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
 
                 DeadPlayerState->OnRep_DeathInfo();
-
-		/*if (Mode == CustomMode::SIPHON || Mode == CustomMode::LATEGAME)
-                {
-                    if (KillerPawn && KillerPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
-                    {
-						// this math is so wrong it was late ok
-                        float AmountToAddToHealth = 50;
-						
-                        auto& HealthSet = KillerPawn->HealthSet;
-						if (KillerPawn->GetHealth() > 50)
-                            AmountToAddToHealth = KillerPawn->GetHealth() - 50;
-                        float AmountToAddToShield = (KillerPawn->GetHealth() + 50) - 100;
-						
-                        if (AmountToAddToShield > 0)
-						{
-                            const auto CurrentShield = HealthSet->CurrentShield.CurrentValue;
-							HealthSet->CurrentShield.CurrentValue = (CurrentShield + AmountToAddToShield);
-                            KillerPlayerState->CurrentShield = (CurrentShield + AmountToAddToShield);
-                            // HealthSet->Shield.CurrentValue = (CurrentShield + AmountToAddToShield);
-                            HealthSet->OnRep_CurrentShield();
-						}
-						
-						KillerPawn->SetHealth(KillerPawn->GetHealth() + AmountToAddToHealth);
-                        HealthSet->OnRep_Health();
-                    }
-                }*/
-
-				// if (false)
                 {
                     bool bChooseRandomPawn = false;
 
@@ -626,11 +594,9 @@ namespace UFunctionHooks
                 GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;
                 GetWorld()->LevelCollections[1].NetDriver = HostBeacon->NetDriver;
 
-                // Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
-
-                CreateThread(0, 0, MapLoadThread, 0, 0, 0);
-                
                 GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = MAXPLAYERS;
+
+                Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
                 bListening = true;
                 LOG_INFO("Listening for connections on port {}!", HostBeacon->ListenPort);
             }

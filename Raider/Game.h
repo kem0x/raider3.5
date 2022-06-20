@@ -20,9 +20,6 @@ namespace Game
         LOG_INFO("Initializing the match for the server!");
         auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
         auto GameMode = reinterpret_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode);
-        //auto GameInstance = reinterpret_cast<UFortGameInstance*>(GetWorld()->OwningGameInstance);
-        //static auto Playlist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");
-        //static auto DuoPlaylist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultDuo.Playlist_DefaultDuo");
         auto InProgress = GetKismetString()->STATIC_Conv_StringToName(L"InProgress");
 
         GameState->bGameModeWillSkipAircraft = true;
@@ -40,10 +37,6 @@ namespace Game
 
         Mode = std::make_unique<CurrentGameMode>();
 
-        //GameState->CurrentPlaylistData = Playlist;
-        //GameState->OnRep_CurrentPlaylistData();
-
-        GameMode->FriendlyFireType = EFriendlyFireType::On;
         GameMode->MinRespawnDelay = 5.0f;
         GameMode->StartPlay();
 
