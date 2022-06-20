@@ -932,43 +932,9 @@ FVector RotToVec(const FRotator& Rotator)
     return V;
 }
 
-inline auto ApplyAbilities(APawn* _Pawn, bool bFromDBNO = false) // TODO: Check if the player already has the ability.
+inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already has the ability.
 {
-    auto Pawn = static_cast<APlayerPawn_Athena_C*>(_Pawn);
-
-    /*
-    
-    Ability: Class FortniteGame.FortGameplayAbility_Jump
-    Ability: BlueprintGeneratedClass GA_DefaultPlayer_Consumable.GA_DefaultPlayer_Consumable_C
-    Ability: Class FortniteGame.FortGameplayAbility_Sprint
-    Ability: BlueprintGeneratedClass GA_DefaultPlayer_BuildingCreated.GA_DefaultPlayer_BuildingCreated_C
-    Ability: BlueprintGeneratedClass GA_DefaultPlayer_BuildingRepaired.GA_DefaultPlayer_BuildingRepaired_C
-    Ability: BlueprintGeneratedClass GA_DefaultPlayer_Death.GA_DefaultPlayer_Death_C
-    Ability: BlueprintGeneratedClass GA_DefaultPlayer_Stunned.GA_DefaultPlayer_Stunned_C
-    Ability: BlueprintGeneratedClass GA_DefaultPlayer_ApplyKnockback.GA_DefaultPlayer_ApplyKnockback_C
-    Ability: BlueprintGeneratedClass GA_DefaultPlayer_InteractUse.GA_DefaultPlayer_InteractUse_C
-    Ability: BlueprintGeneratedClass GA_DefaultPlayer_InteractSearch.GA_DefaultPlayer_InteractSearch_C
-    Ability: BlueprintGeneratedClass GA_Default_KilledEnemy.GA_Default_KilledEnemy_C
-    Ability: BlueprintGeneratedClass GAB_PlayerDBNO.GAB_PlayerDBNO_C
-    Ability: BlueprintGeneratedClass GAB_AthenaDBNO.GAB_AthenaDBNO_C
-    Ability: BlueprintGeneratedClass GAB_AthenaDBNORevive.GAB_AthenaDBNORevive_C
-    Ability: BlueprintGeneratedClass GAB_PlayerDBNOResurrect.GAB_PlayerDBNOResurrect_C
-    Ability: Class FortniteGame.FortGameplayAbility_PlayConversation
-    Ability: BlueprintGeneratedClass GA_DanceGrenade_Stun.GA_DanceGrenade_Stun_C
-    Ability: BlueprintGeneratedClass GA_AthenaEnterVehicle.GA_AthenaEnterVehicle_C
-    Ability: BlueprintGeneratedClass GA_AthenaExitVehicle.GA_AthenaExitVehicle_C
-    Ability: BlueprintGeneratedClass GA_AthenaInVehicle.GA_AthenaInVehicle_C
-
-    auto DefaultAbilityKit = UObject::FindObject<UFortAbilitySet>("FortAbilitySet GAS_DefaultPlayer.GAS_DefaultPlayer");
-        
-    for (int i = 0; i < DefaultAbilityKit->GameplayAbilities.Num(); i++)
-    {
-        auto Ability = DefaultAbilityKit->GameplayAbilities[i];
-
-        if (!Ability)
-            continue;
-        GrantGameplayAbility(Pawn, Ability);
-    }*/
+    auto Pawn = (APlayerPawn_Athena_C*)_Pawn;
 
     static auto SprintAbility = UObject::FindClass("Class FortniteGame.FortGameplayAbility_Sprint");
     static auto ReloadAbility = UObject::FindClass("Class FortniteGame.FortGameplayAbility_Reload");
@@ -981,13 +947,6 @@ inline auto ApplyAbilities(APawn* _Pawn, bool bFromDBNO = false) // TODO: Check 
     static auto TrapAbility = UObject::FindClass("BlueprintGeneratedClass GA_TrapBuildGeneric.GA_TrapBuildGeneric_C");
     static auto DanceGrenadeAbility = UObject::FindClass("BlueprintGeneratedClass GA_DanceGrenade_Stun.GA_DanceGrenade_Stun_C");
 
-    /*
-    static auto DBNOPlayerAbility = UObject::FindClass("BlueprintGeneratedClass GAB_PlayerDBNO.GAB_PlayerDBNO_C");
-    static auto DBNOAthenaAbility = UObject::FindClass("BlueprintGeneratedClass GAB_AthenaDBNO.GAB_AthenaDBNO_C");
-    static auto AthenaDBNORevive = UObject::FindClass("BlueprintGeneratedClass GAB_AthenaDBNORevive.GAB_AthenaDBNORevive_C");
-    static auto PlayerDBNOResurrect = UObject::FindClass("BlueprintGeneratedClass GAB_PlayerDBNOResurrect.GAB_PlayerDBNOResurrect_C");
-    */
-
     GrantGameplayAbility(Pawn, SprintAbility);
     GrantGameplayAbility(Pawn, ReloadAbility);
     GrantGameplayAbility(Pawn, RangedWeaponAbility);
@@ -998,14 +957,6 @@ inline auto ApplyAbilities(APawn* _Pawn, bool bFromDBNO = false) // TODO: Check 
     GrantGameplayAbility(Pawn, EmoteAbility);
     GrantGameplayAbility(Pawn, TrapAbility);
     GrantGameplayAbility(Pawn, DanceGrenadeAbility);
-
-    if (!bFromDBNO)
-    {
-       /* GrantGameplayAbility(Pawn, DBNOPlayerAbility);
-        GrantGameplayAbility(Pawn, DBNOAthenaAbility);
-        GrantGameplayAbility(Pawn, AthenaDBNORevive);
-        GrantGameplayAbility(Pawn, PlayerDBNOResurrect);*/
-    }
 }
 
 static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector{ 1250, 1818, 3284 }, FQuat Rotation = FQuat(), bool bResetCharacterParts = true)
