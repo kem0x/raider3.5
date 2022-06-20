@@ -393,7 +393,8 @@ namespace UFunctionHooks
 
                     // ExitLocation.Z -= 500;
 
-                    InitPawn(PC, ExitLocation);
+                    InitPawn(PC, ExitLocation); // This should get moved to GameModeBase
+                    
                     ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped();
                     PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
 

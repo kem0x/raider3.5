@@ -77,7 +77,8 @@ public:
         Controller->Possess(Pawn);
 
         //This state gets auto reseted once the player respawns (aka jumps from the bus)
-        CreateCheatManager(Controller)->God();
+        // CreateCheatManager(Controller)->God();
+        Pawn->HealthSet->Health.Minimum = 1.0f; // This is more accurate to the actual game, you can take damage but you will not die
 
         Pawn->SetMaxHealth(this->maxHealth);
         Pawn->SetMaxShield(this->maxShield);

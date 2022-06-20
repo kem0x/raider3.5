@@ -980,9 +980,11 @@ static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc 
     PlayerController->OnRep_Pawn();
     PlayerController->Possess(Pawn);
 
-    Pawn->SetMaxHealth(100);
+    Pawn->SetMaxHealth(100); 
     Pawn->SetMaxShield(100);
 
+    Pawn->HealthSet->Health.Minimum = 0.0f; // Disables spawn island protection
+    
     Pawn->bReplicateMovement = true;
     Pawn->OnRep_ReplicateMovement();
 
