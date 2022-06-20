@@ -1,25 +1,21 @@
 #pragma once
 
-#include "gui.h"
-#include "ufunctionhooks.h"
+#include "GUI.h"
+#include "UFunctionHooks.h"
 
 // #define LOGGING
 
 namespace Hooks
 {
-    static int teamIdx = 2;
-
     bool LocalPlayerSpawnPlayActor(ULocalPlayer* Player, const FString& URL, FString& OutError, UWorld* World)
     {
-        if (bTraveled)
-            return true;
-        return Native::LocalPlayer::SpawnPlayActor(Player, URL, OutError, World);
+        if (!bTraveled)
+        {
+            return Native::LocalPlayer::SpawnPlayActor(Player, URL, OutError, World);
+        }
+        return true;
     }
 
-    uint64 GetNetMode(UWorld* World)
-    {
-        return 2; // ENetMode::NM_ListenServer;
-    }
 
     void TickFlush(UNetDriver* NetDriver, float DeltaSeconds)
     {
@@ -36,37 +32,29 @@ namespace Hooks
 
         Native::NetDriver::TickFlush(NetDriver, DeltaSeconds);
     }
+    
+    uint8 Beacon_NotifyAcceptingConnection(AOnlineBeacon*) { return Native::World::NotifyAcceptingConnection(GetWorld()); }
+    void* SeamlessTravelHandlerForWorld(UEngine* Engine, UWorld*) { return Native::Engine::SeamlessTravelHandlerForWorld(Engine, GetWorld()); }
+    void* NetDebug(UObject*) { return nullptr; }
+    __int64 CollectGarbage(__int64) { return 0; }
+    void WelcomePlayer(UWorld*, UNetConnection* IncomingConnection) {  Native::World::WelcomePlayer(GetWorld(), IncomingConnection); }
+    char KickPlayer(__int64, __int64, __int64) { return 0; }
+    uint64 GetNetMode(UWorld*) { return NM_ListenServer; }
+    void World_NotifyControlMessage(UWorld*, UNetConnection* Connection, uint8 MessageType, void* Bunch) { Native::World::NotifyControlMessage(GetWorld(), Connection, MessageType, Bunch); }
 
-    void WelcomePlayer(UWorld* World, UNetConnection* IncomingConnection)
-    {
-        Native::World::WelcomePlayer(GetWorld(), IncomingConnection);
-    }
-
-    char KickPlayer(__int64 a1, __int64 a2, __int64 a3)
-    {
-        return 0;
-    }
-
-    void World_NotifyControlMessage(UWorld* World, UNetConnection* Connection, uint8 MessageType, void* Bunch)
-    {
-        Native::World::NotifyControlMessage(GetWorld(), Connection, MessageType, Bunch);
-    }
-
-    APlayerController* SpawnPlayActor(UWorld* World, UPlayer* NewPlayer, ENetRole RemoteRole, FURL& URL, void* UniqueId, FString& Error, uint8 NetPlayerIndex)
+    APlayerController* SpawnPlayActor(UWorld*, UPlayer* NewPlayer, ENetRole RemoteRole, FURL& URL, void* UniqueId, FString& Error, uint8 NetPlayerIndex)
     {
         auto PlayerController = static_cast<AFortPlayerControllerAthena*>(Native::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex));
         NewPlayer->PlayerController = PlayerController;
 
-        Game::Mode->HandleJoiningPlayer(PlayerController);
+        Game::Mode->LoadJoiningPlayer(PlayerController);
 
         PlayerController->OverriddenBackpackSize = 100;
         return PlayerController;
     }
 
-    void Beacon_NotifyControlMessage(AOnlineBeaconHost* Beacon, UNetConnection* Connection, uint8 MessageType, int64* Bunch)
+    void Beacon_NotifyControlMessage(AOnlineBeaconHost*, UNetConnection* Connection, uint8 MessageType, int64* Bunch)
     {
-        printf("Recieved control message %i\n", MessageType);
-
         switch (MessageType)
         {
         case 4: // NMT_Netspeed
@@ -96,21 +84,6 @@ namespace Hooks
         Native::World::NotifyControlMessage(GetWorld(), Connection, MessageType, Bunch);
     }
 
-    uint8 Beacon_NotifyAcceptingConnection(AOnlineBeacon* Beacon)
-    {
-        return Native::World::NotifyAcceptingConnection(GetWorld());
-    }
-
-    void* SeamlessTravelHandlerForWorld(UEngine* Engine, UWorld* World)
-    {
-        return Native::Engine::SeamlessTravelHandlerForWorld(Engine, GetWorld());
-    }
-
-    void* NetDebug(UObject* _this)
-    {
-        return nullptr;
-    }
-
     void PostRender(UGameViewportClient* _this, UCanvas* Canvas)
     {
         ZeroGUI::SetupCanvas(Canvas);
@@ -118,11 +91,6 @@ namespace Hooks
 
         return Native::GameViewportClient::PostRender(_this, Canvas);
     }
-
-    __int64 CollectGarbage(__int64 a1)
-    {
-        return 0;
-    };
 
     void InitNetworkHooks()
     {
@@ -146,11 +114,11 @@ namespace Hooks
             if (Function == PlayButtonFn)
             {
                 bPlayButton = true;
+                LOG_INFO("Initializing the game.");
                 Game::Start();
-                printf("[Game::Start] Done\n");
 
+                LOG_INFO("Initializing Network Hooks.");
                 InitNetworkHooks();
-                printf("[InitNetworkHooks] Done\n");
             }
         }
 

@@ -49,7 +49,7 @@ namespace GUI
                     {
                         if (static_cast<AAthena_GameState_C*>(GetWorld()->GameState)->GamePhase >= EAthenaGamePhase::Aircraft)
                         {
-                            std::cout << "The bus is already started!\n";
+                            LOG_INFO("The bus has already started!")
                             bStartedBus = true;
                         }
 
@@ -57,17 +57,11 @@ namespace GUI
                         GameState->AircraftStartTime = 0;
                         GameState->WarmupCountdownEndTime = 0;
 
-                        ((UKismetSystemLibrary*)UKismetSystemLibrary::StaticClass())->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
+                        GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
 
-                        printf("Started Aircraft!\n");
+                        LOG_INFO("The bus has been started!")
                         bStartedBus = true;
                     }
-                }
-
-                if (ZeroGUI::Button((char*)"Summon FloorLoot", FVector2D{ 100, 25 }))
-                {
-                    CreateThread(nullptr, 0, SummonFloorLoot, nullptr, 0, nullptr);
-                    printf("Spawning Floor Loot!\n");
                 }
             }
             else

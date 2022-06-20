@@ -26,32 +26,7 @@ inline void (*ProcessEvent)(void*, void*, void*);
 #pragma warning(disable:4552)
 #pragma warning(disable:4477)
 
-namespace Offsets
-{
-    // 1.11     Imagbase                                        = 7FF734A50000
-    inline uintptr_t Imagebase;
-    inline uintptr_t GEngineOffset = 0x4C6BC60; // Gloabal Engine*
-    inline uintptr_t GWorldOffset = 0x5DA61C8; // Global World*
-    inline uintptr_t GNamesOffset = 0x5CB7CA0; // Global NameArray*
-    inline uintptr_t GUObjectArrayOffset = 0x5CC0F80; // Global ObjectArray-Class*
-    inline uintptr_t TUObjectArrayOffset = 0x5CC1310; // Global ObjectArray*
-    inline uintptr_t ProcessEventOffset = 0x0DE30C0; // UObject::ProcessEvent()
-    inline uintptr_t SCO_IOffset = 0x0E06F60; // StaticContructObject_Internal()
-    inline uintptr_t SLO_IOffset = 0x0E098E0; // StaticLoadObject_Internal()
-    inline uintptr_t SpawnActorOffset = 0x1A640B0; // UWorld::SpawnActor()
-    inline uintptr_t CGInternalOffset = 0x0D87080; // CollectGarbageInternal()
-
-    namespace Net
-    {
-        inline uintptr_t ReplicationFrame = 0x00330; // 000712
-        inline uintptr_t NetworkObjectList = 0x00490; // 001168
-        inline uintptr_t TimeSenitivity = 0x00241; // 000577
-
-        inline uintptr_t DestroyedStartupOrDormantActors = 0x00228; // 000552
-        inline uintptr_t DestroyedStartupOrDormantActorGUIDs = 0x33678; // 210552
-        inline uintptr_t ActorChannels = 0x33588; // 210312
-    }
-};
+inline uintptr_t Imagebase;
 
 enum ENetMode
 {

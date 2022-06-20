@@ -3,9 +3,9 @@
 
 #include <functional>
 
-#include "game.h"
-#include "replication.h"
-#include "ue4.h"
+#include "Game.h"
+#include "Replication.h"
+#include "UE4.h"
 
 // #define LOGGING
 //#define CHEATS
@@ -640,7 +640,7 @@ namespace UFunctionHooks
                 
                 GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = MAXPLAYERS;
                 bListening = true;
-                std::cout << "\n\nListening on port " << HostBeacon->ListenPort << "\n\n";
+                LOG_INFO("Listening for connections on port {}!", HostBeacon->ListenPort);
             }
 
             return false;
@@ -676,6 +676,6 @@ namespace UFunctionHooks
             return true;
         })
 
-        printf("[+] Hooked %zu UFunction(s)\n", toHook.size());
+        LOG_INFO("Hooked {} UFunction(s)!", toHook.size());
     }
 }

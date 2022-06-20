@@ -7,6 +7,21 @@
     <Filter Include="UE4">
       <UniqueIdentifier>{8c651f94-04a2-4bc2-9e7c-0ce7f4df2b38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{c2466e29-da1d-4ce4-9607-a348aede402c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Modes">
+      <UniqueIdentifier>{b7208936-748b-4400-8a0a-a51911fbce85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UE4\GUI">
+      <UniqueIdentifier>{4e2f44ee-f983-45f7-b30e-0be9ceb5e7cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UE4\Hooks">
+      <UniqueIdentifier>{fe24c7c9-3e92-4684-98fb-bd40db235a8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UE4\NetCode">
+      <UniqueIdentifier>{18aac474-8480-462a-a3a1-45f86abb5e78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SDK\FN_PlayerPawn_Athena_Generic_functions.cpp">
@@ -45,24 +60,42 @@
     <ClInclude Include="SDK.hpp">
       <Filter>SDK</Filter>
     </ClInclude>
-    <ClInclude Include="ue4.h">
+    <ClInclude Include="UE4.h">
       <Filter>UE4</Filter>
     </ClInclude>
-    <ClInclude Include="util.h" />
-    <ClInclude Include="hooks.h">
+    <ClInclude Include="Util.h" />
+    <ClInclude Include="Patterns.h">
       <Filter>UE4</Filter>
     </ClInclude>
-    <ClInclude Include="patterns.h">
-      <Filter>UE4</Filter>
+    <ClInclude Include="Native.h" />
+    <ClInclude Include="Game.h">
+      <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="game.h" />
-    <ClInclude Include="replication.h">
-      <Filter>UE4</Filter>
+    <ClInclude Include="GameModes\GameModeSolos.hpp">
+      <Filter>Game\Modes</Filter>
     </ClInclude>
-    <ClInclude Include="native.h" />
-    <ClInclude Include="ufunctionhooks.h" />
-    <ClInclude Include="gui.h" />
-    <ClInclude Include="GameModes\GameModeBase.hpp" />
+    <ClInclude Include="GameModes\GameModeBase.hpp">
+      <Filter>Game\Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModes\GameModeDuos.hpp">
+      <Filter>Game\Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="Teams.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>UE4\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="UFunctionHooks.h">
+      <Filter>UE4\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks.h">
+      <Filter>UE4\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Replication.h">
+      <Filter>UE4\NetCode</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

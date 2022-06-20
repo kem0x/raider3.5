@@ -1,19 +1,24 @@
 #pragma once
+
 #include "GameModeBase.hpp"
 
-class GameModeSolos : GameModeBase
+class GameModeSolos : public AbstractGameModeBase
 {
 public:
     GameModeSolos()
-        : GameModeBase(nullptr, DefaultLoadout, true, true /* respawn enabled*/)
+        : GameModeSolos("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo")
     {
+    }
+
+    GameModeSolos(std::string SoloPlaylistName)
+        : AbstractGameModeBase(SoloPlaylistName, true, true)
+    {
+        LOG_INFO("Initializing GameMode Solo!");
         this->teamIdx = 2;
     }
 
-    void HandleJoiningPlayer(AFortPlayerControllerAthena* Controller) override
+    void OnPlayerJoined(AFortPlayerControllerAthena*& Controller) override
     {
-        GameModeBase::HandleJoiningPlayer(Controller);
-
         auto PlayerState = static_cast<AFortPlayerStateAthena*>(Controller->PlayerState);
 
         // solo initialization
@@ -29,16 +34,26 @@ public:
         teamIdx++;
     }
 
-    void HandlePlayerDeath(AFortPlayerControllerAthena* Controller) override
+    void OnPlayerKilled(AFortPlayerControllerAthena*& Controller) override
     {
-        GameModeBase::HandlePlayerDeath(Controller);
-
-        // solo code
         Controller->RespawnPlayerAfterDeath();
-
+        auto CM = (UFortCheatManager*)Controller->CheatManager;
+        CM->RespawnPlayer();
+        CM->RespawnPlayerServer();
+        // One of these two functions causes glider to work properly i honestly dont know which one
     }
 
-private:
-    std::vector<UFortWeaponRangedItemDefinition*> DefaultLoadout;
-    int teamIdx;
+    PlayerLoadout& GetPlaylistLoadout() override
+    {
+        static PlayerLoadout Ret = {
+            FindWID("Athena_Shields"),
+            FindWID("Athena_Shields"), 
+            FindWID("Athena_Shields"), 
+            FindWID("Athena_Shields"),
+            FindWID("Athena_Shields"),
+            FindWID("Athena_Shields") 
+        };
+
+        return Ret;
+    }
 };

@@ -1,12 +1,11 @@
 #pragma once
 
-#include "ue4.h"
-#include "GameModes/GameModeBase.hpp"
-#include "GameModes/GameModeSolos.hpp"
+#include "UE4.h"
+#include "GameModes/GameModeDuos.hpp"
 
 namespace Game
 {
-    inline GameModeSolos* Mode;
+    inline GameModeDuos* Mode;
 
     void Start()
     {
@@ -16,6 +15,7 @@ namespace Game
 
     void OnReadyToStartMatch()
     {
+        LOG_INFO("Initializing the match for the server!");
         auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
         auto GameMode = reinterpret_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode);
         //auto GameInstance = reinterpret_cast<UFortGameInstance*>(GetWorld()->OwningGameInstance);
@@ -36,7 +36,7 @@ namespace Game
         GameMode->MatchState = InProgress;
         GameMode->K2_OnSetMatchState(InProgress);
 
-        Mode = new GameModeSolos();
+        Mode = new GameModeDuos();
 
         //GameState->CurrentPlaylistData = Playlist;
         //GameState->OnRep_CurrentPlaylistData();
