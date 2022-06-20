@@ -3,7 +3,8 @@
 - Fortnite 3.5 Custom Gameserver
 
 ## - Download
- - You can find and download the most recent DLL from the stable branch [here](https://github.com/kem0x/raider3.5/actions?query=branch%3Astable).
+ - You can find and download the most recent build from the stable branch [here](https://github.com/kem0x/raider3.5/actions?query=branch%3Astable) 
+(Click the latest workflow result then download the **Release** artifact at the bottom of the page).
 
 ## - Disclaimer
 
