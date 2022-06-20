@@ -152,9 +152,7 @@ namespace UFunctionHooks
 
             auto Params = (AFortPlayerController_ServerCreateBuildingActor_Params*)Parameters;
             auto CurrentBuildClass = Params->BuildingClassData.BuildingClass;
-
-            static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
-
+            
             if (PC && Params && CurrentBuildClass)
             {
                 {
@@ -219,9 +217,7 @@ namespace UFunctionHooks
                 auto BuildingActor = Params->BuildingActorToEdit;
                 auto NewBuildingClass = Params->NewBuildingClass;
                 auto RotationIterations = Params->RotationIterations;
-
-                printf("RotationIterations: %i\n", RotationIterations);
-				
+                
                 if (BuildingActor && NewBuildingClass)
                 {
                     auto rotation = BuildingActor->K2_GetActorRotation(); //Not correct, this is not centered.
@@ -230,7 +226,7 @@ namespace UFunctionHooks
                         rotation.Yaw += /* rotation.Yaw */ 90 * RotationIterations;
 
                     auto HealthPercent = BuildingActor->GetHealthPercent();
-
+                    
                     //  BuildingActor->K2_DestroyActor();					
                     BuildingActor->SilentDie();
 
@@ -250,57 +246,40 @@ namespace UFunctionHooks
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerControllerZone.ClientOnPawnDied", { // Spectating hasn't been majorly testing
             auto Params = (AFortPlayerControllerZone_ClientOnPawnDied_Params*)Parameters;
             auto DeadPC = (AFortPlayerControllerAthena*)Object;
-            auto DeadPlayerState = (AFortPlayerStateAthena*)DeadPC->PlayerState;
 
             if (DeadPC && Params)
             {
+                auto Drone = SpawnActor<ABP_VictoryDrone_C>(DeadPC->K2_GetActorLocation());
+                Drone->InitDrone();
+                Drone->PlaySpawnOutAnim();
+                
                 auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
-                if(bStartedBus) // If someone dies before bus is started they will respawn when you start the bus
-                {               // Another fix would be to give the infinite health people had on spawn island but idk how to give that
-                    GameState->PlayersLeft--;
-                    GameState->OnRep_PlayersLeft();
+                auto DeathReport = Params->DeathReport;
+
+                GameState->PlayersLeft--;
+                GameState->OnRep_PlayersLeft();
+
+                DeadPC->K2_DestroyActor();
+                if (auto KillerState = static_cast<AFortPlayerStateAthena*>(DeathReport.KillerPlayerState))
+                {
+                    KillerState->TeamKillScore++;
+                    KillerState->KillScore++;
                 }
-                // GameState->PlayerArray.RemoveAt(DeadPC->NetPlayerIndex);
-
-                if (DeadPC && DeadPC->Pawn)
+                
+                if (GameState->PlayersLeft == 1)
                 {
-                    // TODO: Show death drone/death animation
-                    DeadPC->Pawn->K2_DestroyActor();
+                    auto Last = static_cast<AFortPlayerControllerAthena*>(GetFortKismet()->STATIC_GetAllFortPlayerControllers(GetWorld(), true, false)[0]);
+                    GameState->WinningTeam = static_cast<AFortPlayerStateAthena*>(Last->PlayerState)->SquadId;
+                    GameState->WinningPlayerName = Last->PlayerState->GetPlayerName();
+
+                    GameState->OnRep_WinningTeam();
+                    GameState->OnRep_WinningPlayerName();
+                    
+                    Last->PlayWinEffects();
+                    Last->ClientNotifyWon();
+                    Last->ClientNotifyTeamWon();
                 }
-
-                auto KillerPawn = Params->DeathReport.KillerPawn;
-                auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
-
-                DeadPlayerState->OnRep_DeathInfo();
-
-		/*if (Mode == CustomMode::SIPHON || Mode == CustomMode::LATEGAME)
-                {
-                    if (KillerPawn && KillerPawn->IsA(APlayerPawn_Athena_C::StaticClass()))
-                    {
-						// this math is so wrong it was late ok
-                        float AmountToAddToHealth = 50;
-						
-                        auto& HealthSet = KillerPawn->HealthSet;
-						if (KillerPawn->GetHealth() > 50)
-                            AmountToAddToHealth = KillerPawn->GetHealth() - 50;
-                        float AmountToAddToShield = (KillerPawn->GetHealth() + 50) - 100;
-						
-                        if (AmountToAddToShield > 0)
-						{
-                            const auto CurrentShield = HealthSet->CurrentShield.CurrentValue;
-							HealthSet->CurrentShield.CurrentValue = (CurrentShield + AmountToAddToShield);
-                            KillerPlayerState->CurrentShield = (CurrentShield + AmountToAddToShield);
-                            // HealthSet->Shield.CurrentValue = (CurrentShield + AmountToAddToShield);
-                            HealthSet->OnRep_CurrentShield();
-						}
-						
-						KillerPawn->SetHealth(KillerPawn->GetHealth() + AmountToAddToHealth);
-                        HealthSet->OnRep_Health();
-                    }
-                }*/
-
-				// if (false)
-                {
+               /* {
                     bool bChooseRandomPawn = false;
 
                     if (KillerPlayerState && KillerPawn && KillerPlayerState != DeadPlayerState)
@@ -337,7 +316,7 @@ namespace UFunctionHooks
                             }
                         }
                     }                
-                }
+                }*/
             }
 
             return false;
@@ -372,7 +351,7 @@ namespace UFunctionHooks
 
             if (Controller && Pawn && Params->BuildingActorToRepair)
             {
-                Params->BuildingActorToRepair->RepairBuilding(Controller, 10); // TODO: Figure out how to get the repair amount
+                Params->BuildingActorToRepair->RepairBuilding(Controller, 50); // TODO: Figure out how to get the repair amount
             }
 
             return false;
@@ -393,7 +372,8 @@ namespace UFunctionHooks
 
                     // ExitLocation.Z -= 500;
 
-                    InitPawn(PC, ExitLocation);
+                    Game::Mode->InitPawn(PC, ExitLocation);
+                    
                     ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped();
                     PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
 
@@ -625,11 +605,9 @@ namespace UFunctionHooks
                 GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;
                 GetWorld()->LevelCollections[1].NetDriver = HostBeacon->NetDriver;
 
-                // Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
-
-                CreateThread(0, 0, MapLoadThread, 0, 0, 0);
-                
                 GetWorld()->AuthorityGameMode->GameSession->MaxPlayers = MAXPLAYERS;
+
+                Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
                 bListening = true;
                 LOG_INFO("Listening for connections on port {}!", HostBeacon->ListenPort);
             }

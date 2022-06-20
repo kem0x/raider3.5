@@ -38,9 +38,6 @@ public:
 
     void InitializePlayer(AFortPlayerController* Member)
     {
-        //if (static_cast<AFortPlayerStateAthena*>(Member->PlayerState)->PlayerTeam->Team == this->TeamPosition)
-        //    return;
-
         LOG_INFO("({}) Initializing {} on team {}!", "Teams", Member->PlayerState->GetPlayerName().ToString(), uint32_t(TeamPosition) - 2);
 
         static_cast<AFortPlayerStateAthena*>(Member->PlayerState)->TeamIndex = this->TeamPosition;

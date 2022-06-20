@@ -8,15 +8,10 @@
 
 typedef std::array<UFortWeaponRangedItemDefinition*, 6> PlayerLoadout;
 
-constexpr auto PI = 3.1415926535897932f;
-constexpr auto INV_PI = 0.31830988618f;
-constexpr auto HALF_PI = 1.57079632679f;
-
 inline bool bTraveled = false;
 inline bool bPlayButton = false;
 inline bool bListening = false;
 static bool bSpawnedFloorLoot = false;
-static bool bMapFullyLoaded = false;
 
 static std::unordered_set<ABuildingSMActor*> Buildings;
 static AFortOnlineBeaconHost* HostBeacon = nullptr;
@@ -24,14 +19,12 @@ static AFortOnlineBeaconHost* HostBeacon = nullptr;
 inline UWorld* GetWorld()
 {
     return GetEngine()->GameViewport->World;
-    // return *(UWorld**)(Offsets::Imagebase + Offsets::GWorldOffset);
 }
 
 inline AAthena_PlayerController_C* GetPlayerController(int32 Index = 0)
 {
     if (Index > GetWorld()->OwningGameInstance->LocalPlayers.Num())
     {
-        //LOG_FATAL("({}) The PlayerController is out of range! ({} out of {} controllers.)", "Utils", Index, GetWorld()->OwningGameInstance->LocalPlayers.Num());
         return static_cast<AAthena_PlayerController_C*>(GetWorld()->OwningGameInstance->LocalPlayers[0]->PlayerController);
     }
 
@@ -108,78 +101,6 @@ FORCEINLINE UKismetStringLibrary* GetKismetString()
     return (UKismetStringLibrary*)UKismetStringLibrary::StaticClass();
 }
 
-static FORCEINLINE void sinCos(float* ScalarSin, float* ScalarCos, float Value)
-{
-    float quotient = (INV_PI * 0.5f) * Value;
-    if (Value >= 0.0f)
-    {
-        quotient = static_cast<float>(static_cast<int>(quotient + 0.5f));
-    }
-    else
-    {
-        quotient = static_cast<float>(static_cast<int>(quotient - 0.5f));
-    }
-    float y = Value - (2.0f * PI) * quotient;
-
-    float sign;
-    if (y > HALF_PI)
-    {
-        y = PI - y;
-        sign = -1.0f;
-    }
-    else if (y < -HALF_PI)
-    {
-        y = -PI - y;
-        sign = -1.0f;
-    }
-    else
-    {
-        sign = +1.0f;
-    }
-
-    float y2 = y * y;
-
-    *ScalarSin = (((((-2.3889859e-08f * y2 + 2.7525562e-06f) * y2 - 0.00019840874f) * y2 + 0.0083333310f) * y2 - 0.16666667f) * y2 + 1.0f) * y;
-
-    float p = ((((-2.6051615e-07f * y2 + 2.4760495e-05f) * y2 - 0.0013888378f) * y2 + 0.041666638f) * y2 - 0.5f) * y2 + 1.0f;
-    *ScalarCos = sign * p;
-}
-
-static auto RotToQuat(FRotator Rotator)
-{
-    const float DEG_TO_RAD = PI / (180.f);
-    const float DIVIDE_BY_2 = DEG_TO_RAD / 2.f;
-    float SP, SY, SR;
-    float CP, CY, CR;
-
-    sinCos(&SP, &CP, Rotator.Pitch * DIVIDE_BY_2);
-    sinCos(&SY, &CY, Rotator.Yaw * DIVIDE_BY_2);
-    sinCos(&SR, &CR, Rotator.Roll * DIVIDE_BY_2);
-
-    FQuat RotationQuat;
-    RotationQuat.X = CR * SP * SY - SR * CP * CY;
-    RotationQuat.Y = -CR * SP * CY - SR * CP * SY;
-    RotationQuat.Z = CR * CP * SY - SR * SP * CY;
-    RotationQuat.W = CR * CP * CY + SR * SP * SY;
-
-    return RotationQuat;
-}
-
-static auto VecToRot(FVector Vector)
-{
-    FRotator R;
-
-    R.Yaw = std::atan2(Vector.Y, Vector.X) * (180.f / PI);
-
-    R.Pitch = std::atan2(Vector.Z, std::sqrt(Vector.X * Vector.X + Vector.Y * Vector.Y)) * (180.f / PI);
-
-    // roll can't be found from vector
-    R.Roll = 0;
-
-    return R;
-}
-
-
 static AActor* SpawnActorTrans(UClass* StaticClass, FTransform SpawnTransform, AActor* Owner = nullptr, ESpawnActorCollisionHandlingMethod Flags = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn)
 {
     AActor* FirstActor = GetGameplayStatics()->STATIC_BeginDeferredActorSpawnFromClass(GetWorld(), StaticClass, SpawnTransform, Flags, Owner);
@@ -208,7 +129,7 @@ inline AActor* SpawnActor(UClass* ActorClass, FVector Location = { 0.0f, 0.0f, 0
 
     SpawnTransform.Translation = Location;
     SpawnTransform.Scale3D = FVector{ 1, 1, 1 };
-    SpawnTransform.Rotation = RotToQuat(Rotation);
+    SpawnTransform.Rotation = Utils::RotToQuat(Rotation);
 
     return SpawnActorTrans(ActorClass, SpawnTransform, Owner, Flags);
 }
@@ -230,7 +151,7 @@ inline ABuildingSMActor* SpawnBuilding(UClass* BGAClass, FVector& Location, FRot
     FTransform Transform;
     Transform.Translation = Location;
     Transform.Scale3D = FVector{ 1, 1, 1 };
-    Transform.Rotation = RotToQuat(Rotation);
+    Transform.Rotation = Utils::RotToQuat(Rotation);
 
     return (ABuildingSMActor*)GetFortKismet()->STATIC_SpawnBuildingGameplayActor(BGAClass, Transform, Pawn);
 }
@@ -248,34 +169,6 @@ inline auto CreateCheatManager(APlayerController* Controller)
     }
 
     return static_cast<UFortCheatManager*>(Controller->CheatManager);
-}
-
-DWORD WINAPI MapLoadThread(LPVOID) // thnak you mr rythm for giving me this
-{
-    // std::cout << "There is " << GetWorld()->StreamingLevels.Num() << " currently loading" << '\n';
-
-    for (int i = 0; i < GetWorld()->StreamingLevels.Num(); i++)
-    {
-        auto StreamingLevel = GetWorld()->StreamingLevels[i];
-
-        if (!StreamingLevel)
-            continue;
-
-        // std::cout << StreamingLevel->GetName() << " state: " << (StreamingLevel->IsLevelLoaded() ? "Loaded" : "Loading") << '\n';
-
-        if (StreamingLevel->IsLevelLoaded())
-            continue;
-
-        Sleep(1000);
-    }
-
-    Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
-
-    LOG_INFO("{} - Players can now join!", "Match");
-
-    bMapFullyLoaded = true;
-
-    return 0;
 }
 
 bool CanBuild(ABuildingSMActor* BuildingActor)
@@ -452,9 +345,7 @@ inline auto AddItem(AFortPlayerController* PC, UFortItemDefinition* Def, int Slo
 
     if (Bars == EFortQuickBars::Primary && Slot >= 6)
         Slot = 5;
-
-    auto& QuickBarSlots = PC->QuickBars->PrimaryQuickBar.Slots;
-
+    
     auto TempItemInstance = static_cast<UFortWorldItem*>(Def->CreateTemporaryItemInstanceBP(Count, 1));
 
     if (TempItemInstance)
@@ -783,7 +674,7 @@ auto TryActivateAbility(UAbilitySystemComponent* AbilitySystemComponent, FGamepl
 
     if (!Spec)
     {
-        printf("InternalServerTryActiveAbility. Rejecting ClientActivation of ability with invalid SpecHandle!\n");
+        LOG_WARN("InternalServerTryActiveAbility. Rejecting ClientActivation of ability with invalid SpecHandle!");
         AbilitySystemComponent->ClientActivateAbilityFailed(AbilityToActivate, PredictionKey->Current);
         return;
     }
@@ -799,16 +690,17 @@ auto TryActivateAbility(UAbilitySystemComponent* AbilitySystemComponent, FGamepl
     }
     else
     {
-        printf("InternalServerTryActiveAbility. Rejecting ClientActivation of %s. InternalTryActivateAbility failed\n", Spec->Ability->GetName().c_str());
+        LOG_WARN("InternalServerTryActiveAbility. Rejecting ClientActivation of {}. InternalTryActivateAbility failed!", Spec->Ability->GetName());
         AbilitySystemComponent->ClientActivateAbilityFailed(AbilityToActivate, PredictionKey->Current);
         Spec->InputPressed = false;
+
         return;
     }
 
     Native::AbilitySystemComponent::MarkAbilitySpecDirty(AbilitySystemComponent, *Spec);
 }
 
-static auto GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* GameplayAbilityClass)
+void GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* GameplayAbilityClass)
 {
     auto AbilitySystemComponent = TargetPawn->AbilitySystemComponent;
 
@@ -817,14 +709,15 @@ static auto GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
 
     auto GenerateNewSpec = [&]() -> FGameplayAbilitySpec
     {
-        FGameplayAbilitySpecHandle Handle{ rand() };
+        FGameplayAbilitySpecHandle Handle { rand() };
 
-        FGameplayAbilitySpec Spec{ -1, -1, -1, Handle, static_cast<UGameplayAbility*>(GameplayAbilityClass->CreateDefaultObject()), 1, -1, nullptr, 0, false, false, false };
+        FGameplayAbilitySpec Spec { -1, -1, -1, Handle, (UGameplayAbility*)GameplayAbilityClass->CreateDefaultObject(), 1, -1, nullptr, 0, false, false, false };
 
         return Spec;
     };
 
     auto Spec = GenerateNewSpec();
+
     for (int i = 0; i < AbilitySystemComponent->ActivatableAbilities.Items.Num(); i++)
     {
         auto& CurrentSpec = AbilitySystemComponent->ActivatableAbilities.Items[i];
@@ -833,7 +726,8 @@ static auto GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
             return;
     }
 
-    auto Handle = Native::AbilitySystemComponent::GiveAbility(AbilitySystemComponent, &Spec.Handle, Spec);
+    Native::AbilitySystemComponent::GiveAbility(AbilitySystemComponent, &Spec.Handle, Spec);
+    return;
 }
 
 static bool KickController(APlayerController* PC, FString Message)
@@ -906,15 +800,12 @@ FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
             ActorToUse = (OutActors)[ActorToUseNum];
         }
 
-        auto Location = ActorToUse->K2_GetActorLocation();
         SpawnTransform.Translation = ActorToUse->K2_GetActorLocation();
 
         PC->WarmupPlayerStart = static_cast<AFortPlayerStartWarmup*>(ActorToUse);
     }
 
     return SpawnTransform;
-
-    // return (GetWorld()->AuthorityGameMode->FindPlayerStart(PC, IncomingName))->K2_GetActorLocation();
 }
 
 inline UKismetMathLibrary* GetMath()
@@ -925,8 +816,8 @@ inline UKismetMathLibrary* GetMath()
 FVector RotToVec(const FRotator& Rotator)
 {
     float CP, SP, CY, SY;
-    sinCos(&SP, &CP, GetMath()->STATIC_DegreesToRadians(Rotator.Pitch));
-    sinCos(&SY, &CY, GetMath()->STATIC_DegreesToRadians(Rotator.Yaw));
+    Utils::sinCos(&SP, &CP, GetMath()->STATIC_DegreesToRadians(Rotator.Pitch));
+    Utils::sinCos(&SY, &CY, GetMath()->STATIC_DegreesToRadians(Rotator.Yaw));
     auto V = FVector(CP * CY, CP * SY, SP);
 
     return V;
@@ -959,72 +850,6 @@ inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already ha
     GrantGameplayAbility(Pawn, DanceGrenadeAbility);
 }
 
-static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector{ 1250, 1818, 3284 }, FQuat Rotation = FQuat(), bool bResetCharacterParts = true)
-{
-    if (PlayerController->Pawn)
-        PlayerController->Pawn->K2_DestroyActor();
-
-    auto SpawnTransform = FTransform();
-    SpawnTransform.Scale3D = FVector(1, 1, 1);
-    SpawnTransform.Rotation = Rotation;
-    SpawnTransform.Translation = Loc;
-
-    // SpawnTransform = GetPlayerStart(PlayerController);
-
-    auto Pawn = static_cast<APlayerPawn_Athena_C*>(SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), SpawnTransform, PlayerController));
-
-    PlayerController->Pawn = Pawn;
-    PlayerController->AcknowledgedPawn = Pawn;
-    Pawn->Owner = PlayerController;
-    Pawn->OnRep_Owner();
-    PlayerController->OnRep_Pawn();
-    PlayerController->Possess(Pawn);
-
-    Pawn->SetMaxHealth(100);
-    Pawn->SetMaxShield(100);
-
-    Pawn->bReplicateMovement = true;
-    Pawn->OnRep_ReplicateMovement();
-
-    static auto FortRegisteredPlayerInfo = static_cast<UFortGameInstance*>(GetWorld()->OwningGameInstance)->RegisteredPlayers[0]; // UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
-
-    if (bResetCharacterParts && FortRegisteredPlayerInfo)
-    {
-        auto PlayerState = static_cast<AFortPlayerStateAthena*>(PlayerController->PlayerState);
-        static auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
-
-        PlayerState->HeroType = Hero->GetHeroTypeBP();
-        PlayerState->OnRep_HeroType();
-
-        static auto Head = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
-        static auto Body = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
-
-        PlayerState->CharacterParts[static_cast<uint8_t>(EFortCustomPartType::Head)] = Head;
-        PlayerState->CharacterParts[static_cast<uint8_t>(EFortCustomPartType::Body)] = Body;
-    }
-
-    UpdateInventory(PlayerController);
-
-    ApplyAbilities(Pawn);
-}
-
-void ClientMessage(AFortPlayerControllerAthena* PC, FString Message, bool bSay = false) // Send a message to the user's console.
-{
-    auto Type = FName(-1);
-
-    if (bSay)
-    {
-        // https://github.com/EpicGames/UnrealEngine/blob/46544fa5e0aa9e6740c19b44b0628b72e7bbd5ce/Engine/Source/Runtime/Engine/Private/PlayerController.cpp#L1379
-    }
-
-    PC->ClientMessage(Message, Type, 10000);
-}
-
-auto toWStr(const std::string& str)
-{
-    return std::wstring(str.begin(), str.end());
-}
-
 inline UFortWeaponRangedItemDefinition* FindWID(const std::string& WID)
 {
     auto Def = UObject::FindObject<UFortWeaponRangedItemDefinition>("FortWeaponRangedItemDefinition " + WID + '.' + WID);
@@ -1046,16 +871,11 @@ void EquipLoadout(AFortPlayerControllerAthena* Controller, PlayerLoadout WIDS)
 
     for (int i = 0; i < WIDS.size(); i++)
     {
-        // if (i >= 6)
-        // break;
-
         auto Def = WIDS[i];
 
         if (Def)
         {
-            auto entry = AddItemWithUpdate(Controller, Def, i);
-            // auto Instance = GetInstanceFromGuid(Controller, entry.ItemGuid); // todo: not get the entry twice
-            // Instance->ItemEntry.LoadedAmmo = 
+            auto entry = AddItemWithUpdate(Controller, Def, i);            
             EquipWeaponDefinition(Controller->Pawn, Def, entry.ItemGuid, -1, true); // kms
 
             if (i == 0)
@@ -1066,19 +886,10 @@ void EquipLoadout(AFortPlayerControllerAthena* Controller, PlayerLoadout WIDS)
     EquipInventoryItem(Controller, pickaxeEntry.ItemGuid);
 }
 
-auto RandomIntInRange(int min, int max)
-{
-    std::random_device rd; // obtain a random number from hardware
-    std::mt19937 gen(rd()); // seed the generator
-    static std::uniform_int_distribution<> distr(min, max); // define the range
-
-    return distr(gen);
-}
-
 auto GetRandomWID(int skip = 0)
 {
     if (skip == 0)
-        skip = RandomIntInRange(4, 100);
+        skip = Utils::RandomIntInRange(4, 100);
 
     return UObject::FindObject<UFortWeaponRangedItemDefinition>("FortWeaponRangedItemDefinition WID_", skip);
 }
@@ -1190,9 +1001,7 @@ namespace Inventory // includes quickbars
 
         if (Bars == EFortQuickBars::Primary && Slot >= 6)
             Slot = 5;
-
-        auto& QuickBarSlots = Controller->QuickBars->PrimaryQuickBar.Slots;
-
+        
         auto TempItemInstance = static_cast<UFortWorldItem*>(Definition->CreateTemporaryItemInstanceBP(Count, 1));
 
         if (TempItemInstance)
@@ -1218,12 +1027,6 @@ namespace Inventory // includes quickbars
         }
 
         return FFortItemEntry();
-    }
-
-    inline void EquipSlot(AFortPlayerControllerAthena* Controller, int Slot)
-    {
-        if (!Controller)
-            return;
     }
 
     inline bool RemoveItemFromSlot(AFortPlayerControllerAthena* Controller, int Slot, EFortQuickBars Quickbars = EFortQuickBars::Primary, int Amount = -1) // -1 for all items in the slot
@@ -1506,7 +1309,7 @@ void SpawnDeco(AFortDecoTool* Tool, void* _Params)
 
     FTransform Transform{};
     Transform.Scale3D = FVector(1, 1, 1);
-    Transform.Rotation = RotToQuat(Params->Rotation);
+    Transform.Rotation = Utils::RotToQuat(Params->Rotation);
     Transform.Translation = Params->Location;
 
     auto TrapDef = static_cast<UFortTrapItemDefinition*>(Tool->ItemDefinition);

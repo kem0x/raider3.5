@@ -21,13 +21,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
@@ -113,6 +113,7 @@
     <ClInclude Include="GameModes\GameModeBase.hpp" />
     <ClCompile Include="SDK\FN_Athena_PlayerController_functions.cpp" />
     <ClCompile Include="SDK\FN_Basic.cpp" />
+    <ClCompile Include="SDK\FN_BP_VictoryDrone_functions.cpp" />
     <ClCompile Include="SDK\FN_CoreUObject_functions.cpp" />
     <ClCompile Include="SDK\FN_Engine_functions.cpp" />
     <ClCompile Include="SDK\FN_FortniteGame_functions.cpp" />
@@ -125,6 +126,7 @@
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameModes\GameModeDuos.hpp" />
+    <ClInclude Include="GameModes\GameModes.hpp" />
     <ClInclude Include="GameModes\GameModeSolos.hpp" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Hooks.h" />
@@ -143,14 +145,14 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\Detours.4.0.1\build\native\Detours.targets" Condition="Exists('..\packages\Detours.4.0.1\build\native\Detours.targets')" />
     <Import Project="..\packages\Gray_spdlog.1.10.0\build\native\Gray_spdlog.targets" Condition="Exists('..\packages\Gray_spdlog.1.10.0\build\native\Gray_spdlog.targets')" />
+    <Import Project="..\packages\Detours.4.0.1\build\native\Detours.targets" Condition="Exists('..\packages\Detours.4.0.1\build\native\Detours.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Detours.4.0.1\build\native\Detours.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Detours.4.0.1\build\native\Detours.targets'))" />
     <Error Condition="!Exists('..\packages\Gray_spdlog.1.10.0\build\native\Gray_spdlog.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Gray_spdlog.1.10.0\build\native\Gray_spdlog.targets'))" />
+    <Error Condition="!Exists('..\packages\Detours.4.0.1\build\native\Detours.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Detours.4.0.1\build\native\Detours.targets'))" />
   </Target>
 </Project>

@@ -32,11 +32,11 @@ namespace GUI
         if (GetAsyncKeyState(VK_F2) & 1)
             menu_opened = !menu_opened;
 
-        auto pos = FVector2D{ 200.f, 250.0f };
+        static auto pos = FVector2D{ 200.f, 250.0f };
 
         if (ZeroGUI::Window((char*)"Raider", &pos, FVector2D{ 500.0f, 400.0f }, menu_opened))
         {
-            if (bListening && HostBeacon && bMapFullyLoaded)
+            if (bListening && HostBeacon)
             {
                 static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
                 std::string ConnectedPlayers = std::format("Connected Players: {}\n", GameState->PlayerArray.Num());
