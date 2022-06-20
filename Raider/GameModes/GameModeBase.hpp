@@ -137,9 +137,6 @@ public:
 
         return Ret;
     }
-
-protected:
-    int teamIdx;
     
 private:
     int maxHealth = 100;
