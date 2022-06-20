@@ -693,9 +693,9 @@ static void InitInventory(AFortPlayerController* PlayerController)
 
     static std::vector<UFortWorldItemDefinition*> Items = {
         UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Wall.BuildingItemData_Wall"),
+        UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Floor.BuildingItemData_Floor"),
         UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W"),
         UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_RoofS.BuildingItemData_RoofS"),
-        UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Floor.BuildingItemData_Floor"),
         
         UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition WoodItemData.WoodItemData"),
         UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition StoneItemData.StoneItemData"),
@@ -1539,32 +1539,6 @@ namespace Inventory // includes quickbars
                         break;
                     }
                 }
-            }
-        }
-    }
-}
-
-void EquipTrapTool(AController* Controller)
-{
-    static auto TrapDef = UObject::FindObject<UFortTrapItemDefinition>("FortTrapItemDefinition TID_Floor_Player_Launch_Pad_Athena.TID_Floor_Player_Launch_Pad_Athena");
-
-    auto TrapTool = static_cast<AFortTrapTool*>(SpawnActorTrans(TrapDef->GetWeaponActorClass(), {}, Controller));
-
-    if (TrapTool && TrapDef)
-    {
-        TrapTool->ItemDefinition = TrapDef;
-
-        auto Pawn = static_cast<APlayerPawn_Athena_C*>(Controller->Pawn);
-        if (Pawn) // && weaponClass)
-        {
-            if (TrapTool)
-            {
-                TrapTool->WeaponData = TrapDef;
-                TrapTool->SetOwner(Pawn);
-                TrapTool->OnRep_ReplicatedWeaponData();
-                TrapTool->ClientGivenTo(Pawn);
-                Pawn->ClientInternalEquipWeapon(TrapTool);
-                Pawn->OnRep_CurrentWeapon(); // i dont think this is needed but alr
             }
         }
     }
