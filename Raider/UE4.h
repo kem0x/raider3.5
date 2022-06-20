@@ -832,6 +832,8 @@ static auto GrantGameplayAbility(APlayerPawn_Athena_C* TargetPawn, UClass* Gamep
         if (CurrentSpec.Ability == Spec.Ability)
             return;
     }
+
+    auto Handle = Native::AbilitySystemComponent::GiveAbility(AbilitySystemComponent, &Spec.Handle, Spec);
 }
 
 static bool KickController(APlayerController* PC, FString Message)
