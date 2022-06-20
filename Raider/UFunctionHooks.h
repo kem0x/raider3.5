@@ -230,7 +230,7 @@ namespace UFunctionHooks
                         rotation.Yaw += /* rotation.Yaw */ 90 * RotationIterations;
 
                     auto HealthPercent = BuildingActor->GetHealthPercent();
-
+                    
                     //  BuildingActor->K2_DestroyActor();					
                     BuildingActor->SilentDie();
 
@@ -393,7 +393,8 @@ namespace UFunctionHooks
 
                     // ExitLocation.Z -= 500;
 
-                    InitPawn(PC, ExitLocation);
+                    Game::Mode->InitPawn(PC, ExitLocation);
+                    
                     ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped();
                     PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
 

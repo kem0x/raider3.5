@@ -959,55 +959,6 @@ inline auto ApplyAbilities(APawn* _Pawn) // TODO: Check if the player already ha
     GrantGameplayAbility(Pawn, DanceGrenadeAbility);
 }
 
-static void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector{ 1250, 1818, 3284 }, FQuat Rotation = FQuat(), bool bResetCharacterParts = true)
-{
-    if (PlayerController->Pawn)
-        PlayerController->Pawn->K2_DestroyActor();
-
-    auto SpawnTransform = FTransform();
-    SpawnTransform.Scale3D = FVector(1, 1, 1);
-    SpawnTransform.Rotation = Rotation;
-    SpawnTransform.Translation = Loc;
-
-    // SpawnTransform = GetPlayerStart(PlayerController);
-
-    auto Pawn = static_cast<APlayerPawn_Athena_C*>(SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), SpawnTransform, PlayerController));
-
-    PlayerController->Pawn = Pawn;
-    PlayerController->AcknowledgedPawn = Pawn;
-    Pawn->Owner = PlayerController;
-    Pawn->OnRep_Owner();
-    PlayerController->OnRep_Pawn();
-    PlayerController->Possess(Pawn);
-
-    Pawn->SetMaxHealth(100);
-    Pawn->SetMaxShield(100);
-
-    Pawn->bReplicateMovement = true;
-    Pawn->OnRep_ReplicateMovement();
-
-    static auto FortRegisteredPlayerInfo = static_cast<UFortGameInstance*>(GetWorld()->OwningGameInstance)->RegisteredPlayers[0]; // UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
-
-    if (bResetCharacterParts && FortRegisteredPlayerInfo)
-    {
-        auto PlayerState = static_cast<AFortPlayerStateAthena*>(PlayerController->PlayerState);
-        static auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
-
-        PlayerState->HeroType = Hero->GetHeroTypeBP();
-        PlayerState->OnRep_HeroType();
-
-        static auto Head = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
-        static auto Body = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
-
-        PlayerState->CharacterParts[static_cast<uint8_t>(EFortCustomPartType::Head)] = Head;
-        PlayerState->CharacterParts[static_cast<uint8_t>(EFortCustomPartType::Body)] = Body;
-    }
-
-    UpdateInventory(PlayerController);
-
-    ApplyAbilities(Pawn);
-}
-
 void ClientMessage(AFortPlayerControllerAthena* PC, FString Message, bool bSay = false) // Send a message to the user's console.
 {
     auto Type = FName(-1);

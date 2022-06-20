@@ -77,7 +77,8 @@ public:
         Controller->Possess(Pawn);
 
         //This state gets auto reseted once the player respawns (aka jumps from the bus)
-        CreateCheatManager(Controller)->God();
+        // CreateCheatManager(Controller)->God();
+        Pawn->HealthSet->Health.Minimum = 1.0f; // This is more accurate to the actual game, you can take damage but you will not die
 
         Pawn->SetMaxHealth(this->maxHealth);
         Pawn->SetMaxShield(this->maxShield);
@@ -140,6 +141,57 @@ public:
         };
 
         return Ret;
+    }
+
+    void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector{ 1250, 1818, 3284 }, FQuat Rotation = FQuat(), bool bResetCharacterParts = true)
+    {
+        if (PlayerController->Pawn)
+            PlayerController->Pawn->K2_DestroyActor();
+
+        auto SpawnTransform = FTransform();
+        SpawnTransform.Scale3D = FVector(1, 1, 1);
+        SpawnTransform.Rotation = Rotation;
+        SpawnTransform.Translation = Loc;
+
+        // SpawnTransform = GetPlayerStart(PlayerController);
+
+        auto Pawn = static_cast<APlayerPawn_Athena_C*>(SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), SpawnTransform, PlayerController));
+
+        PlayerController->Pawn = Pawn;
+        PlayerController->AcknowledgedPawn = Pawn;
+        Pawn->Owner = PlayerController;
+        Pawn->OnRep_Owner();
+        PlayerController->OnRep_Pawn();
+        PlayerController->Possess(Pawn);
+
+        Pawn->SetMaxHealth(this->maxHealth); 
+        Pawn->SetMaxShield(this->maxShield);
+
+        Pawn->HealthSet->Health.Minimum = 0.0f; // Disables spawn island protection
+
+        Pawn->bReplicateMovement = true;
+        Pawn->OnRep_ReplicateMovement();
+
+        static auto FortRegisteredPlayerInfo = static_cast<UFortGameInstance*>(GetWorld()->OwningGameInstance)->RegisteredPlayers[0]; // UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
+
+        if (bResetCharacterParts && FortRegisteredPlayerInfo)
+        {
+            auto PlayerState = static_cast<AFortPlayerStateAthena*>(PlayerController->PlayerState);
+            static auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
+
+            PlayerState->HeroType = Hero->GetHeroTypeBP();
+            PlayerState->OnRep_HeroType();
+
+            static auto Head = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
+            static auto Body = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
+
+            PlayerState->CharacterParts[static_cast<uint8_t>(EFortCustomPartType::Head)] = Head;
+            PlayerState->CharacterParts[static_cast<uint8_t>(EFortCustomPartType::Body)] = Body;
+        }
+
+        UpdateInventory(PlayerController);
+
+        ApplyAbilities(Pawn);
     }
 
 protected:
