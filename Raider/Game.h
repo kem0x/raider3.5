@@ -5,7 +5,7 @@
 
 namespace Game
 {
-    inline GameModeDuos* Mode;
+    inline std::unique_ptr<GameModeDuos> Mode;
 
     void Start()
     {
@@ -36,7 +36,7 @@ namespace Game
         GameMode->MatchState = InProgress;
         GameMode->K2_OnSetMatchState(InProgress);
 
-        Mode = new GameModeDuos();
+        Mode = std::make_unique<GameModeDuos>();
 
         //GameState->CurrentPlaylistData = Playlist;
         //GameState->OnRep_CurrentPlaylistData();
