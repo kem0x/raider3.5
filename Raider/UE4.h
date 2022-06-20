@@ -31,8 +31,7 @@ inline AAthena_PlayerController_C* GetPlayerController(int32 Index = 0)
 {
     if (Index > GetWorld()->OwningGameInstance->LocalPlayers.Num())
     {
-        std::cout << "WARNING! PlayerController out of range! (" << Index << " out of " << GetWorld()->OwningGameInstance->LocalPlayers.Num() << ")" << '\n';
-
+        //LOG_FATAL("({}) The PlayerController is out of range! ({} out of {} controllers.)", "Utils", Index, GetWorld()->OwningGameInstance->LocalPlayers.Num());
         return static_cast<AAthena_PlayerController_C*>(GetWorld()->OwningGameInstance->LocalPlayers[0]->PlayerController);
     }
 
@@ -272,8 +271,7 @@ DWORD WINAPI MapLoadThread(LPVOID) // thnak you mr rythm for giving me this
 
     Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
 
-    // Beacon->BeaconState = EBeaconState::AllowRequests;
-    std::cout << "People can join now!\n";
+    LOG_INFO("{} - Players can now join!", "Match");
 
     bMapFullyLoaded = true;
 
@@ -981,10 +979,12 @@ inline auto ApplyAbilities(APawn* _Pawn, bool bFromDBNO = false) // TODO: Check 
     static auto TrapAbility = UObject::FindClass("BlueprintGeneratedClass GA_TrapBuildGeneric.GA_TrapBuildGeneric_C");
     static auto DanceGrenadeAbility = UObject::FindClass("BlueprintGeneratedClass GA_DanceGrenade_Stun.GA_DanceGrenade_Stun_C");
 
+    /*
     static auto DBNOPlayerAbility = UObject::FindClass("BlueprintGeneratedClass GAB_PlayerDBNO.GAB_PlayerDBNO_C");
     static auto DBNOAthenaAbility = UObject::FindClass("BlueprintGeneratedClass GAB_AthenaDBNO.GAB_AthenaDBNO_C");
     static auto AthenaDBNORevive = UObject::FindClass("BlueprintGeneratedClass GAB_AthenaDBNORevive.GAB_AthenaDBNORevive_C");
     static auto PlayerDBNOResurrect = UObject::FindClass("BlueprintGeneratedClass GAB_PlayerDBNOResurrect.GAB_PlayerDBNOResurrect_C");
+    */
 
     GrantGameplayAbility(Pawn, SprintAbility);
     GrantGameplayAbility(Pawn, ReloadAbility);
@@ -999,10 +999,10 @@ inline auto ApplyAbilities(APawn* _Pawn, bool bFromDBNO = false) // TODO: Check 
 
     if (!bFromDBNO)
     {
-        GrantGameplayAbility(Pawn, DBNOPlayerAbility);
+       /* GrantGameplayAbility(Pawn, DBNOPlayerAbility);
         GrantGameplayAbility(Pawn, DBNOAthenaAbility);
         GrantGameplayAbility(Pawn, AthenaDBNORevive);
-        GrantGameplayAbility(Pawn, PlayerDBNOResurrect);
+        GrantGameplayAbility(Pawn, PlayerDBNOResurrect);*/
     }
 }
 
@@ -1162,8 +1162,6 @@ DWORD WINAPI SummonFloorLoot(LPVOID)
             if constexpr (false) // (auto Ammo = weaponToSpawn->GetAmmoWorldItemDefinition_BP())
                 SpawnPickupFromFloorLoot(nullptr, 10, Location); // Crashes sometimes idk why
         }
-
-        std::cout << "Spawned " << AmountSpawned << " pickups!\n";
     }
 
     bSpawnedFloorLoot = true;
@@ -1388,7 +1386,8 @@ namespace Inventory // includes quickbars
                                 bWasSuccessful = true;
                                 break;
                             }
-                            std::cout << "Could not find Definition!\n";
+
+                            LOG_ERROR("Couldn't find a definition for the dropped item!");
                         }
                     }
                 }
@@ -1414,7 +1413,7 @@ namespace Inventory // includes quickbars
                                 bWasSuccessful = true;
                                 break;
                             }
-                            std::cout << "Could not find Definition!\n";
+                            LOG_ERROR("Couldn't find a definition for the dropped item!");
                         }
                     }
                 }

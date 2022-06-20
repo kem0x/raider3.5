@@ -13,6 +13,7 @@ public:
     GameModeSolos(std::string SoloPlaylistName)
         : AbstractGameModeBase(SoloPlaylistName, true, true)
     {
+        LOG_INFO("Initializing GameMode Solo!");
         this->teamIdx = 2;
     }
 

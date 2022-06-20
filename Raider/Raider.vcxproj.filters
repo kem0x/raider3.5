@@ -13,6 +13,15 @@
     <Filter Include="Game\Modes">
       <UniqueIdentifier>{b7208936-748b-4400-8a0a-a51911fbce85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UE4\GUI">
+      <UniqueIdentifier>{4e2f44ee-f983-45f7-b30e-0be9ceb5e7cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UE4\Hooks">
+      <UniqueIdentifier>{fe24c7c9-3e92-4684-98fb-bd40db235a8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UE4\NetCode">
+      <UniqueIdentifier>{18aac474-8480-462a-a3a1-45f86abb5e78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SDK\FN_PlayerPawn_Athena_Generic_functions.cpp">
@@ -55,18 +64,10 @@
       <Filter>UE4</Filter>
     </ClInclude>
     <ClInclude Include="Util.h" />
-    <ClInclude Include="Hooks.h">
-      <Filter>UE4</Filter>
-    </ClInclude>
     <ClInclude Include="Patterns.h">
       <Filter>UE4</Filter>
     </ClInclude>
-    <ClInclude Include="Replication.h">
-      <Filter>UE4</Filter>
-    </ClInclude>
     <ClInclude Include="Native.h" />
-    <ClInclude Include="UFunctionHooks.h" />
-    <ClInclude Include="GUI.h" />
     <ClInclude Include="Game.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -82,6 +83,19 @@
     <ClInclude Include="Teams.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>UE4\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="UFunctionHooks.h">
+      <Filter>UE4\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks.h">
+      <Filter>UE4\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Replication.h">
+      <Filter>UE4\NetCode</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

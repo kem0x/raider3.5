@@ -1,9 +1,10 @@
 #pragma once
+#include "Logger.hpp"
 
 static void Error(std::string error, bool bExit = false)
 {
-    MessageBoxA(nullptr, error.c_str(), "Error", MB_OK | MB_ICONERROR);
-
+    //MessageBoxA(nullptr, error.c_str(), "Error", MB_OK | MB_ICONERROR);
+    LOG_ERROR("{}", error.c_str());
     if (bExit)
         exit(0);
 }
@@ -45,14 +46,6 @@ auto Merge(T var1, Types... vars)
 #define DETOUR_END DetourTransactionCommit();
 
 #define AddressToFunction(a, f) f = reinterpret_cast<decltype(f)>(a)
-
-inline void SetupConsole()
-{
-    AllocConsole();
-
-    FILE* pFile;
-    freopen_s(&pFile, "CONOUT$", "w", stdout);
-}
 
 namespace Utils
 {

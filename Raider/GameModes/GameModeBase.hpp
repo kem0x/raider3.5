@@ -54,6 +54,8 @@ public:
             {
                 EquipInventoryItem(Controller, PickaxeEntry.ItemGuid);
             }
+
+            LOG_INFO("({}) Re-initializing {} that has been killed (bRespawnEnabled == true)!", "GameModeBase", Controller->PlayerState->GetPlayerName().ToString());
         }
 
         OnPlayerKilled(Controller);
@@ -61,6 +63,8 @@ public:
     
     void LoadJoiningPlayer(AFortPlayerControllerAthena* Controller)
     {
+        LOG_INFO("({}) Initializing {} that has just joined!", "GameModeBase", Controller->PlayerState->GetPlayerName().ToString());
+
         auto Pawn = SpawnActor<APlayerPawn_Athena_C>(GetPlayerStart(Controller).Translation, Controller, {});
         Pawn->Owner = Controller;
         Pawn->OnRep_Owner();
@@ -106,6 +110,7 @@ public:
         
         InitInventory(Controller);
         EquipLoadout(Controller, this->GetPlaylistLoadout());
+        ApplyAbilities(Pawn);
 
         OnPlayerJoined(Controller);
     }
