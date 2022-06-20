@@ -14,29 +14,17 @@ public:
         : AbstractGameModeBase(SoloPlaylistName, true, true, 1)
     {
         LOG_INFO("Initializing GameMode Solo!");
-        this->teamIdx = 2;
     }
 
     void OnPlayerJoined(AFortPlayerControllerAthena*& Controller) override
     {
-        auto PlayerState = static_cast<AFortPlayerStateAthena*>(Controller->PlayerState);
-
-        // solo initialization
-        PlayerState->TeamIndex = static_cast<EFortTeam>(teamIdx);
-
-        PlayerState->PlayerTeam->TeamMembers.Add(Controller);
-        PlayerState->PlayerTeam->Team = static_cast<EFortTeam>(teamIdx);
-
-        PlayerState->SquadId = (teamIdx - 2) + 1;
-        PlayerState->OnRep_PlayerTeam();
-        PlayerState->OnRep_SquadId();
-
-        teamIdx++;
+        this->Teams->AddPlayerToRandomTeam(Controller);
     }
 
     void OnPlayerKilled(AFortPlayerControllerAthena*& Controller) override
     {
         Controller->RespawnPlayerAfterDeath();
+        
         auto CM = (UFortCheatManager*)Controller->CheatManager;
         CM->RespawnPlayer();
         CM->RespawnPlayerServer();
