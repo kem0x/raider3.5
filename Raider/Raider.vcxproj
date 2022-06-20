@@ -113,6 +113,7 @@
     <ClInclude Include="GameModes\GameModeBase.hpp" />
     <ClCompile Include="SDK\FN_Athena_PlayerController_functions.cpp" />
     <ClCompile Include="SDK\FN_Basic.cpp" />
+    <ClCompile Include="SDK\FN_BP_VictoryDrone_functions.cpp" />
     <ClCompile Include="SDK\FN_CoreUObject_functions.cpp" />
     <ClCompile Include="SDK\FN_Engine_functions.cpp" />
     <ClCompile Include="SDK\FN_FortniteGame_functions.cpp" />
@@ -125,6 +126,7 @@
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameModes\GameModeDuos.hpp" />
+    <ClInclude Include="GameModes\GameModes.hpp" />
     <ClInclude Include="GameModes\GameModeSolos.hpp" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Hooks.h" />

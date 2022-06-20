@@ -30,18 +30,4 @@ public:
         CM->RespawnPlayerServer();
         // One of these two functions causes glider to work properly i honestly dont know which one
     }
-
-    PlayerLoadout& GetPlaylistLoadout() override
-    {
-        static PlayerLoadout Ret = {
-            FindWID("Athena_Shields"),
-            FindWID("Athena_Shields"), 
-            FindWID("Athena_Shields"), 
-            FindWID("Athena_Shields"),
-            FindWID("Athena_Shields"),
-            FindWID("Athena_Shields") 
-        };
-
-        return Ret;
-    }
 };

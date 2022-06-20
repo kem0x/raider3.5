@@ -12,7 +12,6 @@ inline bool bTraveled = false;
 inline bool bPlayButton = false;
 inline bool bListening = false;
 static bool bSpawnedFloorLoot = false;
-static bool bMapFullyLoaded = false;
 
 static std::unordered_set<ABuildingSMActor*> Buildings;
 static AFortOnlineBeaconHost* HostBeacon = nullptr;
@@ -801,7 +800,6 @@ FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
             ActorToUse = (OutActors)[ActorToUseNum];
         }
 
-        auto Location = ActorToUse->K2_GetActorLocation();
         SpawnTransform.Translation = ActorToUse->K2_GetActorLocation();
 
         PC->WarmupPlayerStart = static_cast<AFortPlayerStartWarmup*>(ActorToUse);

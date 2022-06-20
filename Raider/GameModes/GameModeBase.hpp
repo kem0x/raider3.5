@@ -118,6 +118,10 @@ public:
         EquipLoadout(Controller, this->GetPlaylistLoadout());
         ApplyAbilities(Pawn);
 
+        auto Drone = SpawnActor<ABP_VictoryDrone_C>(Controller->K2_GetActorLocation());
+        Drone->InitDrone();
+        Drone->TriggerPlayerSpawnEffects();
+        
         OnPlayerJoined(Controller);
     }
 

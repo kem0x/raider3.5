@@ -152,9 +152,7 @@ namespace UFunctionHooks
 
             auto Params = (AFortPlayerController_ServerCreateBuildingActor_Params*)Parameters;
             auto CurrentBuildClass = Params->BuildingClassData.BuildingClass;
-
-            static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
-
+            
             if (PC && Params && CurrentBuildClass)
             {
                 {
@@ -248,27 +246,40 @@ namespace UFunctionHooks
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerControllerZone.ClientOnPawnDied", { // Spectating hasn't been majorly testing
             auto Params = (AFortPlayerControllerZone_ClientOnPawnDied_Params*)Parameters;
             auto DeadPC = (AFortPlayerControllerAthena*)Object;
-            auto DeadPlayerState = (AFortPlayerStateAthena*)DeadPC->PlayerState;
 
             if (DeadPC && Params)
             {
+                auto Drone = SpawnActor<ABP_VictoryDrone_C>(DeadPC->K2_GetActorLocation());
+                Drone->InitDrone();
+                Drone->PlaySpawnOutAnim();
+                
                 auto GameState = (AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState;
                 auto DeathReport = Params->DeathReport;
+
                 GameState->PlayersLeft--;
                 GameState->OnRep_PlayersLeft();
 
-                if (DeadPC && DeadPC->Pawn)
+                DeadPC->K2_DestroyActor();
+                if (auto KillerState = static_cast<AFortPlayerStateAthena*>(DeathReport.KillerPlayerState))
                 {
-                    ((AFortPlayerPawnAthena*)DeadPC->Pawn)->OnDeathServer(DeathReport.LethalDamage, DeathReport.Tags, { 5, 5, 5 }, FHitResult(), DeathReport.KillerPawn->Controller, DeathReport.DamageCauser, FGameplayEffectContextHandle());
-                    ((AFortPlayerPawnAthena*)DeadPC->Pawn)->OnDeathPlayEffects(DeathReport.LethalDamage, DeathReport.Tags, { 5, 5, 5 }, FHitResult(), DeathReport.KillerPawn, DeathReport.DamageCauser, FGameplayEffectContextHandle());
-                    ((AFortPlayerPawnAthena*)DeadPC->Pawn)->HideBodyOnDeath();
+                    KillerState->TeamKillScore++;
+                    KillerState->KillScore++;
                 }
-
-                auto KillerPawn = Params->DeathReport.KillerPawn;
-                auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
-
-                DeadPlayerState->OnRep_DeathInfo();
+                
+                if (GameState->PlayersLeft == 1)
                 {
+                    auto Last = static_cast<AFortPlayerControllerAthena*>(GetFortKismet()->STATIC_GetAllFortPlayerControllers(GetWorld(), true, false)[0]);
+                    GameState->WinningTeam = static_cast<AFortPlayerStateAthena*>(Last->PlayerState)->SquadId;
+                    GameState->WinningPlayerName = Last->PlayerState->GetPlayerName();
+
+                    GameState->OnRep_WinningTeam();
+                    GameState->OnRep_WinningPlayerName();
+                    
+                    Last->PlayWinEffects();
+                    Last->ClientNotifyWon();
+                    Last->ClientNotifyTeamWon();
+                }
+               /* {
                     bool bChooseRandomPawn = false;
 
                     if (KillerPlayerState && KillerPawn && KillerPlayerState != DeadPlayerState)
@@ -305,7 +316,7 @@ namespace UFunctionHooks
                             }
                         }
                     }                
-                }
+                }*/
             }
 
             return false;
@@ -340,7 +351,7 @@ namespace UFunctionHooks
 
             if (Controller && Pawn && Params->BuildingActorToRepair)
             {
-                Params->BuildingActorToRepair->RepairBuilding(Controller, 10); // TODO: Figure out how to get the repair amount
+                Params->BuildingActorToRepair->RepairBuilding(Controller, 50); // TODO: Figure out how to get the repair amount
             }
 
             return false;

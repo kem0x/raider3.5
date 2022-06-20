@@ -22,12 +22,9 @@ namespace Hooks
         if (!NetDriver)
             return;
 
-        if (bMapFullyLoaded)
+        if (NetDriver->IsA(UIpNetDriver::StaticClass()) && NetDriver->ClientConnections.Num() > 0 && NetDriver->ClientConnections[0]->InternalAck == false)
         {
-            if (NetDriver->IsA(UIpNetDriver::StaticClass()) && NetDriver->ClientConnections.Num() > 0 && NetDriver->ClientConnections[0]->InternalAck == false)
-            {
-                Replication::ServerReplicateActors(NetDriver);
-            }
+            Replication::ServerReplicateActors(NetDriver);
         }
 
         Native::NetDriver::TickFlush(NetDriver, DeltaSeconds);
