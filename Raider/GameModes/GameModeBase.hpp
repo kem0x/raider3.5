@@ -1,7 +1,7 @@
 #pragma once
 #include "../ue4.h"
 #include "../SDK.hpp"
-#include  "../Teams.h"
+#include "../Teams.h"
 
 class IGameModeBase
 {
@@ -16,10 +16,10 @@ public:
     AbstractGameModeBase(const std::string BasePlaylist, bool bIsSolo = true, bool bRespawnEnabled = false, int maxTeamSize = 1)
     {
         this->BasePlaylist = UObject::FindObject<UFortPlaylistAthena>(BasePlaylist);
-        
+
         this->BasePlaylist->bNoDBNO = !bIsSolo;
         this->bRespawnEnabled = bRespawnEnabled;
-        
+
         if (bRespawnEnabled)
         {
             this->BasePlaylist->FriendlyFireType = EFriendlyFireType::On;
@@ -28,7 +28,7 @@ public:
         }
 
         auto GameState = static_cast<AAthena_GameState_C*>(GetWorld()->GameState);
-        
+
         GameState->CurrentPlaylistId = this->BasePlaylist->PlaylistId;
         GameState->CurrentPlaylistData = this->BasePlaylist;
 
@@ -37,13 +37,13 @@ public:
 
         this->Teams = std::make_unique<PlayerTeams>(maxTeamSize);
     }
-    
+
     ~AbstractGameModeBase()
     {
         GetWorld()->GameState->AuthorityGameMode->ResetLevel();
     }
 
-    void LoadKilledPlayer(AFortPlayerControllerAthena* Controller) 
+    void LoadKilledPlayer(AFortPlayerControllerAthena* Controller)
     {
         if (this->bRespawnEnabled)
         {
@@ -62,7 +62,7 @@ public:
 
         OnPlayerKilled(Controller);
     }
-    
+
     void LoadJoiningPlayer(AFortPlayerControllerAthena* Controller)
     {
         LOG_INFO("({}) Initializing {} that has just joined!", "GameModeBase", Controller->PlayerState->GetPlayerName().ToString());
@@ -70,20 +70,23 @@ public:
         auto Pawn = SpawnActor<APlayerPawn_Athena_C>(GetPlayerStart(Controller).Translation, Controller, {});
         Pawn->Owner = Controller;
         Pawn->OnRep_Owner();
-        
+
         Controller->Pawn = Pawn;
         Controller->AcknowledgedPawn = Pawn;
         Controller->OnRep_Pawn();
         Controller->Possess(Pawn);
-        
+
+        //This state gets auto reseted once the player respawns (aka jumps from the bus)
+        CreateCheatManager(Controller)->God();
+
         Pawn->SetMaxHealth(this->maxHealth);
         Pawn->SetMaxShield(this->maxShield);
-        
+
         Controller->bHasClientFinishedLoading = true;
         Controller->bHasServerFinishedLoading = true;
         Controller->bHasInitiallySpawned = true;
         Controller->OnRep_bHasServerFinishedLoading();
-        
+
         auto PlayerState = (AFortPlayerStateAthena*)Controller->PlayerState;
         PlayerState->bHasFinishedLoading = true;
         PlayerState->bHasStartedPlaying = true;
@@ -109,7 +112,7 @@ public:
                 PlayerState->OnRep_CharacterParts();
             }
         }
-        
+
         InitInventory(Controller);
         EquipLoadout(Controller, this->GetPlaylistLoadout());
         ApplyAbilities(Pawn);
@@ -117,7 +120,7 @@ public:
         OnPlayerJoined(Controller);
     }
 
-    void OnPlayerJoined(AFortPlayerControllerAthena*& Controller) override //derived classes should implement these
+    void OnPlayerJoined(AFortPlayerControllerAthena*& Controller) override // derived classes should implement these
     {
     }
 
@@ -127,8 +130,7 @@ public:
 
     virtual PlayerLoadout& GetPlaylistLoadout()
     {
-        static PlayerLoadout Ret = 
-        {
+        static PlayerLoadout Ret = {
             FindWID("WID_Harvest_Pickaxe_Athena_C_T01"),
             FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
             FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
@@ -148,6 +150,6 @@ private:
     int maxShield = 100;
     bool bRespawnEnabled = false;
     bool bIsSolo = true;
-    
+
     UFortPlaylistAthena* BasePlaylist;
 };
