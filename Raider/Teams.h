@@ -76,12 +76,11 @@ public:
         return static_cast<EFortTeam>(availableSlot);
     }
 
-    Team* FindAvailableSpot()
+    std::shared_ptr<Team> FindAvailableSpot()
     {
         for (auto& Team : Teams)
         {
             if (Team->Num() == maxTeamSize)
-                
                 continue;
 
             return Team;
@@ -96,7 +95,7 @@ public:
         if (!AvailableSpot)
         {
             LOG_ERROR("({}) Couldn't find a team for {}, making a new one!", "Teams", Member->PlayerState->GetPlayerName().ToString());
-            Team* TeamInstance = new Team(this->GetNextSlot(), this->maxTeamSize);
+            auto TeamInstance = std::make_shared<Team>(this->GetNextSlot(), this->maxTeamSize);
             this->Teams.push_back(TeamInstance);
 
             TeamInstance->AddPlayer(Member);
@@ -109,5 +108,5 @@ public:
 
 private:
     int maxTeamSize;
-    std::vector<Team*> Teams;
+    std::vector<std::shared_ptr<Team>> Teams;
 };
