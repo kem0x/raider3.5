@@ -1,11 +1,13 @@
 #pragma once
 
 #include "UE4.h"
-#include "GameModes/GameModeDuos.hpp"
+#include "GameModes/GameModes.hpp"
+
+typedef GameModeDuos CurrentGameMode;
 
 namespace Game
 {
-    inline std::unique_ptr<GameModeDuos> Mode;
+    inline std::unique_ptr<CurrentGameMode> Mode;
 
     void Start()
     {
@@ -36,7 +38,7 @@ namespace Game
         GameMode->MatchState = InProgress;
         GameMode->K2_OnSetMatchState(InProgress);
 
-        Mode = std::make_unique<GameModeDuos>();
+        Mode = std::make_unique<CurrentGameMode>();
 
         //GameState->CurrentPlaylistData = Playlist;
         //GameState->OnRep_CurrentPlaylistData();
