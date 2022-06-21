@@ -256,13 +256,10 @@ namespace UFunctionHooks
             if (Params && DeadPC)
             {
                 auto GameMode = static_cast<AFortGameModeAthena*>(GameState->AuthorityGameMode);
-
                 auto KillerPlayerState = static_cast<AFortPlayerStateAthena*>(Params->DeathReport.KillerPlayerState);
-                
-                SpawnActor<ABP_VictoryDrone_C>(DeadPC->Pawn->K2_GetActorLocation())->PlaySpawnOutAnim();
-                DeadPC->Pawn->K2_DestroyActor();
                 GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
 
+                SpawnActor<ABP_VictoryDrone_C>(DeadPC->Pawn->K2_GetActorLocation())->PlaySpawnOutAnim();
                 FDeathInfo DeathData;
                 DeathData.bDBNO = false;
                 DeathData.DeathLocation = DeadPC->Pawn->K2_GetActorLocation();
@@ -270,6 +267,8 @@ namespace UFunctionHooks
                 
                 DeathData.DeathCause = KillerPlayerState ? EDeathCause::Sniper : EDeathCause::FallDamage; // TODO: Determine what the actual death cause was.
                 DeathData.FinisherOrDowner = KillerPlayerState ? KillerPlayerState : DeadPlayerState;
+
+                DeadPC->Pawn->K2_DestroyActor();
                 
                 DeadPlayerState->DeathInfo = DeathData;
                 DeadPlayerState->OnRep_DeathInfo();
