@@ -448,7 +448,7 @@ public:
 class UArrayProperty : public UProperty
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0070(0x0008) MISSED OFFSET
+	UProperty* Inner;                                       // 0x0070(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -464,7 +464,7 @@ public:
 class UObjectPropertyBase : public UProperty
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0070(0x0008) MISSED OFFSET
+	UClass* propertyClass;                                       // 0x0070(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{

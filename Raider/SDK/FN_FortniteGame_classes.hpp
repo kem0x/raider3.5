@@ -15137,8 +15137,8 @@ public:
 	unsigned char                                      UnknownData21[0x28];                                      // 0x0E98(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortGameData.GamepadSettingsPS4
 	unsigned char                                      UnknownData22[0x28];                                      // 0x0EC0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortGameData.GamepadSettingsXboxOne
 	unsigned char                                      UnknownData23[0x28];                                      // 0x0EE8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortGameData.TouchInputSettings
-	unsigned char                                      UnknownData24[0x10];                                      // 0x0F10(0x0010) UNKNOWN PROPERTY: ArrayProperty FortniteGame.FortGameData.LootTierDataTables
-	unsigned char                                      UnknownData25[0x10];                                      // 0x0F20(0x0010) UNKNOWN PROPERTY: ArrayProperty FortniteGame.FortGameData.LootPackageDataTables
+	struct TArray<class TSoftObjectPtr<UDataTable>>    LootTierDataTables;                                       // 0x0F10(0x0010) UNKNOWN PROPERTY: ArrayProperty FortniteGame.FortGameData.LootTierDataTables
+	struct TArray<class TSoftObjectPtr<UDataTable>>    LootPackageDataTables;                                    // 0x0F20(0x0010) UNKNOWN PROPERTY: ArrayProperty FortniteGame.FortGameData.LootPackageDataTables
 	unsigned char                                      UnknownData26[0x28];                                      // 0x0F30(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortGameData.WaveSetCollectionData
 	unsigned char                                      UnknownData27[0x28];                                      // 0x0F58(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortGameData.WaveSetData
 	unsigned char                                      UnknownData28[0x28];                                      // 0x0F80(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortGameData.ModifierSetData

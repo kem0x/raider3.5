@@ -17,21 +17,21 @@ DWORD WINAPI Main(LPVOID lpParam)
 
     Native::InitializeAll();
     UFunctionHooks::Initialize();
-
+    
     DETOUR_START
     DetourAttachE(Native::NetDriver::TickFlush, Hooks::TickFlush);
     DetourAttachE(Native::LocalPlayer::SpawnPlayActor, Hooks::LocalPlayerSpawnPlayActor);
-
+    
     auto Address = Utils::FindPattern(Patterns::NetDebug);
     CheckNullFatal(Address, "Failed to find NetDebug");
     void* (*NetDebug)(void* _this) = nullptr;
     AddressToFunction(Address, NetDebug);
-
+    
     DetourAttachE(NetDebug, Hooks::NetDebug);
     DetourAttachE(ProcessEvent, Hooks::ProcessEventHook);
     DETOUR_END
     
-    LOG_INFO("Base Address: {}", Imagebase);
+    LOG_INFO("Base Address: {:X}", Imagebase);
 
     CreateConsole();
 
