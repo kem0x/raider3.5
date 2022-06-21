@@ -103,7 +103,6 @@
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
-      <AdditionalOptions>/FS</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

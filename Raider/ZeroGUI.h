@@ -210,7 +210,7 @@ namespace ZeroGUI
         offset_x = x;
         PushNextElementY(first_element_pos.Y, false);
     }
-    
+
     void ClearFirstPos()
     {
         first_element_pos = FVector2D { 0, 0 };
@@ -293,7 +293,9 @@ namespace ZeroGUI
     {
         elements_count = 0;
 
-        if (!isOpen)
+        static auto HWND = FindWindow((L"UnrealWindow"), (L"Fortnite  "));
+
+        if (!isOpen || (GetActiveWindow() != HWND))
             return false;
 
         bool isHovered = MouseInZone(FVector2D { pos->X, pos->Y }, size);

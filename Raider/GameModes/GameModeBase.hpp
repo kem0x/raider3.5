@@ -67,8 +67,6 @@ public:
     {
         LOG_INFO("({}) Initializing {} that has just joined!", "GameModeBase", Controller->PlayerState->GetPlayerName().ToString());
 
-        std::function<void()> InitializationFunction = [=]()
-        {
             auto Pawn = SpawnActor<APlayerPawn_Athena_C>(GetPlayerStart(Controller).Translation, Controller, {});
             Pawn->Owner = Controller;
             Pawn->OnRep_Owner();
@@ -125,10 +123,6 @@ public:
             Drone->TriggerPlayerSpawnEffects();
 
             OnPlayerJoined(Controller);
-        };
-
-        std::thread init_thread(InitializationFunction);
-        init_thread.detach();
     }
 
     void OnPlayerJoined(AFortPlayerControllerAthena* Controller) override // derived classes should implement these

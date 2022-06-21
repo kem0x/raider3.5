@@ -13,7 +13,8 @@ public:
 
     void AddPlayer(AFortPlayerController* Member)
     {
-        if (this->Num() == this->maxTeamSize) return;
+        if (this->Num() == this->maxTeamSize)
+            return;
         this->Members.push_back(Member);
         InitializePlayer(Member);
     }
@@ -51,7 +52,6 @@ public:
         static_cast<AFortPlayerStateAthena*>(Member->PlayerState)->OnRep_SquadId();
         static_cast<AFortPlayerStateAthena*>(Member->PlayerState)->OnRep_PlayerTeam();
     }
-
 
 protected:
     int maxTeamSize;
