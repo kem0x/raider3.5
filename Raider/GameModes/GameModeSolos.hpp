@@ -21,13 +21,7 @@ public:
         this->Teams->AddPlayerToRandomTeam(Controller);
     }
 
-    void OnPlayerKilled(AFortPlayerControllerAthena*& Controller) override
+    /*void OnPlayerKilled(AFortPlayerControllerAthena*& Controller) override
     {
-        Controller->RespawnPlayerAfterDeath();
-        
-        auto CM = (UFortCheatManager*)Controller->CheatManager;
-        CM->RespawnPlayer();
-        CM->RespawnPlayerServer();
-        // One of these two functions causes glider to work properly i honestly dont know which one
-    }
+    }*/
 };

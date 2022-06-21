@@ -135,6 +135,13 @@ public:
 
     virtual void OnPlayerKilled(AFortPlayerControllerAthena*& Controller) override
     {
+        if (this->bRespawnEnabled)
+        {
+            auto CheatManager = static_cast<UFortCheatManager*>(Controller->CheatManager);
+            Controller->RespawnPlayerAfterDeath();
+            CheatManager->RespawnPlayerServer();
+            CheatManager->RespawnPlayer();
+        }
     }
 
     virtual PlayerLoadout& GetPlaylistLoadout()

@@ -59,6 +59,8 @@ namespace Hooks
             return;
         case 5: // NMT_Login
         {
+            if (GetWorld()->GameState->HasMatchStarted()) return;
+        
             Bunch[7] += (16 * 1024 * 1024);
 
             auto OnlinePlatformName = FString(L"");
