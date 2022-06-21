@@ -10,7 +10,7 @@ public:
         LOG_INFO("Initializing GameMode Duos!");
     }
 
-    void OnPlayerJoined(AFortPlayerControllerAthena*& Controller) override
+    void OnPlayerJoined(AFortPlayerControllerAthena* Controller) override
     {
         this->Teams->AddPlayerToRandomTeam(Controller);
     }

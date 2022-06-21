@@ -105,9 +105,6 @@
       </AdditionalLibraryDirectories>
       <AdditionalOptions>/FS</AdditionalOptions>
     </Link>
-    <CustomBuildStep>
-      <Command>/FS</Command>
-    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />

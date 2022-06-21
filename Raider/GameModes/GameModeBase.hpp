@@ -6,8 +6,8 @@
 class IGameModeBase
 {
 public:
-    virtual void OnPlayerJoined(AFortPlayerControllerAthena*& Controller) = 0;
-    virtual void OnPlayerKilled(AFortPlayerControllerAthena*& Controller) = 0;
+    virtual void OnPlayerJoined(AFortPlayerControllerAthena* Controller) = 0;
+    virtual void OnPlayerKilled(AFortPlayerControllerAthena* Controller) = 0;
 };
 
 class AbstractGameModeBase : protected IGameModeBase
@@ -66,7 +66,9 @@ public:
     void LoadJoiningPlayer(AFortPlayerControllerAthena* Controller)
     {
         LOG_INFO("({}) Initializing {} that has just joined!", "GameModeBase", Controller->PlayerState->GetPlayerName().ToString());
-        std::function<void()> InitializationFunction = [&](){
+
+        std::function<void()> InitializationFunction = [=]()
+        {
             auto Pawn = SpawnActor<APlayerPawn_Athena_C>(GetPlayerStart(Controller).Translation, Controller, {});
             Pawn->Owner = Controller;
             Pawn->OnRep_Owner();
@@ -76,8 +78,8 @@ public:
             Controller->OnRep_Pawn();
             Controller->Possess(Pawn);
 
-            //This state gets auto reseted once the player respawns (aka jumps from the bus)
-            // CreateCheatManager(Controller)->God();
+            // This state gets auto reseted once the player respawns (aka jumps from the bus)
+            //  CreateCheatManager(Controller)->God();
             Pawn->HealthSet->Health.Minimum = 1.0f; // This is more accurate to the actual game, you can take damage but you will not die
 
             Pawn->SetMaxHealth(this->maxHealth);
@@ -123,17 +125,17 @@ public:
             Drone->TriggerPlayerSpawnEffects();
 
             OnPlayerJoined(Controller);
-    };
+        };
 
-    std::thread init_thread(InitializationFunction);
-    init_thread.detach();
-}
+        std::thread init_thread(InitializationFunction);
+        init_thread.detach();
+    }
 
-    void OnPlayerJoined(AFortPlayerControllerAthena*& Controller) override // derived classes should implement these
+    void OnPlayerJoined(AFortPlayerControllerAthena* Controller) override // derived classes should implement these
     {
     }
 
-    virtual void OnPlayerKilled(AFortPlayerControllerAthena*& Controller) override
+    virtual void OnPlayerKilled(AFortPlayerControllerAthena* Controller) override
     {
         if (this->bRespawnEnabled)
         {
@@ -158,7 +160,7 @@ public:
         return Ret;
     }
 
-    void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector{ 1250, 1818, 3284 }, FQuat Rotation = FQuat(), bool bResetCharacterParts = true)
+    void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector { 1250, 1818, 3284 }, FQuat Rotation = FQuat(), bool bResetCharacterParts = true)
     {
         if (PlayerController->Pawn)
             PlayerController->Pawn->K2_DestroyActor();
@@ -209,14 +211,14 @@ public:
         ApplyAbilities(Pawn);
     }
 
-    protected:
-        std::unique_ptr<PlayerTeams> Teams;
+protected:
+    std::unique_ptr<PlayerTeams> Teams;
 
-    private:
-        int maxHealth = 100;
-        int maxShield = 100;
-        bool bRespawnEnabled = false;
-        bool bIsSolo = true;
+private:
+    int maxHealth = 100;
+    int maxShield = 100;
+    bool bRespawnEnabled = false;
+    bool bIsSolo = true;
 
-        UFortPlaylistAthena* BasePlaylist;
+    UFortPlaylistAthena* BasePlaylist;
 };
