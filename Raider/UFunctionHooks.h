@@ -245,90 +245,87 @@ namespace UFunctionHooks
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerControllerZone.ClientOnPawnDied", { // Spectating hasn't been majorly testing
             auto Params = (AFortPlayerControllerZone_ClientOnPawnDied_Params*)Parameters;
-            auto DeadPC = (AFortPlayerControllerAthena*)Object;
-            auto DeadPlayerState = (AFortPlayerStateAthena*)DeadPC->PlayerState;
+            
+            auto DeadPC = static_cast<AFortPlayerControllerAthena*>(Object);
+            auto DeadPlayerState = static_cast<AFortPlayerStateAthena*>(DeadPC->PlayerState);
+
             auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
-            auto GameMode = (AFortGameModeAthena*)GameState->AuthorityGameMode;
-
-            if (DeadPC && Params)
+            GameState->PlayersLeft--;
+            GameState->OnRep_PlayersLeft();
+            
+            if (Params && DeadPC)
             {
-                auto KillerPawn = Params->DeathReport.KillerPawn;
-                auto KillerPlayerState = (AFortPlayerStateAthena*)Params->DeathReport.KillerPlayerState;
+                auto GameMode = static_cast<AFortGameModeAthena*>(GameState->AuthorityGameMode);
 
-                GameState->PlayersLeft--;
-                GameState->OnRep_PlayersLeft();
-                FVector DeadPawnLocation = DeadPC->Pawn->K2_GetActorLocation();
-                SpawnActor(ABP_VictoryDrone_C::StaticClass(), DeadPawnLocation);
-
-                float DistanceActor = 0;
-                if (KillerPawn)
-                    DistanceActor = KillerPawn->GetDistanceTo(DeadPC->Pawn);
-
+                auto KillerPlayerState = static_cast<AFortPlayerStateAthena*>(Params->DeathReport.KillerPlayerState);
+                
+                SpawnActor<ABP_VictoryDrone_C>(DeadPC->Pawn->K2_GetActorLocation())->PlaySpawnOutAnim();
                 DeadPC->Pawn->K2_DestroyActor();
                 GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
 
-                FDeathInfo deathInfo;
-                deathInfo.bDBNO = false;
-                deathInfo.DeathLocation = DeadPawnLocation;
-                deathInfo.Distance = DistanceActor;
-                // TODO: Determine what the actual death cause was.
+                FDeathInfo DeathData;
+                DeathData.bDBNO = false;
+                DeathData.DeathLocation = DeadPC->Pawn->K2_GetActorLocation();
+                DeathData.Distance = Params->DeathReport.KillerPawn ? Params->DeathReport.KillerPawn->GetDistanceTo(DeadPC->Pawn) : 0;
+                
+                DeathData.DeathCause = KillerPlayerState ? EDeathCause::Sniper : EDeathCause::FallDamage; // TODO: Determine what the actual death cause was.
+                DeathData.FinisherOrDowner = KillerPlayerState ? KillerPlayerState : DeadPlayerState;
+                
+                DeadPlayerState->DeathInfo = DeathData;
+                DeadPlayerState->OnRep_DeathInfo();
 
-                if (KillerPlayerState && KillerPawn)
+                if (KillerPlayerState)
                 {
-                    deathInfo.DeathCause = EDeathCause::Sniper;
-                    deathInfo.FinisherOrDowner = KillerPlayerState;
-                    KillerPlayerState->ClientReportKill(DeadPlayerState);
-                    DeadPlayerState->DeathInfo = deathInfo;
-                    DeadPlayerState->OnRep_DeathInfo();
                     KillerPlayerState->KillScore++;
                     KillerPlayerState->TeamKillScore++;
+
+                    KillerPlayerState->ClientReportKill(DeadPlayerState);
                     KillerPlayerState->OnRep_Kills();
+
                     Spectate(DeadPC->NetConnection, KillerPlayerState);
                 }
-                else
-                {
-                    deathInfo.DeathCause = EDeathCause::FallDamage;
-                    deathInfo.FinisherOrDowner = DeadPlayerState;
-                    DeadPlayerState->ClientReportKill(DeadPlayerState);
-                    DeadPlayerState->DeathInfo = deathInfo;
-                    DeadPlayerState->OnRep_DeathInfo();
-                    if (GameState->PlayersLeft > 0)
-                    {
-                        TArray<AActor*> Pawns;
-                        static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
-                        GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
-                        auto RandomPawn = (AFortPlayerPawnAthena*)Pawns[rand() % Pawns.Num()];
-                        if (RandomPawn)
-                            Spectate(DeadPC->NetConnection, (AFortPlayerStateAthena*)RandomPawn->Controller->PlayerState);
-                    }
-                }
-
+                
                 if (GameState->PlayersLeft == 1)
                 {
-                    TArray<AActor*> Pawns;
-                    static auto GameplayStatics = (UGameplayStatics*)UGameplayStatics::StaticClass()->CreateDefaultObject();
-                    GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), APlayerPawn_Athena_C::StaticClass(), &Pawns);
-                    auto WinnerPawn = (AFortPlayerPawnAthena*)Pawns[0];
-                    auto WinnerPC = (AFortPlayerControllerAthena*)WinnerPawn->Controller;
-                    auto WinnerState = (AFortPlayerStateAthena*)WinnerPC->PlayerState;
-                    if (!WinnerPC->IsClientNotifiedOfWin())
+                    TArray<AFortPlayerPawn*> OutActors;
+                    GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
+                    
+                    auto Winner = OutActors[0];
+                    auto Controller = static_cast<AFortPlayerControllerAthena*>(Winner->Controller);
+                    
+                    if (!Controller->bClientNotifiedOfWin)
                     {
-                        GameState->WinningPlayerName = WinnerState->PlayerName;
+                        GameState->WinningPlayerName = Controller->PlayerState->GetPlayerName();
                         GameState->OnRep_WinningPlayerName();
+
+                        Controller->PlayWinEffects();
+                        Controller->ClientNotifyWon();
+                        
+                        Controller->ClientGameEnded(Winner, true);
                         GameMode->ReadyToEndMatch();
                         GameMode->EndMatch();
-
-                        WinnerPC->ClientNotifyWon();
-                        WinnerPC->ClientNotifyTeamWon();
-                        WinnerPC->PlayWinEffects();
-                        WinnerPC->bClientNotifiedOfWin = true;
-                        WinnerPC->bClientNotifiedOfTeamWin = true;
-                        WinnerState->bHasWonAGame = true;
-                        WinnerPC->ClientGameEnded(WinnerPawn, true);
                     }
+                    OutActors.FreeArray();
                 }
+
+                if (GameState->PlayersLeft > 1) {
+                    TArray<AFortPlayerPawn*> OutActors;
+                    GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
+                    auto RandomTarget = OutActors[rand() % OutActors.Num()];
+
+                    if (!RandomTarget)
+                    {
+                        LOG_ERROR("Couldn't assign to a spectator a target! Pawn picked was NULL!");
+                        return false;
+                    }
+                                        
+                    Spectate(DeadPC->NetConnection, static_cast<AFortPlayerStateAthena*>(RandomTarget->Controller->PlayerState));
+                    OutActors.FreeArray();
+                }
+            } else
+            {
+                LOG_ERROR("Parameters of ClientOnPawnDied were invalid!");
             }
-            // dont wanna return 0 but u have to
             return false;
         })
 
