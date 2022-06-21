@@ -66,64 +66,68 @@ public:
     void LoadJoiningPlayer(AFortPlayerControllerAthena* Controller)
     {
         LOG_INFO("({}) Initializing {} that has just joined!", "GameModeBase", Controller->PlayerState->GetPlayerName().ToString());
+        std::function<void()> InitializationFunction = [&](){
+            auto Pawn = SpawnActor<APlayerPawn_Athena_C>(GetPlayerStart(Controller).Translation, Controller, {});
+            Pawn->Owner = Controller;
+            Pawn->OnRep_Owner();
 
-        auto Pawn = SpawnActor<APlayerPawn_Athena_C>(GetPlayerStart(Controller).Translation, Controller, {});
-        Pawn->Owner = Controller;
-        Pawn->OnRep_Owner();
+            Controller->Pawn = Pawn;
+            Controller->AcknowledgedPawn = Pawn;
+            Controller->OnRep_Pawn();
+            Controller->Possess(Pawn);
 
-        Controller->Pawn = Pawn;
-        Controller->AcknowledgedPawn = Pawn;
-        Controller->OnRep_Pawn();
-        Controller->Possess(Pawn);
+            //This state gets auto reseted once the player respawns (aka jumps from the bus)
+            // CreateCheatManager(Controller)->God();
+            Pawn->HealthSet->Health.Minimum = 1.0f; // This is more accurate to the actual game, you can take damage but you will not die
 
-        //This state gets auto reseted once the player respawns (aka jumps from the bus)
-        // CreateCheatManager(Controller)->God();
-        Pawn->HealthSet->Health.Minimum = 1.0f; // This is more accurate to the actual game, you can take damage but you will not die
+            Pawn->SetMaxHealth(this->maxHealth);
+            Pawn->SetMaxShield(this->maxShield);
 
-        Pawn->SetMaxHealth(this->maxHealth);
-        Pawn->SetMaxShield(this->maxShield);
+            Controller->bHasClientFinishedLoading = true;
+            Controller->bHasServerFinishedLoading = true;
+            Controller->bHasInitiallySpawned = true;
+            Controller->OnRep_bHasServerFinishedLoading();
 
-        Controller->bHasClientFinishedLoading = true;
-        Controller->bHasServerFinishedLoading = true;
-        Controller->bHasInitiallySpawned = true;
-        Controller->OnRep_bHasServerFinishedLoading();
+            auto PlayerState = (AFortPlayerStateAthena*)Controller->PlayerState;
+            PlayerState->bHasFinishedLoading = true;
+            PlayerState->bHasStartedPlaying = true;
+            PlayerState->OnRep_bHasStartedPlaying();
 
-        auto PlayerState = (AFortPlayerStateAthena*)Controller->PlayerState;
-        PlayerState->bHasFinishedLoading = true;
-        PlayerState->bHasStartedPlaying = true;
-        PlayerState->OnRep_bHasStartedPlaying();
+            static auto FortRegisteredPlayerInfo = ((UFortGameInstance*)GetWorld()->OwningGameInstance)->RegisteredPlayers[0]; // UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
 
-        static auto FortRegisteredPlayerInfo = ((UFortGameInstance*)GetWorld()->OwningGameInstance)->RegisteredPlayers[0]; // UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
-
-        if (FortRegisteredPlayerInfo)
-        {
-            auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
-
-            if (Hero)
+            if (FortRegisteredPlayerInfo)
             {
-                UFortHeroType* HeroType = Hero->GetHeroTypeBP(); // UObject::FindObject<UFortHeroType>("FortHeroType HID_Outlander_015_F_V1_SR_T04.HID_Outlander_015_F_V1_SR_T04");
-                PlayerState->HeroType = HeroType;
-                PlayerState->OnRep_HeroType();
+                auto Hero = FortRegisteredPlayerInfo->AthenaMenuHeroDef;
 
-                static auto Head = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
-                static auto Body = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
+                if (Hero)
+                {
+                    UFortHeroType* HeroType = Hero->GetHeroTypeBP(); // UObject::FindObject<UFortHeroType>("FortHeroType HID_Outlander_015_F_V1_SR_T04.HID_Outlander_015_F_V1_SR_T04");
+                    PlayerState->HeroType = HeroType;
+                    PlayerState->OnRep_HeroType();
 
-                PlayerState->CharacterParts[(uint8_t)EFortCustomPartType::Head] = Head;
-                PlayerState->CharacterParts[(uint8_t)EFortCustomPartType::Body] = Body;
-                PlayerState->OnRep_CharacterParts();
+                    static auto Head = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Head1.F_Med_Head1");
+                    static auto Body = UObject::FindObject<UCustomCharacterPart>("CustomCharacterPart F_Med_Soldier_01.F_Med_Soldier_01");
+
+                    PlayerState->CharacterParts[(uint8_t)EFortCustomPartType::Head] = Head;
+                    PlayerState->CharacterParts[(uint8_t)EFortCustomPartType::Body] = Body;
+                    PlayerState->OnRep_CharacterParts();
+                }
             }
-        }
 
-        InitInventory(Controller);
-        EquipLoadout(Controller, this->GetPlaylistLoadout());
-        ApplyAbilities(Pawn);
+            InitInventory(Controller);
+            EquipLoadout(Controller, this->GetPlaylistLoadout());
+            ApplyAbilities(Pawn);
 
-        auto Drone = SpawnActor<ABP_VictoryDrone_C>(Controller->K2_GetActorLocation());
-        Drone->InitDrone();
-        Drone->TriggerPlayerSpawnEffects();
-        
-        OnPlayerJoined(Controller);
-    }
+            auto Drone = SpawnActor<ABP_VictoryDrone_C>(Controller->K2_GetActorLocation());
+            Drone->InitDrone();
+            Drone->TriggerPlayerSpawnEffects();
+
+            OnPlayerJoined(Controller);
+    };
+
+    std::thread init_thread(InitializationFunction);
+    init_thread.detach();
+}
 
     void OnPlayerJoined(AFortPlayerControllerAthena*& Controller) override // derived classes should implement these
     {
@@ -168,7 +172,7 @@ public:
         PlayerController->OnRep_Pawn();
         PlayerController->Possess(Pawn);
 
-        Pawn->SetMaxHealth(this->maxHealth); 
+        Pawn->SetMaxHealth(this->maxHealth);
         Pawn->SetMaxShield(this->maxShield);
 
         Pawn->HealthSet->Health.Minimum = 0.0f; // Disables spawn island protection
@@ -198,14 +202,14 @@ public:
         ApplyAbilities(Pawn);
     }
 
-protected:
-    std::unique_ptr<PlayerTeams> Teams;
+    protected:
+        std::unique_ptr<PlayerTeams> Teams;
 
-private:
-    int maxHealth = 100;
-    int maxShield = 100;
-    bool bRespawnEnabled = false;
-    bool bIsSolo = true;
+    private:
+        int maxHealth = 100;
+        int maxShield = 100;
+        bool bRespawnEnabled = false;
+        bool bIsSolo = true;
 
-    UFortPlaylistAthena* BasePlaylist;
+        UFortPlaylistAthena* BasePlaylist;
 };
