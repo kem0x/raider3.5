@@ -3951,6 +3951,18 @@ enum class EClassRepNodeMapping : uint8_t
 	EClassRepNodeMapping_MAX       = 5
 };
 
+constexpr const char* ClassRepNodeMappingToString(EClassRepNodeMapping e) 
+{
+	switch (e)
+	{
+		case EClassRepNodeMapping::NotRouted: return "NotRouted";
+		case EClassRepNodeMapping::RelevantAllConnections: return "RelevantAllConnections";
+		case EClassRepNodeMapping::Spatialize_Static: return "Spatialize_Static";
+		case EClassRepNodeMapping::Spatialize_Dynamic: return "Spatialize_Dynamic";
+		case EClassRepNodeMapping::Spatialize_Dormancy: return "Spatialize_Dormancy";
+		default: return "Invalid";
+	}
+}
 
 // Enum FortniteGame.EFortSafeZoneState
 enum class EFortSafeZoneState : uint8_t

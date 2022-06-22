@@ -93,11 +93,9 @@
     <ClInclude Include="Hooks.h">
       <Filter>UE4\Hooks</Filter>
     </ClInclude>
-    <ClInclude Include="Replication.h">
-      <Filter>UE4\NetCode</Filter>
-    </ClInclude>
     <ClInclude Include="Logger.hpp" />
     <ClInclude Include="GameModes\GameModes.hpp" />
+    <ClInclude Include="GameModes\GameModeLateGame.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

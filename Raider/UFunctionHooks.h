@@ -620,17 +620,20 @@ namespace UFunctionHooks
                 for (auto&& Pair : ClassRepNodePolicies)
                 {
                     auto key = Pair.Key().ResolveObjectPtr();
+                    auto& value = Pair.Value();
+
+                    LOG_INFO("ClassRepNodePolicies: {} - {}", key->GetName(), ClassRepNodeMappingToString(value));
 
                     if (key == AFortInventory::StaticClass())
                     {
-                        Pair.Value() = EClassRepNodeMapping::RelevantAllConnections;
-                        LOG_INFO("Found ClassRepNodePolicy for AFortInventory! {}", (int)Pair.Value());
+                        value = EClassRepNodeMapping::RelevantAllConnections;
+                        LOG_INFO("Found ClassRepNodePolicy for AFortInventory! {}", (int)value);
                     }
 
                     if ( key == AFortQuickBars::StaticClass())
                     {
-                        Pair.Value() = EClassRepNodeMapping::RelevantAllConnections;
-                        LOG_INFO("Found ClassRepNodePolicy for AFortQuickBars! {}", (int)Pair.Value());
+                        value = EClassRepNodeMapping::RelevantAllConnections;
+                        LOG_INFO("Found ClassRepNodePolicy for AFortQuickBars! {}", (int)value);
                     }
                 }
 

@@ -14,4 +14,8 @@ public:
     {
         this->Teams->AddPlayerToRandomTeam(Controller);
     }
+
+    void InitializeGameplay()
+    {
+    }
 };

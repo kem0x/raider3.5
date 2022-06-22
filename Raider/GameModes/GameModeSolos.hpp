@@ -21,6 +21,10 @@ public:
         this->Teams->AddPlayerToRandomTeam(Controller);
     }
 
+    void InitializeGameplay()
+    {
+    }
+
     /*void OnPlayerKilled(AFortPlayerControllerAthena*& Controller) override
     {
     }*/
