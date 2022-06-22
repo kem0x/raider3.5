@@ -6,12 +6,7 @@ class GameModeLateGame : public AbstractGameModeBase
 {
 public:
     GameModeLateGame()
-        : AbstractGameModeBase("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo")
-    {
-    }
-
-    GameModeLateGame(std::string PlaylistName)
-        : AbstractGameModeBase(PlaylistName, true, true, 1)
+    : AbstractGameModeBase("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo", false, false, 1)
     {
         LOG_INFO("Initializing Late Game!");
         LOG_INFO("Trying to set SafeZone radius!");
@@ -30,12 +25,8 @@ public:
         GameMode->SafeZoneIndicator->SetSafeZoneRadiusAndCenter(4000, SafeZoneCenter);
     }
 
-    void OnPlayerJoined(AFortPlayerControllerAthena*& Controller) override
+    void OnPlayerJoined(AFortPlayerControllerAthena* Controller) override
     {
         this->Teams->AddPlayerToRandomTeam(Controller);
     }
-
-    /*void OnPlayerKilled(AFortPlayerControllerAthena*& Controller) override
-    {
-    }*/
 };
