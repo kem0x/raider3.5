@@ -275,6 +275,11 @@ namespace UFunctionHooks
 
                 if (KillerPlayerState)
                 {
+                    if (auto Controller = static_cast<AFortPlayerControllerPvP*>(Params->DeathReport.KillerPawn->Controller))
+                    {
+                        Controller->ClientReceiveKillNotification(KillerPlayerState, DeadPlayerState);
+                    }
+                    
                     KillerPlayerState->KillScore++;
                     KillerPlayerState->TeamKillScore++;
 
