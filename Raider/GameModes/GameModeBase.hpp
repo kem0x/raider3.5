@@ -13,11 +13,11 @@ public:
 class AbstractGameModeBase : protected IGameModeBase
 {
 public:
-    AbstractGameModeBase(const std::string BasePlaylist, bool bIsSolo = true, bool bRespawnEnabled = false, int maxTeamSize = 1)
+    AbstractGameModeBase(const std::string BasePlaylist, bool bRespawnEnabled = false, int maxTeamSize = 1)
     {
         this->BasePlaylist = UObject::FindObject<UFortPlaylistAthena>(BasePlaylist);
 
-        this->BasePlaylist->bNoDBNO = !bIsSolo;
+        this->BasePlaylist->bNoDBNO = maxTeamSize > 1;
         this->bRespawnEnabled = bRespawnEnabled;
 
         if (bRespawnEnabled)
@@ -212,7 +212,6 @@ private:
     int maxHealth = 100;
     int maxShield = 100;
     bool bRespawnEnabled = false;
-    bool bIsSolo = true;
 
     UFortPlaylistAthena* BasePlaylist;
 };
