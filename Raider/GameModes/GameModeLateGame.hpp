@@ -6,7 +6,7 @@ class GameModeLateGame : public AbstractGameModeBase
 {
 public:
     GameModeLateGame()
-    : AbstractGameModeBase("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo", false, 1)
+        : AbstractGameModeBase("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo", false, 1)
     {
         LOG_INFO("Initializing Late Game!");
         LOG_INFO("Trying to set SafeZone radius!");
