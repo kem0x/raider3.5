@@ -3,7 +3,7 @@
 #include "UE4.h"
 #include "GameModes/GameModes.hpp"
 
-typedef GameModeSolos CurrentGameMode;
+typedef GameModeLateGame CurrentGameMode;
 
 namespace Game
 {
