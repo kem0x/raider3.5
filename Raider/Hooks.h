@@ -16,7 +16,6 @@ namespace Hooks
         return true;
     }
 
-
     void TickFlush(UNetDriver* NetDriver, float DeltaSeconds)
     {
         if (!NetDriver)
@@ -24,17 +23,21 @@ namespace Hooks
 
         if (NetDriver->IsA(UIpNetDriver::StaticClass()) && NetDriver->ClientConnections.Num() > 0 && NetDriver->ClientConnections[0]->InternalAck == false)
         {
-            Replication::ServerReplicateActors(NetDriver);
+            // Replication::ServerReplicateActors(NetDriver);
+            if (NetDriver->ReplicationDriver)
+            {
+                Native::ReplicationDriver::ServerReplicateActors(NetDriver->ReplicationDriver);
+            }
         }
 
         Native::NetDriver::TickFlush(NetDriver, DeltaSeconds);
     }
-    
+
     uint8 Beacon_NotifyAcceptingConnection(AOnlineBeacon*) { return Native::World::NotifyAcceptingConnection(GetWorld()); }
     void* SeamlessTravelHandlerForWorld(UEngine* Engine, UWorld*) { return Native::Engine::SeamlessTravelHandlerForWorld(Engine, GetWorld()); }
     void* NetDebug(UObject*) { return nullptr; }
     __int64 CollectGarbage(__int64) { return 0; }
-    void WelcomePlayer(UWorld*, UNetConnection* IncomingConnection) {  Native::World::WelcomePlayer(GetWorld(), IncomingConnection); }
+    void WelcomePlayer(UWorld*, UNetConnection* IncomingConnection) { Native::World::WelcomePlayer(GetWorld(), IncomingConnection); }
     char KickPlayer(__int64, __int64, __int64) { return 0; }
     uint64 GetNetMode(UWorld*) { return NM_ListenServer; }
     void World_NotifyControlMessage(UWorld*, UNetConnection* Connection, uint8 MessageType, void* Bunch) { Native::World::NotifyControlMessage(GetWorld(), Connection, MessageType, Bunch); }
@@ -59,8 +62,9 @@ namespace Hooks
             return;
         case 5: // NMT_Login
         {
-            if (GetWorld()->GameState->HasMatchStarted()) return;
-        
+            if (GetWorld()->GameState->HasMatchStarted())
+                return;
+
             Bunch[7] += (16 * 1024 * 1024);
 
             auto OnlinePlatformName = FString(L"");
@@ -94,14 +98,14 @@ namespace Hooks
     void InitNetworkHooks()
     {
         DETOUR_START
-        DetourAttachE(Native::World::WelcomePlayer, WelcomePlayer)
-        DetourAttachE(Native::Actor::GetNetMode, GetNetMode)
-        DetourAttachE(Native::World::NotifyControlMessage, World_NotifyControlMessage)
-        DetourAttachE(Native::World::SpawnPlayActor, SpawnPlayActor)
-        DetourAttachE(Native::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage)
-        DetourAttachE(Native::OnlineSession::KickPlayer, KickPlayer)
-        DetourAttachE(Native::GameViewportClient::PostRender, PostRender)
-        DetourAttachE(Native::GC::CollectGarbage, CollectGarbage)
+        DetourAttachE(Native::World::WelcomePlayer, WelcomePlayer);
+        DetourAttachE(Native::Actor::GetNetMode, GetNetMode);
+        DetourAttachE(Native::World::NotifyControlMessage, World_NotifyControlMessage);
+        DetourAttachE(Native::World::SpawnPlayActor, SpawnPlayActor);
+        DetourAttachE(Native::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage);
+        DetourAttachE(Native::OnlineSession::KickPlayer, KickPlayer);
+        DetourAttachE(Native::GameViewportClient::PostRender, PostRender);
+        DetourAttachE(Native::GC::CollectGarbage, CollectGarbage);
         DETOUR_END
     }
 

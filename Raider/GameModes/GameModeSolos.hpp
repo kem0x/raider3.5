@@ -11,14 +11,18 @@ public:
     }
 
     GameModeSolos(std::string SoloPlaylistName)
-        : AbstractGameModeBase(SoloPlaylistName, true, true, 1)
+        : AbstractGameModeBase(SoloPlaylistName, true, 1)
     {
         LOG_INFO("Initializing GameMode Solo!");
     }
 
-    void OnPlayerJoined(AFortPlayerControllerAthena*& Controller) override
+    void OnPlayerJoined(AFortPlayerControllerAthena* Controller) override
     {
         this->Teams->AddPlayerToRandomTeam(Controller);
+    }
+
+    void InitializeGameplay()
+    {
     }
 
     /*void OnPlayerKilled(AFortPlayerControllerAthena*& Controller) override

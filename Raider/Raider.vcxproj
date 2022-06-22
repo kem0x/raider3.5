@@ -69,6 +69,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>..\packages\Detours.4.0.1\lib\native\libs\x64</AdditionalIncludeDirectories>
+      <AdditionalOptions>/bigobj</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -89,7 +90,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalOptions>/bigobj %(AdditionalOptions) /FS</AdditionalOptions>
+      <AdditionalOptions>/bigobj</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>..\packages\Detours.4.0.1\lib\native\libs\x64</AdditionalIncludeDirectories>
     </ClCompile>
@@ -102,11 +103,7 @@
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
-      <AdditionalOptions>/FS</AdditionalOptions>
     </Link>
-    <CustomBuildStep>
-      <Command>/FS</Command>
-    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
@@ -126,6 +123,7 @@
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameModes\GameModeDuos.hpp" />
+    <ClInclude Include="GameModes\GameModeLateGame.hpp" />
     <ClInclude Include="GameModes\GameModes.hpp" />
     <ClInclude Include="GameModes\GameModeSolos.hpp" />
     <ClInclude Include="GUI.h" />
@@ -133,7 +131,6 @@
     <ClInclude Include="Logger.hpp" />
     <ClInclude Include="Native.h" />
     <ClInclude Include="Patterns.h" />
-    <ClInclude Include="Replication.h" />
     <ClInclude Include="SDK.hpp" />
     <ClInclude Include="Teams.h" />
     <ClInclude Include="UE4.h" />

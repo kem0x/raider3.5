@@ -3,6 +3,7 @@
 #include <unordered_set>
 #include <random>
 
+#include "Util.h"
 #include "json.hpp"
 #include "Native.h"
 
@@ -31,54 +32,25 @@ inline AAthena_PlayerController_C* GetPlayerController(int32 Index = 0)
     return static_cast<AAthena_PlayerController_C*>(GetWorld()->OwningGameInstance->LocalPlayers[Index]->PlayerController);
 }
 
-struct FNetworkObjectInfo
-{
-    AActor* Actor;
-
-    TWeakObjectPtr<AActor> WeakActor;
-
-    double NextUpdateTime;
-
-    double LastNetReplicateTime;
-
-    float OptimalNetUpdateDelta;
-
-    float LastNetUpdateTime;
-
-    uint32 bPendingNetUpdate : 1;
-
-    uint32 bForceRelevantNextUpdate : 1;
-
-    TSet<TWeakObjectPtr<UNetConnection>> DormantConnections;
-
-    TSet<TWeakObjectPtr<UNetConnection>> RecentlyDormantConnections;
-
-    bool operator==(const FNetworkObjectInfo& Other)
-    {
-        return Actor == Other.Actor;
-    }
-};
-
-class FNetworkObjectList
+struct FObjectKey
 {
 public:
-    using FNetworkObjectSet = TSet<TSharedPtr<FNetworkObjectInfo>>;
+    UObject* ResolveObjectPtr() const
+    {
+        FWeakObjectPtr WeakPtr;
+        WeakPtr.ObjectIndex = ObjectIndex;
+        WeakPtr.ObjectSerialNumber = ObjectSerialNumber;
 
-    FNetworkObjectSet AllNetworkObjects;
-    FNetworkObjectSet ActiveNetworkObjects;
-    FNetworkObjectSet ObjectsDormantOnAllConnections;
+        return WeakPtr.Get();
+    }
 
-    TMap<TWeakObjectPtr<UObject>, int32> NumDormantObjectsPerConnection;
+    int32 ObjectIndex;
+    int32 ObjectSerialNumber;
 };
 
-FORCEINLINE int32& GetReplicationFrame(UNetDriver* Driver)
+FORCEINLINE auto& GetClassRepNodePolicies(UObject* ReplicationDriver)
 {
-    return *(int32*)(int64(Driver) + 816); // Offsets::Net::ReplicationFrame);
-}
-
-FORCEINLINE auto& GetNetworkObjectList(UObject* NetDriver)
-{
-    return *(*(TSharedPtr<FNetworkObjectList>*)(int64(NetDriver) + 0x508));
+    return *reinterpret_cast<TMap<FObjectKey, EClassRepNodeMapping>*>(__int64(ReplicationDriver) + 0x3B8);
 }
 
 FORCEINLINE UGameplayStatics* GetGameplayStatics()
@@ -128,7 +100,7 @@ inline AActor* SpawnActor(UClass* ActorClass, FVector Location = { 0.0f, 0.0f, 0
     FTransform SpawnTransform;
 
     SpawnTransform.Translation = Location;
-    SpawnTransform.Scale3D = FVector{ 1, 1, 1 };
+    SpawnTransform.Scale3D = FVector { 1, 1, 1 };
     SpawnTransform.Rotation = Utils::RotToQuat(Rotation);
 
     return SpawnActorTrans(ActorClass, SpawnTransform, Owner, Flags);
@@ -140,7 +112,7 @@ RetActorType* SpawnActor(FVector Location = { 0.0f, 0.0f, 0.0f }, AActor* Owner 
     FTransform SpawnTransform;
 
     SpawnTransform.Translation = Location;
-    SpawnTransform.Scale3D = FVector{ 1, 1, 1 };
+    SpawnTransform.Scale3D = FVector { 1, 1, 1 };
     SpawnTransform.Rotation = Rotation;
 
     return static_cast<RetActorType*>(SpawnActorTrans(RetActorType::StaticClass(), SpawnTransform, Owner, Flags));
@@ -150,7 +122,7 @@ inline ABuildingSMActor* SpawnBuilding(UClass* BGAClass, FVector& Location, FRot
 {
     FTransform Transform;
     Transform.Translation = Location;
-    Transform.Scale3D = FVector{ 1, 1, 1 };
+    Transform.Scale3D = FVector { 1, 1, 1 };
     Transform.Rotation = Utils::RotToQuat(Rotation);
 
     return (ABuildingSMActor*)GetFortKismet()->STATIC_SpawnBuildingGameplayActor(BGAClass, Transform, Pawn);
@@ -345,7 +317,7 @@ inline auto AddItem(AFortPlayerController* PC, UFortItemDefinition* Def, int Slo
 
     if (Bars == EFortQuickBars::Primary && Slot >= 6)
         Slot = 5;
-    
+
     auto TempItemInstance = static_cast<UFortWorldItem*>(Def->CreateTemporaryItemInstanceBP(Count, 1));
 
     if (TempItemInstance)
@@ -587,11 +559,11 @@ static void InitInventory(AFortPlayerController* PlayerController)
         UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Floor.BuildingItemData_Floor"),
         UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_Stair_W.BuildingItemData_Stair_W"),
         UObject::FindObject<UFortBuildingItemDefinition>("FortBuildingItemDefinition BuildingItemData_RoofS.BuildingItemData_RoofS"),
-        
+
         UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition WoodItemData.WoodItemData"),
         UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition StoneItemData.StoneItemData"),
         UObject::FindObject<UFortResourceItemDefinition>("FortResourceItemDefinition MetalItemData.MetalItemData"),
-        
+
         UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataShells.AthenaAmmoDataShells"),
         UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataEnergyCell.AthenaAmmoDataEnergyCell"),
         UObject::FindObject<UFortAmmoItemDefinition>("FortAmmoItemDefinition AthenaAmmoDataBulletsMedium.AthenaAmmoDataBulletsMedium"),
@@ -769,7 +741,8 @@ UObject* SoftObjectToObject(TSoftObjectPtr<UObject*> SoftPtr)
 
 auto GetAllActorsOfClass(UClass* Class)
 {
-    TArray<AActor*> OutActors;
+    //You have to free this!!!
+    TArray<AActor*> OutActors; 
 
     static auto GameplayStatics = static_cast<UGameplayStatics*>(UGameplayStatics::StaticClass()->CreateDefaultObject());
     GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), Class, &OutActors);
@@ -786,19 +759,18 @@ FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
     auto SpawnTransform = FTransform();
     SpawnTransform.Scale3D = FVector(1, 1, 1);
     SpawnTransform.Rotation = FQuat();
-    SpawnTransform.Translation = FVector{ 1250, 1818, 3284 }; // Next to salty
+    SpawnTransform.Translation = FVector { 1250, 1818, 3284 }; // Next to salty
 
     auto GamePhase = static_cast<AAthena_GameState_C*>(GetWorld()->GameState)->GamePhase;
 
-    if (ActorsNum != 0
-        && (GamePhase == EAthenaGamePhase::Setup || GamePhase == EAthenaGamePhase::Warmup))
+    if (ActorsNum != 0 && (GamePhase == EAthenaGamePhase::Setup || GamePhase == EAthenaGamePhase::Warmup))
     {
-        auto ActorToUseNum = rand() % ActorsNum;
+        auto ActorToUseNum = Utils::RandomIntInRange(0, ActorsNum);
         auto ActorToUse = (OutActors)[ActorToUseNum];
 
         while (!ActorToUse)
         {
-            ActorToUseNum = rand() % ActorsNum;
+            ActorToUseNum = Utils::RandomIntInRange(0, ActorsNum);
             ActorToUse = (OutActors)[ActorToUseNum];
         }
 
@@ -806,6 +778,8 @@ FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
 
         PC->WarmupPlayerStart = static_cast<AFortPlayerStartWarmup*>(ActorToUse);
     }
+
+    OutActors.FreeArray();
 
     return SpawnTransform;
 }
@@ -877,7 +851,7 @@ void EquipLoadout(AFortPlayerControllerAthena* Controller, PlayerLoadout WIDS)
 
         if (Def)
         {
-            auto entry = AddItemWithUpdate(Controller, Def, i);            
+            auto entry = AddItemWithUpdate(Controller, Def, i);
             EquipWeaponDefinition(Controller->Pawn, Def, entry.ItemGuid, -1, true); // kms
 
             if (i == 0)
@@ -1003,7 +977,7 @@ namespace Inventory // includes quickbars
 
         if (Bars == EFortQuickBars::Primary && Slot >= 6)
             Slot = 5;
-        
+
         auto TempItemInstance = static_cast<UFortWorldItem*>(Definition->CreateTemporaryItemInstanceBP(Count, 1));
 
         if (TempItemInstance)
@@ -1309,7 +1283,7 @@ void SpawnDeco(AFortDecoTool* Tool, void* _Params)
 
     auto Params = static_cast<AFortDecoTool_ServerSpawnDeco_Params*>(_Params);
 
-    FTransform Transform{};
+    FTransform Transform {};
     Transform.Scale3D = FVector(1, 1, 1);
     Transform.Rotation = Utils::RotToQuat(Params->Rotation);
     Transform.Translation = Params->Location;

@@ -55,6 +55,7 @@
     <ClCompile Include="SDK\FN_GameplayAbilities_functions.cpp">
       <Filter>SDK</Filter>
     </ClCompile>
+    <ClCompile Include="SDK\FN_BP_VictoryDrone_functions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SDK.hpp">
@@ -92,10 +93,9 @@
     <ClInclude Include="Hooks.h">
       <Filter>UE4\Hooks</Filter>
     </ClInclude>
-    <ClInclude Include="Replication.h">
-      <Filter>UE4\NetCode</Filter>
-    </ClInclude>
     <ClInclude Include="Logger.hpp" />
+    <ClInclude Include="GameModes\GameModes.hpp" />
+    <ClInclude Include="GameModes\GameModeLateGame.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -30,8 +30,11 @@ DWORD WINAPI Main(LPVOID lpParam)
     DetourAttachE(NetDebug, Hooks::NetDebug);
     DetourAttachE(ProcessEvent, Hooks::ProcessEventHook);
     DETOUR_END
-    
-    LOG_INFO("Base Address: {}", Imagebase);
+
+    LOG_INFO("Base Address: {:X}", Imagebase);
+
+    //GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), L"log LogFortReplicationGraph VeryVerbose", GetPlayerController());
+    //GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), L"log LogReplicationGraph VeryVerbose", GetPlayerController());
 
     CreateConsole();
 

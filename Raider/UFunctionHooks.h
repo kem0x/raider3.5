@@ -1,27 +1,26 @@
 #pragma once
-#pragma warning(disable:4099)
+#pragma warning(disable : 4099)
 
 #include <functional>
 
 #include "Game.h"
-#include "Replication.h"
 #include "UE4.h"
 
 // #define LOGGING
 //#define CHEATS
 #define MAXPLAYERS 100
 
-//Define the hook with ufunction full name
-//Return true in the lambda to prevent the original function call
+// Define the hook with ufunction full name
+// Return true in the lambda to prevent the original function call
 
 namespace UFunctionHooks
 {
     inline std::vector<UFunction*> toHook;
     inline std::vector<std::function<bool(UObject*, void*)>> toCall;
 
-    #define DEFINE_PEHOOK(ufunctionName, func)                           \
-        toHook.push_back(UObject::FindObject<UFunction>(ufunctionName)); \
-        toCall.push_back([](UObject * Object, void* Parameters) -> bool func);
+#define DEFINE_PEHOOK(ufunctionName, func)                           \
+    toHook.push_back(UObject::FindObject<UFunction>(ufunctionName)); \
+    toCall.push_back([](UObject * Object, void* Parameters) -> bool func);
 
     auto Initialize()
     {
@@ -48,11 +47,11 @@ namespace UFunctionHooks
             auto Params = (UAbilitySystemComponent_ServerAbilityRPCBatch_Params*)Parameters;
 
             TryActivateAbility(AbilitySystemComponent, Params->BatchInfo.AbilitySpecHandle, Params->BatchInfo.InputPressed, &Params->BatchInfo.PredictionKey, nullptr);
-        
+
             return false;
         })
 
-        DEFINE_PEHOOK("Function FortniteGame.FortPlayerPawn.ServerHandlePickup", { 
+        DEFINE_PEHOOK("Function FortniteGame.FortPlayerPawn.ServerHandlePickup", {
             Inventory::OnPickup((AFortPlayerControllerAthena*)((APawn*)Object)->Controller, Parameters);
             return false;
         })
@@ -95,15 +94,15 @@ namespace UFunctionHooks
 
                         else if (Command == "testindicator") // It doesn't replicate to teammates for some reason.
                         {
-							auto PlayerState = (AFortPlayerStateAthena*)PC->PlayerState;
+                            auto PlayerState = (AFortPlayerStateAthena*)PC->PlayerState;
 
                             if (PlayerState)
                             {
                                 PlayerState->OnRep_MapIndicatorPos();
-								ClientMessage(PC, L"Updated Minimap Indicator!");
+                                ClientMessage(PC, L"Updated Minimap Indicator!");
                             }
                         }
-						
+
                         else if (Command == "giveweapon" && NumArgs >= 1)
                         {
                             auto& weaponName = Arguments[1];
@@ -152,7 +151,7 @@ namespace UFunctionHooks
 
             auto Params = (AFortPlayerController_ServerCreateBuildingActor_Params*)Parameters;
             auto CurrentBuildClass = Params->BuildingClassData.BuildingClass;
-            
+
             if (PC && Params && CurrentBuildClass)
             {
                 {
@@ -160,7 +159,7 @@ namespace UFunctionHooks
                     // SpawnBuilding(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, (APlayerPawn_Athena_C*)PC->Pawn);
                     if (BuildingActor && CanBuild2(BuildingActor))
                     {
-                        //Buildings.insert(BuildingActor); // Add as soon as possible to make sure there is no time to double build.
+                        // Buildings.insert(BuildingActor); // Add as soon as possible to make sure there is no time to double build.
 
                         BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::DestroyAnythingThatCollides;
                         BuildingActor->SetMirrored(Params->bMirrored);
@@ -217,7 +216,7 @@ namespace UFunctionHooks
                 auto BuildingActor = Params->BuildingActorToEdit;
                 auto NewBuildingClass = Params->NewBuildingClass;
                 auto RotationIterations = Params->RotationIterations;
-                
+
                 if (BuildingActor && NewBuildingClass)
                 {
                     auto location = BuildingActor->K2_GetActorLocation();
@@ -306,8 +305,8 @@ namespace UFunctionHooks
                     rotation.Yaw = yaw + 90 * RotationIterations;
 
                     auto HealthPercent = BuildingActor->GetHealthPercent();
-                    
-                    //  BuildingActor->K2_DestroyActor();					
+
+                    //  BuildingActor->K2_DestroyActor();
                     BuildingActor->SilentDie();
 
                     if (auto NewBuildingActor = (ABuildingSMActor*)SpawnActor(NewBuildingClass, location, rotation, PC))
@@ -325,22 +324,22 @@ namespace UFunctionHooks
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerControllerZone.ClientOnPawnDied", { // Spectating hasn't been majorly testing
             auto Params = (AFortPlayerControllerZone_ClientOnPawnDied_Params*)Parameters;
-            
+
             auto DeadPC = static_cast<AFortPlayerControllerAthena*>(Object);
             auto DeadPlayerState = static_cast<AFortPlayerStateAthena*>(DeadPC->PlayerState);
 
             auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
             GameState->PlayersLeft--;
             GameState->OnRep_PlayersLeft();
-            
+
             if (Params && DeadPC)
             {
                 auto GameMode = static_cast<AFortGameModeAthena*>(GameState->AuthorityGameMode);
                 auto KillerPlayerState = static_cast<AFortPlayerStateAthena*>(Params->DeathReport.KillerPlayerState);
                 GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
-                
+
                 SpawnActor<ABP_VictoryDrone_C>(DeadPC->Pawn->K2_GetActorLocation())->PlaySpawnOutAnim();
-                
+
                 FDeathInfo DeathData;
                 DeathData.bDBNO = false;
                 DeathData.DeathLocation = DeadPC->Pawn->K2_GetActorLocation();
@@ -350,12 +349,17 @@ namespace UFunctionHooks
                 DeathData.FinisherOrDowner = KillerPlayerState ? KillerPlayerState : DeadPlayerState;
 
                 DeadPC->Pawn->K2_DestroyActor();
-                
+
                 DeadPlayerState->DeathInfo = DeathData;
                 DeadPlayerState->OnRep_DeathInfo();
 
                 if (KillerPlayerState)
                 {
+                    if (auto Controller = static_cast<AFortPlayerControllerPvP*>(Params->DeathReport.KillerPawn->Controller))
+                    {
+                        Controller->ClientReceiveKillNotification(KillerPlayerState, DeadPlayerState);
+                    }
+                    
                     KillerPlayerState->KillScore++;
                     KillerPlayerState->TeamKillScore++;
 
@@ -364,15 +368,15 @@ namespace UFunctionHooks
 
                     Spectate(DeadPC->NetConnection, KillerPlayerState);
                 }
-                
+
                 if (GameState->PlayersLeft == 1)
                 {
                     TArray<AFortPlayerPawn*> OutActors;
                     GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
-                    
+
                     auto Winner = OutActors[0];
                     auto Controller = static_cast<AFortPlayerControllerAthena*>(Winner->Controller);
-                    
+
                     if (!Controller->bClientNotifiedOfWin)
                     {
                         GameState->WinningPlayerName = Controller->PlayerState->GetPlayerName();
@@ -380,7 +384,7 @@ namespace UFunctionHooks
 
                         Controller->PlayWinEffects();
                         Controller->ClientNotifyWon();
-                        
+
                         Controller->ClientGameEnded(Winner, true);
                         GameMode->ReadyToEndMatch();
                         GameMode->EndMatch();
@@ -388,7 +392,8 @@ namespace UFunctionHooks
                     OutActors.FreeArray();
                 }
 
-                if (GameState->PlayersLeft > 1) {
+                if (GameState->PlayersLeft > 1)
+                {
                     TArray<AFortPlayerPawn*> OutActors;
                     GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
                     auto RandomTarget = OutActors[rand() % OutActors.Num()];
@@ -398,11 +403,12 @@ namespace UFunctionHooks
                         LOG_ERROR("Couldn't assign to a spectator a target! Pawn picked was NULL!");
                         return false;
                     }
-                                        
+
                     Spectate(DeadPC->NetConnection, static_cast<AFortPlayerStateAthena*>(RandomTarget->Controller->PlayerState));
                     OutActors.FreeArray();
                 }
-            } else
+            }
+            else
             {
                 LOG_ERROR("Parameters of ClientOnPawnDied were invalid!");
             }
@@ -460,7 +466,7 @@ namespace UFunctionHooks
                     // ExitLocation.Z -= 500;
 
                     Game::Mode->InitPawn(PC, ExitLocation);
-                    
+
                     ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped();
                     PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
 
@@ -501,7 +507,7 @@ namespace UFunctionHooks
 
             if (Params->ReceivingActor)
             {
-                if(Params->ReceivingActor->IsA(APlayerPawn_Athena_C::StaticClass()))
+                if (Params->ReceivingActor->IsA(APlayerPawn_Athena_C::StaticClass()))
                 {
                     auto DBNOPawn = (APlayerPawn_Athena_C*)Params->ReceivingActor;
                     auto DBNOPC = (AFortPlayerControllerAthena*)DBNOPawn->Controller;
@@ -512,7 +518,7 @@ namespace UFunctionHooks
                     }
                 }
 
-                if(Params->ReceivingActor->IsA(ABuildingContainer::StaticClass()))
+                if (Params->ReceivingActor->IsA(ABuildingContainer::StaticClass()))
                 {
                     auto Container = (ABuildingContainer*)Params->ReceivingActor;
 
@@ -525,25 +531,24 @@ namespace UFunctionHooks
                      *  - Ammo Box: Loot_Ammo
                      */
 
-                    //auto LootTierGroup = Container->SearchLootTierGroup;
+                    // auto LootTierGroup = Container->SearchLootTierGroup;
 
+                    // printf("Loot Tier: %d\n", Container->GetLootTier());
+                    // printf("Loot Tier Group: %s\n", Container->SearchLootTierGroup.ToString().c_str());
+                    // printf("Loot Tier Key: %d\n", Container->ContainerLootTierKey.ToString().c_str());
+                    // printf("Quota Loot Tier: %d\n", Container->SearchLootTierChosenQuotaInfo.LootTier);
+                    // printf("Quota Loot Tier Key: %s\n", Container->SearchLootTierChosenQuotaInfo.LootTierKey.ToString().c_str());
 
-                    //printf("Loot Tier: %d\n", Container->GetLootTier());
-                    //printf("Loot Tier Group: %s\n", Container->SearchLootTierGroup.ToString().c_str());
-                    //printf("Loot Tier Key: %d\n", Container->ContainerLootTierKey.ToString().c_str());
-                    //printf("Quota Loot Tier: %d\n", Container->SearchLootTierChosenQuotaInfo.LootTier);
-                    //printf("Quota Loot Tier Key: %s\n", Container->SearchLootTierChosenQuotaInfo.LootTierKey.ToString().c_str());
+                    // auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+                    // TArray<FFortItemEntry> OutDrops;
+                    // GetFortKismet()->STATIC_PickLootDrops(Container->SearchLootTierGroup, -1, 0, &OutDrops);
 
-                    //auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
-                    //TArray<FFortItemEntry> OutDrops;
-                    //GetFortKismet()->STATIC_PickLootDrops(Container->SearchLootTierGroup, -1, 0, &OutDrops);
-
-                    //printf("Size: %d\n", OutDrops.Num());
-                    //for(int i = 0; i < OutDrops.Num(); i++)
+                    // printf("Size: %d\n", OutDrops.Num());
+                    // for(int i = 0; i < OutDrops.Num(); i++)
                     //{
-                    //    FFortItemEntry Drop = OutDrops[i];
-                    //    printf("Drop: %s\n", Drop.ItemDefinition->GetName().c_str());
-                    //}
+                    //     FFortItemEntry Drop = OutDrops[i];
+                    //     printf("Drop: %s\n", Drop.ItemDefinition->GetName().c_str());
+                    // }
                 }
             }
 
@@ -616,7 +621,7 @@ namespace UFunctionHooks
                             CurrentPawn->OnRep_ReplayRepAnimMontageInfo();
                             CurrentPawn->ForceNetUpdate();
 
-							// Look into ACharacter::FRepRootMotionMontage
+                            // Look into ACharacter::FRepRootMotionMontage
                         }
                     }
                 }
@@ -680,13 +685,42 @@ namespace UFunctionHooks
                 Game::OnReadyToStartMatch();
 
                 HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
-                HostBeacon->ListenPort = 7777;
+                HostBeacon->ListenPort = 7776;
                 auto bInitBeacon = Native::OnlineBeaconHost::InitHost(HostBeacon);
                 CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");
 
                 HostBeacon->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
                 HostBeacon->NetDriver->NetDriverName = FName(282); // REGISTER_NAME(282,GameNetDriver)
                 HostBeacon->NetDriver->World = GetWorld();
+                FString Error;
+                auto InURL = FURL();
+                InURL.Port = 7777;
+
+                Native::NetDriver::InitListen(HostBeacon->NetDriver, GetWorld(), InURL, true, Error);
+
+                Native::ReplicationDriver::ServerReplicateActors = decltype(Native::ReplicationDriver::ServerReplicateActors)(HostBeacon->NetDriver->ReplicationDriver->Vtable[0x53]);
+
+                auto ClassRepNodePolicies = GetClassRepNodePolicies(HostBeacon->NetDriver->ReplicationDriver);
+
+                for (auto&& Pair : ClassRepNodePolicies)
+                {
+                    auto key = Pair.Key().ResolveObjectPtr();
+                    auto& value = Pair.Value();
+
+                    LOG_INFO("ClassRepNodePolicies: {} - {}", key->GetName(), ClassRepNodeMappingToString(value));
+
+                    if (key == AFortInventory::StaticClass())
+                    {
+                        value = EClassRepNodeMapping::RelevantAllConnections;
+                        LOG_INFO("Found ClassRepNodePolicy for AFortInventory! {}", (int)value);
+                    }
+
+                    if (key == AFortQuickBars::StaticClass())
+                    {
+                        value = EClassRepNodeMapping::RelevantAllConnections;
+                        LOG_INFO("Found ClassRepNodePolicy for AFortQuickBars! {}", (int)value);
+                    }
+                }
 
                 GetWorld()->NetDriver = HostBeacon->NetDriver;
                 GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;
@@ -703,7 +737,6 @@ namespace UFunctionHooks
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortGameModeAthena.OnAircraftExitedDropZone", {
-
             if (GetWorld() && GetWorld()->NetDriver && GetWorld()->NetDriver->ClientConnections.Data)
             {
                 auto Connections = HostBeacon->NetDriver->ClientConnections;
@@ -717,18 +750,18 @@ namespace UFunctionHooks
 
                     if (Controller && Controller->IsInAircraft())
                         Controller->ServerAttemptAircraftJump(FRotator());
-                }            
+                }
             }
 
             return false;
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCheatAll", {
-            //auto PlayerController = (AFortPlayerControllerAthena*)Object;
+            // auto PlayerController = (AFortPlayerControllerAthena*)Object;
 
-            //if (PlayerController)
-            //    KickController((AFortPlayerControllerAthena*)Object, L"Please do not do that!");
-            
+            // if (PlayerController)
+            //     KickController((AFortPlayerControllerAthena*)Object, L"Please do not do that!");
+
             return true;
         })
 

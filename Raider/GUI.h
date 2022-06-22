@@ -59,6 +59,7 @@ namespace GUI
 
                         GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
 
+                        Game::Mode->InitializeGameplay();
                         LOG_INFO("The bus has been started!")
                         bStartedBus = true;
                     }
