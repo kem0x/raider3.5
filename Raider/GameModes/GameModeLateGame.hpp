@@ -14,15 +14,20 @@ public:
         auto GameMode = static_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode);
         auto SafeZoneCenter = FVector({150, 150, 150}); /* TODO: Array of Locations where late game could take place in. (POIs) */
 
-        GameMode->SafeZoneIndicator->bPaused = true;
-
         GameMode->bSafeZoneActive = false;
         GameMode->bSafeZonePaused = true;
         
         GameMode->SafeZoneLocations.Reset();
         GameMode->SafeZoneLocations.Add(SafeZoneCenter);
-
-        GameMode->SafeZoneIndicator->SetSafeZoneRadiusAndCenter(4000, SafeZoneCenter);
+        
+        if (GameMode->SafeZoneIndicator)
+        {
+            GameMode->SafeZoneIndicator->bPaused = true;
+            GameMode->SafeZoneIndicator->SetSafeZoneRadiusAndCenter(4000, SafeZoneCenter);
+        } else
+        {
+            LOG_ERROR("SafeZoneIndicator was NULL! Can't set Radius and Center.");
+        }
     }
 
     void OnPlayerJoined(AFortPlayerControllerAthena* Controller) override
