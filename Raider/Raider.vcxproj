@@ -123,6 +123,7 @@
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameModes\GameModeDuos.hpp" />
+    <ClInclude Include="GameModes\GameModeLateGame.hpp" />
     <ClInclude Include="GameModes\GameModes.hpp" />
     <ClInclude Include="GameModes\GameModeSolos.hpp" />
     <ClInclude Include="GUI.h" />
@@ -130,7 +131,6 @@
     <ClInclude Include="Logger.hpp" />
     <ClInclude Include="Native.h" />
     <ClInclude Include="Patterns.h" />
-    <ClInclude Include="Replication.h" />
     <ClInclude Include="SDK.hpp" />
     <ClInclude Include="Teams.h" />
     <ClInclude Include="UE4.h" />
