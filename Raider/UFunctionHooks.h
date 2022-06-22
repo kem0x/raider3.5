@@ -635,7 +635,7 @@ namespace UFunctionHooks
                         LOG_INFO("Found ClassRepNodePolicy for AFortInventory! {}", (int)value);
                     }
 
-                    if ( key == AFortQuickBars::StaticClass())
+                    if (key == AFortQuickBars::StaticClass())
                     {
                         value = EClassRepNodeMapping::RelevantAllConnections;
                         LOG_INFO("Found ClassRepNodePolicy for AFortQuickBars! {}", (int)value);

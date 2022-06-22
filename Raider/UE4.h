@@ -3,6 +3,7 @@
 #include <unordered_set>
 #include <random>
 
+#include "Util.h"
 #include "json.hpp"
 #include "Native.h"
 
@@ -740,7 +741,8 @@ UObject* SoftObjectToObject(TSoftObjectPtr<UObject*> SoftPtr)
 
 auto GetAllActorsOfClass(UClass* Class)
 {
-    TArray<AActor*> OutActors;
+    //You have to free this!!!
+    TArray<AActor*> OutActors; 
 
     static auto GameplayStatics = static_cast<UGameplayStatics*>(UGameplayStatics::StaticClass()->CreateDefaultObject());
     GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), Class, &OutActors);
@@ -761,15 +763,14 @@ FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
 
     auto GamePhase = static_cast<AAthena_GameState_C*>(GetWorld()->GameState)->GamePhase;
 
-    if (ActorsNum != 0
-        && (GamePhase == EAthenaGamePhase::Setup || GamePhase == EAthenaGamePhase::Warmup))
+    if (ActorsNum != 0 && (GamePhase == EAthenaGamePhase::Setup || GamePhase == EAthenaGamePhase::Warmup))
     {
-        auto ActorToUseNum = rand() % ActorsNum;
+        auto ActorToUseNum = Utils::RandomIntInRange(0, ActorsNum);
         auto ActorToUse = (OutActors)[ActorToUseNum];
 
         while (!ActorToUse)
         {
-            ActorToUseNum = rand() % ActorsNum;
+            ActorToUseNum = Utils::RandomIntInRange(0, ActorsNum);
             ActorToUse = (OutActors)[ActorToUseNum];
         }
 
@@ -777,6 +778,8 @@ FTransform GetPlayerStart(AFortPlayerControllerAthena* PC)
 
         PC->WarmupPlayerStart = static_cast<AFortPlayerStartWarmup*>(ActorToUse);
     }
+
+    OutActors.FreeArray();
 
     return SpawnTransform;
 }

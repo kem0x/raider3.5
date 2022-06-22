@@ -98,15 +98,15 @@ namespace Hooks
     void InitNetworkHooks()
     {
         DETOUR_START
-        DetourAttachE(Native::World::WelcomePlayer, WelcomePlayer)
-            DetourAttachE(Native::Actor::GetNetMode, GetNetMode)
-                DetourAttachE(Native::World::NotifyControlMessage, World_NotifyControlMessage)
-                    DetourAttachE(Native::World::SpawnPlayActor, SpawnPlayActor)
-                        DetourAttachE(Native::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage)
-                            DetourAttachE(Native::OnlineSession::KickPlayer, KickPlayer)
-                                DetourAttachE(Native::GameViewportClient::PostRender, PostRender)
-                                    DetourAttachE(Native::GC::CollectGarbage, CollectGarbage)
-                                        DETOUR_END
+        DetourAttachE(Native::World::WelcomePlayer, WelcomePlayer);
+        DetourAttachE(Native::Actor::GetNetMode, GetNetMode);
+        DetourAttachE(Native::World::NotifyControlMessage, World_NotifyControlMessage);
+        DetourAttachE(Native::World::SpawnPlayActor, SpawnPlayActor);
+        DetourAttachE(Native::OnlineBeaconHost::NotifyControlMessage, Beacon_NotifyControlMessage);
+        DetourAttachE(Native::OnlineSession::KickPlayer, KickPlayer);
+        DetourAttachE(Native::GameViewportClient::PostRender, PostRender);
+        DetourAttachE(Native::GC::CollectGarbage, CollectGarbage);
+        DETOUR_END
     }
 
     void ProcessEventHook(UObject* Object, UFunction* Function, void* Parameters)

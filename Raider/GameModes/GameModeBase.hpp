@@ -71,6 +71,8 @@ public:
             Pawn->Owner = Controller;
             Pawn->OnRep_Owner();
 
+            Pawn->NetCullDistanceSquared = 0.f;
+
             Controller->Pawn = Pawn;
             Controller->AcknowledgedPawn = Pawn;
             Controller->OnRep_Pawn();
