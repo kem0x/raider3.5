@@ -220,17 +220,97 @@ namespace UFunctionHooks
                 
                 if (BuildingActor && NewBuildingClass)
                 {
-                    auto rotation = BuildingActor->K2_GetActorRotation(); //Not correct, this is not centered.
+                    auto location = BuildingActor->K2_GetActorLocation();
+                    auto rotation = BuildingActor->K2_GetActorRotation();
 
-                    if (BuildingActor->BuildingType == EFortBuildingType::Wall) // this only works for walls
-                        rotation.Yaw += /* rotation.Yaw */ 90 * RotationIterations;
+                    int yaw = (int(rotation.Yaw) + 360) % 360; // Gets the rotation ranging from 0 to 360 degrees
+
+                    if (BuildingActor->BuildingType != EFortBuildingType::Wall) // Centers building pieces if necessary
+                    {
+                        switch (yaw)
+                        {
+                        case 89: case 90: case 91: // Sometimes the rotation may differ by 1
+                            switch (RotationIterations)
+                            {
+                            case 1:
+                                location.X += -256;
+                                location.Y += 256;
+                                break;
+                            case 2:
+                                location.X += -512;
+                                location.Y += 0;
+                                break;
+                            case 3:
+                                location.X += -256;
+                                location.Y += -256;
+                                break;
+                            }
+                            yaw = 90;
+                            break;
+                        case 179: case 180: case 181:
+                            switch (RotationIterations)
+                            {
+                            case 1:
+                                location.X += -256;
+                                location.Y += -256;
+                                break;
+                            case 2:
+                                location.X += 0;
+                                location.Y += -512;
+                                break;
+                            case 3:
+                                location.X += 256;
+                                location.Y += -256;
+                                break;
+                            }
+                            yaw = 180;
+                            break;
+                        case 269: case 270: case 271:
+                            switch (RotationIterations)
+                            {
+                            case 1:
+                                location.X += 256;
+                                location.Y += -256;
+                                break;
+                            case 2:
+                                location.X += 512;
+                                location.Y += 0;
+                                break;
+                            case 3:
+                                location.X += 256;
+                                location.Y += 256;
+                                break;
+                            }
+                            yaw = 270;
+                            break;
+                        default: // 0, 360. etc.
+                            switch (RotationIterations)
+                            {
+                            case 1:
+                                location.X += 256;
+                                location.Y += 256;
+                                break;
+                            case 2:
+                                location.X += 0;
+                                location.Y += 512;
+                                break;
+                            case 3:
+                                location.X += -256;
+                                location.Y += 256;
+                                break;
+                            }
+                            yaw = 0;
+                        }
+                    }
+
+                    rotation.Yaw = yaw + 90 * RotationIterations;
 
                     auto HealthPercent = BuildingActor->GetHealthPercent();
                     
                     //  BuildingActor->K2_DestroyActor();					
                     BuildingActor->SilentDie();
 
-                    if (auto NewBuildingActor = (ABuildingSMActor*)SpawnActor(NewBuildingClass, BuildingActor->K2_GetActorLocation(), rotation, PC))
+                    if (auto NewBuildingActor = (ABuildingSMActor*)SpawnActor(NewBuildingClass, location, rotation, PC))
                     {
                         if (!BuildingActor->bIsInitiallyBuilding)
                             NewBuildingActor->ForceBuildingHealth(NewBuildingActor->GetMaxHealth() * HealthPercent);
