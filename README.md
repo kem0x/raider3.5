@@ -26,3 +26,7 @@ We're more than ready to take this project down and we understand and respect an
 ## - Discord Server
 
 - Join [here](https://discord.gg/nCSFHtRMUs) to ask some questions about setting up Raider.
+
+## - Tutorial 
+
+- Watch [here](https://www.youtube.com/watch?v=p0RxsSZm_4Y)
