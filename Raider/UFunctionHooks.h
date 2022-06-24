@@ -357,7 +357,7 @@ namespace UFunctionHooks
                 DeadPlayerState->DeathInfo = DeathData;
                 DeadPlayerState->OnRep_DeathInfo();
 
-                if (KillerPlayerState && KillerPlayerState != DeadPlayerState)
+                if (KillerPlayerState)
                 {
                     if (auto Controller = static_cast<AFortPlayerControllerPvP*>(Params->DeathReport.KillerPawn->Controller))
                     {
@@ -734,7 +734,7 @@ namespace UFunctionHooks
 
                 Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, false);
                 bListening = true;
-                LOG_INFO("Listening for connections on port {}!", InURL.Port);
+                LOG_INFO("Listening for connections on port {}!", HostBeacon->ListenPort);
             }
 
             return false;

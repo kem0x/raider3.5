@@ -3,9 +3,6 @@
 #include "ZeroGUI.h"
 #include <format>
 #include <mutex>
-#include "json.hpp"
-
-using namespace nlohmann;
 
 static bool bStartedBus = false;
 
@@ -44,7 +41,7 @@ namespace GUI
             if (bListening && HostBeacon)
             {
                 static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
-                static AFortPlayerStateAthena* currentPlayer = nullptr;
+                static APlayerState* currentPlayer = nullptr;
 
                 // This is bad, but works for now.
                 if (currentPlayer)
@@ -58,43 +55,24 @@ namespace GUI
 
                     ZeroGUI::NextColumn(90.0f);
 
-                    if (currentPlayer) // it crashes sometimes if I don't put this here
+                    ZeroGUI::Text(std::format(L"Current Player: {}", currentPlayer->GetPlayerName().c_str()).c_str());
+
+                    if (ZeroGUI::Button(L"Kick", { 60.0f, 25.0f }))
                     {
-                        auto currentPlayerName = currentPlayer->GetPlayerName().c_str();
+                        KickController((APlayerController*)currentPlayer->Owner, L"You have been kicked by the server.");
 
-                        ZeroGUI::Text(std::format(L"Current Player: {}", currentPlayerName).c_str());
-
-                        if (ZeroGUI::Button(L"Kick", { 60.0f, 25.0f }))
-                        {
-                            KickController((APlayerController*)currentPlayer->Owner, L"You have been kicked by the server.");
-
-                            mtx.lock();
-                            currentPlayer = nullptr;
-                            mtx.unlock();
-                        }
-
-                        auto currentIp = currentPlayer->SavedNetworkAddress.c_str();
-
-                        if (ZeroGUI::Button(L"Ban", { 60.0f, 25.0f }))
-                        {
-                            Ban(currentIp, (APlayerController*)currentPlayer->Owner, currentPlayerName);
-
-                            mtx.lock();
-                            currentPlayer = nullptr;
-                            mtx.unlock();
-                        }
+                        mtx.lock();
+                        currentPlayer = nullptr;
+                        mtx.unlock();
                     }
                 }
                 else
                 {
                     static int tab = 0;
-
                     if (ZeroGUI::ButtonTab(L"Game", FVector2D { 110, 25 }, tab == 0))
                         tab = 0;
                     if (ZeroGUI::ButtonTab(L"Players", FVector2D { 110, 25 }, tab == 1))
                         tab = 1;
-                    if (ZeroGUI::ButtonTab(L"Banned Players", FVector2D { 110, 25 }, tab == 2)) // figure out a different place to put this and check if there is atleast 1 banned player.
-                        tab = 2;
 
                     ZeroGUI::NextColumn(130.0f);
 
@@ -137,28 +115,10 @@ namespace GUI
 
                             if (ZeroGUI::Button(PlayerState->GetPlayerName().c_str(), { 100, 25 }))
                             {
-                                currentPlayer = (AFortPlayerStateAthena*)PlayerState;
+                                currentPlayer = PlayerState;
                             }
                         }
 
-                        break;
-                    }
-                    case 2:
-                    {
-                        std::ifstream input_file("banned-ips.json");
-                        std::string line;
-
-                        if (input_file.is_open())
-                        {
-                            while (std::getline(input_file, line))
-                            {
-                                std::string Username = json::parse(line)["Username"];
-                                if (ZeroGUI::Button((L"Unban " + std::wstring(Username.begin(), Username.end())).c_str(), { 100, 25 }))
-                                {
-                                    Unban(std::wstring(Username.begin(), Username.end()));
-                                }
-                            }
-                        }
                         break;
                     }
                     }

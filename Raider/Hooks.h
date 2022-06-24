@@ -45,10 +45,6 @@ namespace Hooks
     APlayerController* SpawnPlayActor(UWorld*, UPlayer* NewPlayer, ENetRole RemoteRole, FURL& URL, void* UniqueId, FString& Error, uint8 NetPlayerIndex)
     {
         auto PlayerController = static_cast<AFortPlayerControllerAthena*>(Native::World::SpawnPlayActor(GetWorld(), NewPlayer, RemoteRole, URL, UniqueId, Error, NetPlayerIndex));
-
-        if (IsBanned(PlayerController->PlayerState->SavedNetworkAddress.c_str()))
-            KickController(PlayerController, L"You are banned!");
-
         NewPlayer->PlayerController = PlayerController;
 
         Game::Mode->LoadJoiningPlayer(PlayerController);
@@ -61,15 +57,14 @@ namespace Hooks
     {
         switch (MessageType)
         {
-        case 0:
-            if (GetWorld()->GameState->HasMatchStarted()) //  we couldalso deny reqeusts whenever battle bus has started
-                return;
-            break;
         case 4: // NMT_Netspeed
             Connection->CurrentNetSpeed = 30000;
             return;
         case 5: // NMT_Login
         {
+            if (GetWorld()->GameState->HasMatchStarted())
+                return;
+
             Bunch[7] += (16 * 1024 * 1024);
 
             auto OnlinePlatformName = FString(L"");

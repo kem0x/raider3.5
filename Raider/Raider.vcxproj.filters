@@ -96,7 +96,6 @@
     <ClInclude Include="Logger.hpp" />
     <ClInclude Include="GameModes\GameModes.hpp" />
     <ClInclude Include="GameModes\GameModeLateGame.hpp" />
-    <ClInclude Include="json.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
