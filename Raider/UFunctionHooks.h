@@ -317,6 +317,8 @@ namespace UFunctionHooks
                             NewBuildingActor->ForceBuildingHealth(NewBuildingActor->GetMaxHealth() * HealthPercent);
                         NewBuildingActor->SetMirrored(Params->bMirrored);
                         NewBuildingActor->InitializeKismetSpawnedBuildingActor(NewBuildingActor, PC);
+                        auto PlayerState = (AFortPlayerStateAthena*)PC->PlayerState;
+                        BuildingActor->Team = PlayerState->TeamIndex;
                     }
                 }
             }
