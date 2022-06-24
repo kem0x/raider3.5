@@ -19,7 +19,7 @@ enum class CustomMode
     SIPHON // Gives 50 shield/health whenever you finish someone. (Late game also has this)
 };
 
-//constexpr CustomMode Mode = CustomMode::NONE;
+// constexpr CustomMode Mode = CustomMode::NONE;
 
 namespace GUI
 {
@@ -32,46 +32,70 @@ namespace GUI
         if (GetAsyncKeyState(VK_F2) & 1)
             menu_opened = !menu_opened;
 
-        static auto pos = FVector2D{ 200.f, 250.0f };
+        static auto pos = FVector2D { 200.f, 250.0f };
 
-        if (ZeroGUI::Window((char*)"Raider", &pos, FVector2D{ 500.0f, 400.0f }, menu_opened))
+        if (ZeroGUI::Window(L"Raider", &pos, FVector2D { 500.0f, 400.0f }, menu_opened))
         {
             if (bListening && HostBeacon)
             {
                 static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
-                std::string ConnectedPlayers = std::format("Connected Players: {}\n", GameState->PlayerArray.Num());
 
-                ZeroGUI::Text((char*)ConnectedPlayers.c_str());
+                static int tab = 0;
+                if (ZeroGUI::ButtonTab(L"Game", FVector2D { 110, 25 }, tab == 0))
+                    tab = 0;
+                if (ZeroGUI::ButtonTab(L"Players", FVector2D { 110, 25 }, tab == 1))
+                    tab = 1;
+                if (ZeroGUI::ButtonTab(L"Tab 3", FVector2D { 110, 25 }, tab == 2))
+                    tab = 2;
+                if (ZeroGUI::ButtonTab(L"Tab 4", FVector2D { 110, 25 }, tab == 3))
+                    tab = 3;
 
-                if (!bStartedBus)
+                ZeroGUI::NextColumn(130.0f);
+
+
+                switch (tab)
                 {
-                    if (ZeroGUI::Button((char*)"Start Bus", FVector2D{ 100, 25 }))
+                case 0:
+                {
+                    if (!bStartedBus)
                     {
-                        if (static_cast<AAthena_GameState_C*>(GetWorld()->GameState)->GamePhase >= EAthenaGamePhase::Aircraft)
+                        if (ZeroGUI::Button(L"Start Bus", FVector2D { 100, 25 }))
                         {
-                            LOG_INFO("The bus has already started!")
+                            if (static_cast<AAthena_GameState_C*>(GetWorld()->GameState)->GamePhase >= EAthenaGamePhase::Aircraft)
+                            {
+                                LOG_INFO("The bus has already started!")
+                                bStartedBus = true;
+                            }
+
+                            GameState->bGameModeWillSkipAircraft = false;
+                            GameState->AircraftStartTime = 0;
+                            GameState->WarmupCountdownEndTime = 0;
+
+                            GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
+
+                            Game::Mode->InitializeGameplay();
+                            LOG_INFO("The bus has been started!")
                             bStartedBus = true;
                         }
-
-                        GameState->bGameModeWillSkipAircraft = false;
-                        GameState->AircraftStartTime = 0;
-                        GameState->WarmupCountdownEndTime = 0;
-
-                        GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
-
-                        Game::Mode->InitializeGameplay();
-                        LOG_INFO("The bus has been started!")
-                        bStartedBus = true;
                     }
+                    break;
+                }
+                case 1:
+                {
+                    std::wstring ConnectedPlayers = std::format(L"Connected Players: {}\n", GameState->PlayerArray.Num());
+
+                    ZeroGUI::Text(ConnectedPlayers.c_str());
+                    break;
+                }
                 }
             }
             else
             {
-                // ZeroGUI::Text((char*)"Waiting for map to load...");
+                // ZeroGUI::Text(L"Waiting for map to load...");
             }
         }
 
         ZeroGUI::Render();
-        //ZeroGUI::Draw_Cursor(menu_opened);
+        // ZeroGUI::Draw_Cursor(menu_opened);
     }
 }
