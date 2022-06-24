@@ -4,8 +4,10 @@
 #include <random>
 
 #include "Util.h"
-#include "json.hpp"
 #include "Native.h"
+#include "json.hpp"
+
+using namespace nlohmann;
 
 typedef std::array<UFortWeaponRangedItemDefinition*, 6> PlayerLoadout;
 
@@ -198,7 +200,7 @@ inline void DumpObjects()
 
 static bool KickController(APlayerController* PC, FString Message)
 {
-    if (PC && Message.Data)
+    if (PC && Message.IsValid())
     {
         FText text = reinterpret_cast<UKismetTextLibrary*>(UKismetTextLibrary::StaticClass())->STATIC_Conv_StringToText(Message);
         return Native::OnlineSession::KickPlayer(GetWorld()->AuthorityGameMode->GameSession, PC, text);
@@ -312,4 +314,78 @@ auto GetRandomWID(int skip = 0)
         skip = Utils::RandomIntInRange(4, 100);
 
     return UObject::FindObject<UFortWeaponRangedItemDefinition>("FortWeaponRangedItemDefinition WID_", skip);
+}
+
+bool Ban(const std::wstring& IP, APlayerController* Controller, const std::wstring& Username)
+{
+    std::ofstream stream("banned-ips.json", std::ios::app);
+
+    if (!stream.is_open())
+        return false;
+
+    nlohmann::json j;
+    j["IP"] = IP.c_str();
+    j["Username"] = Username.c_str();
+
+    stream << j << '\n'; // j.dump(4)
+
+    stream.close();
+
+    KickController(Controller, L"You have been banned!");
+
+    return true;
+}
+
+bool Unban(const std::wstring& IP) // I think I have SEVERE brain damage, but it works. // IP Or Name
+{
+    std::ifstream input_file("banned-ips.json");
+
+    if (!input_file.is_open())
+        return false;
+
+    std::vector<std::string> lines;
+    std::string line;
+    int ipToRemove = -1; // the line
+
+    while (std::getline(input_file, line))
+    {
+        lines.push_back(line);
+        if (line.find(std::string(IP.begin(), IP.end())) != std::wstring::npos)
+        {
+            ipToRemove = lines.size();
+        }
+    }
+
+    input_file.close();
+
+    if (ipToRemove != -1)
+    {
+        std::ofstream stream("banned-ips.json", std::ios::ate);
+        for (int i = 0; i < lines.size(); i++)
+        {
+            if (i != ipToRemove - 1)
+                stream << lines[i] << '\n';
+        }
+    }
+
+    return ipToRemove != 1;
+}
+
+bool IsBanned(const std::wstring& IP)
+{
+    std::ifstream input_file("banned-ips.json");
+    std::string line;
+
+    if (!input_file.is_open())
+        return false;
+
+    while (std::getline(input_file, line))
+    {
+        if (std::wstring(line.begin(), line.end()).find(IP) != std::wstring::npos)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
