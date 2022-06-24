@@ -2,6 +2,7 @@
 
 #include "ZeroGUI.h"
 #include <format>
+#include <mutex>
 
 static bool bStartedBus = false;
 
@@ -23,6 +24,7 @@ enum class CustomMode
 
 namespace GUI
 {
+    std::mutex mtx;
     void Tick()
     {
         ZeroGUI::Input::Handle();
@@ -46,7 +48,9 @@ namespace GUI
                 {
                     if (ZeroGUI::Button(L"<", { 25.0f, 25.0f }))
                     {
+                        mtx.lock();
                         currentPlayer = nullptr;
+                        mtx.unlock();
                     }
 
                     ZeroGUI::NextColumn(90.0f);
@@ -56,7 +60,10 @@ namespace GUI
                     if (ZeroGUI::Button(L"Kick", { 60.0f, 25.0f }))
                     {
                         KickController((APlayerController*)currentPlayer->Owner, L"You have been kicked by the server.");
+
+                        mtx.lock();
                         currentPlayer = nullptr;
+                        mtx.unlock();
                     }
                 }
                 else

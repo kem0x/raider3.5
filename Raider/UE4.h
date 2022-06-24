@@ -227,6 +227,19 @@ bool IsCurrentlyDisconnecting(UNetConnection* Connection)
     return false;
 }
 
+void SwapPlayerControllers(APlayerController* OldPC, APlayerController* NewPC)
+{
+    if (OldPC && NewPC && OldPC->Player)
+    {
+        NewPC->NetPlayerIndex = OldPC->NetPlayerIndex;
+        NewPC->NetConnection = OldPC->NetConnection;
+
+        GetWorld()->AuthorityGameMode->K2_OnSwapPlayerControllers(OldPC, NewPC);
+
+        OldPC->PendingSwapConnection = reinterpret_cast<UNetConnection*>(OldPC->Player);
+    }
+}
+
 void Spectate(UNetConnection* SpectatingConnection, AFortPlayerStateAthena* StateToSpectate)
 {
     if (!SpectatingConnection || !StateToSpectate)
@@ -242,51 +255,7 @@ void Spectate(UNetConnection* SpectatingConnection, AFortPlayerStateAthena* Stat
 
     if (!IsCurrentlyDisconnecting(SpectatingConnection) && DeadPlayerState && PawnToSpectate)
     {
-        DeadPC->PlayerToSpectateOnDeath = PawnToSpectate;
-        DeadPC->ClientSetSpectatorCamera(PawnToSpectate->K2_GetActorLocation(), PawnToSpectate->K2_GetActorRotation());
-        DeadPC->SpectateOnDeath();
-
-        DeadPlayerState->SpectatingTarget = StateToSpectate;
-        DeadPlayerState->bIsSpectator = true;
-        DeadPlayerState->OnRep_SpectatingTarget();
-
-        // 95% of the code below here is useless, it was my attempt to fix the camera.
-
-        auto SpectatorPC = SpawnActor<ABP_SpectatorPC_C>(PawnToSpectate->K2_GetActorLocation());
-        SpectatorPC->SetNewCameraType(ESpectatorCameraType::DroneAttach, true);
-        SpectatorPC->CurrentCameraType = ESpectatorCameraType::DroneAttach;
-        SpectatorPC->ResetCamera();
-        SpectatingConnection->PlayerController = SpectatorPC;
-        SpectatingConnection->ViewTarget = PawnToSpectate;
-        SpectatorPC->FollowedPlayerPrivate = StateToSpectate;
-        SpectatorPC->HoveredPlayerPrivate = StateToSpectate;
-        SpectatorPC->ToggleSpectatorHUD();
-
-        if (SpectatorPC->CurrentSpectatorCamComp)
-            SpectatorPC->CurrentSpectatorCamComp->IntendedViewTarget = PawnToSpectate;
-
-        auto SpectatorPawn = SpawnActor<AArenaCamPawn>(PawnToSpectate->K2_GetActorLocation(), PawnToSpectate);
-
-        SpectatorPawn->SpectatorController = SpectatorPC;
-
-        if (SpectatorPawn->SpectatorCameraComponent)
-            SpectatorPawn->SpectatorCameraComponent->IntendedViewTarget = PawnToSpectate;
-
-        SpectatorPC->SpectatorPawn = SpectatorPawn;
-        SpectatorPC->Pawn = SpectatorPawn;
-        SpectatorPC->AcknowledgedPawn = SpectatorPawn;
-        SpectatorPawn->Owner = SpectatorPC;
-        SpectatorPawn->OnRep_Owner();
-        SpectatorPC->OnRep_Pawn();
-        SpectatorPC->Possess(SpectatorPawn);
-        DeadPC->K2_DestroyActor();
-
-        SpectatorPC->Pawn->bUseControllerRotationPitch = true;
-        SpectatorPC->Pawn->bUseControllerRotationYaw = true;
-        SpectatorPC->Pawn->bUseControllerRotationRoll = true;
-
-        if (DeadPC->QuickBars)
-            DeadPC->QuickBars->K2_DestroyActor();
+        //ABP_SpectatorPC_C and ABP_SpectatorPawn_C stuff are for live spectating not for normal spectating.
     }
 }
 
@@ -741,8 +710,8 @@ UObject* SoftObjectToObject(TSoftObjectPtr<UObject*> SoftPtr)
 
 auto GetAllActorsOfClass(UClass* Class)
 {
-    //You have to free this!!!
-    TArray<AActor*> OutActors; 
+    // You have to free this!!!
+    TArray<AActor*> OutActors;
 
     static auto GameplayStatics = static_cast<UGameplayStatics*>(UGameplayStatics::StaticClass()->CreateDefaultObject());
     GameplayStatics->STATIC_GetAllActorsOfClass(GetWorld(), Class, &OutActors);

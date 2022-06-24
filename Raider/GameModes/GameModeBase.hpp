@@ -78,9 +78,8 @@ public:
             Controller->OnRep_Pawn();
             Controller->Possess(Pawn);
 
-            // This state gets auto reseted once the player respawns (aka jumps from the bus)
-            //  CreateCheatManager(Controller)->God();
-            Pawn->HealthSet->Health.Minimum = 1.0f; // This is more accurate to the actual game, you can take damage but you will not die
+            Pawn->HealthSet->Health.Minimum = 1.0f; 
+            Pawn->HealthSet->Shield.Minimum = 1.0f; 
 
             Pawn->SetMaxHealth(this->maxHealth);
             Pawn->SetMaxShield(this->maxShield);
@@ -181,6 +180,7 @@ public:
         Pawn->SetMaxShield(this->maxShield);
 
         Pawn->HealthSet->Health.Minimum = 0.0f; // Disables spawn island protection
+        Pawn->HealthSet->Shield.Minimum = 0.0f;
 
         Pawn->bReplicateMovement = true;
         Pawn->OnRep_ReplicateMovement();
