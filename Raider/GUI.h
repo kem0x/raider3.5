@@ -34,59 +34,87 @@ namespace GUI
 
         static auto pos = FVector2D { 200.f, 250.0f };
 
-        if (ZeroGUI::Window(L"Raider", &pos, FVector2D { 500.0f, 400.0f }, menu_opened))
+        if (ZeroGUI::Window(L"Raider", &pos, FVector2D { 500.0f, 700.0f }, menu_opened))
         {
             if (bListening && HostBeacon)
             {
                 static auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+                static APlayerState* currentPlayer = nullptr;
 
-                static int tab = 0;
-                if (ZeroGUI::ButtonTab(L"Game", FVector2D { 110, 25 }, tab == 0))
-                    tab = 0;
-                if (ZeroGUI::ButtonTab(L"Players", FVector2D { 110, 25 }, tab == 1))
-                    tab = 1;
-                if (ZeroGUI::ButtonTab(L"Tab 3", FVector2D { 110, 25 }, tab == 2))
-                    tab = 2;
-                if (ZeroGUI::ButtonTab(L"Tab 4", FVector2D { 110, 25 }, tab == 3))
-                    tab = 3;
-
-                ZeroGUI::NextColumn(130.0f);
-
-
-                switch (tab)
+                // This is bad, but works for now.
+                if (currentPlayer)
                 {
-                case 0:
-                {
-                    if (!bStartedBus)
+                    if (ZeroGUI::Button(L"<", { 25.0f, 25.0f }))
                     {
-                        if (ZeroGUI::Button(L"Start Bus", FVector2D { 100, 25 }))
+                        currentPlayer = nullptr;
+                    }
+
+                    ZeroGUI::NextColumn(90.0f);
+
+                    ZeroGUI::Text(std::format(L"Current Player: {}", currentPlayer->GetPlayerName().c_str()).c_str());
+
+                    if (ZeroGUI::Button(L"Kick", { 60.0f, 25.0f }))
+                    {
+                        KickController((APlayerController*)currentPlayer->Owner, L"You have been kicked by the server.");
+                        currentPlayer = nullptr;
+                    }
+                }
+                else
+                {
+                    static int tab = 0;
+                    if (ZeroGUI::ButtonTab(L"Game", FVector2D { 110, 25 }, tab == 0))
+                        tab = 0;
+                    if (ZeroGUI::ButtonTab(L"Players", FVector2D { 110, 25 }, tab == 1))
+                        tab = 1;
+
+                    ZeroGUI::NextColumn(130.0f);
+
+                    switch (tab)
+                    {
+                    case 0:
+                    {
+                        if (!bStartedBus)
                         {
-                            if (static_cast<AAthena_GameState_C*>(GetWorld()->GameState)->GamePhase >= EAthenaGamePhase::Aircraft)
+                            if (ZeroGUI::Button(L"Start Bus", FVector2D { 100, 25 }))
                             {
-                                LOG_INFO("The bus has already started!")
+                                if (static_cast<AAthena_GameState_C*>(GetWorld()->GameState)->GamePhase >= EAthenaGamePhase::Aircraft)
+                                {
+                                    LOG_INFO("The bus has already started!")
+                                    bStartedBus = true;
+                                }
+
+                                GameState->bGameModeWillSkipAircraft = false;
+                                GameState->AircraftStartTime = 0;
+                                GameState->WarmupCountdownEndTime = 0;
+
+                                GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
+
+                                Game::Mode->InitializeGameplay();
+                                LOG_INFO("The bus has been started!")
                                 bStartedBus = true;
                             }
-
-                            GameState->bGameModeWillSkipAircraft = false;
-                            GameState->AircraftStartTime = 0;
-                            GameState->WarmupCountdownEndTime = 0;
-
-                            GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
-
-                            Game::Mode->InitializeGameplay();
-                            LOG_INFO("The bus has been started!")
-                            bStartedBus = true;
                         }
+                        break;
                     }
-                    break;
-                }
-                case 1:
-                {
-                    std::wstring ConnectedPlayers = std::format(L"Connected Players: {}\n", GameState->PlayerArray.Num());
+                    case 1:
+                    {
+                        std::wstring ConnectedPlayers = std::format(L"Connected Players: {}\n", GameState->PlayerArray.Num());
 
-                    ZeroGUI::Text(ConnectedPlayers.c_str());
-                    break;
-                }
+                        ZeroGUI::Text(ConnectedPlayers.c_str());
+
+                        for (auto i = 0; i < GameState->PlayerArray.Num(); i++)
+                        {
+                            auto PlayerState = GameState->PlayerArray[i];
+
+                            if (ZeroGUI::Button(PlayerState->GetPlayerName().c_str(), { 100, 25 }))
+                            {
+                                currentPlayer = PlayerState;
+                            }
+                        }
+
+                        break;
+                    }
+                    }
                 }
             }
             else
