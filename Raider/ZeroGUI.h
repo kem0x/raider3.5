@@ -49,7 +49,7 @@ namespace ZeroGUI
             FVector2D pos;
             FVector2D size;
             FLinearColor color;
-            char* name;
+            const wchar_t* name;
             bool outline;
 
             FVector2D from;
@@ -72,7 +72,7 @@ namespace ZeroGUI
                 }
             }
         }
-        void TextLeft(char* name, FVector2D pos, FLinearColor color, bool outline)
+        void TextLeft(const wchar_t* name, FVector2D pos, FLinearColor color, bool outline)
         {
             for (int i = 0; i < 128; i++)
             {
@@ -87,14 +87,14 @@ namespace ZeroGUI
                 }
             }
         }
-        void TextCenter(char* name, FVector2D pos, FLinearColor color, bool outline)
+        void TextCenter(const wchar_t* name, FVector2D pos, FLinearColor color, bool outline)
         {
             for (int i = 0; i < 128; i++)
             {
                 if (drawlist[i].type == -1)
                 {
                     drawlist[i].type = 3;
-                    drawlist[i].name = (char*)name;
+                    drawlist[i].name = name;
                     drawlist[i].pos = pos;
                     drawlist[i].outline = outline;
                     drawlist[i].color = color;
@@ -216,16 +216,16 @@ namespace ZeroGUI
         first_element_pos = FVector2D { 0, 0 };
     }
 
-    void TextLeft(char* name, FVector2D pos, FLinearColor color, bool outline)
+    void TextLeft(const wchar_t* name, FVector2D pos, FLinearColor color, bool outline)
     {
         static auto Font = UObject::FindObject<UFont>("Font Roboto.Roboto");
-        canvas->K2_DrawText(Font, FString { s2wc(name) }, pos, color, false, Colors::Text_Shadow, FVector2D { pos.X + 1, pos.Y + 1 }, false, true, true, Colors::Text_Outline);
+        canvas->K2_DrawText(Font, FString { name }, pos, color, false, Colors::Text_Shadow, FVector2D { pos.X + 1, pos.Y + 1 }, false, true, true, Colors::Text_Outline);
     }
 
-    void TextCenter(char* name, FVector2D pos, FLinearColor color, bool outline)
+    void TextCenter(const wchar_t* name, FVector2D pos, FLinearColor color, bool outline)
     {
         static auto Font = UObject::FindObject<UFont>("Font Roboto.Roboto");
-        canvas->K2_DrawText(Font, FString { s2wc(name) }, pos, color, false, Colors::Text_Shadow, FVector2D { pos.X + 1, pos.Y + 1 }, true, true, true, Colors::Text_Outline);
+        canvas->K2_DrawText(Font, FString { name }, pos, color, false, Colors::Text_Shadow, FVector2D { pos.X + 1, pos.Y + 1 }, true, true, true, Colors::Text_Outline);
     }
 
     void GetColor(FLinearColor* color, float* r, float* g, float* b, float* a)
@@ -289,7 +289,7 @@ namespace ZeroGUI
     }
 
     FVector2D dragPos;
-    bool Window(char* name, FVector2D* pos, FVector2D size, bool isOpen)
+    bool Window(const wchar_t* name, FVector2D* pos, FVector2D size, bool isOpen)
     {
         elements_count = 0;
 
@@ -360,7 +360,7 @@ namespace ZeroGUI
         return true;
     }
 
-    void Text(char* text, bool center = false, bool outline = false)
+    void Text(const wchar_t* text, bool center = false, bool outline = false)
     {
         elements_count++;
 
@@ -396,7 +396,7 @@ namespace ZeroGUI
         if (first_element_pos.X == 0.0f)
             first_element_pos = pos;
     }
-    bool ButtonTab(char* name, FVector2D size, bool active)
+    bool ButtonTab(const wchar_t* name, FVector2D size, bool active)
     {
         elements_count++;
 
@@ -449,7 +449,7 @@ namespace ZeroGUI
 
         return false;
     }
-    bool Button(char* name, FVector2D size)
+    bool Button(const wchar_t* name, FVector2D size)
     {
         elements_count++;
 
@@ -499,7 +499,7 @@ namespace ZeroGUI
 
         return false;
     }
-    void Checkbox(char* name, bool* value)
+    void Checkbox(const wchar_t* name, bool* value)
     {
         elements_count++;
 
@@ -554,7 +554,7 @@ namespace ZeroGUI
         if (isHovered && Input::IsMouseClicked(0, elements_count, false))
             *value = !*value;
     }
-    void SliderInt(char* name, int* value, int min, int max)
+    void SliderInt(const wchar_t* name, int* value, int min, int max)
     {
         elements_count++;
 
@@ -613,8 +613,8 @@ namespace ZeroGUI
         DrawFilledCircle(FVector2D { pos.X + oneP * (*value - min), pos.Y + slider_size.Y + 3.3f + padding.Y }, 10.0f, Colors::Slider_Button);
         DrawFilledCircle(FVector2D { pos.X + oneP * (*value - min), pos.Y + slider_size.Y + 3.3f + padding.Y }, 5.0f, Colors::Slider_Progress);
 
-        char buffer[32];
-        sprintf_s(buffer, "%i", *value);
+        wchar_t buffer[32];
+        swprintf_s(buffer, L"%i", *value);
         FVector2D valuePos = FVector2D { pos.X + oneP * (*value - min), pos.Y + slider_size.Y + 25 + padding.Y };
         TextCenter(buffer, valuePos, FLinearColor { 1.0f, 1.0f, 1.0f, 1.0f }, false);
 
@@ -628,7 +628,7 @@ namespace ZeroGUI
         if (first_element_pos.X == 0.0f)
             first_element_pos = pos;
     }
-    void SliderFloat(char* name, float* value, float min, float max, char* format = (char*)"%.0f")
+    void SliderFloat(const wchar_t* name, float* value, float min, float max, const wchar_t* format = (const wchar_t*)L"%.0f")
     {
         elements_count++;
 
@@ -693,8 +693,8 @@ namespace ZeroGUI
         DrawFilledCircle(FVector2D { pos.X + oneP * (*value - min), pos.Y + slider_size.Y + 2.66f + padding.Y }, 8.0f, Colors::Slider_Button);
         DrawFilledCircle(FVector2D { pos.X + oneP * (*value - min), pos.Y + slider_size.Y + 2.66f + padding.Y }, 4.0f, Colors::Slider_Progress);
 
-        char buffer[32];
-        sprintf_s(buffer, format, *value);
+        wchar_t buffer[32];
+        swprintf_s(buffer, format, *value);
         FVector2D valuePos = FVector2D { pos.X + oneP * (*value - min), pos.Y + slider_size.Y + 20 + padding.Y };
         TextCenter(buffer, valuePos, Colors::Text, false);
 
@@ -706,7 +706,7 @@ namespace ZeroGUI
     }
 
     bool checkbox_enabled[256];
-    void Combobox(char* name, FVector2D size, int* value, char* arg, ...)
+    void Combobox(const wchar_t* name, FVector2D size, int* value, const wchar_t* arg, ...)
     {
         elements_count++;
 
@@ -756,13 +756,13 @@ namespace ZeroGUI
             current_element_size.Y = element_pos.Y - 5.0f;
         }
         va_list arguments;
-        for (va_start(arguments, arg); arg != NULL; arg = va_arg(arguments, char*))
+        for (va_start(arguments, arg); arg != NULL; arg = va_arg(arguments, const wchar_t*))
         {
             // Selected Element
             if (num == *value)
             {
                 FVector2D _textPos = FVector2D { pos.X + size.X / 2, pos.Y + size.Y / 2 };
-                TextCenter((char*)arg, _textPos, FLinearColor { 1.0f, 1.0f, 1.0f, 1.0f }, false);
+                TextCenter((const wchar_t*)arg, _textPos, FLinearColor { 1.0f, 1.0f, 1.0f, 1.0f }, false);
             }
 
             if (checkbox_enabled[elements_count])
@@ -787,7 +787,7 @@ namespace ZeroGUI
                     PostRenderer::drawFilledRect(FVector2D { element_pos.X, element_pos.Y }, size.X, 25.0f, Colors::Combobox_Idle);
                 }
 
-                PostRenderer::TextLeft((char*)arg, FVector2D { element_pos.X + 5.0f, element_pos.Y + 15.0f }, FLinearColor { 1.0f, 1.0f, 1.0f, 1.0f }, false);
+                PostRenderer::TextLeft((const wchar_t*)arg, FVector2D { element_pos.X + 5.0f, element_pos.Y + 15.0f }, FLinearColor { 1.0f, 1.0f, 1.0f, 1.0f }, false);
             }
             num++;
         }
@@ -869,7 +869,7 @@ namespace ZeroGUI
 
         return szName;
     }
-    void Hotkey(char* name, FVector2D size, int* key)
+    void Hotkey(const wchar_t* name, FVector2D size, int* key)
     {
         elements_count++;
 
@@ -909,7 +909,7 @@ namespace ZeroGUI
         {
             // Text
             FVector2D textPos = FVector2D { pos.X + size.X / 2, pos.Y + size.Y / 2 };
-            TextCenter((char*)"[Press Key]", textPos, FLinearColor { 1.0f, 1.0f, 1.0f, 1.0f }, false);
+            TextCenter((const wchar_t*)"[Press Key]", textPos, FLinearColor { 1.0f, 1.0f, 1.0f, 1.0f }, false);
 
             if (!ZeroGUI::Input::IsAnyMouseDown())
             {
@@ -932,7 +932,7 @@ namespace ZeroGUI
         {
             // Text
             FVector2D textPos = FVector2D { pos.X + size.X / 2, pos.Y + size.Y / 2 };
-            TextCenter((char*)VirtualKeyCodeToString(*key).c_str(), textPos, FLinearColor { 1.0f, 1.0f, 1.0f, 1.0f }, false);
+            TextCenter((const wchar_t*)VirtualKeyCodeToString(*key).c_str(), textPos, FLinearColor { 1.0f, 1.0f, 1.0f, 1.0f }, false);
 
             if (isHovered)
             {
@@ -989,7 +989,7 @@ namespace ZeroGUI
 
         return true;
     }
-    void ColorPicker(char* name, FLinearColor* color)
+    void ColorPicker(const wchar_t* name, FLinearColor* color)
     {
         elements_count++;
 

@@ -3,7 +3,9 @@
 
 #include <functional>
 
-#include "Game.h"
+#include "Logic/Game.h"
+#include "Logic/Spawners.h"
+#include "Logic/Abilities.h"
 #include "UE4.h"
 
 // #define LOGGING
@@ -28,7 +30,7 @@ namespace UFunctionHooks
             auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
             auto Params = (UAbilitySystemComponent_ServerTryActivateAbility_Params*)Parameters;
 
-            TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, nullptr);
+            Abilities::TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, nullptr);
 
             return false;
         })
@@ -37,7 +39,7 @@ namespace UFunctionHooks
             auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
             auto Params = (UAbilitySystemComponent_ServerTryActivateAbilityWithEventData_Params*)Parameters;
 
-            TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, &Params->TriggerEventData);
+            Abilities::TryActivateAbility(AbilitySystemComponent, Params->AbilityToActivate, Params->InputPressed, &Params->PredictionKey, &Params->TriggerEventData);
 
             return false;
         })
@@ -46,7 +48,7 @@ namespace UFunctionHooks
             auto AbilitySystemComponent = (UAbilitySystemComponent*)Object;
             auto Params = (UAbilitySystemComponent_ServerAbilityRPCBatch_Params*)Parameters;
 
-            TryActivateAbility(AbilitySystemComponent, Params->BatchInfo.AbilitySpecHandle, Params->BatchInfo.InputPressed, &Params->BatchInfo.PredictionKey, nullptr);
+            Abilities::TryActivateAbility(AbilitySystemComponent, Params->BatchInfo.AbilitySpecHandle, Params->BatchInfo.InputPressed, &Params->BatchInfo.PredictionKey, nullptr);
 
             return false;
         })
@@ -155,7 +157,7 @@ namespace UFunctionHooks
             if (PC && Params && CurrentBuildClass)
             {
                 {
-                    auto BuildingActor = (ABuildingSMActor*)SpawnActor(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, PC, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
+                    auto BuildingActor = (ABuildingSMActor*)Spawners::SpawnActor(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, PC, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
                     // SpawnBuilding(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, (APlayerPawn_Athena_C*)PC->Pawn);
                     if (BuildingActor && CanBuild2(BuildingActor))
                     {
@@ -184,11 +186,11 @@ namespace UFunctionHooks
             auto Controller = (AFortPlayerControllerAthena*)Object;
             auto Pawn = (APlayerPawn_Athena_C*)Controller->Pawn;
             bool bFound = false;
-            auto EditToolEntry = FindItemInInventory<UFortEditToolItemDefinition>(Controller, bFound);
+            auto EditToolEntry = Inventory::FindItemInInventory<UFortEditToolItemDefinition>(Controller, bFound);
 
             if (Controller && Pawn && Params->BuildingActorToEdit && bFound)
             {
-                auto EditTool = (AFortWeap_EditingTool*)EquipWeaponDefinition(Pawn, (UFortWeaponItemDefinition*)EditToolEntry.ItemDefinition, EditToolEntry.ItemGuid);
+                auto EditTool = (AFortWeap_EditingTool*)Inventory::EquipWeaponDefinition(Pawn, (UFortWeaponItemDefinition*)EditToolEntry.ItemDefinition, EditToolEntry.ItemGuid);
 
                 if (EditTool)
                 {
@@ -203,7 +205,7 @@ namespace UFunctionHooks
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortDecoTool.ServerSpawnDeco", {
-            SpawnDeco((AFortDecoTool*)Object, Parameters);
+            Spawners::SpawnDeco((AFortDecoTool*)Object, Parameters);
             return false;
         })
 
@@ -309,7 +311,7 @@ namespace UFunctionHooks
                     //  BuildingActor->K2_DestroyActor();
                     BuildingActor->SilentDie();
 
-                    if (auto NewBuildingActor = (ABuildingSMActor*)SpawnActor(NewBuildingClass, location, rotation, PC))
+                    if (auto NewBuildingActor = (ABuildingSMActor*)Spawners::SpawnActor(NewBuildingClass, location, rotation, PC))
                     {
                         if (!BuildingActor->bIsInitiallyBuilding)
                             NewBuildingActor->ForceBuildingHealth(NewBuildingActor->GetMaxHealth() * HealthPercent);
@@ -340,7 +342,7 @@ namespace UFunctionHooks
                 auto KillerPlayerState = static_cast<AFortPlayerStateAthena*>(Params->DeathReport.KillerPlayerState);
                 GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
 
-                SpawnActor<ABP_VictoryDrone_C>(DeadPC->Pawn->K2_GetActorLocation())->PlaySpawnOutAnim();
+                Spawners::SpawnActor<ABP_VictoryDrone_C>(DeadPC->Pawn->K2_GetActorLocation())->PlaySpawnOutAnim();
 
                 FDeathInfo DeathData;
                 DeathData.bDBNO = false;
@@ -473,10 +475,10 @@ namespace UFunctionHooks
                     PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
 
                     bool bFound = false;
-                    auto PickaxeEntry = FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
+                    auto PickaxeEntry = Inventory::FindItemInInventory<UFortWeaponMeleeItemDefinition>(PC, bFound);
 
                     if (bFound)
-                        EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
+                        Inventory::EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
 
                     // PC->Pawn->K2_TeleportTo(ExitLocation, Params->ClientRotation);
                 }
@@ -656,7 +658,7 @@ namespace UFunctionHooks
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerExecuteInventoryItem", {
-            EquipInventoryItem((AFortPlayerControllerAthena*)Object, *(FGuid*)Parameters);
+            Inventory::EquipInventoryItem((AFortPlayerControllerAthena*)Object, *(FGuid*)Parameters);
 
             return false;
         })
@@ -671,7 +673,7 @@ namespace UFunctionHooks
             auto Pawn = (APlayerPawn_Athena_C*)((AFortPlayerController*)Object)->Pawn;
             if (Pawn && Pawn->AbilitySystemComponent)
             {
-                ApplyAbilities(Pawn);
+                Abilities::ApplyAbilities(Pawn);
             }
 
             return false;
@@ -686,7 +688,7 @@ namespace UFunctionHooks
             {
                 Game::OnReadyToStartMatch();
 
-                HostBeacon = SpawnActor<AFortOnlineBeaconHost>();
+                HostBeacon = Spawners::SpawnActor<AFortOnlineBeaconHost>();
                 HostBeacon->ListenPort = 7776;
                 auto bInitBeacon = Native::OnlineBeaconHost::InitHost(HostBeacon);
                 CheckNullFatal(bInitBeacon, "Failed to initialize the Beacon!");

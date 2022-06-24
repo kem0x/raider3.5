@@ -82,7 +82,12 @@
         "xtr1common": "cpp",
         "xtree": "cpp",
         "xutility": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "codecvt": "cpp",
+        "condition_variable": "cpp",
+        "cstdarg": "cpp",
+        "span": "cpp",
+        "valarray": "cpp"
     },
     "search.useIgnoreFiles": false,
     "C_Cpp.errorSquiggles": "Enabled"
