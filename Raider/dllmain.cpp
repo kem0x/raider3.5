@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SDK.hpp"
-#include "game.h"
+#include "Logic/Game.h"
 #include "hooks.h"
 #include "Logger.hpp"
 #include "ufunctionhooks.h"
