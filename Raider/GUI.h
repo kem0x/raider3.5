@@ -101,6 +101,19 @@ namespace GUI
                                 bStartedBus = true;
                             }
                         }
+
+                        if (ZeroGUI::Button(L"Launch all players in air", FVector2D { 160, 25 }))
+                        {
+                            for (auto i = 0; i < GameState->PlayerArray.Num(); i++)
+                            {
+                                auto PlayerState = GameState->PlayerArray[i];
+
+                                if (PlayerState)
+                                {
+                                    reinterpret_cast<ACharacter*>(reinterpret_cast<APlayerController*>(PlayerState->Owner)->Pawn)->LaunchCharacter({ 90000, 90000, 90000 }, false, false);
+                                }
+                            }
+                        }
                         break;
                     }
                     case 1:
