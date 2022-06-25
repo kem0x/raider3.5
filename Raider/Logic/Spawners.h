@@ -124,6 +124,9 @@ namespace Spawners
                 Trap->AttachedTo = Params->AttachedActor;
                 Trap->OnRep_AttachedTo();
 
+                auto PlayerState = (AFortPlayerStateAthena*)Pawn->Controller->PlayerState;
+                Trap->Team = PlayerState->TeamIndex;
+
                 auto TrapAbilitySet = Trap->AbilitySet;
 
                 for (int i = 0; i < TrapAbilitySet->GameplayAbilities.Num(); i++) // this fixes traps crashing the game // don't ask how
