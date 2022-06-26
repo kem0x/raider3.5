@@ -80,8 +80,8 @@ public:
         Controller->OnRep_Pawn();
         Controller->Possess(Pawn);
 
-        Pawn->HealthSet->Health.Minimum = 1.0f;
-        Pawn->HealthSet->Shield.Minimum = 1.0f;
+        Pawn->HealthSet->Health.Minimum = this->maxHealth;
+        Pawn->HealthSet->CurrentShield.Minimum = this->maxShield;
 
         Pawn->SetMaxHealth(this->maxHealth);
         Pawn->SetMaxShield(this->maxShield);
@@ -182,7 +182,7 @@ public:
         Pawn->SetMaxShield(this->maxShield);
 
         Pawn->HealthSet->Health.Minimum = 0.0f; // Disables spawn island protection
-        Pawn->HealthSet->Shield.Minimum = 0.0f;
+        Pawn->HealthSet->CurrentShield.Minimum = 0.0f;
 
         Pawn->bReplicateMovement = true;
         Pawn->OnRep_ReplicateMovement();
