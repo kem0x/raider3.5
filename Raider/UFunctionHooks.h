@@ -239,12 +239,10 @@ namespace UFunctionHooks
                                 break;
                             case 2:
                                 location.X += -512;
-                                location.Y += 0;
                                 break;
                             case 3:
                                 location.X += -256;
                                 location.Y += -256;
-                                break;
                             }
                             yaw = 90;
                             break;
@@ -256,13 +254,11 @@ namespace UFunctionHooks
                                 location.Y += -256;
                                 break;
                             case 2:
-                                location.X += 0;
                                 location.Y += -512;
                                 break;
                             case 3:
                                 location.X += 256;
                                 location.Y += -256;
-                                break;
                             }
                             yaw = 180;
                             break;
@@ -275,12 +271,10 @@ namespace UFunctionHooks
                                 break;
                             case 2:
                                 location.X += 512;
-                                location.Y += 0;
                                 break;
                             case 3:
                                 location.X += 256;
                                 location.Y += 256;
-                                break;
                             }
                             yaw = 270;
                             break;
@@ -292,13 +286,11 @@ namespace UFunctionHooks
                                 location.Y += 256;
                                 break;
                             case 2:
-                                location.X += 0;
                                 location.Y += 512;
                                 break;
                             case 3:
                                 location.X += -256;
                                 location.Y += 256;
-                                break;
                             }
                             yaw = 0;
                         }
@@ -319,6 +311,9 @@ namespace UFunctionHooks
                         NewBuildingActor->InitializeKismetSpawnedBuildingActor(NewBuildingActor, PC);
                         auto PlayerState = (AFortPlayerStateAthena*)PC->PlayerState;
                         NewBuildingActor->Team = PlayerState->TeamIndex;
+
+                        if (!NewBuildingActor->IsStructurallySupported())
+                            NewBuildingActor->K2_DestroyActor();
                     }
                 }
             }
