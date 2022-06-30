@@ -344,7 +344,7 @@ namespace UFunctionHooks
                 DeathData.DeathLocation = DeadPC->Pawn->K2_GetActorLocation();
                 DeathData.Distance = Params->DeathReport.KillerPawn ? Params->DeathReport.KillerPawn->GetDistanceTo(DeadPC->Pawn) : 0;
 
-                DeathData.DeathCause = KillerPlayerState ? EDeathCause::Sniper : EDeathCause::FallDamage; // TODO: Determine what the actual death cause was.
+                DeathData.DeathCause = Game::GetDeathCause(Params->DeathReport);
                 DeathData.FinisherOrDowner = KillerPlayerState ? KillerPlayerState : DeadPlayerState;
 
                 DeadPC->Pawn->K2_DestroyActor();
