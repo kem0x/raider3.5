@@ -368,7 +368,7 @@ namespace UFunctionHooks
                     Spectate(DeadPC->NetConnection, KillerPlayerState);
                 }
 
-                if (GameState->PlayersLeft == 1)
+                if (GameState->PlayersLeft == 1 && bStartedBus)
                 {
                     TArray<AFortPlayerPawn*> OutActors;
                     GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
