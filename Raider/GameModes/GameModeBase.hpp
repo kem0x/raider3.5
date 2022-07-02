@@ -157,7 +157,7 @@ public:
         return Ret;
     }
 
-    void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector { 1250, 1818, 3284 }, FQuat Rotation = FQuat(), bool bResetCharacterParts = true)
+    void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector { 1250, 1818, 3284 }, FQuat Rotation = FQuat(), bool bResetCharacterParts = false)
     {
         if (PlayerController->Pawn)
             PlayerController->Pawn->K2_DestroyActor();
