@@ -1,5 +1,11 @@
 #pragma once
-#include "../ue4.h"
+
+#include <shlobj.h>
+#include <iostream>
+#include <fstream>
+#include <nlohmann/json.hpp>
+
+#include "../UE4.h"
 #include "../SDK.hpp"
 #include "../Logic/Teams.h"
 #include "../Logic/Inventory.h"
@@ -144,15 +150,35 @@ public:
     }
 
     virtual PlayerLoadout& GetPlaylistLoadout()
-    {
+    { 
         static PlayerLoadout Ret = {
-            FindWID("WID_Harvest_Pickaxe_Athena_C_T01"),
-            FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
-            FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
-            FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03"), // Gold AR
-            FindWID("WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03"), // Blue Bolt Action
-            FindWID("Athena_Shields") // Big Shield Potion
+            FindWID("WID_Harvest_Pickaxe_Athena_C_T01"), // Default Pickaxe
+            FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Rare Pump Shotgun
+            FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Rare Pump Shotgun
+            FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03"), // Legendary Assualt Rifle
+            FindWID("WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03"), // Rare Bolt Action Sniper
+            FindWID("Athena_Shields") // Shield Potion
         };
+
+        if (std::filesystem::exists("inventory.json"))
+        {
+            // Loading inventory.json from game executable directory
+            std::ifstream f("inventory.json", std::ifstream::in);
+            nlohmann::json InventoryConfig;
+
+            f >> InventoryConfig;
+
+            // Setting Items variable from InventoryConfig
+            nlohmann::json Items = InventoryConfig["items"];
+
+            // Loading each item from items array in inventory.json
+            for (int i = 0; i < 5; i++)
+            {
+                auto Item = FindWID(Items[i]);
+                // The "+1" will make sure the pickaxe will not get overwritten.
+                Ret[i + 1] = Item;
+            }
+        }
 
         return Ret;
     }

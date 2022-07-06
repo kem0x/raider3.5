@@ -144,6 +144,7 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\Gray_spdlog.1.10.0\build\native\Gray_spdlog.targets" Condition="Exists('..\packages\Gray_spdlog.1.10.0\build\native\Gray_spdlog.targets')" />
     <Import Project="..\packages\Detours.4.0.1\build\native\Detours.targets" Condition="Exists('..\packages\Detours.4.0.1\build\native\Detours.targets')" />
+    <Import Project="..\packages\nlohmann.json.3.10.5\build\native\nlohmann.json.targets" Condition="Exists('..\packages\nlohmann.json.3.10.5\build\native\nlohmann.json.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -151,5 +152,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Gray_spdlog.1.10.0\build\native\Gray_spdlog.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Gray_spdlog.1.10.0\build\native\Gray_spdlog.targets'))" />
     <Error Condition="!Exists('..\packages\Detours.4.0.1\build\native\Detours.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Detours.4.0.1\build\native\Detours.targets'))" />
+    <Error Condition="!Exists('..\packages\nlohmann.json.3.10.5\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nlohmann.json.3.10.5\build\native\nlohmann.json.targets'))" />
   </Target>
 </Project>
