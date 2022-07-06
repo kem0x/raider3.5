@@ -7,29 +7,28 @@
 static FVector GetRandomBattleBusLocation()
 {
     static std::vector<FVector> Locations = {
-            
-          { 24426, 37710, 17525 }, // retail row
-        { 50018, 73844, 17525 }, // lonely lodge
-        { 34278, 867, 9500 }, // dusty depot / factories
-        { 79710, 15677, 17525 }, // tomato town
-        { 103901, -20203, 17525}, // ANARCHY acres
-        { 86766, -83071, 17525 }, // pleasant park
-        { 2399, -96255, 17525 }, // greasy grove
-        { -35037, -463, 13242 }, // fatal fields
-        { 83375, 50856, 17525 }, // Wailing Woods
-        { 35000, -60121, 20525 }, // Tilted Towers
-         { 40000, -127121, 17525 }, // Snobby Shores
-        { 5000, -60121, 10748 }, // shifty shafts
-        { 110088, -115332, 17525}, // Haunted Hills
-        { 119126, -86354, 17525 }, // Junk Houses
-        { 130036, -105092, 17525}, // Junk Junction
-        { 39781, 61621, 17525}, // Moisty Mire
-        { -68000, -63521, 17525 }, // Flush Factory
-        { 3502, -9183, 10500 }, // Salty Springs
-        { 7760, 76702, 17525}, //race track
-        { 38374, -94726, 17525}, //Soccer field
-        { 70000, -40121, 17525 }, // Loot Lake
-        {-123778, -112480, 17525} //Spawn Island
+        { 24426, 37710, 17525 },    // Retail Row
+        { 50018, 73844, 17525 },    // Lonely Lodge
+        { 34278, 867, 9500 },       // Dusty Depot & The Factories
+        { 79710, 15677, 17525 },    // Tomato Town
+        { 103901, -20203, 17525},   // Anarchy Acres
+        { 86766, -83071, 17525 },   // Pleasant Park
+        { 2399, -96255, 17525 },    // Greasy Grove
+        { -35037, -463, 13242 },    // Fatal Fields
+        { 83375, 50856, 17525 },    // Wailing Woods
+        { 35000, -60121, 20525 },   // Tilted Towers
+        { 40000, -127121, 17525 },  // Snobby Shores
+        { 5000, -60121, 10748 },    // Shifty Shafts
+        { 110088, -115332, 17525},  // Haunted Hills
+        { 119126, -86354, 17525 },  // Junk Houses
+        { 130036, -105092, 17525},  // Junk Junction
+        { 39781, 61621, 17525},     // Moisty Mire
+        { -68000, -63521, 17525 },  // Flush Factory
+        { 3502, -9183, 10500 },     // Salty Springs
+        { 7760, 76702, 17525},      // Race Track
+        { 38374, -94726, 17525},    // Soccer field
+        { 70000, -40121, 17525 },   // Loot Lake
+        {-123778, -112480, 17525}   // Spawn Island
     };
 
     static auto Location = Locations[rand() % Locations.size()];
@@ -51,7 +50,6 @@ public:
         GameMode->bSafeZonePaused = false;
     }
     
-
     void InitializeGameplay()
     {
 
@@ -91,7 +89,6 @@ public:
             LOG_ERROR("Aircraft was NULL! Can't set flight data.");
         }
         
-
         if (GameMode->SafeZoneIndicator)
         {
             /* TArray<FVector> Locations;
@@ -110,8 +107,6 @@ public:
         }
     }
     
-    
-
     void OnPlayerJoined(AFortPlayerControllerAthena* Controller) override
     {
         this->Teams->AddPlayerToRandomTeam(Controller);

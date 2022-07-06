@@ -95,7 +95,9 @@
     </ClInclude>
     <ClInclude Include="Logger.hpp" />
     <ClInclude Include="GameModes\GameModes.hpp" />
-    <ClInclude Include="GameModes\GameModeLateGame.hpp" />
+    <ClInclude Include="GameModes\GameModeLateGame.hpp">
+      <Filter>Game\Modes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
