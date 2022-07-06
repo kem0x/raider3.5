@@ -151,7 +151,7 @@ public:
 
     virtual PlayerLoadout& GetPlaylistLoadout()
     { 
-        static PlayerLoadout Ret = {
+       static PlayerLoadout Ret = {
             FindWID("WID_Harvest_Pickaxe_Athena_C_T01"), // Default Pickaxe
             FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Rare Pump Shotgun
             FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Rare Pump Shotgun
@@ -159,24 +159,30 @@ public:
             FindWID("WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03"), // Rare Bolt Action Sniper
             FindWID("Athena_Shields") // Shield Potion
         };
-
+        
         if (std::filesystem::exists("inventory.json"))
         {
             // Loading inventory.json from game executable directory
             std::ifstream f("inventory.json", std::ifstream::in);
             nlohmann::json InventoryConfig;
-
             f >> InventoryConfig;
 
             // Setting Items variable from InventoryConfig
             nlohmann::json Items = InventoryConfig["items"];
 
+            // Prevent default items from being loaded
+            Ret = {
+                FindWID("WID_Harvest_Pickaxe_Athena_C_T01"), // Default Pickaxe
+            };
+
             // Loading each item from items array in inventory.json
             for (int i = 0; i < 5; i++)
             {
-                auto Item = FindWID(Items[i]);
-                // The "+1" will make sure the pickaxe will not get overwritten.
-                Ret[i + 1] = Item;
+                if (!Items[i].is_null())
+                {
+                    auto Item = FindWID(Items[i]);
+                    Ret[i + 1] = Item;
+                }
             }
         }
 
