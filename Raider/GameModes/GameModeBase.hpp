@@ -85,6 +85,8 @@ public:
 
         Pawn->SetMaxHealth(this->maxHealth);
         Pawn->SetMaxShield(this->maxShield);
+        if(!bStartedBus)
+            Pawn->bCanBeDamaged = false;
 
         Controller->bHasClientFinishedLoading = true;
         Controller->bHasServerFinishedLoading = true;
