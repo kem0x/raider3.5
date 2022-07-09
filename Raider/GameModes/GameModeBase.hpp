@@ -15,12 +15,13 @@ public:
 class AbstractGameModeBase : protected IGameModeBase
 {
 public:
-    AbstractGameModeBase(const std::string BasePlaylist, bool bRespawnEnabled = false, int maxTeamSize = 1)
+    AbstractGameModeBase(const std::string BasePlaylist, bool bRespawnEnabled = false, int maxTeamSize = 1, bool bRegenEnabled = false)
     {
         this->BasePlaylist = UObject::FindObject<UFortPlaylistAthena>(BasePlaylist);
 
         this->BasePlaylist->bNoDBNO = maxTeamSize > 1;
         this->bRespawnEnabled = bRespawnEnabled;
+	this->bRegenEnabled = bRegenEnabled;
 
         if (bRespawnEnabled)
         {
@@ -182,15 +183,19 @@ public:
 
         Pawn->SetMaxHealth(this->maxHealth);
         Pawn->SetMaxShield(this->maxShield);
-        Pawn->AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(Pawn->HealthRegenDelayGameplayEffect, Pawn->AbilitySystemComponent, 1);
-        Pawn->AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(Pawn->HealthRegenGameplayEffect, Pawn->AbilitySystemComponent, 1);
-        Pawn->AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(Pawn->ShieldRegenDelayGameplayEffect, Pawn->AbilitySystemComponent, 1);
-        Pawn->AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(Pawn->ShieldRegenGameplayEffect, Pawn->AbilitySystemComponent, 1);
-        // setting these vars to null might not be required but it works with them and im not sure if it works without them.
-	    Pawn->HealthRegenDelayGameplayEffect = nullptr;
-        Pawn->HealthRegenGameplayEffect = nullptr;
-        Pawn->ShieldRegenDelayGameplayEffect = nullptr;
-        Pawn->ShieldRegenGameplayEffect = nullptr;
+	
+	if (this->bRegenEnabled) { 
+            Pawn->AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(Pawn->HealthRegenDelayGameplayEffect, Pawn->AbilitySystemComponent, 1);
+            Pawn->AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(Pawn->HealthRegenGameplayEffect, Pawn->AbilitySystemComponent, 1);
+            Pawn->AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(Pawn->ShieldRegenDelayGameplayEffect, Pawn->AbilitySystemComponent, 1);
+            Pawn->AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(Pawn->ShieldRegenGameplayEffect, Pawn->AbilitySystemComponent, 1);
+
+            // TODO: Check if this is useless.
+            Pawn->HealthRegenDelayGameplayEffect = nullptr;
+            Pawn->HealthRegenGameplayEffect = nullptr;
+            Pawn->ShieldRegenDelayGameplayEffect = nullptr;
+            Pawn->ShieldRegenGameplayEffect = nullptr;
+	}
 
         Pawn->HealthSet->Health.Minimum = 0.0f; // Disables spawn island protection
         Pawn->HealthSet->CurrentShield.Minimum = 0.0f;
@@ -227,6 +232,7 @@ private:
     int maxHealth = 100;
     int maxShield = 100;
     bool bRespawnEnabled = false;
+    bool bRegenEnabled = false;
 
     UFortPlaylistAthena* BasePlaylist;
 };
