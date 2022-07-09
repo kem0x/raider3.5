@@ -86,8 +86,6 @@ public:
 
             return nullptr;
         } else {
-            // LOG_INFO("maxTeamSize={}, Teams.size()={}, lastAssignedTeamIndex={}" this->maxTeamSize, this->Teams.size(), this->lastAssignedTeamIndex);
-            
             if (std::abs(this->maxTeamSize) > this->Teams.size()) return nullptr;
             else {
                 auto Team = this->Teams[this->lastAssignedTeamIndex];
