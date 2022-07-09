@@ -321,7 +321,7 @@ namespace UFunctionHooks
             return false;
         })
 
-        DEFINE_PEHOOK("Function FortniteGame.FortPlayerControllerZone.ClientOnPawnDied", { // Spectating hasn't been majorly testing
+         DEFINE_PEHOOK("Function FortniteGame.FortPlayerControllerZone.ClientOnPawnDied", { // Spectating hasn't been majorly testing
             auto Params = (AFortPlayerControllerZone_ClientOnPawnDied_Params*)Parameters;
 
             auto DeadPC = static_cast<AFortPlayerControllerAthena*>(Object);
@@ -333,6 +333,8 @@ namespace UFunctionHooks
 
             if (Params && DeadPC)
             {
+                Game::Mode->OnPlayerKilled(DeadPC);
+                /*
                 auto GameMode = static_cast<AFortGameModeAthena*>(GameState->AuthorityGameMode);
                 auto KillerPlayerState = static_cast<AFortPlayerStateAthena*>(Params->DeathReport.KillerPlayerState);
                 GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
@@ -406,7 +408,7 @@ namespace UFunctionHooks
                     Spectate(DeadPC->NetConnection, static_cast<AFortPlayerStateAthena*>(RandomTarget->Controller->PlayerState));
                     OutActors.FreeArray();
                 }
-            }
+         */ }
             else
             {
                 LOG_ERROR("Parameters of ClientOnPawnDied were invalid!");
