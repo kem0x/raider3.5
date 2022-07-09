@@ -107,18 +107,16 @@ public:
     {
         auto AvailableSpot = FindAvailableSpot();
         if (!AvailableSpot) {
-            {
-                LOG_ERROR("({}) Couldn't find a team for {}, making a new one!", "Teams", Member->PlayerState->GetPlayerName().ToString());
-                auto TeamInstance = std::make_shared<Team>(this->GetNextSlot(), this->maxTeamSize);
-                this->Teams.push_back(TeamInstance);
+            LOG_ERROR("({}) Couldn't find a team for {}, making a new one!", "Teams", Member->PlayerState->GetPlayerName().ToString());
+            auto TeamInstance = std::make_shared<Team>(this->GetNextSlot(), this->maxTeamSize);
+            this->Teams.push_back(TeamInstance);
 
-                TeamInstance->AddPlayer(Member);
-                return;
-            }
-
-            LOG_INFO("({}) Adding to team {} as an available spot has been found!", "Teams", Member->PlayerState->GetPlayerName().ToString());
-            AvailableSpot->AddPlayer(Member);
+            TeamInstance->AddPlayer(Member);
+            return;
         }
+            
+        LOG_INFO("({}) Adding to team {} as an available spot has been found!", "Teams", Member->PlayerState->GetPlayerName().ToString());
+        AvailableSpot->AddPlayer(Member);
     }
 
 private:
