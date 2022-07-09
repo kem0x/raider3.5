@@ -155,6 +155,23 @@ void SwapPlayerControllers(APlayerController* OldPC, APlayerController* NewPC)
     }
 }
 
+static AActor* SpawnActorTrans(UClass* StaticClass, FTransform SpawnTransform, AActor* Owner = nullptr, ESpawnActorCollisionHandlingMethod Flags = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn)
+{
+    AActor* FirstActor = GetGameplayStatics()->STATIC_BeginDeferredActorSpawnFromClass(GetWorld(), StaticClass, SpawnTransform, Flags, Owner);
+
+    if (FirstActor)
+    {
+        AActor* FinalActor = GetGameplayStatics()->STATIC_FinishSpawningActor(FirstActor, SpawnTransform);
+
+        if (FinalActor)
+        {
+            return FinalActor;
+        }
+    }
+
+    return nullptr;
+}
+
 void Spectate(UNetConnection* SpectatingConnection, AFortPlayerStateAthena* StateToSpectate)
 {
     if (!SpectatingConnection || !StateToSpectate)
