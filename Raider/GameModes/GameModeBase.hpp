@@ -137,13 +137,23 @@ public:
 
     virtual void OnPlayerKilled(AFortPlayerControllerAthena* Controller) override
     {
-        if (this->bRespawnEnabled)
-        {
-            auto CheatManager = static_cast<UFortCheatManager*>(Controller->CheatManager);
-            Controller->RespawnPlayerAfterDeath();
-            CheatManager->RespawnPlayerServer();
-            CheatManager->RespawnPlayer();
-        }
+         // Replicated code to work with latest build -VZP, Credits: AveryMadness and Zenn
+        auto SpawnLocation = Controller->Pawn->K2_GetActorLocation(); 
+        Controller->Pawn->K2_DestroyActor();
+        FTransform SpawnTransform;
+        SpawnTransform.Scale3D = FVector(1, 1, 1);
+        SpawnTransform.Rotation = FQuat();
+        SpawnTransform.Translation = FVector(SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z + 2000); //Transfrom of player respawn
+        Sleep(5);
+        auto NewPawn = (AFortPlayerPawnAthena*)SpawnActorTrans(APlayerPawn_Athena_C::StaticClass(), SpawnTransform); //Function 'SpawnActorTrans' redefined in UE4 as a new void function | VZP
+        auto NewPlayerState = (AFortPlayerStateAthena*)NewPawn->PlayerState;
+        Controller->RespawnPlayerAfterDeath();
+        Controller->Possess(NewPawn);
+        NewPawn->PlayerState = Controller->PlayerState;
+        NewPawn->SetHealth(100);
+        NewPawn->SetMaxHealth(100);
+        NewPawn->SetMaxShield(100);
+        NewPawn->CharacterMovement->SetMovementMode(EMovementMode::MOVE_Custom, 3U);
     }
 
     virtual PlayerLoadout& GetPlaylistLoadout()
