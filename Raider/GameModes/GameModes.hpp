@@ -5,3 +5,4 @@
 #include "GameModeDuos.hpp"
 #include "GameModeLateGame.hpp"
 #include "GameMode50v50.hpp"
+#include "GameModePlayground.hpp"

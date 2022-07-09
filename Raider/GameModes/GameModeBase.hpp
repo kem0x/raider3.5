@@ -45,12 +45,16 @@ public:
     {
         GetWorld()->GameState->AuthorityGameMode->ResetLevel();
     }
+    
+    bool isRespawnEnabled() {
+        return this->bRespawnEnabled;
+    }
 
-    void LoadKilledPlayer(AFortPlayerControllerAthena* Controller)
+    void LoadKilledPlayer(AFortPlayerControllerAthena* Controller, FVector Spawn = {500, 500, 500})
     {
         if (this->bRespawnEnabled)
         {
-            InitPawn(Controller, { 500, 500, 500 });
+            InitPawn(Controller, Spawn);
             Controller->ActivateSlot(EFortQuickBars::Primary, 0, 0, true);
 
             bool bFound = false;
@@ -62,8 +66,6 @@ public:
 
             LOG_INFO("({}) Re-initializing {} that has been killed (bRespawnEnabled == true)!", "GameModeBase", Controller->PlayerState->GetPlayerName().ToString());
         }
-
-        OnPlayerKilled(Controller);
     }
 
     void LoadJoiningPlayer(AFortPlayerControllerAthena* Controller)
@@ -139,10 +141,18 @@ public:
     {
         if (this->bRespawnEnabled)
         {
-            auto CheatManager = static_cast<UFortCheatManager*>(Controller->CheatManager);
+            // -Kyiro TO-DO: See if most of this code is even needed but it does work
+            FVector RespawnPos = Controller->Pawn ? Controller->Pawn->K2_GetActorLocation() : FVector(0, 0, 0);
+            RespawnPos.Z += 8000;
+            
+            this->LoadKilledPlayer(Controller, RespawnPos);
             Controller->RespawnPlayerAfterDeath();
-            CheatManager->RespawnPlayerServer();
-            CheatManager->RespawnPlayer();
+            
+            Controller->Pawn->K2_TeleportTo(RespawnPos, FRotator {0, 0, 0});
+            
+            // auto CheatManager = static_cast<UFortCheatManager*>(Controller->CheatManager);
+            // CheatManager->RespawnPlayerServer();
+            // CheatManager->RespawnPlayer();
         }
     }
 

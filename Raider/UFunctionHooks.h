@@ -326,91 +326,96 @@ namespace UFunctionHooks
 
             auto DeadPC = static_cast<AFortPlayerControllerAthena*>(Object);
             auto DeadPlayerState = static_cast<AFortPlayerStateAthena*>(DeadPC->PlayerState);
+            
+            Game::Mode->OnPlayerKilled(DeadPC);
+            
+            if (!Game::Mode->isRespawnEnabled()) {
+                auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+                GameState->PlayersLeft--;
+                GameState->OnRep_PlayersLeft();
 
-            auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
-            GameState->PlayersLeft--;
-            GameState->OnRep_PlayersLeft();
-
-            if (Params && DeadPC)
-            {
-                auto GameMode = static_cast<AFortGameModeAthena*>(GameState->AuthorityGameMode);
-                auto KillerPlayerState = static_cast<AFortPlayerStateAthena*>(Params->DeathReport.KillerPlayerState);
-                GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
-
-                Spawners::SpawnActor<ABP_VictoryDrone_C>(DeadPC->Pawn->K2_GetActorLocation())->PlaySpawnOutAnim();
-
-                FDeathInfo DeathData;
-                DeathData.bDBNO = false;
-                DeathData.DeathLocation = DeadPC->Pawn->K2_GetActorLocation();
-                DeathData.Distance = Params->DeathReport.KillerPawn ? Params->DeathReport.KillerPawn->GetDistanceTo(DeadPC->Pawn) : 0;
-
-                DeathData.DeathCause = Game::GetDeathCause(Params->DeathReport);
-                DeathData.FinisherOrDowner = KillerPlayerState ? KillerPlayerState : DeadPlayerState;
-
-                DeadPC->Pawn->K2_DestroyActor();
-
-                DeadPlayerState->DeathInfo = DeathData;
-                DeadPlayerState->OnRep_DeathInfo();
-
-                if (KillerPlayerState)
+                if (Params && DeadPC)
                 {
-                    if (auto Controller = static_cast<AFortPlayerControllerPvP*>(Params->DeathReport.KillerPawn->Controller))
+                    auto GameMode = static_cast<AFortGameModeAthena*>(GameState->AuthorityGameMode);
+                    auto KillerPlayerState = static_cast<AFortPlayerStateAthena*>(Params->DeathReport.KillerPlayerState);
+                    GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
+
+                    Spawners::SpawnActor<ABP_VictoryDrone_C>(DeadPC->Pawn->K2_GetActorLocation())->PlaySpawnOutAnim();
+
+                    FDeathInfo DeathData;
+                    DeathData.bDBNO = false;
+                    DeathData.DeathLocation = DeadPC->Pawn->K2_GetActorLocation();
+                    DeathData.Distance = Params->DeathReport.KillerPawn ? Params->DeathReport.KillerPawn->GetDistanceTo(DeadPC->Pawn) : 0;
+
+                    DeathData.DeathCause = Game::GetDeathCause(Params->DeathReport);
+                    DeathData.FinisherOrDowner = KillerPlayerState ? KillerPlayerState : DeadPlayerState;
+
+                    DeadPC->Pawn->K2_DestroyActor();
+
+                    DeadPlayerState->DeathInfo = DeathData;
+                    DeadPlayerState->OnRep_DeathInfo();
+
+                    if (KillerPlayerState)
                     {
-                        Controller->ClientReceiveKillNotification(KillerPlayerState, DeadPlayerState);
+                        if (auto Controller = static_cast<AFortPlayerControllerPvP*>(Params->DeathReport.KillerPawn->Controller))
+                        {
+                            Controller->ClientReceiveKillNotification(KillerPlayerState, DeadPlayerState);
+                        }
+                        
+                        KillerPlayerState->KillScore++;
+                        KillerPlayerState->TeamKillScore++;
+
+                        KillerPlayerState->ClientReportKill(DeadPlayerState);
+                        KillerPlayerState->OnRep_Kills();
+
+                        Spectate(DeadPC->NetConnection, KillerPlayerState);
                     }
-                    
-                    KillerPlayerState->KillScore++;
-                    KillerPlayerState->TeamKillScore++;
 
-                    KillerPlayerState->ClientReportKill(DeadPlayerState);
-                    KillerPlayerState->OnRep_Kills();
+                    if (GameState->PlayersLeft == 1 && bStartedBus)
+                    {
+                        TArray<AFortPlayerPawn*> OutActors;
+                        GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
 
-                    Spectate(DeadPC->NetConnection, KillerPlayerState);
+                        auto Winner = OutActors[0];
+                        auto Controller = static_cast<AFortPlayerControllerAthena*>(Winner->Controller);
+
+                        if (!Controller->bClientNotifiedOfWin)
+                        {
+                            GameState->WinningPlayerName = Controller->PlayerState->GetPlayerName();
+                            GameState->OnRep_WinningPlayerName();
+
+                            Controller->PlayWinEffects();
+                            Controller->ClientNotifyWon();
+
+                            Controller->ClientGameEnded(Winner, true);
+                            GameMode->ReadyToEndMatch();
+                            GameMode->EndMatch();
+                        }
+                        OutActors.FreeArray();
+                    }
+
+                    if (GameState->PlayersLeft > 1)
+                    {
+                        TArray<AFortPlayerPawn*> OutActors;
+                        GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
+                        auto RandomTarget = OutActors[rand() % OutActors.Num()];
+
+                        if (!RandomTarget)
+                        {
+                            LOG_ERROR("Couldn't assign to a spectator a target! Pawn picked was NULL!");
+                            return false;
+                        }
+
+                        Spectate(DeadPC->NetConnection, static_cast<AFortPlayerStateAthena*>(RandomTarget->Controller->PlayerState));
+                        OutActors.FreeArray();
+                    }
                 }
-
-                if (GameState->PlayersLeft == 1 && bStartedBus)
+                else
                 {
-                    TArray<AFortPlayerPawn*> OutActors;
-                    GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
-
-                    auto Winner = OutActors[0];
-                    auto Controller = static_cast<AFortPlayerControllerAthena*>(Winner->Controller);
-
-                    if (!Controller->bClientNotifiedOfWin)
-                    {
-                        GameState->WinningPlayerName = Controller->PlayerState->GetPlayerName();
-                        GameState->OnRep_WinningPlayerName();
-
-                        Controller->PlayWinEffects();
-                        Controller->ClientNotifyWon();
-
-                        Controller->ClientGameEnded(Winner, true);
-                        GameMode->ReadyToEndMatch();
-                        GameMode->EndMatch();
-                    }
-                    OutActors.FreeArray();
-                }
-
-                if (GameState->PlayersLeft > 1)
-                {
-                    TArray<AFortPlayerPawn*> OutActors;
-                    GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
-                    auto RandomTarget = OutActors[rand() % OutActors.Num()];
-
-                    if (!RandomTarget)
-                    {
-                        LOG_ERROR("Couldn't assign to a spectator a target! Pawn picked was NULL!");
-                        return false;
-                    }
-
-                    Spectate(DeadPC->NetConnection, static_cast<AFortPlayerStateAthena*>(RandomTarget->Controller->PlayerState));
-                    OutActors.FreeArray();
+                    LOG_ERROR("Parameters of ClientOnPawnDied were invalid!");
                 }
             }
-            else
-            {
-                LOG_ERROR("Parameters of ClientOnPawnDied were invalid!");
-            }
+            
             return false;
         })
 

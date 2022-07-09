@@ -2,18 +2,18 @@
 
 #include "GameModeBase.hpp"
 
-class GameModeSolos : public AbstractGameModeBase
+class GameModePlayground : public AbstractGameModeBase
 {
 public:
-    GameModeSolos()
-        : GameModeSolos("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo")
+    GameModePlayground()
+        : GameModePlayground("FortPlaylistAthena Playlist_Playground.Playlist_Playground")
     {
     }
 
-    GameModeSolos(std::string SoloPlaylistName)
-        : AbstractGameModeBase(SoloPlaylistName, false, 1)
+    GameModePlayground(std::string PlaylistName)
+        : AbstractGameModeBase(PlaylistName, true, 1)
     {
-        LOG_INFO("Initializing GameMode Solo!");
+        LOG_INFO("Initializing GameMode Playground!");
     }
 
     void OnPlayerJoined(AFortPlayerControllerAthena* Controller) override
