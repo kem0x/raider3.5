@@ -182,6 +182,15 @@ public:
 
         Pawn->SetMaxHealth(this->maxHealth);
         Pawn->SetMaxShield(this->maxShield);
+        Pawn->AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(Pawn->HealthRegenDelayGameplayEffect, Pawn->AbilitySystemComponent, 1);
+        Pawn->AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(Pawn->HealthRegenGameplayEffect, Pawn->AbilitySystemComponent, 1);
+        Pawn->AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(Pawn->ShieldRegenDelayGameplayEffect, Pawn->AbilitySystemComponent, 1);
+        Pawn->AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(Pawn->ShieldRegenGameplayEffect, Pawn->AbilitySystemComponent, 1);
+        // setting these vars to null might not be required but it works with them and im not sure if it works without them.
+	    Pawn->HealthRegenDelayGameplayEffect = nullptr;
+        Pawn->HealthRegenGameplayEffect = nullptr;
+        Pawn->ShieldRegenDelayGameplayEffect = nullptr;
+        Pawn->ShieldRegenGameplayEffect = nullptr;
 
         Pawn->HealthSet->Health.Minimum = 0.0f; // Disables spawn island protection
         Pawn->HealthSet->CurrentShield.Minimum = 0.0f;
