@@ -4,8 +4,6 @@
 #include <format>
 #include <mutex>
 
-static bool bStartedBus = false;
-
 enum class CustomMode
 {
     NONE,

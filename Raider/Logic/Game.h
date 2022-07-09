@@ -1,5 +1,7 @@
 #pragma once
 
+static bool bStartedBus = false;
+
 #include "UE4.h"
 #include "GameModes/GameModes.hpp"
 
