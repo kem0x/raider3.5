@@ -4,3 +4,4 @@
 #include "GameModeSolos.hpp"
 #include "GameModeDuos.hpp"
 #include "GameModeLateGame.hpp"
+#include "GameMode50v50.hpp"

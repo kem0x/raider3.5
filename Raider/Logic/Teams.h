@@ -75,35 +75,54 @@ public:
 
     std::shared_ptr<Team> FindAvailableSpot()
     {
-        for (auto& Team : Teams)
-        {
-            if (Team->Num() == maxTeamSize)
-                continue;
+        if (this->maxTeamSize >= 0) {
+            for (auto& Team : this->Teams)
+            {
+                if (Team->Num() == this->maxTeamSize)
+                    continue;
 
-            return Team;
+                return Team;
+            }
+
+            return nullptr;
+        } else {
+            // LOG_INFO("maxTeamSize={}, Teams.size()={}, lastAssignedTeamIndex={}" this->maxTeamSize, this->Teams.size(), this->lastAssignedTeamIndex);
+            
+            if (std::abs(this->maxTeamSize) > this->Teams.size()) return nullptr;
+            else {
+                auto Team = this->Teams[this->lastAssignedTeamIndex];
+                
+                if (this->lastAssignedTeamIndex == this->Teams.size() - 1) {
+                    this->lastAssignedTeamIndex = 0;
+                } else {
+                    this->lastAssignedTeamIndex += 1;
+                }
+                
+                return Team;
+            }
         }
-
-        return nullptr;
     }
 
     void AddPlayerToRandomTeam(AFortPlayerController* Member)
     {
         auto AvailableSpot = FindAvailableSpot();
-        if (!AvailableSpot)
-        {
-            LOG_ERROR("({}) Couldn't find a team for {}, making a new one!", "Teams", Member->PlayerState->GetPlayerName().ToString());
-            auto TeamInstance = std::make_shared<Team>(this->GetNextSlot(), this->maxTeamSize);
-            this->Teams.push_back(TeamInstance);
+        if (!AvailableSpot) {
+            {
+                LOG_ERROR("({}) Couldn't find a team for {}, making a new one!", "Teams", Member->PlayerState->GetPlayerName().ToString());
+                auto TeamInstance = std::make_shared<Team>(this->GetNextSlot(), this->maxTeamSize);
+                this->Teams.push_back(TeamInstance);
 
-            TeamInstance->AddPlayer(Member);
-            return;
+                TeamInstance->AddPlayer(Member);
+                return;
+            }
+
+            LOG_INFO("({}) Adding to team {} as an available spot has been found!", "Teams", Member->PlayerState->GetPlayerName().ToString());
+            AvailableSpot->AddPlayer(Member);
         }
-
-        LOG_INFO("({}) Adding to team {} as an available spot has been found!", "Teams", Member->PlayerState->GetPlayerName().ToString());
-        AvailableSpot->AddPlayer(Member);
     }
 
 private:
     int maxTeamSize;
+    int lastAssignedTeamIndex = 0;
     std::vector<std::shared_ptr<Team>> Teams;
 };
