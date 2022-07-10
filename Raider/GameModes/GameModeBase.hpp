@@ -139,7 +139,7 @@ public:
 
     virtual void OnPlayerKilled(AFortPlayerControllerAthena* Controller) override
     {
-        if (this->bRespawnEnabled)
+        if (Controller && !Controller->bIsDisconnecting && this->bRespawnEnabled)
         {
             // -Kyiro TO-DO: See if most of this code is even needed but it does work
             FVector RespawnPos = Controller->Pawn ? Controller->Pawn->K2_GetActorLocation() : FVector(0, 0, 0);
