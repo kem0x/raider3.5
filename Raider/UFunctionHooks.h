@@ -379,47 +379,46 @@ namespace UFunctionHooks
                             if (KillerPlayerState && !Game::Mode->isRespawnEnabled())
                             {
                                 Spectate(DeadPC->NetConnection, KillerPlayerState);
-                            }
-                        
+                            }           
+                    }
 
-                        if (GameState->PlayersLeft == 1 && bStartedBus)
+                     if (GameState->PlayersLeft == 1 && bStartedBus)
+                    {
+                        TArray<AFortPlayerPawn*> OutActors;
+                        GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
+
+                        auto Winner = OutActors[0];
+                        auto Controller = static_cast<AFortPlayerControllerAthena*>(Winner->Controller);
+
+                        if (!Controller->bClientNotifiedOfWin)
                         {
-                            TArray<AFortPlayerPawn*> OutActors;
-                            GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
+                            GameState->WinningPlayerName = Controller->PlayerState->GetPlayerName();
+                            GameState->OnRep_WinningPlayerName();
 
-                            auto Winner = OutActors[0];
-                            auto Controller = static_cast<AFortPlayerControllerAthena*>(Winner->Controller);
+                            Controller->PlayWinEffects();
+                            Controller->ClientNotifyWon();
 
-                            if (!Controller->bClientNotifiedOfWin)
-                            {
-                                GameState->WinningPlayerName = Controller->PlayerState->GetPlayerName();
-                                GameState->OnRep_WinningPlayerName();
+                            Controller->ClientGameEnded(Winner, true);
+                            GameMode->ReadyToEndMatch();
+                            GameMode->EndMatch();
+                        }
+                        OutActors.FreeArray();
+                    }
 
-                                Controller->PlayWinEffects();
-                                Controller->ClientNotifyWon();
+                    if (GameState->PlayersLeft > 1)
+                    {
+                        TArray<AFortPlayerPawn*> OutActors;
+                        GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
+                        auto RandomTarget = OutActors[rand() % OutActors.Num()];
 
-                                Controller->ClientGameEnded(Winner, true);
-                                GameMode->ReadyToEndMatch();
-                                GameMode->EndMatch();
-                            }
-                            OutActors.FreeArray();
+                        if (!RandomTarget)
+                        {
+                            LOG_ERROR("Couldn't assign to a spectator a target! Pawn picked was NULL!");
+                            return false;
                         }
 
-                        if (GameState->PlayersLeft > 1)
-                        {
-                            TArray<AFortPlayerPawn*> OutActors;
-                            GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
-                            auto RandomTarget = OutActors[rand() % OutActors.Num()];
-
-                            if (!RandomTarget)
-                            {
-                                LOG_ERROR("Couldn't assign to a spectator a target! Pawn picked was NULL!");
-                                return false;
-                            }
-
-                            Spectate(DeadPC->NetConnection, static_cast<AFortPlayerStateAthena*>(RandomTarget->Controller->PlayerState));
-                            OutActors.FreeArray();
-                        }
+                        Spectate(DeadPC->NetConnection, static_cast<AFortPlayerStateAthena*>(RandomTarget->Controller->PlayerState));
+                        OutActors.FreeArray();
                     }
                 
             }
