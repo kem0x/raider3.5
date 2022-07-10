@@ -374,15 +374,13 @@ namespace UFunctionHooks
                     }
                     else
                     {
-                        if (Game::Mode->bRespawnEnabled == true) {
-                            Game::Mode->OnPlayerKilled(DeadPC);
-                        }
-                        else
-                        {
-                            if (KillerPlayerState) {
+                        Game::Mode->OnPlayerKilled(DeadPC);
+
+                            if (KillerPlayerState && !Game::Mode->isRespawnEnabled())
+                            {
                                 Spectate(DeadPC->NetConnection, KillerPlayerState);
                             }
-                        }
+                        
 
                         if (GameState->PlayersLeft == 1 && bStartedBus)
                         {
