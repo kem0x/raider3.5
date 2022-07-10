@@ -1,6 +1,5 @@
 #pragma once
-#ifndef __GAMEMODEBASE_HPP__
-#define __GAMEMODEBASE_HPP__
+
 #include "../ue4.h"
 #include "../SDK.hpp"
 #include "../Logic/Teams.h"
@@ -275,4 +274,3 @@ private:
     UFortPlaylistAthena* BasePlaylist;
 };
 
-#endif
