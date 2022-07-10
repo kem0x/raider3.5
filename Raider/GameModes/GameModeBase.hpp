@@ -1,4 +1,6 @@
 #pragma once
+#ifndef __GAMEMODEBASE_HPP__
+#define __GAMEMODEBASE_HPP__
 #include "../ue4.h"
 #include "../SDK.hpp"
 #include "../Logic/Teams.h"
@@ -54,6 +56,10 @@ public:
     {
         if (this->bRespawnEnabled)
         {
+            if (Controller->Pawn) {
+                Controller->Pawn->K2_DestroyActor();
+            }
+
             InitPawn(Controller, Spawn);
             Controller->ActivateSlot(EFortQuickBars::Primary, 0, 0, true);
 
@@ -65,6 +71,7 @@ public:
             }
 
             LOG_INFO("({}) Re-initializing {} that has been killed (bRespawnEnabled == true)!", "GameModeBase", Controller->PlayerState->GetPlayerName().ToString());
+
         }
     }
 
@@ -139,20 +146,42 @@ public:
 
     virtual void OnPlayerKilled(AFortPlayerControllerAthena* Controller) override
     {
-        if (Controller && !Controller->bIsDisconnecting && this->bRespawnEnabled)
+        if (Controller && !IsCurrentlyDisconnecting(Controller->NetConnection)  && this->bRespawnEnabled)
         {
+            LOG_INFO("Trying to respawn {}", Controller->PlayerState->GetPlayerName().ToString());
             // -Kyiro TO-DO: See if most of this code is even needed but it does work
-            FVector RespawnPos = Controller->Pawn ? Controller->Pawn->K2_GetActorLocation() : FVector(0, 0, 0);
-            RespawnPos.Z += 8000;
+            FVector RespawnPos = Controller->Pawn ? Controller->Pawn->K2_GetActorLocation() : FVector(10000, 10000, 10000);
+            RespawnPos.Z += 3000;
             
             this->LoadKilledPlayer(Controller, RespawnPos);
             Controller->RespawnPlayerAfterDeath();
             
-            Controller->Pawn->K2_TeleportTo(RespawnPos, FRotator {0, 0, 0});
-            
+            if (Controller->Pawn->K2_TeleportTo(RespawnPos, FRotator{ 0, 0, 0 })) {
+                Controller->Character->CharacterMovement->SetMovementMode(EMovementMode::MOVE_Custom, 4);
+            }
+            else
+            {
+                LOG_ERROR("Failed to teleport {}", Controller->PlayerState->GetPlayerName().ToString())
+            }
+             
             // auto CheatManager = static_cast<UFortCheatManager*>(Controller->CheatManager);
             // CheatManager->RespawnPlayerServer();
             // CheatManager->RespawnPlayer();
+        }
+        else if (IsCurrentlyDisconnecting(Controller->NetConnection))
+        {
+            auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+            LOG_INFO("{} is currently disconnecting", Controller->PlayerState->GetPlayerName().ToString());
+            GameState->PlayersLeft--;
+            GameState->OnRep_PlayersLeft();
+            GameState->PlayerArray.RemoveSingle(Controller->NetPlayerIndex);
+        }
+        else
+        {
+            LOG_INFO("OnPlayerKilled triggered");
+            printf("bIsDisconnecting: %d\n", Controller->bIsDisconnecting);
+            printf("IsCurrentlyDisconnecting: %d\n", IsCurrentlyDisconnecting(Controller->NetConnection));
+            printf("bRespawnEnabled: %d\n", this->bRespawnEnabled);
         }
     }
 
@@ -245,3 +274,5 @@ private:
 
     UFortPlaylistAthena* BasePlaylist;
 };
+
+#endif
