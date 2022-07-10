@@ -326,9 +326,9 @@ namespace UFunctionHooks
 
             auto DeadPC = static_cast<AFortPlayerControllerAthena*>(Object);
             auto DeadPlayerState = static_cast<AFortPlayerStateAthena*>(DeadPC->PlayerState);
-
+            
             auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
-
+            auto playerLeftBeforeKill = GameState->PlayersLeft;
             if (Params && DeadPC)
             {
                 auto GameMode = static_cast<AFortGameModeAthena*>(GameState->AuthorityGameMode);
@@ -382,44 +382,48 @@ namespace UFunctionHooks
                             }           
                     }
 
-                     if (GameState->PlayersLeft == 1 && bStartedBus)
-                    {
-                        TArray<AFortPlayerPawn*> OutActors;
-                        GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
-
-                        auto Winner = OutActors[0];
-                        auto Controller = static_cast<AFortPlayerControllerAthena*>(Winner->Controller);
-
-                        if (!Controller->bClientNotifiedOfWin)
+                    if (playerLeftBeforeKill != 1) {
+                        if (GameState->PlayersLeft == 1 && bStartedBus)
                         {
-                            GameState->WinningPlayerName = Controller->PlayerState->GetPlayerName();
-                            GameState->OnRep_WinningPlayerName();
+                            TArray<AFortPlayerPawn*> OutActors;
+                            GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
 
-                            Controller->PlayWinEffects();
-                            Controller->ClientNotifyWon();
+                            auto Winner = OutActors[0];
+                            auto Controller = static_cast<AFortPlayerControllerAthena*>(Winner->Controller);
 
-                            Controller->ClientGameEnded(Winner, true);
-                            GameMode->ReadyToEndMatch();
-                            GameMode->EndMatch();
-                        }
-                        OutActors.FreeArray();
-                    }
+                            if (!Controller->bClientNotifiedOfWin)
+                            {
+                                GameState->WinningPlayerName = Controller->PlayerState->GetPlayerName();
+                                GameState->OnRep_WinningPlayerName();
 
-                    if (GameState->PlayersLeft > 1)
-                    {
-                        TArray<AFortPlayerPawn*> OutActors;
-                        GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
-                        auto RandomTarget = OutActors[rand() % OutActors.Num()];
+                                Controller->PlayWinEffects();
+                                Controller->ClientNotifyWon();
 
-                        if (!RandomTarget)
-                        {
-                            LOG_ERROR("Couldn't assign to a spectator a target! Pawn picked was NULL!");
-                            return false;
+                                Controller->ClientGameEnded(Winner, true);
+                                GameMode->ReadyToEndMatch();
+                                GameMode->EndMatch();
+                            }
+                            OutActors.FreeArray();
                         }
 
-                        Spectate(DeadPC->NetConnection, static_cast<AFortPlayerStateAthena*>(RandomTarget->Controller->PlayerState));
-                        OutActors.FreeArray();
+                        if (GameState->PlayersLeft > 1)
+                        {
+                            TArray<AFortPlayerPawn*> OutActors;
+                            GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
+                            auto RandomTarget = OutActors[rand() % OutActors.Num()];
+
+                            if (!RandomTarget)
+                            {
+                                LOG_ERROR("Couldn't assign to a spectator a target! Pawn picked was NULL!");
+                                return false;
+                            }
+
+                            Spectate(DeadPC->NetConnection, static_cast<AFortPlayerStateAthena*>(RandomTarget->Controller->PlayerState));
+                            OutActors.FreeArray();
+                        }
                     }
+
+
                 
             }
             else
