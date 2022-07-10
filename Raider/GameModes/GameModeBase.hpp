@@ -167,21 +167,6 @@ public:
             // CheatManager->RespawnPlayerServer();
             // CheatManager->RespawnPlayer();
         }
-        else if (IsCurrentlyDisconnecting(Controller->NetConnection))
-        {
-            auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
-            LOG_INFO("{} is currently disconnecting", Controller->PlayerState->GetPlayerName().ToString());
-            GameState->PlayersLeft--;
-            GameState->OnRep_PlayersLeft();
-            GameState->PlayerArray.RemoveSingle(Controller->NetPlayerIndex);
-        }
-        else
-        {
-            LOG_INFO("OnPlayerKilled triggered");
-            printf("bIsDisconnecting: %d\n", Controller->bIsDisconnecting);
-            printf("IsCurrentlyDisconnecting: %d\n", IsCurrentlyDisconnecting(Controller->NetConnection));
-            printf("bRespawnEnabled: %d\n", this->bRespawnEnabled);
-        }
     }
 
     virtual PlayerLoadout& GetPlaylistLoadout()
