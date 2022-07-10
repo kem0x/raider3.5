@@ -429,10 +429,9 @@ namespace UFunctionHooks
             {
                 LOG_ERROR("Parameters of ClientOnPawnDied were invalid!");
             }
-            return false;
-            
-            
 
+            
+          
             
             return false;
         })
