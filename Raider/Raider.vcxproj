@@ -21,13 +21,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
@@ -107,7 +107,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClInclude Include="GameModes\GameModeBase.hpp" />
+    <ClInclude Include="GameModes\GameModeBase.hpp" />  
     <ClCompile Include="SDK\FN_Athena_PlayerController_functions.cpp" />
     <ClCompile Include="SDK\FN_Basic.cpp" />
     <ClCompile Include="SDK\FN_BP_VictoryDrone_functions.cpp" />
@@ -120,19 +120,25 @@
     <ClCompile Include="SDK\FN_SlateCore_functions.cpp" />
     <ClCompile Include="SDK\FN_UMG_functions.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Game.h" />
+  <ItemGroup> 
     <ClInclude Include="GameModes\GameModeDuos.hpp" />
     <ClInclude Include="GameModes\GameModeLateGame.hpp" />
     <ClInclude Include="GameModes\GameModes.hpp" />
     <ClInclude Include="GameModes\GameModeSolos.hpp" />
+    <ClInclude Include="GameModes\GameModePlayground.hpp" />
+    <ClInclude Include="GameModes\GameMode50v50.hpp" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Hooks.h" />
     <ClInclude Include="Logger.hpp" />
     <ClInclude Include="Native.h" />
     <ClInclude Include="Patterns.h" />
     <ClInclude Include="SDK.hpp" />
-    <ClInclude Include="Teams.h" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="Logic\Game.h" />
+    <ClInclude Include="Logic\Abilities.h" />
+    <ClInclude Include="Logic\Spawners.h" />
+    <ClInclude Include="Logic\Teams.h" />
+    <ClInclude Include="Logic\Inventory.h" />
     <ClInclude Include="UE4.h" />
     <ClInclude Include="UFunctionHooks.h" />
     <ClInclude Include="Util.h" />
