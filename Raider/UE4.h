@@ -7,6 +7,7 @@
 #include "json.hpp"
 #include "Native.h"
 
+
 typedef std::array<UFortWeaponRangedItemDefinition*, 6> PlayerLoadout;
 
 inline bool bTraveled = false;
@@ -313,3 +314,4 @@ auto GetRandomWID(int skip = 0)
 
     return UObject::FindObject<UFortWeaponRangedItemDefinition>("FortWeaponRangedItemDefinition WID_", skip);
 }
+

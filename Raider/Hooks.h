@@ -2,6 +2,7 @@
 
 #include "GUI.h"
 #include "UFunctionHooks.h"
+#include "Config.h"
 
 // #define LOGGING
 
@@ -111,7 +112,7 @@ namespace Hooks
 
     void ProcessEventHook(UObject* Object, UFunction* Function, void* Parameters)
     {
-        if (!bPlayButton)
+        if (!bPlayButton && ConfigVars::bConfigLoadedSuccessfully)
         {
             static auto PlayButtonFn = UObject::FindObject<UFunction>("BndEvt__BP_PlayButton_K2Node_ComponentBoundEvent_1_CommonButtonClicked__DelegateSignature");
             if (Function == PlayButtonFn)

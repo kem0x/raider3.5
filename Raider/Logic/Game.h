@@ -4,8 +4,41 @@ static bool bStartedBus = false;
 
 #include "UE4.h"
 #include "GameModes/GameModes.hpp"
+#include "../Config.h"
+
 
 typedef GameModeSolos CurrentGameMode;
+
+/*enum GameModes
+{
+    Solos,
+    Duos,
+    LateGame,
+    Playground,
+    FiftyVersusFifty
+};
+
+GameModes strToGameMode(std::string input) { 
+    //name in config : enum
+        static std::map<std::string, GameModes> GameModesConvertor {
+        { "GameMode50v50", GameModes::FiftyVersusFifty },
+        { "GameModeDuos", GameModes::Duos },
+        { "GameModeSolos", GameModes::Solos },
+        { "GameModePlayground", GameModes::Playground },
+        { "GameModeLateGame", GameModes::LateGame },
+        };
+
+        for (auto gameMode : GameModesConvertor)
+        {
+            if (input == gameMode.first)
+                return gameMode.second;
+            else
+                continue;
+        }
+
+        return GameModes::Playground;
+}*/
+
 
 namespace Game
 {
@@ -37,6 +70,29 @@ namespace Game
 
         GameMode->MatchState = InProgress;
         GameMode->K2_OnSetMatchState(InProgress);
+
+     /* auto gamemode = strToGameMode(ConfigVars::gameMode);
+        switch (gamemode)
+        {
+        case Solos:
+            Mode = std::make_unique<GameModeSolos>;
+            break;
+        case Duos:
+            Mode = std::make_unique<GameModeDuos>;
+            break;
+        case LateGame:
+            Mode = std::make_unique<GameModeLateGame>;
+            break;
+        case Playground:
+            Mode = std::make_unique<GameModePlayground>;
+            break;
+        case FiftyVersusFifty:
+            Mode = std::make_unique<GameMode50v50>;
+            break;
+        default:
+            Mode = std::make_unique<GameModePlayground>;
+                break;
+        }*/
 
         Mode = std::make_unique<CurrentGameMode>();
 

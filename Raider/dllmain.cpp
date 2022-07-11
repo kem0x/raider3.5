@@ -5,6 +5,10 @@
 #include "hooks.h"
 #include "Logger.hpp"
 #include "ufunctionhooks.h"
+#include "Config.h"
+#include "Configuration.h"
+
+
 
 DWORD WINAPI Main(LPVOID lpParam)
 {
@@ -37,7 +41,8 @@ DWORD WINAPI Main(LPVOID lpParam)
     //GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), L"log LogReplicationGraph VeryVerbose", GetPlayerController());
 
     CreateConsole();
-
+    Configuration::loadConfiguration();
+    LOG_INFO("Max Health : {}", ConfigVars::maxHealth);
     return 1;
 }
 

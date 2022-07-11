@@ -5,6 +5,8 @@
 #include "../Logic/Inventory.h"
 #include "../Logic/Abilities.h"
 
+#include "../Config.h"
+
 class IGameModeBase
 {
 public:
@@ -20,23 +22,37 @@ public:
         this->BasePlaylist = UObject::FindObject<UFortPlaylistAthena>(BasePlaylist);
 
         this->BasePlaylist->bNoDBNO = maxTeamSize > 1;
+        bRespawnEnabled = ConfigVars::bRespawnEnabled;
+        bRegenEnabled = ConfigVars::bRegenEnabled;
+        this->maxHealth = ConfigVars::maxHealth;
+        this->maxShield = ConfigVars::maxShield;
         this->bRespawnEnabled = bRespawnEnabled;
 	    this->bRegenEnabled = bRegenEnabled;
 
-        if (bRespawnEnabled)
+        if (this->bRespawnEnabled)
         {
             this->BasePlaylist->FriendlyFireType = EFriendlyFireType::On;
             this->BasePlaylist->RespawnLocation = EAthenaRespawnLocation::Air;
             this->BasePlaylist->RespawnType = EAthenaRespawnType::InfiniteRespawn;
         }
 
+
+
         auto GameState = static_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+ 
 
         GameState->CurrentPlaylistId = this->BasePlaylist->PlaylistId;
         GameState->CurrentPlaylistData = this->BasePlaylist;
 
         GameState->OnRep_CurrentPlaylistId();
         GameState->OnRep_CurrentPlaylistData();
+
+        if (ConfigVars::bNoSafezone == true)
+        {
+            auto GameMode = static_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode);
+            GameMode->bSafeZoneActive = true;
+            GameMode->bSafeZonePaused = false;
+        }
 
         this->Teams = std::make_unique<PlayerTeams>(maxTeamSize);
     }
@@ -158,16 +174,33 @@ public:
 
     virtual PlayerLoadout& GetPlaylistLoadout()
     {
-        static PlayerLoadout Ret = {
-            FindWID("WID_Harvest_Pickaxe_Athena_C_T01"),
-            FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
-            FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
-            FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03"), // Gold AR
-            FindWID("WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03"), // Blue Bolt Action
-            FindWID("Athena_Shields") // Big Shield Potion
-        };
 
-        return Ret;
+
+        if (ConfigVars::bMultiLoadout == true && (ConfigVars::loadouts.size() >= 1))
+        {
+            srand(time(NULL));
+
+            int index = rand() % (int)ConfigVars::loadout.size();
+
+            return ConfigVars::loadouts[index];
+        }
+        else if (ConfigVars::loadout.size() != 0) {
+            return ConfigVars::loadout;
+        }
+        else {
+            static PlayerLoadout Ret = {
+                FindWID("WID_Harvest_Pickaxe_Athena_C_T01"),
+                FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
+                FindWID("WID_Shotgun_Standard_Athena_UC_Ore_T03"), // Blue Pump
+                FindWID("WID_Assault_AutoHigh_Athena_SR_Ore_T03"), // Gold AR
+                FindWID("WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03"), // Blue Bolt Action
+                FindWID("Athena_Shields") // Big Shield Potion
+            };
+
+            return Ret;
+        }
+
+
     }
 
     void InitPawn(AFortPlayerControllerAthena* PlayerController, FVector Loc = FVector { 1250, 1818, 3284 }, FQuat Rotation = FQuat(), bool bResetCharacterParts = false)
