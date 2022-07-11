@@ -5,7 +5,7 @@ class GameModeDuos : public AbstractGameModeBase
 {
 public:
     GameModeDuos()
-        : AbstractGameModeBase("FortPlaylistAthena Playlist_DefaultDuo.Playlist_DefaultDuo", false, 2)
+        : AbstractGameModeBase("FortPlaylistAthena Playlist_DefaultDuo.Playlist_DefaultDuo", false, 2, false)
     {
         LOG_INFO("Initializing GameMode Duos!");
     }

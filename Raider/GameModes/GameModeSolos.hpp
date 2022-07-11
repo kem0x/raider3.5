@@ -11,7 +11,7 @@ public:
     }
 
     GameModeSolos(std::string SoloPlaylistName)
-        : AbstractGameModeBase(SoloPlaylistName, false, 1)
+        : AbstractGameModeBase(SoloPlaylistName, false, 1, false)
     {
         LOG_INFO("Initializing GameMode Solo!");
     }

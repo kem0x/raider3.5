@@ -12,7 +12,7 @@ public:
     }
 
     GameMode50v50(std::string SoloPlaylistName)
-        : AbstractGameModeBase(SoloPlaylistName, false, -2)
+        : AbstractGameModeBase(SoloPlaylistName, false, -2, false)
     {
         LOG_INFO("Initializing GameMode 50v50!");
         
