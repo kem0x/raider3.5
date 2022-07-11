@@ -12,11 +12,14 @@ class IGameModeBase
 public:
     virtual void OnPlayerJoined(AFortPlayerControllerAthena* Controller) = 0;
     virtual void OnPlayerKilled(AFortPlayerControllerAthena* Controller) = 0;
+    virtual void OnPlayerJumpedAircraft(AFortPlayerControllerAthena* Controller) = 0;
 };
 
 class AbstractGameModeBase : protected IGameModeBase
 {
 public:
+    bool bAircraftJumpedEventTriggered = false;
+
     AbstractGameModeBase(const std::string BasePlaylist, bool bRespawnEnabled = false, int maxTeamSize = 1, bool bRegenEnabled = false)
     {
         this->BasePlaylist = UObject::FindObject<UFortPlaylistAthena>(BasePlaylist);
@@ -57,7 +60,9 @@ public:
     
     bool isRespawnEnabled() {
         return this->bRespawnEnabled;
-    }
+    } 
+    
+
 
     void LoadKilledPlayer(AFortPlayerControllerAthena* Controller, FVector Spawn = {500, 500, 500})
     {
@@ -145,6 +150,19 @@ public:
     void OnPlayerJoined(AFortPlayerControllerAthena* Controller) override // derived classes should implement these
     {
     }
+
+    void OnPlayerJumpedAircraft(AFortPlayerControllerAthena* Controller) override
+    {
+        if (ConfigVars::bNoSafezone == true)
+        {
+            LOG_INFO("Disabling zone");
+            auto GameMode = static_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode);
+            GameMode->bSafeZoneActive = false;
+            GameMode->bSafeZonePaused = true;
+        }
+    }
+
+
 
     virtual void OnPlayerKilled(AFortPlayerControllerAthena* Controller) override
     {
@@ -268,6 +286,7 @@ private:
     int maxShield = 100;
     bool bRespawnEnabled = false;
     bool bRegenEnabled = false;
+
 
     UFortPlaylistAthena* BasePlaylist;
 };

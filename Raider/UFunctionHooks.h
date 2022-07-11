@@ -480,6 +480,12 @@ namespace UFunctionHooks
                     if (bFound)
                         Inventory::EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
 
+                    if (Game::Mode->bAircraftJumpedEventTriggered == false)
+                    {
+                        Game::Mode->bAircraftJumpedEventTriggered = true;
+                        Game::Mode->OnPlayerJumpedAircraft(PC);
+                    }
+
                     // PC->Pawn->K2_TeleportTo(ExitLocation, Params->ClientRotation);
                 }
             }

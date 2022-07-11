@@ -20,12 +20,6 @@ public:
         // auto GameState = static_cast<AAthena_GameState_C*>(GetWorld()->GameState);
         // GameState->AirCraftBehavior = EAirCraftBehavior::OpposingAirCraftForEachTeam;
         // GameState->OnRep_Aircraft();
-        if (ConfigVars::bNoSafezone == true)
-        {
-            auto GameMode = static_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode);
-            GameMode->bSafeZoneActive = true;
-            GameMode->bSafeZonePaused = false;
-        }
     }
 
     void OnPlayerJoined(AFortPlayerControllerAthena* Controller) override

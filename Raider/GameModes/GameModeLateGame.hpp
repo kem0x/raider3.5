@@ -46,10 +46,8 @@ public:
 
         auto GameMode = static_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode);
 
-  
-
-        GameMode->bSafeZoneActive = !ConfigVars::bNoSafezone;
-        GameMode->bSafeZonePaused = ConfigVars::bNoSafezone == false ? false : true;
+        GameMode->bSafeZoneActive = true;
+        GameMode->bSafeZonePaused = false;
     }
     
     void InitializeGameplay()
