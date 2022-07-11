@@ -1,6 +1,5 @@
 #pragma once
-
-#include "../UE4.h"
+#include "../ue4.h"
 #include "../SDK.hpp"
 #include "../Logic/Teams.h"
 #include "../Logic/Inventory.h"
@@ -24,7 +23,7 @@ public:
         this->bRespawnEnabled = bRespawnEnabled;
 	    this->bRegenEnabled = bRegenEnabled;
         this->bRejoinEnabled = bRejoinEnabled;
-        
+
         if (bRespawnEnabled)
         {
             this->BasePlaylist->FriendlyFireType = EFriendlyFireType::On;
@@ -56,10 +55,6 @@ public:
     {
         if (this->bRespawnEnabled)
         {
-            if (Controller->Pawn) {
-                Controller->Pawn->K2_DestroyActor();
-            }
-
             InitPawn(Controller, Spawn);
             Controller->ActivateSlot(EFortQuickBars::Primary, 0, 0, true);
 
@@ -71,16 +66,13 @@ public:
             }
 
             LOG_INFO("({}) Re-initializing {} that has been killed (bRespawnEnabled == true)!", "GameModeBase", Controller->PlayerState->GetPlayerName().ToString());
-
         }
     }
 
     void LoadJoiningPlayer(AFortPlayerControllerAthena* Controller)
     {
-       
-
         LOG_INFO("({}) Initializing {} that has just joined!", "GameModeBase", Controller->PlayerState->GetPlayerName().ToString());
-        
+
         auto Pawn = Spawners::SpawnActor<APlayerPawn_Athena_C>(GetPlayerStart(Controller).Translation, Controller, {});
         Pawn->Owner = Controller;
         Pawn->OnRep_Owner();
@@ -109,13 +101,10 @@ public:
         PlayerState->bHasFinishedLoading = true;
         PlayerState->bHasStartedPlaying = true;
         PlayerState->OnRep_bHasStartedPlaying();
+
         if (bStartedBus && !bRejoinEnabled)
             KickController(Controller, L"Game Already Started, try again later.");
             LOG_INFO("{} HAS BEEN REMOVED FOR JOINING AFTER BUS STARTED", Controller->PlayerState->GetPlayerName().ToString());
-
-        //if (bStartedBus)
-           // Pawn->bCanBeDamaged = bStartedBus;
-
 
         static auto FortRegisteredPlayerInfo = ((UFortGameInstance*)GetWorld()->OwningGameInstance)->RegisteredPlayers[0]; // UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
 
@@ -155,24 +144,17 @@ public:
 
     virtual void OnPlayerKilled(AFortPlayerControllerAthena* Controller) override
     {
-        if (Controller && !IsCurrentlyDisconnecting(Controller->NetConnection)  && this->bRespawnEnabled)
+        if (Controller && !Controller->bIsDisconnecting && this->bRespawnEnabled)
         {
-            LOG_INFO("Trying to respawn {}", Controller->PlayerState->GetPlayerName().ToString());
             // -Kyiro TO-DO: See if most of this code is even needed but it does work
-            FVector RespawnPos = Controller->Pawn ? Controller->Pawn->K2_GetActorLocation() : FVector(10000, 10000, 10000);
-            RespawnPos.Z += 3000;
+            FVector RespawnPos = Controller->Pawn ? Controller->Pawn->K2_GetActorLocation() : FVector(0, 0, 0);
+            RespawnPos.Z += 8000;
             
             this->LoadKilledPlayer(Controller, RespawnPos);
             Controller->RespawnPlayerAfterDeath();
             
-            if (Controller->Pawn->K2_TeleportTo(RespawnPos, FRotator{ 0, 0, 0 })) {
-                Controller->Character->CharacterMovement->SetMovementMode(EMovementMode::MOVE_Custom, 4);
-            }
-            else
-            {
-                LOG_ERROR("Failed to teleport {}", Controller->PlayerState->GetPlayerName().ToString())
-            }
-             
+            Controller->Pawn->K2_TeleportTo(RespawnPos, FRotator {0, 0, 0});
+            
             // auto CheatManager = static_cast<UFortCheatManager*>(Controller->CheatManager);
             // CheatManager->RespawnPlayerServer();
             // CheatManager->RespawnPlayer();
@@ -189,7 +171,7 @@ public:
             FindWID("WID_Sniper_BoltAction_Scope_Athena_R_Ore_T03"), // Blue Bolt Action
             FindWID("Athena_Shields") // Big Shield Potion
         };
-        
+
         return Ret;
     }
 
@@ -269,4 +251,3 @@ private:
 
     UFortPlaylistAthena* BasePlaylist;
 };
-
