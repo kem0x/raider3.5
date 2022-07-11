@@ -14,6 +14,12 @@ public:
         : AbstractGameModeBase(SoloPlaylistName, false, 1)
     {
         LOG_INFO("Initializing GameMode Solo!");
+        if (ConfigVars::bNoSafezone == true)
+        {
+            auto GameMode = static_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode);
+            GameMode->bSafeZoneActive = true;
+            GameMode->bSafeZonePaused = false;
+        }
     }
 
     void OnPlayerJoined(AFortPlayerControllerAthena* Controller) override

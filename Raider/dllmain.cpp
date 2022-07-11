@@ -42,7 +42,6 @@ DWORD WINAPI Main(LPVOID lpParam)
 
     CreateConsole();
     Configuration::loadConfiguration();
-    LOG_INFO("Max Health : {}", ConfigVars::maxHealth);
     return 1;
 }
 

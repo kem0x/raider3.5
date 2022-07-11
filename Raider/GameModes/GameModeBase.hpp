@@ -47,13 +47,6 @@ public:
         GameState->OnRep_CurrentPlaylistId();
         GameState->OnRep_CurrentPlaylistData();
 
-        if (ConfigVars::bNoSafezone == true)
-        {
-            auto GameMode = static_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode);
-            GameMode->bSafeZoneActive = true;
-            GameMode->bSafeZonePaused = false;
-        }
-
         this->Teams = std::make_unique<PlayerTeams>(maxTeamSize);
     }
 
