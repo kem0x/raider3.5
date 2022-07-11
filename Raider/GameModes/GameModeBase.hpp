@@ -89,8 +89,8 @@ public:
         Controller->OnRep_Pawn();
         Controller->Possess(Pawn);
 
-        Pawn->HealthSet->Health.Minimum = this->maxHealth;
-        Pawn->HealthSet->CurrentShield.Minimum = this->maxShield;
+        Pawn->HealthSet->Health.Minimum = 0;
+        Pawn->HealthSet->CurrentShield.Minimum = 0;
 
         Pawn->SetMaxHealth(this->maxHealth);
         Pawn->SetMaxShield(this->maxShield);
