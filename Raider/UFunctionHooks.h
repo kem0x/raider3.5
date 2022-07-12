@@ -230,7 +230,9 @@ namespace UFunctionHooks
                     {
                         switch (yaw)
                         {
-                        case 89: case 90: case 91: // Sometimes the rotation may differ by 1
+                        case 89:
+                        case 90:
+                        case 91: // Sometimes the rotation may differ by 1
                             switch (RotationIterations)
                             {
                             case 1:
@@ -246,7 +248,9 @@ namespace UFunctionHooks
                             }
                             yaw = 90;
                             break;
-                        case 179: case 180: case 181:
+                        case 179:
+                        case 180:
+                        case 181:
                             switch (RotationIterations)
                             {
                             case 1:
@@ -262,7 +266,9 @@ namespace UFunctionHooks
                             }
                             yaw = 180;
                             break;
-                        case 269: case 270: case 271:
+                        case 269:
+                        case 270:
+                        case 271:
                             switch (RotationIterations)
                             {
                             case 1:
@@ -326,7 +332,7 @@ namespace UFunctionHooks
 
             auto DeadPC = static_cast<AFortPlayerControllerAthena*>(Object);
             auto DeadPlayerState = static_cast<AFortPlayerStateAthena*>(DeadPC->PlayerState);
-            
+
             auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
             auto playerLeftBeforeKill = GameState->PlayersLeft;
             if (Params && DeadPC)
@@ -343,7 +349,6 @@ namespace UFunctionHooks
 
                 DeathData.DeathCause = Game::GetDeathCause(Params->DeathReport);
                 DeathData.FinisherOrDowner = KillerPlayerState ? KillerPlayerState : DeadPlayerState;
-
 
                 DeadPlayerState->DeathInfo = DeathData;
                 DeadPlayerState->OnRep_DeathInfo();
@@ -364,76 +369,71 @@ namespace UFunctionHooks
                     //   Spectate(DeadPC->NetConnection, KillerPlayerState);
                 }
 
-                    DeadPC->ForceNetUpdate();
-                    if (IsCurrentlyDisconnecting(DeadPC->NetConnection))
-                    {
-                        LOG_INFO("{} is currently disconnecting", DeadPlayerState->GetPlayerName().ToString());
-                        GameState->PlayersLeft--;
-                        GameState->OnRep_PlayersLeft();
-                        GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
-                    }
-                    else
-                    {
-                        Game::Mode->OnPlayerKilled(DeadPC);
+                DeadPC->ForceNetUpdate();
+                if (IsCurrentlyDisconnecting(DeadPC->NetConnection))
+                {
+                    LOG_INFO("{} is currently disconnecting", DeadPlayerState->GetPlayerName().ToString());
+                    GameState->PlayersLeft--;
+                    GameState->OnRep_PlayersLeft();
+                    GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
+                }
+                else
+                {
+                    Game::Mode->OnPlayerKilled(DeadPC);
 
-                            if (KillerPlayerState && !Game::Mode->isRespawnEnabled())
-                            {
-                                Spectate(DeadPC->NetConnection, KillerPlayerState);
-                            }           
+                    if (KillerPlayerState && !Game::Mode->isRespawnEnabled())
+                    {
+                        Spectate(DeadPC->NetConnection, KillerPlayerState);
                     }
+                }
 
-                    if (playerLeftBeforeKill != 1) {
-                        if (GameState->PlayersLeft == 1 && bStartedBus)
+                if (playerLeftBeforeKill != 1)
+                {
+                    if (GameState->PlayersLeft == 1 && bStartedBus)
+                    {
+                        TArray<AFortPlayerPawn*> OutActors;
+                        GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
+
+                        auto Winner = OutActors[0];
+                        auto Controller = static_cast<AFortPlayerControllerAthena*>(Winner->Controller);
+
+                        if (!Controller->bClientNotifiedOfWin)
                         {
-                            TArray<AFortPlayerPawn*> OutActors;
-                            GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
+                            GameState->WinningPlayerName = Controller->PlayerState->GetPlayerName();
+                            GameState->OnRep_WinningPlayerName();
 
-                            auto Winner = OutActors[0];
-                            auto Controller = static_cast<AFortPlayerControllerAthena*>(Winner->Controller);
+                            Controller->PlayWinEffects();
+                            Controller->ClientNotifyWon();
 
-                            if (!Controller->bClientNotifiedOfWin)
-                            {
-                                GameState->WinningPlayerName = Controller->PlayerState->GetPlayerName();
-                                GameState->OnRep_WinningPlayerName();
+                            Controller->ClientGameEnded(Winner, true);
+                            GameMode->ReadyToEndMatch();
+                            GameMode->EndMatch();
+                        }
+                        OutActors.FreeArray();
+                    }
 
-                                Controller->PlayWinEffects();
-                                Controller->ClientNotifyWon();
+                    if (GameState->PlayersLeft > 1)
+                    {
+                        TArray<AFortPlayerPawn*> OutActors;
+                        GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
+                        auto RandomTarget = OutActors[rand() % OutActors.Num()];
 
-                                Controller->ClientGameEnded(Winner, true);
-                                GameMode->ReadyToEndMatch();
-                                GameMode->EndMatch();
-                            }
-                            OutActors.FreeArray();
+                        if (!RandomTarget)
+                        {
+                            LOG_ERROR("Couldn't assign to a spectator a target! Pawn picked was NULL!");
+                            return false;
                         }
 
-                        if (GameState->PlayersLeft > 1)
-                        {
-                            TArray<AFortPlayerPawn*> OutActors;
-                            GetFortKismet()->STATIC_GetAllFortPlayerPawns(GetWorld(), &OutActors);
-                            auto RandomTarget = OutActors[rand() % OutActors.Num()];
-
-                            if (!RandomTarget)
-                            {
-                                LOG_ERROR("Couldn't assign to a spectator a target! Pawn picked was NULL!");
-                                return false;
-                            }
-
-                            Spectate(DeadPC->NetConnection, static_cast<AFortPlayerStateAthena*>(RandomTarget->Controller->PlayerState));
-                            OutActors.FreeArray();
-                        }
+                        Spectate(DeadPC->NetConnection, static_cast<AFortPlayerStateAthena*>(RandomTarget->Controller->PlayerState));
+                        OutActors.FreeArray();
                     }
-
-
-                
+                }
             }
             else
             {
                 LOG_ERROR("Parameters of ClientOnPawnDied were invalid!");
             }
 
-            
-          
-            
             return false;
         })
 
