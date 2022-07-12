@@ -98,6 +98,7 @@ public:
 
         Pawn->bCanBeDamaged = bStartedBus;
 
+        Controller->bIsDisconnecting = false;
         Controller->bHasClientFinishedLoading = true;
         Controller->bHasServerFinishedLoading = true;
         Controller->bHasInitiallySpawned = true;

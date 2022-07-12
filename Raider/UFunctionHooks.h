@@ -682,7 +682,9 @@ namespace UFunctionHooks
         })
 
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerReturnToMainMenu", {
-            ((AFortPlayerController*)Object)->ClientTravel(L"Frontend", ETravelType::TRAVEL_Absolute, false, FGuid());
+            auto PC = (AFortPlayerController*)Object;
+            PC->bIsDisconnecting = true;
+            PC->ClientTravel(L"Frontend", ETravelType::TRAVEL_Absolute, false, FGuid());
 
             return false;
         })
@@ -785,6 +787,14 @@ namespace UFunctionHooks
             //     KickController((AFortPlayerControllerAthena*)Object, L"Please do not do that!");
 
             return true;
+        })
+        
+        DEFINE_PEHOOK("Function Engine.GameMode.Logout", {
+            auto PC = (AFortPlayerController*)Object;
+            
+            if (PC) PC->bIsDisconnecting = true;
+            
+            return false;
         })
 
         LOG_INFO("Hooked {} UFunction(s)!", toHook.size());

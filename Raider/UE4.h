@@ -139,7 +139,12 @@ bool CanBuild2(ABuildingSMActor* BuildingActor)
 
 bool IsCurrentlyDisconnecting(UNetConnection* Connection)
 {
-    return IsBadReadPtr(&Connection->CurrentNetSpeed, sizeof(Connection->CurrentNetSpeed));
+    if (!Connection || IsBadReadPtr(Connection, sizeof(Connection))) return true;
+    
+    auto PC = (AFortPlayerController*)Connection->PlayerController;
+    if (!PC || IsBadReadPtr(PC, sizeof(PC))) return true;
+    
+    return PC->bIsDisconnecting;
 }
 
 void SwapPlayerControllers(APlayerController* OldPC, APlayerController* NewPC)
