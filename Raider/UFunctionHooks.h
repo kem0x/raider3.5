@@ -230,7 +230,9 @@ namespace UFunctionHooks
                     {
                         switch (yaw)
                         {
-                        case 89: case 90: case 91: // Sometimes the rotation may differ by 1
+                        case 89:
+                        case 90:
+                        case 91: // Sometimes the rotation may differ by 1
                             switch (RotationIterations)
                             {
                             case 1:
@@ -246,7 +248,9 @@ namespace UFunctionHooks
                             }
                             yaw = 90;
                             break;
-                        case 179: case 180: case 181:
+                        case 179:
+                        case 180:
+                        case 181:
                             switch (RotationIterations)
                             {
                             case 1:
@@ -262,7 +266,9 @@ namespace UFunctionHooks
                             }
                             yaw = 180;
                             break;
-                        case 269: case 270: case 271:
+                        case 269:
+                        case 270:
+                        case 271:
                             switch (RotationIterations)
                             {
                             case 1:
@@ -326,51 +332,63 @@ namespace UFunctionHooks
 
             auto DeadPC = static_cast<AFortPlayerControllerAthena*>(Object);
             auto DeadPlayerState = static_cast<AFortPlayerStateAthena*>(DeadPC->PlayerState);
-            
-            Game::Mode->OnPlayerKilled(DeadPC);
-            
-            if (!Game::Mode->isRespawnEnabled()) {
-                auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
-                GameState->PlayersLeft--;
-                GameState->OnRep_PlayersLeft();
 
-                if (Params && DeadPC)
+            auto GameState = reinterpret_cast<AAthena_GameState_C*>(GetWorld()->GameState);
+            auto playerLeftBeforeKill = GameState->PlayersLeft;
+            if (Params && DeadPC)
+            {
+                auto GameMode = static_cast<AFortGameModeAthena*>(GameState->AuthorityGameMode);
+                auto KillerPlayerState = static_cast<AFortPlayerStateAthena*>(Params->DeathReport.KillerPlayerState);
+
+                Spawners::SpawnActor<ABP_VictoryDrone_C>(DeadPC->Pawn->K2_GetActorLocation())->PlaySpawnOutAnim();
+
+                FDeathInfo DeathData;
+                DeathData.bDBNO = false;
+                DeathData.DeathLocation = DeadPC->Pawn->K2_GetActorLocation();
+                DeathData.Distance = Params->DeathReport.KillerPawn ? Params->DeathReport.KillerPawn->GetDistanceTo(DeadPC->Pawn) : 0;
+
+                DeathData.DeathCause = Game::GetDeathCause(Params->DeathReport);
+                DeathData.FinisherOrDowner = KillerPlayerState ? KillerPlayerState : DeadPlayerState;
+
+                DeadPlayerState->DeathInfo = DeathData;
+                DeadPlayerState->OnRep_DeathInfo();
+
+                if (KillerPlayerState)
                 {
-                    auto GameMode = static_cast<AFortGameModeAthena*>(GameState->AuthorityGameMode);
-                    auto KillerPlayerState = static_cast<AFortPlayerStateAthena*>(Params->DeathReport.KillerPlayerState);
-                    GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
-
-                    Spawners::SpawnActor<ABP_VictoryDrone_C>(DeadPC->Pawn->K2_GetActorLocation())->PlaySpawnOutAnim();
-
-                    FDeathInfo DeathData;
-                    DeathData.bDBNO = false;
-                    DeathData.DeathLocation = DeadPC->Pawn->K2_GetActorLocation();
-                    DeathData.Distance = Params->DeathReport.KillerPawn ? Params->DeathReport.KillerPawn->GetDistanceTo(DeadPC->Pawn) : 0;
-
-                    DeathData.DeathCause = Game::GetDeathCause(Params->DeathReport);
-                    DeathData.FinisherOrDowner = KillerPlayerState ? KillerPlayerState : DeadPlayerState;
-
-                    DeadPC->Pawn->K2_DestroyActor();
-
-                    DeadPlayerState->DeathInfo = DeathData;
-                    DeadPlayerState->OnRep_DeathInfo();
-
-                    if (KillerPlayerState)
+                    if (auto Controller = static_cast<AFortPlayerControllerPvP*>(Params->DeathReport.KillerPawn->Controller))
                     {
-                        if (auto Controller = static_cast<AFortPlayerControllerPvP*>(Params->DeathReport.KillerPawn->Controller))
-                        {
-                            Controller->ClientReceiveKillNotification(KillerPlayerState, DeadPlayerState);
-                        }
-                        
-                        KillerPlayerState->KillScore++;
-                        KillerPlayerState->TeamKillScore++;
-
-                        KillerPlayerState->ClientReportKill(DeadPlayerState);
-                        KillerPlayerState->OnRep_Kills();
-
-                        Spectate(DeadPC->NetConnection, KillerPlayerState);
+                        Controller->ClientReceiveKillNotification(KillerPlayerState, DeadPlayerState);
                     }
 
+                    KillerPlayerState->KillScore++;
+                    KillerPlayerState->TeamKillScore++;
+
+                    KillerPlayerState->ClientReportKill(DeadPlayerState);
+                    KillerPlayerState->OnRep_Kills();
+
+                    //   Spectate(DeadPC->NetConnection, KillerPlayerState);
+                }
+
+                DeadPC->ForceNetUpdate();
+                if (IsCurrentlyDisconnecting(DeadPC->NetConnection))
+                {
+                    LOG_INFO("{} is currently disconnecting", DeadPlayerState->GetPlayerName().ToString());
+                    GameState->PlayersLeft--;
+                    GameState->OnRep_PlayersLeft();
+                    GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
+                }
+                else
+                {
+                    Game::Mode->OnPlayerKilled(DeadPC);
+
+                    if (KillerPlayerState && !Game::Mode->isRespawnEnabled())
+                    {
+                        Spectate(DeadPC->NetConnection, KillerPlayerState);
+                    }
+                }
+
+                if (playerLeftBeforeKill != 1)
+                {
                     if (GameState->PlayersLeft == 1 && bStartedBus)
                     {
                         TArray<AFortPlayerPawn*> OutActors;
@@ -410,12 +428,12 @@ namespace UFunctionHooks
                         OutActors.FreeArray();
                     }
                 }
-                else
-                {
-                    LOG_ERROR("Parameters of ClientOnPawnDied were invalid!");
-                }
             }
-            
+            else
+            {
+                LOG_ERROR("Parameters of ClientOnPawnDied were invalid!");
+            }
+
             return false;
         })
 
