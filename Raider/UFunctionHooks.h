@@ -376,15 +376,18 @@ namespace UFunctionHooks
                 }
                 
                 Game::Mode->OnPlayerKilled(DeadPC);
-
-                if (KillerPlayerState && !Game::Mode->isRespawnEnabled())
-                {
-                    Spectate(DeadPC->NetConnection, KillerPlayerState);
-                }
                 
-                GameState->PlayersLeft--;
-                GameState->OnRep_PlayersLeft();
-                GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
+                if (!Game::Mode->isRespawnEnabled())
+                {
+                    GameState->PlayersLeft--;
+                    GameState->OnRep_PlayersLeft();
+                    GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
+                    
+                    if (KillerPlayerState)
+                    {
+                        Spectate(DeadPC->NetConnection, KillerPlayerState);
+                    }
+                }
 
                 if (playerLeftBeforeKill != 1)
                 {
