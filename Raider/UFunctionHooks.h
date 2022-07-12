@@ -373,19 +373,18 @@ namespace UFunctionHooks
                 if (IsCurrentlyDisconnecting(DeadPC->NetConnection))
                 {
                     LOG_INFO("{} is currently disconnecting", DeadPlayerState->GetPlayerName().ToString());
-                    GameState->PlayersLeft--;
-                    GameState->OnRep_PlayersLeft();
-                    GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
                 }
-                else
-                {
-                    Game::Mode->OnPlayerKilled(DeadPC);
+                
+                Game::Mode->OnPlayerKilled(DeadPC);
 
-                    if (KillerPlayerState && !Game::Mode->isRespawnEnabled())
-                    {
-                        Spectate(DeadPC->NetConnection, KillerPlayerState);
-                    }
+                if (KillerPlayerState && !Game::Mode->isRespawnEnabled())
+                {
+                    Spectate(DeadPC->NetConnection, KillerPlayerState);
                 }
+                
+                GameState->PlayersLeft--;
+                GameState->OnRep_PlayersLeft();
+                GameState->PlayerArray.RemoveSingle(DeadPC->NetPlayerIndex);
 
                 if (playerLeftBeforeKill != 1)
                 {
@@ -791,7 +790,6 @@ namespace UFunctionHooks
         
         DEFINE_PEHOOK("Function Engine.GameMode.Logout", {
             auto PC = (AFortPlayerController*)Object;
-            
             if (PC) PC->bIsDisconnecting = true;
             
             return false;
