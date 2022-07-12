@@ -22,40 +22,45 @@
     <Filter Include="UE4\NetCode">
       <UniqueIdentifier>{18aac474-8480-462a-a3a1-45f86abb5e78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Logic">
+      <UniqueIdentifier>{6327dcad-861c-43fb-a4f3-8dc101879591}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SDK\FN_PlayerPawn_Athena_Generic_functions.cpp">
-      <Filter>SDK</Filter>
-    </ClCompile>
-    <ClCompile Include="SDK\FN_PlayerPawn_Athena_functions.cpp">
-      <Filter>SDK</Filter>
-    </ClCompile>
-    <ClCompile Include="SDK\FN_FortniteGame_functions.cpp">
-      <Filter>SDK</Filter>
-    </ClCompile>
-    <ClCompile Include="SDK\FN_Engine_functions.cpp">
-      <Filter>SDK</Filter>
-    </ClCompile>
-    <ClCompile Include="SDK\FN_CoreUObject_functions.cpp">
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="SDK\FN_Athena_PlayerController_functions.cpp">
       <Filter>SDK</Filter>
     </ClCompile>
     <ClCompile Include="SDK\FN_Basic.cpp">
       <Filter>SDK</Filter>
     </ClCompile>
-    <ClCompile Include="SDK\FN_Athena_PlayerController_functions.cpp">
+    <ClCompile Include="SDK\FN_BP_VictoryDrone_functions.cpp">
       <Filter>SDK</Filter>
     </ClCompile>
-    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="SDK\FN_CoreUObject_functions.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\FN_Engine_functions.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\FN_FortniteGame_functions.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\FN_GameplayAbilities_functions.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\FN_PlayerPawn_Athena_functions.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\FN_PlayerPawn_Athena_Generic_functions.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
     <ClCompile Include="SDK\FN_SlateCore_functions.cpp">
       <Filter>SDK</Filter>
     </ClCompile>
     <ClCompile Include="SDK\FN_UMG_functions.cpp">
       <Filter>SDK</Filter>
     </ClCompile>
-    <ClCompile Include="SDK\FN_GameplayAbilities_functions.cpp">
-      <Filter>SDK</Filter>
-    </ClCompile>
-    <ClCompile Include="SDK\FN_BP_VictoryDrone_functions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SDK.hpp">
@@ -69,9 +74,6 @@
       <Filter>UE4</Filter>
     </ClInclude>
     <ClInclude Include="Native.h" />
-    <ClInclude Include="Game.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="GameModes\GameModeSolos.hpp">
       <Filter>Game\Modes</Filter>
     </ClInclude>
@@ -80,9 +82,6 @@
     </ClInclude>
     <ClInclude Include="GameModes\GameModeDuos.hpp">
       <Filter>Game\Modes</Filter>
-    </ClInclude>
-    <ClInclude Include="Teams.h">
-      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>UE4\GUI</Filter>
@@ -94,8 +93,32 @@
       <Filter>UE4\Hooks</Filter>
     </ClInclude>
     <ClInclude Include="Logger.hpp" />
-    <ClInclude Include="GameModes\GameModes.hpp" />
     <ClInclude Include="GameModes\GameModeLateGame.hpp">
+      <Filter>Game\Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\Teams.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\Inventory.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\Game.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\Spawners.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\Abilities.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModes\GameModes.hpp">
+      <Filter>Game\Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="GameModes\GameMode50v50.hpp">
+      <Filter>Game\Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModes\GameModePlayground.hpp">
       <Filter>Game\Modes</Filter>
     </ClInclude>
   </ItemGroup>
