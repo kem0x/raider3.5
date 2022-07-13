@@ -155,7 +155,7 @@ namespace UFunctionHooks
             {
                 if (Actor->IsA(ABuildingSMActor::StaticClass()))
                 {
-                    for (int i = 0; i < ExistingBuildings.Num(); i++)
+                    for (int i = 0; i < ExistingBuildings.size(); i++)
                     {
                         auto Building = ExistingBuildings[i];
 
@@ -164,7 +164,7 @@ namespace UFunctionHooks
 
                         if (Building == Actor)
                         {
-                            ExistingBuildings.RemoveSingle(i);
+                            ExistingBuildings.erase(ExistingBuildings.begin() + i);
 
                             break;
                         }

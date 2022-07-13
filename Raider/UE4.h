@@ -14,7 +14,7 @@ inline bool bPlayButton = false;
 inline bool bListening = false;
 static bool bSpawnedFloorLoot = false;
 
-static TArray<ABuildingActor*> ExistingBuildings;
+static std::vector<ABuildingActor*> ExistingBuildings;
 static AFortOnlineBeaconHost* HostBeacon = nullptr;
 
 inline UWorld* GetWorld()
@@ -92,10 +92,8 @@ bool CanBuild(ABuildingSMActor* BuildingActor)
 {
     bool bCanBuild = true;
 
-    for (int i = 0; i < ExistingBuildings.Num(); i++)
+    for (auto Building : ExistingBuildings)
     {
-        auto Building = ExistingBuildings[i];
-
         if (!Building)
             continue;
 
@@ -105,9 +103,9 @@ bool CanBuild(ABuildingSMActor* BuildingActor)
         }
     }
     
-    if (bCanBuild || ExistingBuildings.Num() == 0)
+    if (bCanBuild || ExistingBuildings.size() == 0)
     {
-        ExistingBuildings.Add(BuildingActor);
+        ExistingBuildings.push_back(BuildingActor);
 
         return true;
     }
