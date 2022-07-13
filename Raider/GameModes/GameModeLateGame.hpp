@@ -60,7 +60,7 @@ public:
         // int SafeZoneConfigure[3] = { 1 }
         // GameMode->SafeZoneLocations = GetRandomBattleBusLocation();
 
-        auto SafeZoneCenter = GetRandomBattleBusLocation(); /* TODO: Array of Locations where late game could take place in. (POIs) */
+        auto SafeZoneCenter = GetRandomBattleBusLocation();
         // GameMode->SafeZonePhase = 1;
         // GameMode->SafeZoneLocations = Aircraft->K2_GetActorLocation();
         // Aircraft->K2_GetActorLocation();

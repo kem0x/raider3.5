@@ -148,6 +148,33 @@ namespace UFunctionHooks
             return false;
         })
 
+        DEFINE_PEHOOK("Function Engine.Actor.ReceiveDestroyed", { // TODO: Figure out why this function gets called a few seconds late. Possibly use a different one.
+            auto Actor = (AActor*)Object;
+
+            if (Actor)
+            {
+                if (Actor->IsA(ABuildingSMActor::StaticClass()))
+                {
+                    for (int i = 0; i < ExistingBuildings.Num(); i++)
+                    {
+                        auto Building = ExistingBuildings[i];
+
+                        if (!Building)
+                            continue;
+
+                        if (Building == Actor)
+                        {
+                            ExistingBuildings.RemoveSingle(i);
+
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        })
+
         DEFINE_PEHOOK("Function FortniteGame.FortPlayerController.ServerCreateBuildingActor", {
             auto PC = (AFortPlayerControllerAthena*)Object;
 
@@ -159,10 +186,8 @@ namespace UFunctionHooks
                 {
                     auto BuildingActor = (ABuildingSMActor*)Spawners::SpawnActor(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, PC, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
                     // SpawnBuilding(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, (APlayerPawn_Athena_C*)PC->Pawn);
-                    if (BuildingActor && CanBuild2(BuildingActor))
+                    if (BuildingActor && CanBuild(BuildingActor))
                     {
-                        // Buildings.insert(BuildingActor); // Add as soon as possible to make sure there is no time to double build.
-
                         BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::DestroyAnythingThatCollides;
                         BuildingActor->SetMirrored(Params->bMirrored);
                         // BuildingActor->PlacedByPlacementTool();
