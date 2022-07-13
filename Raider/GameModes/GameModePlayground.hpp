@@ -14,6 +14,11 @@ public:
         : AbstractGameModeBase(PlaylistName, true, 1)
     {
         LOG_INFO("Initializing GameMode Playground!");
+        auto GameMode = static_cast<AFortGameModeAthena*>(GetWorld()->AuthorityGameMode);
+        if(GameMode) {
+                GameMode->bSafeZoneActive = false;
+                GameMode->bSafeZonePaused = true;
+        }
     }
 
     void OnPlayerJoined(AFortPlayerControllerAthena* Controller) override
