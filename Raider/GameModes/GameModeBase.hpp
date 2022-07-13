@@ -210,7 +210,7 @@ public:
         Pawn->SetMaxHealth(this->maxHealth);
         Pawn->SetMaxShield(this->maxShield);
 
-        if (this->bRegenEnabled)
+        if (!this->bRegenEnabled)
         {
             Pawn->AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(Pawn->HealthRegenDelayGameplayEffect, Pawn->AbilitySystemComponent, 1);
             Pawn->AbilitySystemComponent->RemoveActiveGameplayEffectBySourceEffect(Pawn->HealthRegenGameplayEffect, Pawn->AbilitySystemComponent, 1);
