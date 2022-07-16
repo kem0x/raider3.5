@@ -183,23 +183,20 @@ namespace UFunctionHooks
 
             if (PC && Params && CurrentBuildClass)
             {
+                auto BuildingActor = (ABuildingSMActor*)Spawners::SpawnActor(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, PC, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
+                if (BuildingActor && CanBuild(BuildingActor))
                 {
-                    auto BuildingActor = (ABuildingSMActor*)Spawners::SpawnActor(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, PC, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
-                    // SpawnBuilding(CurrentBuildClass, Params->BuildLoc, Params->BuildRot, (APlayerPawn_Athena_C*)PC->Pawn);
-                    if (BuildingActor && CanBuild(BuildingActor))
-                    {
-                        BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::DestroyAnythingThatCollides;
-                        BuildingActor->SetMirrored(Params->bMirrored);
-                        // BuildingActor->PlacedByPlacementTool();
-                        BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);
-                        auto PlayerState = (AFortPlayerStateAthena*)PC->PlayerState;
-                        BuildingActor->Team = PlayerState->TeamIndex;
-                    }
-                    else
-                    {
-                        BuildingActor->SetActorScale3D({});
-                        BuildingActor->SilentDie();
-                    }
+                    BuildingActor->DynamicBuildingPlacementType = EDynamicBuildingPlacementType::DestroyAnythingThatCollides;
+                    BuildingActor->SetMirrored(Params->bMirrored);
+                    // BuildingActor->PlacedByPlacementTool();
+                    BuildingActor->InitializeKismetSpawnedBuildingActor(BuildingActor, PC);
+                    auto PlayerState = (AFortPlayerStateAthena*)PC->PlayerState;
+                    BuildingActor->Team = PlayerState->TeamIndex;
+                }
+                else
+                {
+                    BuildingActor->SetActorScale3D({});
+                    BuildingActor->SilentDie();
                 }
             }
 
@@ -331,7 +328,6 @@ namespace UFunctionHooks
 
                     auto HealthPercent = BuildingActor->GetHealthPercent();
 
-                    //  BuildingActor->K2_DestroyActor();
                     BuildingActor->SilentDie();
 
                     if (auto NewBuildingActor = (ABuildingSMActor*)Spawners::SpawnActor(NewBuildingClass, location, rotation, PC))
@@ -512,9 +508,9 @@ namespace UFunctionHooks
                 {
                     auto ExitLocation = Aircraft->K2_GetActorLocation();
 
-                    // ExitLocation.Z -= 500;
-
                     Game::Mode->InitPawn(PC, ExitLocation);
+
+                    PC->ClientSetRotation(Params->ClientRotation, false);
 
                     ((AAthena_GameState_C*)GetWorld()->AuthorityGameMode->GameState)->Aircrafts[0]->PlayEffectsForPlayerJumped();
                     PC->ActivateSlot(EFortQuickBars::Primary, 0, 0, true); // Select the pickaxe
@@ -524,8 +520,6 @@ namespace UFunctionHooks
 
                     if (bFound)
                         Inventory::EquipInventoryItem(PC, PickaxeEntry.ItemGuid);
-
-                    // PC->Pawn->K2_TeleportTo(ExitLocation, Params->ClientRotation);
                 }
             }
 
