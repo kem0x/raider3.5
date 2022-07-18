@@ -44,14 +44,16 @@ namespace Hooks
 
     void __fastcall GetPlayerViewPoint(APlayerController* pc, FVector* a2, FRotator* a3) // credit: ender
     {
-        if (HostBeacon->NetDriver->ClientConnections.Num() > 0)
+        if (HostBeacon && HostBeacon->NetDriver && HostBeacon->NetDriver->ClientConnections.Num() > 0)
         {
             AActor* TheViewTarget = pc->GetViewTarget();
 
             if (TheViewTarget)
             {
-                *a2 = TheViewTarget->K2_GetActorLocation();
-                *a3 = TheViewTarget->K2_GetActorRotation();
+                if (a2)
+                    *a2 = TheViewTarget->K2_GetActorLocation();
+                if (a3)
+                    *a3 = TheViewTarget->K2_GetActorRotation();
                 // LOG_INFO("Did the ViewTarget!");
 
                 return;
