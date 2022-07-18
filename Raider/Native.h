@@ -16,6 +16,11 @@ namespace Native
         inline __int64 (*GetNetMode)(__int64* a1);
     }
 
+    namespace PlayerController
+    {
+        void(__fastcall* GetPlayerViewPoint)(APlayerController* pc, FVector* a2, FRotator* a3);
+    }
+
     namespace LocalPlayer
     {
         bool (*SpawnPlayActor)(ULocalPlayer* Player, const FString& URL, FString& OutError, UWorld* World);
@@ -184,6 +189,10 @@ namespace Native
         Address = Utils::FindPattern(Patterns::InitListen);
         CheckNullFatal(Address, "Failed to find NetDriver::InitListen");
         AddressToFunction(Address, NetDriver::InitListen);
+
+        Address = Utils::FindPattern(Patterns::GetPlayerViewPoint);
+        CheckNullFatal(Address, "Failed to find PlayerController::GetPlayerViewPoint");
+        AddressToFunction(Address, PlayerController::GetPlayerViewPoint);
 
         ProcessEvent = reinterpret_cast<decltype(ProcessEvent)>(GetEngine()->Vtable[0x40]);
     }

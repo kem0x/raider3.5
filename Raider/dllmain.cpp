@@ -29,6 +29,7 @@ DWORD WINAPI Main(LPVOID lpParam)
 
     DetourAttachE(NetDebug, Hooks::NetDebug);
     DetourAttachE(ProcessEvent, Hooks::ProcessEventHook);
+    DetourAttachE(Native::PlayerController::GetPlayerViewPoint, Hooks::GetPlayerViewPoint);
     DETOUR_END
 
     LOG_INFO("Base Address: {:X}", Imagebase);
@@ -38,7 +39,7 @@ DWORD WINAPI Main(LPVOID lpParam)
 
     CreateConsole();
 
-    return 1;
+    return 0;
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
