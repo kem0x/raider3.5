@@ -42,7 +42,7 @@ namespace Hooks
     uint64 GetNetMode(UWorld*) { return NM_ListenServer; }
     void World_NotifyControlMessage(UWorld*, UNetConnection* Connection, uint8 MessageType, void* Bunch) { Native::World::NotifyControlMessage(GetWorld(), Connection, MessageType, Bunch); }
 
-    void __fastcall GetPlayerViewPoint(APlayerController* pc, FVector* a2, FRotator* a3) // credit: ender
+    void __fastcall GetPlayerViewPoint(APlayerController* pc, FVector* a2, FRotator* a3)
     {
         if (HostBeacon && HostBeacon->NetDriver && HostBeacon->NetDriver->ClientConnections.Num() > 0)
         {
