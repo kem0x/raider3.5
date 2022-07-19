@@ -44,7 +44,7 @@ namespace Hooks
 
     void __fastcall GetPlayerViewPoint(APlayerController* pc, FVector* a2, FRotator* a3)
     {
-        if (HostBeacon && HostBeacon->NetDriver && HostBeacon->NetDriver->ClientConnections.Num() > 0)
+        if (pc && HostBeacon && HostBeacon->NetDriver && HostBeacon->NetDriver->ClientConnections.Num() > 0)
         {
             AActor* TheViewTarget = pc->GetViewTarget();
 
