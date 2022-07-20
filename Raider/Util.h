@@ -5,8 +5,7 @@ constexpr auto PI = 3.1415926535897932f;
 constexpr auto INV_PI = 0.31830988618f;
 constexpr auto HALF_PI = 1.57079632679f;
 
-static void Error(std::string error, bool bExit = false)
-{
+static void Error(std::string error, bool bExit = false) {
     //MessageBoxA(nullptr, error.c_str(), "Error", MB_OK | MB_ICONERROR);
     LOG_ERROR("{}", error.c_str());
     if (bExit)
@@ -20,14 +19,12 @@ static void Error(std::string error, bool bExit = false)
     }
 
 template <typename T>
-auto Merge(T v)
-{
+auto Merge(T v) {
     return v;
 }
 
 template <typename T, typename... Types>
-auto Merge(T var1, Types ... vars)
-{
+auto Merge(T var1, Types ... vars) {
     return reinterpret_cast<T*>(__int64(var1) + __int64(Merge(vars...)));
 }
 
@@ -51,28 +48,22 @@ auto Merge(T var1, Types ... vars)
 
 #define AddressToFunction(a, f) f = reinterpret_cast<decltype(f)>(a)
 
-namespace Utils
-{
-    static __forceinline uintptr_t FindPattern(const char* signature, bool bRelative = false, uint32_t offset = 0)
-    {
+namespace Utils {
+    static __forceinline uintptr_t FindPattern(const char* signature, bool bRelative = false, uint32_t offset = 0) {
         uintptr_t base_address = reinterpret_cast<uintptr_t>(GetModuleHandle(NULL));
-        static auto patternToByte = [](const char* pattern)
-        {
+        static auto patternToByte = [](const char* pattern) {
             auto bytes = std::vector<int>{};
             const auto start = const_cast<char*>(pattern);
             const auto end = const_cast<char*>(pattern) + strlen(pattern);
 
-            for (auto current = start; current < end; ++current)
-            {
-                if (*current == '?')
-                {
+            for (auto current = start; current < end; ++current) {
+                if (*current == '?') {
                     ++current;
                     if (*current == '?')
                         ++current;
                     bytes.push_back(-1);
                 }
-                else
-                {
+                else {
                     bytes.push_back(strtoul(current, &current, 16));
                 }
             }
@@ -89,22 +80,17 @@ namespace Utils
         const auto s = patternBytes.size();
         const auto d = patternBytes.data();
 
-        for (auto i = 0ul; i < sizeOfImage - s; ++i)
-        {
+        for (auto i = 0ul; i < sizeOfImage - s; ++i) {
             bool found = true;
-            for (auto j = 0ul; j < s; ++j)
-            {
-                if (scanBytes[i + j] != d[j] && d[j] != -1)
-                {
+            for (auto j = 0ul; j < s; ++j) {
+                if (scanBytes[i + j] != d[j] && d[j] != -1) {
                     found = false;
                     break;
                 }
             }
-            if (found)
-            {
+            if (found) {
                 uintptr_t address = reinterpret_cast<uintptr_t>(&scanBytes[i]);
-                if (bRelative)
-                {
+                if (bRelative) {
                     address = ((address + offset + 4) + *(int32_t*)(address + offset));
                     return address;
                 }
@@ -114,43 +100,35 @@ namespace Utils
         return NULL;
     }
 
-    static float FRand()
-    {
+    static float FRand() {
         return static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
     }
 
     template <typename T>
-    static T Max(T f, T s)
-    {
+    static T Max(T f, T s) {
         return f > s ? f : s;
     }
 
-    static FORCEINLINE void sinCos(float* ScalarSin, float* ScalarCos, float Value)
-    {
+    static FORCEINLINE void sinCos(float* ScalarSin, float* ScalarCos, float Value) {
         float quotient = (INV_PI * 0.5f) * Value;
-        if (Value >= 0.0f)
-        {
+        if (Value >= 0.0f) {
             quotient = static_cast<float>(static_cast<int>(quotient + 0.5f));
         }
-        else
-        {
+        else {
             quotient = static_cast<float>(static_cast<int>(quotient - 0.5f));
         }
         float y = Value - (2.0f * PI) * quotient;
 
         float sign;
-        if (y > HALF_PI)
-        {
+        if (y > HALF_PI) {
             y = PI - y;
             sign = -1.0f;
         }
-        else if (y < -HALF_PI)
-        {
+        else if (y < -HALF_PI) {
             y = -PI - y;
             sign = -1.0f;
         }
-        else
-        {
+        else {
             sign = +1.0f;
         }
 
@@ -162,13 +140,11 @@ namespace Utils
         *ScalarCos = sign * p;
     }
 
-    auto toWStr(const std::string& str)
-    {
+    auto toWStr(const std::string& str) {
         return std::wstring(str.begin(), str.end());
     }
 
-    static auto RotToQuat(FRotator Rotator)
-    {
+    static auto RotToQuat(FRotator Rotator) {
         const float DEG_TO_RAD = PI / (180.f);
         const float DIVIDE_BY_2 = DEG_TO_RAD / 2.f;
         float SP, SY, SR;
@@ -187,8 +163,7 @@ namespace Utils
         return RotationQuat;
     }
 
-    static auto VecToRot(FVector Vector)
-    {
+    static auto VecToRot(FVector Vector) {
         FRotator R;
 
         R.Yaw = std::atan2(Vector.Y, Vector.X) * (180.f / PI);
@@ -201,8 +176,7 @@ namespace Utils
         return R;
     }
 
-    auto RandomIntInRange(int min, int max)
-    {
+    auto RandomIntInRange(int min, int max) {
         std::random_device rd; // obtain a random number from hardware
         std::mt19937 gen(rd()); // seed the generator
         static std::uniform_int_distribution<> distr(min, max); // define the range
