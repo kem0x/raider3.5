@@ -78,6 +78,12 @@ public:
 
     void LoadJoiningPlayer(AFortPlayerControllerAthena* Controller)
     {
+        if (bStartedBus && !bRejoinEnabled) {
+            KickController(Controller, L"The match has already been started, please try again later.");
+            LOG_INFO("{} attempted to join while re-join was off.", Controller->PlayerState->GetPlayerName().ToString());
+            return;
+        }
+
         LOG_INFO("({}) Initializing {} that has just joined!", "GameModeBase", Controller->PlayerState->GetPlayerName().ToString());
 
         auto Pawn = Spawners::SpawnActor<APlayerPawn_Athena_C>(GetPlayerStart(Controller).Translation, Controller, {});
@@ -109,10 +115,6 @@ public:
         PlayerState->bHasFinishedLoading = true;
         PlayerState->bHasStartedPlaying = true;
         PlayerState->OnRep_bHasStartedPlaying();
-        
-        if (bStartedBus && !bRejoinEnabled)
-            KickController(Controller, L"The match has already been started, please try again later.");
-        LOG_INFO("{} attempted to join while re-join was off.", Controller->PlayerState->GetPlayerName().ToString());
 
         static auto FortRegisteredPlayerInfo = ((UFortGameInstance*)GetWorld()->OwningGameInstance)->RegisteredPlayers[0]; // UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
 
