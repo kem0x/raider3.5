@@ -16,13 +16,14 @@ public:
 class AbstractGameModeBase : protected IGameModeBase
 {
 public:
-    AbstractGameModeBase(const std::string BasePlaylist, bool bRespawnEnabled = false, int maxTeamSize = 1, bool bRegenEnabled = false)
+    AbstractGameModeBase(const std::string BasePlaylist, bool bRespawnEnabled = false, int maxTeamSize = 1, bool bRegenEnabled = false, bool bRejoinEnabled = false)
     {
         this->BasePlaylist = UObject::FindObject<UFortPlaylistAthena>(BasePlaylist);
 
         this->BasePlaylist->bNoDBNO = maxTeamSize > 1;
         this->bRespawnEnabled = bRespawnEnabled;
         this->bRegenEnabled = bRegenEnabled;
+        this->bRejoinEnabled = bRejoinEnabled;
 
         if (bRespawnEnabled)
         {
@@ -108,6 +109,10 @@ public:
         PlayerState->bHasFinishedLoading = true;
         PlayerState->bHasStartedPlaying = true;
         PlayerState->OnRep_bHasStartedPlaying();
+        
+        if (bStartedBus && !bRejoinEnabled)
+            KickController(Controller, L"The match has already been started, please try again later.");
+        LOG_INFO("{} attempted to join while re-join was off.", Controller->PlayerState->GetPlayerName().ToString());
 
         static auto FortRegisteredPlayerInfo = ((UFortGameInstance*)GetWorld()->OwningGameInstance)->RegisteredPlayers[0]; // UObject::FindObject<UFortRegisteredPlayerInfo>("FortRegisteredPlayerInfo Transient.FortEngine_0_1.FortGameInstance_0_1.FortRegisteredPlayerInfo_0_1");
 
@@ -259,6 +264,7 @@ private:
     int maxShield = 100;
     bool bRespawnEnabled = false;
     bool bRegenEnabled = false;
+    bool bRejoinEnabled = false;
 
     UFortPlaylistAthena* BasePlaylist;
 };
