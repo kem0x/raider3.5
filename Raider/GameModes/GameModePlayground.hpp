@@ -11,7 +11,7 @@ public:
     }
 
     GameModePlayground(std::string PlaylistName)
-        : AbstractGameModeBase(PlaylistName, true, 1)
+        : AbstractGameModeBase(PlaylistName, true, 1, true)
     {
         LOG_INFO("Initializing GameMode Playground!");
     }
