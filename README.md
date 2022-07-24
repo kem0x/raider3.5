@@ -1,6 +1,6 @@
-# Raider (3.5)
+# Raider - Kyiro 4.5 branch
 
-- Fortnite 3.5 Custom Gameserver
+- Fortnite Custom Gameserver
 
 ## - Download
  - You can find and download the most recent build from the stable branch [here](https://nightly.link/kem0x/raider3.5/workflows/msbuild/stable/Release.zip) 
