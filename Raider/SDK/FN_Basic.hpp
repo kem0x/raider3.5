@@ -46,9 +46,11 @@ struct TUObjectArray
     }
 };
 
-inline void* (*FMemory_Malloc)(int32 Size, int32 Alignment);
 inline void* (*FMemory_Realloc)(void* Memory, int64 NewSize, uint32 Alignment);
 inline void (*FMemory_Free)(void* Mem);
+inline void* FMemory_Malloc(int32 Size, int32 Alignment) {
+    return FMemory_Realloc(0, Size, Alignment);
+}
 
 template <class T>
 struct TArray

@@ -106,10 +106,6 @@ namespace Native
         CheckNullFatal(Address, "Failed to find Realloc");
         AddressToFunction(Address, FMemory_Realloc);
 
-        Address = Utils::FindPattern(Patterns::Malloc);
-        CheckNullFatal(Address, "Failed to find Malloc");
-        AddressToFunction(Address, FMemory_Malloc);
-
         Address = Utils::FindPattern(Patterns::FNameToString);
         CheckNullFatal(Address, "Failed to find FNameToString");
         AddressToFunction(Address, FNameToString);
