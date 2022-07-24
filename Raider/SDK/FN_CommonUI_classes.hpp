@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -75,12 +73,12 @@ public:
 
 
 // Class CommonUI.CommonUserWidget
-// 0x0008 (0x0218 - 0x0210)
+// 0x0008 (0x0210 - 0x0208)
 class UCommonUserWidget : public UUserWidget
 {
 public:
-	bool                                               bConsumePointerInput;                                     // 0x0210(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0211(0x0007) MISSED OFFSET
+	bool                                               bConsumePointerInput;                                     // 0x0208(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0209(0x0007) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -90,22 +88,23 @@ public:
 
 
 	void SetConsumePointerInput(bool bInConsumePointerInput);
+	void OnTouchLeave(const struct FPointerEvent& TouchEvent);
 };
 
 
 // Class CommonUI.CommonActivatablePanel
-// 0x01A8 (0x03C0 - 0x0218)
+// 0x00E8 (0x02F8 - 0x0210)
 class UCommonActivatablePanel : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnWidgetActivated;                                        // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnWidgetDeactivated;                                      // 0x0230(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData01[0x100];                                     // 0x0240(0x0100) MISSED OFFSET
-	bool                                               bConsumeAllActions;                                       // 0x0340(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExposeActionsExternally;                                 // 0x0341(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bShouldBypassStack;                                       // 0x0342(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x7D];                                      // 0x0343(0x007D) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnWidgetActivated;                                        // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnWidgetDeactivated;                                      // 0x0228(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData01[0x40];                                      // 0x0238(0x0040) MISSED OFFSET
+	bool                                               bConsumeAllActions;                                       // 0x0278(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExposeActionsExternally;                                 // 0x0279(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bShouldBypassStack;                                       // 0x027A(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x7D];                                      // 0x027B(0x007D) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -114,7 +113,9 @@ public:
 	}
 
 
+	void SetInputActionHandlerWithProgressPopupMenu(const struct FDataTableRowHandle& InputActionRow, const struct FScriptDelegate& CommitedEvent, const struct FScriptDelegate& ProgressEvent, class UCommonPopupMenu* PopupMenu);
 	void SetInputActionHandlerWithProgress(const struct FDataTableRowHandle& InputActionRow, const struct FScriptDelegate& CommitedEvent, const struct FScriptDelegate& ProgressEvent);
+	void SetInputActionHandlerWithPopupMenu(const struct FDataTableRowHandle& InputActionRow, const struct FScriptDelegate& CommitedEvent, class UCommonPopupMenu* PopupMenu);
 	void SetInputActionHandler(const struct FDataTableRowHandle& InputActionRow, const struct FScriptDelegate& CommitedEvent);
 	void SetActionHandlerStateWithDisabledCommitEvent(class UDataTable* DataTable, const struct FName& RowName, EInputActionState State, const struct FScriptDelegate& DisabledCommitEvent);
 	void SetActionHandlerStateFromHandleWithDisabledCommitEvent(const struct FDataTableRowHandle& InputActionRow, EInputActionState State, const struct FScriptDelegate& DisabledCommitEvent);
@@ -137,7 +138,9 @@ public:
 	void BeginOutro();
 	void BeginIntro();
 	void AddInputActionNoHandler(class UDataTable* DataTable, const struct FName& RowName);
+	void AddInputActionHandlerWithProgressPopup(class UDataTable* DataTable, const struct FName& RowName, const struct FScriptDelegate& CommitedEvent, const struct FScriptDelegate& ProgressEvent, class UCommonPopupMenu* PopupMenu);
 	void AddInputActionHandlerWithProgress(class UDataTable* DataTable, const struct FName& RowName, const struct FScriptDelegate& CommitedEvent, const struct FScriptDelegate& ProgressEvent);
+	void AddInputActionHandlerWithPopup(class UDataTable* DataTable, const struct FName& RowName, const struct FScriptDelegate& CommitedEvent, class UCommonPopupMenu* PopupMenu);
 	void AddInputActionHandler(class UDataTable* DataTable, const struct FName& RowName, const struct FScriptDelegate& CommitedEvent);
 };
 
@@ -235,17 +238,17 @@ public:
 
 
 // Class CommonUI.CommonButtonInternal
-// 0x0080 (0x04A0 - 0x0420)
+// 0x0050 (0x0470 - 0x0420)
 class UCommonButtonInternal : public UButton
 {
 public:
 	struct FScriptMulticastDelegate                    OnDoubleClicked;                                          // 0x0420(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData00[0x40];                                      // 0x0430(0x0040) MISSED OFFSET
-	int                                                MinWidth;                                                 // 0x0470(0x0004) (ZeroConstructor, IsPlainOldData)
-	int                                                MinHeight;                                                // 0x0474(0x0004) (ZeroConstructor, IsPlainOldData)
-	bool                                               bButtonEnabled;                                           // 0x0478(0x0001) (ZeroConstructor, IsPlainOldData)
-	bool                                               bInteractionEnabled;                                      // 0x0479(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x26];                                      // 0x047A(0x0026) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0430(0x0010) MISSED OFFSET
+	int                                                MinWidth;                                                 // 0x0440(0x0004) (ZeroConstructor, IsPlainOldData)
+	int                                                MinHeight;                                                // 0x0444(0x0004) (ZeroConstructor, IsPlainOldData)
+	bool                                               bButtonEnabled;                                           // 0x0448(0x0001) (ZeroConstructor, IsPlainOldData)
+	bool                                               bInteractionEnabled;                                      // 0x0449(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x26];                                      // 0x044A(0x0026) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -257,39 +260,45 @@ public:
 
 
 // Class CommonUI.CommonButton
-// 0x05F0 (0x0808 - 0x0218)
+// 0x0678 (0x0888 - 0x0210)
 class UCommonButton : public UCommonUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnSelectedChanged;                                        // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnButtonClicked;                                          // 0x0228(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnButtonDoubleClicked;                                    // 0x0238(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnButtonHovered;                                          // 0x0248(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnButtonUnhovered;                                        // 0x0258(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	int                                                MinWidth;                                                 // 0x0268(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                MinHeight;                                                // 0x026C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UClass*                                      Style;                                                    // 0x0270(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FSlateSound                                 PressedSlateSoundOverride;                                // 0x0278(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FSlateSound                                 HoveredSlateSoundOverride;                                // 0x0290(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      bApplyAlphaOnDisable : 1;                                 // 0x02A8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      bSelectable : 1;                                          // 0x02A8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      bShouldSelectUponReceivingFocus : 1;                      // 0x02A8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      bInteractableWhenSelected : 1;                            // 0x02A8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      bToggleable : 1;                                          // 0x02A8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      bDisplayInputActionWhenNotInteractable : 1;               // 0x02A8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      bHideInputActionWithKeyboard : 1;                         // 0x02A8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      bShouldUseFallbackDefaultInputAction : 1;                 // 0x02A8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      UnknownData00[0x1];                                       // 0x02A9(0x0001) MISSED OFFSET
-	TEnumAsByte<EButtonClickMethod>                    ClickMethod;                                              // 0x02AA(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x1];                                       // 0x02AB(0x0001) MISSED OFFSET
-	int                                                InputPriority;                                            // 0x02AC(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FDataTableRowHandle                         TriggeringInputAction;                                    // 0x02B0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      UnknownData02[0x40];                                      // 0x02C0(0x0040) MISSED OFFSET
-	class UCommonActionWidget*                         InputActionWidget;                                        // 0x0300(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UMaterialInstanceDynamic*                    SingleMaterialStyleMID;                                   // 0x0308(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	struct FButtonStyle                                NormalStyle;                                              // 0x0310(0x0278)
-	struct FButtonStyle                                SelectedStyle;                                            // 0x0588(0x0278)
-	unsigned char                                      UnknownData03[0x8];                                       // 0x0800(0x0008) MISSED OFFSET
+	int                                                MinWidth;                                                 // 0x0210(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                MinHeight;                                                // 0x0214(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      Style;                                                    // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bHideInputAction;                                         // 0x0220(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
+	struct FSlateSound                                 PressedSlateSoundOverride;                                // 0x0228(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FSlateSound                                 HoveredSlateSoundOverride;                                // 0x0240(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      bApplyAlphaOnDisable : 1;                                 // 0x0258(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      bSelectable : 1;                                          // 0x0258(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      bShouldSelectUponReceivingFocus : 1;                      // 0x0258(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      bInteractableWhenSelected : 1;                            // 0x0258(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      bToggleable : 1;                                          // 0x0258(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      bDisplayInputActionWhenNotInteractable : 1;               // 0x0258(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      bHideInputActionWithKeyboard : 1;                         // 0x0258(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      bShouldUseFallbackDefaultInputAction : 1;                 // 0x0258(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      UnknownData01[0x1];                                       // 0x0259(0x0001) MISSED OFFSET
+	TEnumAsByte<EButtonClickMethod>                    ClickMethod;                                              // 0x025A(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TEnumAsByte<EButtonTouchMethod>                    TouchMethod;                                              // 0x025B(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TEnumAsByte<EButtonPressMethod>                    PressMethod;                                              // 0x025C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x3];                                       // 0x025D(0x0003) MISSED OFFSET
+	int                                                InputPriority;                                            // 0x0260(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x4];                                       // 0x0264(0x0004) MISSED OFFSET
+	struct FDataTableRowHandle                         TriggeringInputAction;                                    // 0x0268(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      UnknownData04[0x10];                                      // 0x0278(0x0010) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnSelectedChanged;                                        // 0x0288(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnButtonClicked;                                          // 0x0298(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnButtonDoubleClicked;                                    // 0x02A8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnButtonHovered;                                          // 0x02B8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnButtonUnhovered;                                        // 0x02C8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData05[0x30];                                      // 0x02D8(0x0030) MISSED OFFSET
+	class UCommonActionWidget*                         InputActionWidget;                                        // 0x0308(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UMaterialInstanceDynamic*                    SingleMaterialStyleMID;                                   // 0x0310(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	struct FButtonStyle                                NormalStyle;                                              // 0x0318(0x0278)
+	struct FButtonStyle                                SelectedStyle;                                            // 0x0590(0x0278)
+	unsigned char                                      UnknownData06[0x80];                                      // 0x0808(0x0080) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -298,28 +307,24 @@ public:
 	}
 
 
+	void SetTriggeringInputAction(const struct FDataTableRowHandle& InputActionRow);
 	void SetTriggeredInputAction(const struct FDataTableRowHandle& InputActionRow, class UCommonActivatablePanel* OldPanel);
+	void SetTouchMethod(TEnumAsByte<EButtonTouchMethod> InTouchMethod);
 	void SetStyle(class UClass* InStyle);
 	void SetShouldSelectUponReceivingFocus(bool bInShouldSelectUponReceivingFocus);
 	void SetSelectedInternal(bool bInSelected, bool bAllowSound, bool bBroadcast);
+	void SetPressMethod(TEnumAsByte<EButtonPressMethod> InPressMethod);
 	void SetMinDimensions(int InMinWidth, int InMinHeight);
 	void SetIsToggleable(bool bInIsToggleable);
 	void SetIsSelected(bool InSelected, bool bGiveClickFeedback);
 	void SetIsSelectable(bool bInIsSelectable);
 	void SetIsInteractionEnabled(bool bInIsInteractionEnabled);
+	void SetIsInteractableWhenSelected(bool bInInteractableWhenSelected);
 	void SetInputActionProgressMaterial(const struct FSlateBrush& InProgressMaterialBrush, const struct FName& InProgressMaterialParam);
 	void SetClickMethod(TEnumAsByte<EButtonClickMethod> InClickMethod);
-	void OnUnhovered();
 	void OnTriggeredInputActionChanged(const struct FDataTableRowHandle& NewTriggeredAction);
-	void OnSelected();
-	void OnInputMethodChanged(bool bUsingGamepad);
-	void OnHovered();
-	void OnEnabled();
-	void OnDoubleClicked();
-	void OnDisabled();
-	void OnDeselected();
+	void OnInputMethodChanged(ECommonInputType CurrentInputType);
 	void OnCurrentTextStyleChanged();
-	void OnClicked();
 	void OnActionProgress(float HeldPercent);
 	void OnActionComplete();
 	void NativeOnActionProgress(float HeldPercent);
@@ -344,6 +349,14 @@ public:
 	void GetCurrentButtonPadding(struct FMargin* OutButtonPadding);
 	void DisableButtonWithReason(const struct FText& DisabledReason);
 	void ClearSelection();
+	void BP_OnUnhovered();
+	void BP_OnSelected();
+	void BP_OnHovered();
+	void BP_OnEnabled();
+	void BP_OnDoubleClicked();
+	void BP_OnDisabled();
+	void BP_OnDeselected();
+	void BP_OnClicked();
 };
 
 
@@ -397,6 +410,7 @@ public:
 	void OnButtonHovered(class UCommonButton* BaseButton);
 	bool HasAnyButtons();
 	int GetSelectedButtonIndex();
+	int GetButtonCount();
 	class UCommonButton* GetButtonAtIndex(int Index);
 	int FindButtonIndex(class UCommonButton* ButtonToFind);
 	void DeselectAll();
@@ -420,13 +434,13 @@ public:
 
 
 // Class CommonUI.CommonTextBlock
-// 0x0050 (0x0270 - 0x0220)
+// 0x0048 (0x0260 - 0x0218)
 class UCommonTextBlock : public UTextBlock
 {
 public:
-	class UClass*                                      Style;                                                    // 0x0220(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UClass*                                      ScrollStyle;                                              // 0x0228(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x40];                                      // 0x0230(0x0040) MISSED OFFSET
+	class UClass*                                      Style;                                                    // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      ScrollStyle;                                              // 0x0220(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x38];                                      // 0x0228(0x0038) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -444,11 +458,11 @@ public:
 
 
 // Class CommonUI.CommonDateTimeTextBlock
-// 0x0040 (0x02B0 - 0x0270)
+// 0x0040 (0x02A0 - 0x0260)
 class UCommonDateTimeTextBlock : public UCommonTextBlock
 {
 public:
-	unsigned char                                      UnknownData00[0x40];                                      // 0x0270(0x0040) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x40];                                      // 0x0260(0x0040) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -461,39 +475,6 @@ public:
 	void SetDateTimeValue(const struct FDateTime& InDateTime, bool bShowAsCountdown);
 	void SetCountDownCompletionText(const struct FText& InCompletionText);
 	struct FDateTime GetDateTime();
-};
-
-
-// Class CommonUI.CommonDynamicEntryBox
-// 0x0140 (0x0240 - 0x0100)
-class UCommonDynamicEntryBox : public UWidget
-{
-public:
-	class UClass*                                      EntryWidgetClass;                                         // 0x0100(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0xF8];                                      // 0x0108(0x00F8) MISSED OFFSET
-	struct FVector2D                                   EntrySpacing;                                             // 0x0200(0x0008) (Edit, IsPlainOldData)
-	struct FSlateChildSize                             EntrySize;                                                // 0x0208(0x0008) (Edit)
-	TEnumAsByte<EHorizontalAlignment>                  EntryHAlign;                                              // 0x0210(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	TEnumAsByte<EVerticalAlignment>                    EntryVAlign;                                              // 0x0211(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x2];                                       // 0x0212(0x0002) MISSED OFFSET
-	int                                                MaxElementSize;                                           // 0x0214(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	TArray<struct FVector2D>                           SpacingPattern;                                           // 0x0218(0x0010) (Edit, ZeroConstructor)
-	EWidgetClipping                                    EntryClipping;                                            // 0x0228(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	EDynamicBoxType                                    BoxType;                                                  // 0x0229(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x16];                                      // 0x022A(0x0016) MISSED OFFSET
-
-	static UClass* StaticClass()
-	{
-		static auto ptr = UObject::FindClass("Class CommonUI.CommonDynamicEntryBox");
-		return ptr;
-	}
-
-
-	void SetEntrySpacing(const struct FVector2D& InEntrySpacing);
-	void Reset(bool bDeleteWidgets);
-	void RemoveEntry(class UUserWidget* EntryWidget);
-	int GetNumEntries();
-	TArray<class UUserWidget*> GetAllEntries();
 };
 
 
@@ -514,17 +495,17 @@ public:
 
 
 // Class CommonUI.CommonInputManager
-// 0x0298 (0x02C0 - 0x0028)
+// 0x00E0 (0x0108 - 0x0028)
 class UCommonInputManager : public UObject
 {
 public:
-	unsigned char                                      UnknownData00[0x238];                                     // 0x0028(0x0238) MISSED OFFSET
-	TScriptInterface<class UCommonActionHandlerInterface> CurrentlyHeldActionInputHandler;                          // 0x0260(0x0010) (ZeroConstructor, IsPlainOldData)
-	TArray<class UCommonActivatablePanel*>             ActivatablePanelStack;                                    // 0x0270(0x0010) (ExportObject, ZeroConstructor)
-	class UCommonGlobalInputHandler*                   GlobalInputHandler;                                       // 0x0280(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x18];                                      // 0x0288(0x0018) MISSED OFFSET
-	TArray<struct FOperation>                          Operations;                                               // 0x02A0(0x0010) (ZeroConstructor)
-	unsigned char                                      UnknownData02[0x10];                                      // 0x02B0(0x0010) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x80];                                      // 0x0028(0x0080) MISSED OFFSET
+	TScriptInterface<class UCommonActionHandlerInterface> CurrentlyHeldActionInputHandler;                          // 0x00A8(0x0010) (ZeroConstructor, IsPlainOldData)
+	TArray<class UCommonActivatablePanel*>             ActivatablePanelStack;                                    // 0x00B8(0x0010) (ExportObject, ZeroConstructor)
+	class UCommonGlobalInputHandler*                   GlobalInputHandler;                                       // 0x00C8(0x0008) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x18];                                      // 0x00D0(0x0018) MISSED OFFSET
+	TArray<struct FOperation>                          Operations;                                               // 0x00E8(0x0010) (ZeroConstructor)
+	unsigned char                                      UnknownData02[0x10];                                      // 0x00F8(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -548,14 +529,14 @@ public:
 
 
 // Class CommonUI.CommonInputReflector
-// 0x0030 (0x0248 - 0x0218)
+// 0x0030 (0x0240 - 0x0210)
 class UCommonInputReflector : public UCommonUserWidget
 {
 public:
-	class UClass*                                      ButtonType;                                               // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	TArray<class UCommonButton*>                       ActiveButtons;                                            // 0x0220(0x0010) (ExportObject, ZeroConstructor)
-	TArray<class UCommonButton*>                       InactiveButtons;                                          // 0x0230(0x0010) (ExportObject, ZeroConstructor)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0240(0x0008) MISSED OFFSET
+	class UClass*                                      ButtonType;                                               // 0x0210(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TArray<class UCommonButton*>                       ActiveButtons;                                            // 0x0218(0x0010) (ExportObject, ZeroConstructor)
+	TArray<class UCommonButton*>                       InactiveButtons;                                          // 0x0228(0x0010) (ExportObject, ZeroConstructor)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0238(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -593,89 +574,11 @@ public:
 };
 
 
-// Class CommonUI.CommonPoolableWidgetInterface
-// 0x0000 (0x0028 - 0x0028)
-class UCommonPoolableWidgetInterface : public UInterface
-{
-public:
-
-	static UClass* StaticClass()
-	{
-		static auto ptr = UObject::FindClass("Class CommonUI.CommonPoolableWidgetInterface");
-		return ptr;
-	}
-
-
-	void OnReleaseToPool();
-	void OnAcquireFromPool();
-};
-
-
-// Class CommonUI.CommonListItem
-// 0x0000 (0x0028 - 0x0028)
-class UCommonListItem : public UCommonPoolableWidgetInterface
-{
-public:
-
-	static UClass* StaticClass()
-	{
-		static auto ptr = UObject::FindClass("Class CommonUI.CommonListItem");
-		return ptr;
-	}
-
-
-	void ToggleExpansion();
-	void SetSelected(bool bSelected);
-	void SetIndexInList(int InIndexInList);
-	void SetExpanded(bool bExpanded);
-	void RegisterOnClicked(const struct FScriptDelegate& Callback);
-	void Private_OnExpanderArrowShiftClicked();
-	bool IsItemExpanded();
-	int GetIndentLevel();
-	int DoesItemHaveChildren();
-};
-
-
-// Class CommonUI.CommonListViewNullItem
-// 0x0000 (0x0028 - 0x0028)
-class UCommonListViewNullItem : public UObject
-{
-public:
-
-	static UClass* StaticClass()
-	{
-		static auto ptr = UObject::FindClass("Class CommonUI.CommonListViewNullItem");
-		return ptr;
-	}
-
-};
-
-
 // Class CommonUI.CommonListView
-// 0x01E0 (0x02E0 - 0x0100)
-class UCommonListView : public UWidget
+// 0x0000 (0x0328 - 0x0328)
+class UCommonListView : public UListView
 {
 public:
-	struct FScriptMulticastDelegate                    OnItemClicked;                                            // 0x0100(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnItemDoubleClicked;                                      // 0x0110(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnItemHovered;                                            // 0x0120(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnItemSelected;                                           // 0x0130(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnItemWidgetCreated;                                      // 0x0140(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnItemWidgetDestroyed;                                    // 0x0150(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnItemScrolledIntoView;                                   // 0x0160(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	float                                              ItemHeight;                                               // 0x0170(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	struct FMargin                                     DesiredItemPadding;                                       // 0x0174(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnTemplate, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x0184(0x0004) MISSED OFFSET
-	class UClass*                                      ListItemClass;                                            // 0x0188(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	TEnumAsByte<ESelectionMode>                        SelectionMode;                                            // 0x0190(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	EConsumeMouseWheel                                 ConsumeMouseWheel;                                        // 0x0191(0x0001) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	bool                                               bClearSelectionOnClick;                                   // 0x0192(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x1];                                       // 0x0193(0x0001) MISSED OFFSET
-	int                                                NumPreAllocatedEntries;                                   // 0x0194(0x0004) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	bool                                               bSimulateDoubleClickOnSelectedItemClick;                  // 0x0198(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x137];                                     // 0x0199(0x0137) MISSED OFFSET
-	class UCommonListViewNullItem*                     NullItem;                                                 // 0x02D0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x8];                                       // 0x02D8(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -683,34 +586,6 @@ public:
 		return ptr;
 	}
 
-
-	void SetSimulateDoubleClickOnSelectedItemClick(bool bInSimulateDoubleClick);
-	void SetSelectionMode(TEnumAsByte<ESelectionMode> SelectionMode);
-	bool SetSelectedItem(class UObject* Item, bool bWaitIfPendingRefresh);
-	bool SetSelectedIndex(int Index);
-	void SetItemSelection(class UObject* Item, bool bSelected);
-	void SetItemHeight(float NewHeight);
-	void SetDesiredItemPadding(const struct FMargin& DesiredPadding);
-	void SetDataProvider(TArray<class UObject*> InDataProvider);
-	void ScrollIntoView(class UObject* Item, bool NavigateOnScrollIntoView);
-	bool IsRefreshPending();
-	bool IsItemVisible(class UObject* Item);
-	TEnumAsByte<ESelectionMode> GetSelectionModeBP();
-	bool GetSelectedItems(TArray<class UObject*>* Items);
-	class UObject* GetSelectedItem();
-	int GetNumItemsSelected();
-	int GetNumItems();
-	class UObject* GetItemAt(int Index);
-	int GetIndexForItem(class UObject* Item);
-	void DynamicHandleItemUnhoveredCommonButton(class UCommonButton* Button);
-	void DynamicHandleItemHoveredCommonButton(class UCommonButton* Button);
-	void DynamicHandleItemDoubleClickedCommonButton(class UCommonButton* Button);
-	void DynamicHandleItemClickedUserWidget(class UUserWidget* Widget);
-	void DynamicHandleItemClickedCommonButton(class UCommonButton* Button);
-	void ClearSelection();
-	void Clear();
-	void CancelScrollIntoView();
-	void AddItem(class UObject* Item);
 };
 
 
@@ -746,23 +621,23 @@ public:
 
 
 // Class CommonUI.CommonNumericTextBlock
-// 0x0088 (0x02F8 - 0x0270)
+// 0x0088 (0x02E8 - 0x0260)
 class UCommonNumericTextBlock : public UCommonTextBlock
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0270(0x0008) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnOutroEvent;                                             // 0x0278(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnInterpolationEndedEvent;                                // 0x0288(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	float                                              CurrentNumericValue;                                      // 0x0298(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	ECommonNumericType                                 NumericType;                                              // 0x029C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x3];                                       // 0x029D(0x0003) MISSED OFFSET
-	struct FCommonNumberFormattingOptions              FormattingSpecification;                                  // 0x02A0(0x0014) (Edit, BlueprintVisible, BlueprintReadOnly)
-	float                                              EaseOutInterpolationExponent;                             // 0x02B4(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              InterpolationUpdateInterval;                              // 0x02B8(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              PostInterpolationShrinkDuration;                          // 0x02BC(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               PerformSizeInterpolation;                                 // 0x02C0(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               IsPercentage;                                             // 0x02C1(0x0001) (ZeroConstructor, Deprecated, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x36];                                      // 0x02C2(0x0036) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0260(0x0008) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnOutroEvent;                                             // 0x0268(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnInterpolationEndedEvent;                                // 0x0278(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	float                                              CurrentNumericValue;                                      // 0x0288(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	ECommonNumericType                                 NumericType;                                              // 0x028C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x028D(0x0003) MISSED OFFSET
+	struct FCommonNumberFormattingOptions              FormattingSpecification;                                  // 0x0290(0x0014) (Edit, BlueprintVisible, BlueprintReadOnly)
+	float                                              EaseOutInterpolationExponent;                             // 0x02A4(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              InterpolationUpdateInterval;                              // 0x02A8(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              PostInterpolationShrinkDuration;                          // 0x02AC(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               PerformSizeInterpolation;                                 // 0x02B0(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               IsPercentage;                                             // 0x02B1(0x0001) (ZeroConstructor, Deprecated, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x36];                                      // 0x02B2(0x0036) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -771,6 +646,7 @@ public:
 	}
 
 
+	void SetNumericType(ECommonNumericType InNumericType);
 	void SetCurrentValue(float NewValue);
 	void OnOutro__DelegateSignature(class UCommonNumericTextBlock* NumericTextBlock);
 	void OnInterpolationEnded__DelegateSignature(class UCommonNumericTextBlock* NumericTextBlock, bool HadCompleted);
@@ -780,34 +656,53 @@ public:
 };
 
 
-// Class CommonUI.CommonObjectListItem
+// Class CommonUI.CommonPoolableWidgetInterface
 // 0x0000 (0x0028 - 0x0028)
-class UCommonObjectListItem : public UCommonListItem
+class UCommonPoolableWidgetInterface : public UInterface
 {
 public:
 
 	static UClass* StaticClass()
 	{
-		static auto ptr = UObject::FindClass("Class CommonUI.CommonObjectListItem");
+		static auto ptr = UObject::FindClass("Class CommonUI.CommonPoolableWidgetInterface");
 		return ptr;
 	}
 
 
-	void SetData(class UObject* InData, class UCommonListView* OwningList);
-	void Reset();
-	class UObject* GetData();
+	void OnReleaseToPool();
+	void OnAcquireFromPool();
+};
+
+
+// Class CommonUI.CommonPopupButton
+// 0x0010 (0x0898 - 0x0888)
+class UCommonPopupButton : public UCommonButton
+{
+public:
+	class UMenuAnchor*                                 PopupMenuAnchor;                                          // 0x0888(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonPopupMenu*                            PopupMenu;                                                // 0x0890(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class CommonUI.CommonPopupButton");
+		return ptr;
+	}
+
+
+	class UWidget* GetMenuAnchorWidget();
 };
 
 
 // Class CommonUI.CommonPopupMenu
-// 0x0020 (0x03E0 - 0x03C0)
+// 0x0018 (0x0310 - 0x02F8)
 class UCommonPopupMenu : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x4];                                       // 0x03C0(0x0004) MISSED OFFSET
-	TWeakObjectPtr<class UMenuAnchor>                  OwningMenuAnchor;                                         // 0x03C4(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TWeakObjectPtr<class UObject>                      ContextProvidingObject;                                   // 0x03CC(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0xC];                                       // 0x03D4(0x000C) MISSED OFFSET
+	bool                                               bUseInputStack;                                           // 0x02F8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x02F9(0x0003) MISSED OFFSET
+	TWeakObjectPtr<class UMenuAnchor>                  OwningMenuAnchor;                                         // 0x02FC(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TWeakObjectPtr<class UObject>                      ContextProvidingObject;                                   // 0x0304(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x030C(0x0004) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -826,14 +721,14 @@ public:
 
 
 // Class CommonUI.CommonRotator
-// 0x0078 (0x0880 - 0x0808)
+// 0x0040 (0x08C8 - 0x0888)
 class UCommonRotator : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x48];                                      // 0x0808(0x0048) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnRotated;                                                // 0x0850(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UCommonTextBlock*                            MyText;                                                   // 0x0860(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x18];                                      // 0x0868(0x0018) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0888(0x0010) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnRotated;                                                // 0x0898(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	class UCommonTextBlock*                            MyText;                                                   // 0x08A8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x18];                                      // 0x08B0(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -852,21 +747,21 @@ public:
 
 
 // Class CommonUI.CommonTabListWidget
-// 0x00C8 (0x02E0 - 0x0218)
+// 0x00C8 (0x02D8 - 0x0210)
 class UCommonTabListWidget : public UCommonUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnTabSelected;                                            // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnTabButtonCreated;                                       // 0x0228(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnTabButtonRemoved;                                       // 0x0238(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FDataTableRowHandle                         NextTabInputActionData;                                   // 0x0248(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FDataTableRowHandle                         PreviousTabInputActionData;                               // 0x0258(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	bool                                               bAutoListenForInput;                                      // 0x0268(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0269(0x0007) MISSED OFFSET
-	class UCommonWidgetSwitcher*                       LinkedSwitcher;                                           // 0x0270(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TMap<struct FName, struct FCommonRegisteredTabInfo> RegisteredTabsByID;                                       // 0x0278(0x0050) (ZeroConstructor)
-	class UCommonButtonGroup*                          TabButtonGroup;                                           // 0x02C8(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x10];                                      // 0x02D0(0x0010) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnTabSelected;                                            // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnTabButtonCreated;                                       // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnTabButtonRemoved;                                       // 0x0230(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FDataTableRowHandle                         NextTabInputActionData;                                   // 0x0240(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         PreviousTabInputActionData;                               // 0x0250(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	bool                                               bAutoListenForInput;                                      // 0x0260(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0261(0x0007) MISSED OFFSET
+	class UCommonWidgetSwitcher*                       LinkedSwitcher;                                           // 0x0268(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TMap<struct FName, struct FCommonRegisteredTabInfo> RegisteredTabsByID;                                       // 0x0270(0x0050) (ZeroConstructor)
+	class UCommonButtonGroup*                          TabButtonGroup;                                           // 0x02C0(0x0008) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x10];                                      // 0x02C8(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -956,11 +851,10 @@ public:
 
 
 // Class CommonUI.CommonTileView
-// 0x0010 (0x02F0 - 0x02E0)
-class UCommonTileView : public UCommonListView
+// 0x0000 (0x0348 - 0x0348)
+class UCommonTileView : public UTileView
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x02E0(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -968,19 +862,14 @@ public:
 		return ptr;
 	}
 
-
-	void SetItemWidth(float NewWidth);
 };
 
 
 // Class CommonUI.CommonTreeView
-// 0x0020 (0x0300 - 0x02E0)
-class UCommonTreeView : public UCommonListView
+// 0x0000 (0x0380 - 0x0380)
+class UCommonTreeView : public UTreeView
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x02E0(0x0008) MISSED OFFSET
-	bool                                               bAllowInvisibleItemSelection;                             // 0x02E8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x17];                                      // 0x02E9(0x0017) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -988,26 +877,19 @@ public:
 		return ptr;
 	}
 
-
-	void SetSelection(class UObject* InItem, bool bScrollFromTop);
-	void SetItemExpansion(class UObject* Item, bool InShouldExpandItem);
-	void SetAllExpansion(bool InShouldExpandItem);
-	void RequestRefresh();
-	void DynamicHandleItemClickedCommonButton(class UCommonButton* Button);
 };
 
 
 // Class CommonUI.CommonUIContext
-// 0x00B8 (0x00E0 - 0x0028)
+// 0x0050 (0x0078 - 0x0028)
 class UCommonUIContext : public UBlueprintContextBase
 {
 public:
 	struct FScriptMulticastDelegate                    OnInputMethodChanged;                                     // 0x0028(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData00[0x78];                                      // 0x0038(0x0078) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnInputSuspensionChanged;                                 // 0x00B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData01[0x10];                                      // 0x00C0(0x0010) MISSED OFFSET
-	class UCommonInputManager*                         CommonInputManager;                                       // 0x00D0(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x8];                                       // 0x00D8(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0038(0x0018) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnInputSuspensionChanged;                                 // 0x0050(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData01[0x10];                                      // 0x0060(0x0010) MISSED OFFSET
+	class UCommonInputManager*                         CommonInputManager;                                       // 0x0070(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -1016,8 +898,6 @@ public:
 	}
 
 
-	bool IsUsingTouch();
-	bool IsUsingGamepad();
 	void InputSuspensionChanged__DelegateSignature(bool bInputSuspended);
 	void InputMethodChangedDelegate__DelegateSignature(bool bUsingGamepad);
 	class UCommonInputManager* GetInputManager();
@@ -1079,9 +959,10 @@ public:
 	bool                                               bShowForXBox;                                             // 0x0286(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
 	bool                                               bShowForIOS;                                              // 0x0287(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
 	bool                                               bShowForAndroid;                                          // 0x0288(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	ESlateVisibility                                   VisibleType;                                              // 0x0289(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	ESlateVisibility                                   HiddenType;                                               // 0x028A(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x5];                                       // 0x028B(0x0005) MISSED OFFSET
+	bool                                               bShowForErebus;                                           // 0x0289(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	ESlateVisibility                                   VisibleType;                                              // 0x028A(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	ESlateVisibility                                   HiddenType;                                               // 0x028B(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x028C(0x0004) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1170,7 +1051,7 @@ public:
 
 
 	void PushWidget(class UWidget* InWidget);
-	class UWidget* PopWigdet();
+	class UWidget* PopWidget();
 	void DeactivateWidget();
 	void ActivateWidget();
 };

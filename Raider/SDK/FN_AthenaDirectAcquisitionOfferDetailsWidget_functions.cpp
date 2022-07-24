@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,175 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdateCamera
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UAthenaDirectAcquisitionOfferDetailsWidget_C::UpdateCamera()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdateCamera");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_UpdateCamera_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdatePreviewButton
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UAthenaDirectAcquisitionOfferDetailsWidget_C::UpdatePreviewButton()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdatePreviewButton");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_UpdatePreviewButton_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdateViewedItem
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UFortItem*               ViewedItem                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaDirectAcquisitionOfferDetailsWidget_C::UpdateViewedItem(class UFortItem* ViewedItem)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdateViewedItem");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_UpdateViewedItem_Params params;
+	params.ViewedItem = ViewedItem;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.FixupBackpack
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UFortAccountItemDefinition* ItemDef                        (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// TArray<class UFortAccountItemDefinition*> AllItemDefs                    (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
+// class UAthenaSeasonReward_C*   RewardWidget                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void UAthenaDirectAcquisitionOfferDetailsWidget_C::FixupBackpack(class UFortAccountItemDefinition* ItemDef, class UAthenaSeasonReward_C* RewardWidget, TArray<class UFortAccountItemDefinition*>* AllItemDefs)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.FixupBackpack");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_FixupBackpack_Params params;
+	params.ItemDef = ItemDef;
+	params.RewardWidget = RewardWidget;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (AllItemDefs != nullptr)
+		*AllItemDefs = params.AllItemDefs;
+}
+
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.DeclinePurchase
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UAthenaDirectAcquisitionOfferDetailsWidget_C::DeclinePurchase()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.DeclinePurchase");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_DeclinePurchase_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.ExecutePurchase
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UAthenaDirectAcquisitionOfferDetailsWidget_C::ExecutePurchase()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.ExecutePurchase");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_ExecutePurchase_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdateCatalogOfferName
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+
+void UAthenaDirectAcquisitionOfferDetailsWidget_C::UpdateCatalogOfferName()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdateCatalogOfferName");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_UpdateCatalogOfferName_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdateItemList
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+
+void UAthenaDirectAcquisitionOfferDetailsWidget_C::UpdateItemList()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdateItemList");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_UpdateItemList_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.GetWidgetForFramingViewedItem
+// (Event, Protected, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UWidget*                 ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+
+class UWidget* UAthenaDirectAcquisitionOfferDetailsWidget_C::GetWidgetForFramingViewedItem()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.GetWidgetForFramingViewedItem");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_GetWidgetForFramingViewedItem_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
 
 // Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.SetupSaleInfo
 // (Public, BlueprintCallable, BlueprintEvent)
@@ -60,7 +229,7 @@ void UAthenaDirectAcquisitionOfferDetailsWidget_C::UpdateSaleStatus()
 
 
 // Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdatePurchaseQuantity
-// (Public, BlueprintCallable, BlueprintEvent)
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
 
 void UAthenaDirectAcquisitionOfferDetailsWidget_C::UpdatePurchaseQuantity()
 {
@@ -494,43 +663,6 @@ void UAthenaDirectAcquisitionOfferDetailsWidget_C::BndEvt__GiftButton_K2Node_Com
 }
 
 
-// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.OnCancelGifting
-// (Event, Public, BlueprintEvent)
-
-void UAthenaDirectAcquisitionOfferDetailsWidget_C::OnCancelGifting()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.OnCancelGifting");
-
-	UAthenaDirectAcquisitionOfferDetailsWidget_C_OnCancelGifting_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.OnGiftButtonClicked
-// (BlueprintCallable, BlueprintEvent)
-// Parameters:
-// class UCommonButton*           Button                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-
-void UAthenaDirectAcquisitionOfferDetailsWidget_C::OnGiftButtonClicked(class UCommonButton* Button)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.OnGiftButtonClicked");
-
-	UAthenaDirectAcquisitionOfferDetailsWidget_C_OnGiftButtonClicked_Params params;
-	params.Button = Button;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.BndEvt__PanelButton_K2Node_ComponentBoundEvent_39_CommonButtonClicked__DelegateSignature
 // (BlueprintEvent)
 // Parameters:
@@ -576,6 +708,114 @@ void UAthenaDirectAcquisitionOfferDetailsWidget_C::BndEvt__SwipePanel_K2Node_Com
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.BndEvt__SwipePanel_K2Node_ComponentBoundEvent_29_OnFortSwipeEvent__DelegateSignature");
 
 	UAthenaDirectAcquisitionOfferDetailsWidget_C_BndEvt__SwipePanel_K2Node_ComponentBoundEvent_29_OnFortSwipeEvent__DelegateSignature_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.OnBeginIntro
+// (Event, Public, BlueprintEvent)
+
+void UAthenaDirectAcquisitionOfferDetailsWidget_C::OnBeginIntro()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.OnBeginIntro");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_OnBeginIntro_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.HandleVaultViewItem
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UFortItem*               Item                           (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaDirectAcquisitionOfferDetailsWidget_C::HandleVaultViewItem(class UFortItem* Item)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.HandleVaultViewItem");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_HandleVaultViewItem_Params params;
+	params.Item = Item;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdateCenterandBinding
+// (BlueprintCallable, BlueprintEvent)
+
+void UAthenaDirectAcquisitionOfferDetailsWidget_C::UpdateCenterandBinding()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdateCenterandBinding");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_UpdateCenterandBinding_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.BndEvt__PreviewStylesButton_K2Node_ComponentBoundEvent_1_CommonButtonClicked__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// class UCommonButton*           Button                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void UAthenaDirectAcquisitionOfferDetailsWidget_C::BndEvt__PreviewStylesButton_K2Node_ComponentBoundEvent_1_CommonButtonClicked__DelegateSignature(class UCommonButton* Button)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.BndEvt__PreviewStylesButton_K2Node_ComponentBoundEvent_1_CommonButtonClicked__DelegateSignature");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_BndEvt__PreviewStylesButton_K2Node_ComponentBoundEvent_1_CommonButtonClicked__DelegateSignature_Params params;
+	params.Button = Button;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.OnDeactivated
+// (Event, Protected, BlueprintEvent)
+
+void UAthenaDirectAcquisitionOfferDetailsWidget_C::OnDeactivated()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.OnDeactivated");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_OnDeactivated_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdateItemViewModeBP
+// (Event, Protected, BlueprintEvent)
+
+void UAthenaDirectAcquisitionOfferDetailsWidget_C::UpdateItemViewModeBP()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionOfferDetailsWidget.AthenaDirectAcquisitionOfferDetailsWidget_C.UpdateItemViewModeBP");
+
+	UAthenaDirectAcquisitionOfferDetailsWidget_C_UpdateItemViewModeBP_Params params;
 
 	auto flags = fn->FunctionFlags;
 

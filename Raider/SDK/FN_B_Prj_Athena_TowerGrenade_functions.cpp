@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,45 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function B_Prj_Athena_TowerGrenade.B_Prj_Athena_TowerGrenade_C.CalculateCardinalDirection
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+
+void AB_Prj_Athena_TowerGrenade_C::CalculateCardinalDirection()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_TowerGrenade.B_Prj_Athena_TowerGrenade_C.CalculateCardinalDirection");
+
+	AB_Prj_Athena_TowerGrenade_C_CalculateCardinalDirection_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Prj_Athena_TowerGrenade.B_Prj_Athena_TowerGrenade_C.HandleProps
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// TArray<class AActor*>          Array                          (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
+
+void AB_Prj_Athena_TowerGrenade_C::HandleProps(TArray<class AActor*>* Array)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_TowerGrenade.B_Prj_Athena_TowerGrenade_C.HandleProps");
+
+	AB_Prj_Athena_TowerGrenade_C_HandleProps_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (Array != nullptr)
+		*Array = params.Array;
+}
+
 
 // Function B_Prj_Athena_TowerGrenade.B_Prj_Athena_TowerGrenade_C.SpawnTires
 // (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
@@ -39,13 +78,15 @@ void AB_Prj_Athena_TowerGrenade_C::SpawnTires(const struct FVector& ReferenceLoc
 // TArray<class UClass*>          BGAClassArray                  (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
 // TArray<struct FVector>         BGALocationArray               (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
 // TArray<struct FRotator>        BGARotationArray               (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
+// bool                           DestroyFloorsQuickly           (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void AB_Prj_Athena_TowerGrenade_C::ClearAndBuild(TArray<class UClass*> BGAClassArray, TArray<struct FVector>* ClearedGridCells, TArray<struct FVector>* BGALocationArray, TArray<struct FRotator>* BGARotationArray)
+void AB_Prj_Athena_TowerGrenade_C::ClearAndBuild(TArray<class UClass*> BGAClassArray, bool DestroyFloorsQuickly, TArray<struct FVector>* ClearedGridCells, TArray<struct FVector>* BGALocationArray, TArray<struct FRotator>* BGARotationArray)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_TowerGrenade.B_Prj_Athena_TowerGrenade_C.ClearAndBuild");
 
 	AB_Prj_Athena_TowerGrenade_C_ClearAndBuild_Params params;
 	params.BGAClassArray = BGAClassArray;
+	params.DestroyFloorsQuickly = DestroyFloorsQuickly;
 
 	auto flags = fn->FunctionFlags;
 
@@ -66,13 +107,15 @@ void AB_Prj_Athena_TowerGrenade_C::ClearAndBuild(TArray<class UClass*> BGAClassA
 // (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // struct FVector                 CellLocation                   (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
+// bool                           DestroyFloorsQuickly           (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void AB_Prj_Athena_TowerGrenade_C::DestroyActorsInGridCell(const struct FVector& CellLocation)
+void AB_Prj_Athena_TowerGrenade_C::DestroyActorsInGridCell(const struct FVector& CellLocation, bool DestroyFloorsQuickly)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_TowerGrenade.B_Prj_Athena_TowerGrenade_C.DestroyActorsInGridCell");
 
 	AB_Prj_Athena_TowerGrenade_C_DestroyActorsInGridCell_Params params;
 	params.CellLocation = CellLocation;
+	params.DestroyFloorsQuickly = DestroyFloorsQuickly;
 
 	auto flags = fn->FunctionFlags;
 

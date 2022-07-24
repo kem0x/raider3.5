@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -72,13 +72,13 @@ struct UQuestsCountIconTabButton_C_SetTabLabelInfo_Params
 	struct FFortTabButtonLabelInfo                     TabLabelInfo;                                             // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
 };
 
-// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnSelected
-struct UQuestsCountIconTabButton_C_OnSelected_Params
+// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnSelected
+struct UQuestsCountIconTabButton_C_BP_OnSelected_Params
 {
 };
 
-// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnDeselected
-struct UQuestsCountIconTabButton_C_OnDeselected_Params
+// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnDeselected
+struct UQuestsCountIconTabButton_C_BP_OnDeselected_Params
 {
 };
 
@@ -87,13 +87,13 @@ struct UQuestsCountIconTabButton_C_Construct_Params
 {
 };
 
-// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnHovered
-struct UQuestsCountIconTabButton_C_OnHovered_Params
+// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnHovered
+struct UQuestsCountIconTabButton_C_BP_OnHovered_Params
 {
 };
 
-// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnUnhovered
-struct UQuestsCountIconTabButton_C_OnUnhovered_Params
+// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnUnhovered
+struct UQuestsCountIconTabButton_C_BP_OnUnhovered_Params
 {
 };
 
@@ -102,13 +102,13 @@ struct UQuestsCountIconTabButton_C_Handle_Quest_Count_Updated_Params
 {
 };
 
-// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnEnabled
-struct UQuestsCountIconTabButton_C_OnEnabled_Params
+// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnEnabled
+struct UQuestsCountIconTabButton_C_BP_OnEnabled_Params
 {
 };
 
-// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnDisabled
-struct UQuestsCountIconTabButton_C_OnDisabled_Params
+// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnDisabled
+struct UQuestsCountIconTabButton_C_BP_OnDisabled_Params
 {
 };
 

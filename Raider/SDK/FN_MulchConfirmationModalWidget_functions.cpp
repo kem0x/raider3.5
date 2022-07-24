@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -166,13 +166,15 @@ void UMulchConfirmationModalWidget_C::BndEvt__ConfirmButton_K2Node_ComponentBoun
 // (BlueprintEvent)
 // Parameters:
 // class UObject*                 Item                           (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           bIsHovered                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UMulchConfirmationModalWidget_C::BndEvt__RecycleItemTileView_K2Node_ComponentBoundEvent_21_OnListViewItemClicked__DelegateSignature(class UObject* Item)
+void UMulchConfirmationModalWidget_C::BndEvt__RecycleItemTileView_K2Node_ComponentBoundEvent_21_OnListViewItemClicked__DelegateSignature(class UObject* Item, bool bIsHovered)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function MulchConfirmationModalWidget.MulchConfirmationModalWidget_C.BndEvt__RecycleItemTileView_K2Node_ComponentBoundEvent_21_OnListViewItemClicked__DelegateSignature");
 
 	UMulchConfirmationModalWidget_C_BndEvt__RecycleItemTileView_K2Node_ComponentBoundEvent_21_OnListViewItemClicked__DelegateSignature_Params params;
 	params.Item = Item;
+	params.bIsHovered = bIsHovered;
 
 	auto flags = fn->FunctionFlags;
 

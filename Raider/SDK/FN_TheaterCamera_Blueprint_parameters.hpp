@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -14,6 +14,11 @@ namespace SDK
 //Parameters
 //---------------------------------------------------------------------------
 
+// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.ZoomCameraWithHeldGamepadInput
+struct ATheaterCamera_Blueprint_C_ZoomCameraWithHeldGamepadInput_Params
+{
+};
+
 // Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.SetSuspendInput
 struct ATheaterCamera_Blueprint_C_SetSuspendInput_Params
 {
@@ -26,8 +31,8 @@ struct ATheaterCamera_Blueprint_C_IsInputSuspended_Params
 	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 };
 
-// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.NewFunction_0_1
-struct ATheaterCamera_Blueprint_C_NewFunction_0_1_Params
+// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.NewFunction_1
+struct ATheaterCamera_Blueprint_C_NewFunction_1_Params
 {
 	class AActor*                                      self2;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	struct FVector2D                                   ReturnValue;                                              // (Parm, OutParm, ReturnParm, IsPlainOldData)
@@ -97,26 +102,14 @@ struct ATheaterCamera_Blueprint_C_DEBUGFOVA__UpdateFunc_Params
 {
 };
 
-// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_MouseScrollUp_K2Node_InputKeyEvent_3_4
-struct ATheaterCamera_Blueprint_C_InpActEvt_MouseScrollUp_K2Node_InputKeyEvent_3_4_Params
+// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_MouseScrollUp_K2Node_InputKeyEvent_2
+struct ATheaterCamera_Blueprint_C_InpActEvt_MouseScrollUp_K2Node_InputKeyEvent_2_Params
 {
 	struct FKey                                        Key;                                                      // (BlueprintVisible, BlueprintReadOnly, Parm)
 };
 
-// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_MouseScrollDown_K2Node_InputKeyEvent_2_3
-struct ATheaterCamera_Blueprint_C_InpActEvt_MouseScrollDown_K2Node_InputKeyEvent_2_3_Params
-{
-	struct FKey                                        Key;                                                      // (BlueprintVisible, BlueprintReadOnly, Parm)
-};
-
-// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_Gamepad_LeftTrigger_K2Node_InputKeyEvent_1_2
-struct ATheaterCamera_Blueprint_C_InpActEvt_Gamepad_LeftTrigger_K2Node_InputKeyEvent_1_2_Params
-{
-	struct FKey                                        Key;                                                      // (BlueprintVisible, BlueprintReadOnly, Parm)
-};
-
-// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_0_1
-struct ATheaterCamera_Blueprint_C_InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_0_1_Params
+// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_MouseScrollDown_K2Node_InputKeyEvent_1
+struct ATheaterCamera_Blueprint_C_InpActEvt_MouseScrollDown_K2Node_InputKeyEvent_1_Params
 {
 	struct FKey                                        Key;                                                      // (BlueprintVisible, BlueprintReadOnly, Parm)
 };

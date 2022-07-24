@@ -361,7 +361,7 @@ namespace UFunctionHooks
                 auto GameMode = static_cast<AFortGameModeAthena*>(GameState->AuthorityGameMode);
                 auto KillerPlayerState = static_cast<AFortPlayerStateAthena*>(Params->DeathReport.KillerPlayerState);
 
-                Spawners::SpawnActor<ABP_VictoryDrone_C>(DeadPC->Pawn->K2_GetActorLocation())->PlaySpawnOutAnim();
+                // Spawners::SpawnActor<ABP_VictoryDrone_C>(DeadPC->Pawn->K2_GetActorLocation())->PlaySpawnOutAnim();
 
                 FDeathInfo DeathData;
                 DeathData.bDBNO = false;
@@ -422,11 +422,11 @@ namespace UFunctionHooks
 
                         if (!Controller->bClientNotifiedOfWin)
                         {
-                            GameState->WinningPlayerName = Controller->PlayerState->GetPlayerName();
-                            GameState->OnRep_WinningPlayerName();
+                            // GameState->WinningPlayerName = Controller->PlayerState->GetPlayerName();
+                            // GameState->OnRep_WinningPlayerName();
 
-                            Controller->PlayWinEffects();
-                            Controller->ClientNotifyWon();
+                            // Controller->PlayWinEffects();
+                            // Controller->ClientNotifyWon();
 
                             Controller->ClientGameEnded(Winner, true);
                             GameMode->ReadyToEndMatch();
@@ -747,25 +747,25 @@ namespace UFunctionHooks
 
                 auto ClassRepNodePolicies = GetClassRepNodePolicies(HostBeacon->NetDriver->ReplicationDriver);
 
-                for (auto&& Pair : ClassRepNodePolicies)
-                {
-                    auto key = Pair.Key().ResolveObjectPtr();
-                    auto& value = Pair.Value();
+                // for (auto&& Pair : ClassRepNodePolicies)
+                // {
+                //     auto key = Pair.Key().ResolveObjectPtr();
+                //     auto& value = Pair.Value();
 
-                    LOG_INFO("ClassRepNodePolicies: {} - {}", key->GetName(), ClassRepNodeMappingToString(value));
+                //     LOG_INFO("ClassRepNodePolicies: {} - {}", key->GetName(), ClassRepNodeMappingToString(value));
 
-                    if (key == AFortInventory::StaticClass())
-                    {
-                        value = EClassRepNodeMapping::RelevantAllConnections;
-                        LOG_INFO("Found ClassRepNodePolicy for AFortInventory! {}", (int)value);
-                    }
+                //     if (key == AFortInventory::StaticClass())
+                //     {
+                //         value = EClassRepNodeMapping::RelevantAllConnections;
+                //         LOG_INFO("Found ClassRepNodePolicy for AFortInventory! {}", (int)value);
+                //     }
 
-                    if (key == AFortQuickBars::StaticClass())
-                    {
-                        value = EClassRepNodeMapping::RelevantAllConnections;
-                        LOG_INFO("Found ClassRepNodePolicy for AFortQuickBars! {}", (int)value);
-                    }
-                }
+                //     if (key == AFortQuickBars::StaticClass())
+                //     {
+                //         value = EClassRepNodeMapping::RelevantAllConnections;
+                //         LOG_INFO("Found ClassRepNodePolicy for AFortQuickBars! {}", (int)value);
+                //     }
+                // }
 
                 GetWorld()->NetDriver = HostBeacon->NetDriver;
                 GetWorld()->LevelCollections[0].NetDriver = HostBeacon->NetDriver;

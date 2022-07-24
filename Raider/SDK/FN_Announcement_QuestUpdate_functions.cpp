@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -32,17 +32,17 @@ void UAnnouncement_QuestUpdate_C::UpdateWidgetData(class AFortClientAnnouncement
 }
 
 
-// Function Announcement_QuestUpdate.Announcement_QuestUpdate_C.AllUpdatesFinished
-// (BlueprintCallable, BlueprintEvent)
+// Function Announcement_QuestUpdate.Announcement_QuestUpdate_C.AnnouncementStopped
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
 // Parameters:
-// class UQuestUpdateEntry_C*     UpdateWidget                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// class AFortClientAnnouncement** Announcement                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UAnnouncement_QuestUpdate_C::AllUpdatesFinished(class UQuestUpdateEntry_C* UpdateWidget)
+void UAnnouncement_QuestUpdate_C::AnnouncementStopped(class AFortClientAnnouncement** Announcement)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function Announcement_QuestUpdate.Announcement_QuestUpdate_C.AllUpdatesFinished");
+	static auto fn = UObject::FindObject<UFunction>("Function Announcement_QuestUpdate.Announcement_QuestUpdate_C.AnnouncementStopped");
 
-	UAnnouncement_QuestUpdate_C_AllUpdatesFinished_Params params;
-	params.UpdateWidget = UpdateWidget;
+	UAnnouncement_QuestUpdate_C_AnnouncementStopped_Params params;
+	params.Announcement = Announcement;
 
 	auto flags = fn->FunctionFlags;
 

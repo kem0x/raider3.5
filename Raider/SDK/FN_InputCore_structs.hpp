@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -33,6 +31,31 @@ enum class ETouchIndex : uint8_t
 };
 
 
+// Enum InputCore.EControllerHand
+enum class EControllerHand : uint8_t
+{
+	Left                           = 0,
+	Right                          = 1,
+	AnyHand                        = 2,
+	Pad                            = 3,
+	ExternalCamera                 = 4,
+	Gun                            = 5,
+	Special                        = 6,
+	Special01                      = 7,
+	Special02                      = 8,
+	Special03                      = 9,
+	Special04                      = 10,
+	Special05                      = 11,
+	Special06                      = 12,
+	Special07                      = 13,
+	Special08                      = 14,
+	Special09                      = 15,
+	Special10                      = 16,
+	ControllerHand_Count           = 17,
+	EControllerHand_MAX            = 18
+};
+
+
 // Enum InputCore.ETouchType
 enum class ETouchType : uint8_t
 {
@@ -52,30 +75,6 @@ enum class EConsoleForGamepadLabels : uint8_t
 	XBoxOne                        = 1,
 	PS4                            = 2,
 	EConsoleForGamepadLabels_MAX   = 3
-};
-
-
-// Enum InputCore.EControllerHand
-enum class EControllerHand : uint8_t
-{
-	Left                           = 0,
-	Right                          = 1,
-	AnyHand                        = 2,
-	Pad                            = 3,
-	ExternalCamera                 = 4,
-	Gun                            = 5,
-	Special_1                      = 6,
-	Special_2                      = 7,
-	Special_3                      = 8,
-	Special_4                      = 9,
-	Special_5                      = 10,
-	Special_6                      = 11,
-	Special_7                      = 12,
-	Special_8                      = 13,
-	Special_9                      = 14,
-	Special_10                     = 15,
-	Special_11                     = 16,
-	EControllerHand_MAX            = 17
 };
 
 

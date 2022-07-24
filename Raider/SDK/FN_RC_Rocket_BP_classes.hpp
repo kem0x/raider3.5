@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,14 +13,14 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // AnimBlueprintGeneratedClass RC_Rocket_BP.RC_Rocket_BP_C
-// 0x0148 (0x04C8 - 0x0380)
+// 0x0170 (0x04D0 - 0x0360)
 class URC_Rocket_BP_C : public UAnimInstance
 {
 public:
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0380(0x0008) (Transient, DuplicateTransient)
-	struct FAnimNode_Root                              AnimGraphNode_Root_08FAFFB0444865FC64D0C0BFEBA059B9;      // 0x0388(0x0048)
-	struct FAnimNode_SequencePlayer                    AnimGraphNode_SequencePlayer_956D7C7B47E114589BA5ADB878BAB261;// 0x03D0(0x0088)
-	struct FAnimNode_Slot                              AnimGraphNode_Slot_02FBD1D3400F785868D3B9AD8C664EA4;      // 0x0458(0x0070)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0360(0x0008) (Transient, DuplicateTransient)
+	struct FAnimNode_Root                              AnimGraphNode_Root_08FAFFB0444865FC64D0C0BFEBA059B9;      // 0x0368(0x0048)
+	struct FAnimNode_SequencePlayer                    AnimGraphNode_SequencePlayer_956D7C7B47E114589BA5ADB878BAB261;// 0x03B0(0x00B0)
+	struct FAnimNode_Slot                              AnimGraphNode_Slot_02FBD1D3400F785868D3B9AD8C664EA4;      // 0x0460(0x0070)
 
 	static UClass* StaticClass()
 	{

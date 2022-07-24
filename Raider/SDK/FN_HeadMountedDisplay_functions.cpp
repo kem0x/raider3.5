@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -751,36 +751,6 @@ bool UHeadMountedDisplayFunctionLibrary::STATIC_EnableHMD(bool bEnable)
 }
 
 
-// Function HeadMountedDisplay.HeadMountedDisplayFunctionLibrary.AddDeviceVisualizationComponent
-// (Final, Native, Static, Public, HasOutParms, HasDefaults, BlueprintCallable)
-// Parameters:
-// class AActor*                  Target                         (Parm, ZeroConstructor, IsPlainOldData)
-// struct FXRDeviceId             XRDeviceId                     (ConstParm, Parm, OutParm, ReferenceParm)
-// bool                           bManualAttachment              (Parm, ZeroConstructor, IsPlainOldData)
-// struct FTransform              RelativeTransform              (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
-// class UPrimitiveComponent*     ReturnValue                    (ExportObject, Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
-
-class UPrimitiveComponent* UHeadMountedDisplayFunctionLibrary::STATIC_AddDeviceVisualizationComponent(class AActor* Target, const struct FXRDeviceId& XRDeviceId, bool bManualAttachment, const struct FTransform& RelativeTransform)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function HeadMountedDisplay.HeadMountedDisplayFunctionLibrary.AddDeviceVisualizationComponent");
-
-	UHeadMountedDisplayFunctionLibrary_AddDeviceVisualizationComponent_Params params;
-	params.Target = Target;
-	params.XRDeviceId = XRDeviceId;
-	params.bManualAttachment = bManualAttachment;
-	params.RelativeTransform = RelativeTransform;
-
-	auto flags = fn->FunctionFlags;
-	fn->FunctionFlags |= 0x400;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-
-	return params.ReturnValue;
-}
-
-
 // Function HeadMountedDisplay.MotionControllerComponent.SetTrackingSource
 // (Final, Native, Public, BlueprintCallable)
 // Parameters:
@@ -1159,6 +1129,28 @@ int UMotionTrackedDeviceFunctionLibrary::STATIC_GetMaximumMotionTrackedControlle
 }
 
 
+// Function HeadMountedDisplay.MotionTrackedDeviceFunctionLibrary.GetActiveTrackingSystemName
+// (Final, Native, Static, Public, BlueprintCallable)
+// Parameters:
+// struct FName                   ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+struct FName UMotionTrackedDeviceFunctionLibrary::STATIC_GetActiveTrackingSystemName()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HeadMountedDisplay.MotionTrackedDeviceFunctionLibrary.GetActiveTrackingSystemName");
+
+	UMotionTrackedDeviceFunctionLibrary_GetActiveTrackingSystemName_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
 // Function HeadMountedDisplay.MotionTrackedDeviceFunctionLibrary.EnumerateMotionSources
 // (Final, Native, Static, Public, BlueprintCallable)
 // Parameters:
@@ -1360,6 +1352,138 @@ void UMotionTrackedDeviceFunctionLibrary::STATIC_DisableMotionTrackingForCompone
 	UObject::ProcessEvent(fn, &params);
 
 	fn->FunctionFlags = flags;
+}
+
+
+// Function HeadMountedDisplay.XRAssetFunctionLibrary.AddNamedDeviceVisualizationComponentBlocking
+// (Final, Native, Static, Public, HasOutParms, HasDefaults, BlueprintCallable)
+// Parameters:
+// class AActor*                  Target                         (Parm, ZeroConstructor, IsPlainOldData)
+// struct FName                   SystemName                     (ConstParm, Parm, ZeroConstructor, IsPlainOldData)
+// struct FName                   DeviceName                     (ConstParm, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           bManualAttachment              (Parm, ZeroConstructor, IsPlainOldData)
+// struct FTransform              RelativeTransform              (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
+// class UPrimitiveComponent*     ReturnValue                    (ExportObject, Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+
+class UPrimitiveComponent* UXRAssetFunctionLibrary::STATIC_AddNamedDeviceVisualizationComponentBlocking(class AActor* Target, const struct FName& SystemName, const struct FName& DeviceName, bool bManualAttachment, const struct FTransform& RelativeTransform)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HeadMountedDisplay.XRAssetFunctionLibrary.AddNamedDeviceVisualizationComponentBlocking");
+
+	UXRAssetFunctionLibrary_AddNamedDeviceVisualizationComponentBlocking_Params params;
+	params.Target = Target;
+	params.SystemName = SystemName;
+	params.DeviceName = DeviceName;
+	params.bManualAttachment = bManualAttachment;
+	params.RelativeTransform = RelativeTransform;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function HeadMountedDisplay.XRAssetFunctionLibrary.AddDeviceVisualizationComponentBlocking
+// (Final, Native, Static, Public, HasOutParms, HasDefaults, BlueprintCallable)
+// Parameters:
+// class AActor*                  Target                         (Parm, ZeroConstructor, IsPlainOldData)
+// struct FXRDeviceId             XRDeviceId                     (ConstParm, Parm, OutParm, ReferenceParm)
+// bool                           bManualAttachment              (Parm, ZeroConstructor, IsPlainOldData)
+// struct FTransform              RelativeTransform              (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
+// class UPrimitiveComponent*     ReturnValue                    (ExportObject, Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+
+class UPrimitiveComponent* UXRAssetFunctionLibrary::STATIC_AddDeviceVisualizationComponentBlocking(class AActor* Target, const struct FXRDeviceId& XRDeviceId, bool bManualAttachment, const struct FTransform& RelativeTransform)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HeadMountedDisplay.XRAssetFunctionLibrary.AddDeviceVisualizationComponentBlocking");
+
+	UXRAssetFunctionLibrary_AddDeviceVisualizationComponentBlocking_Params params;
+	params.Target = Target;
+	params.XRDeviceId = XRDeviceId;
+	params.bManualAttachment = bManualAttachment;
+	params.RelativeTransform = RelativeTransform;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function HeadMountedDisplay.AsyncTask_LoadXRDeviceVisComponent.AddNamedDeviceVisualizationComponentAsync
+// (Final, Native, Static, Public, HasOutParms, HasDefaults, BlueprintCallable)
+// Parameters:
+// class AActor*                  Target                         (Parm, ZeroConstructor, IsPlainOldData)
+// struct FName                   SystemName                     (ConstParm, Parm, ZeroConstructor, IsPlainOldData)
+// struct FName                   DeviceName                     (ConstParm, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           bManualAttachment              (Parm, ZeroConstructor, IsPlainOldData)
+// struct FTransform              RelativeTransform              (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
+// class UPrimitiveComponent*     NewComponent                   (Parm, OutParm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// class UAsyncTask_LoadXRDeviceVisComponent* ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+class UAsyncTask_LoadXRDeviceVisComponent* UAsyncTask_LoadXRDeviceVisComponent::STATIC_AddNamedDeviceVisualizationComponentAsync(class AActor* Target, const struct FName& SystemName, const struct FName& DeviceName, bool bManualAttachment, const struct FTransform& RelativeTransform, class UPrimitiveComponent** NewComponent)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HeadMountedDisplay.AsyncTask_LoadXRDeviceVisComponent.AddNamedDeviceVisualizationComponentAsync");
+
+	UAsyncTask_LoadXRDeviceVisComponent_AddNamedDeviceVisualizationComponentAsync_Params params;
+	params.Target = Target;
+	params.SystemName = SystemName;
+	params.DeviceName = DeviceName;
+	params.bManualAttachment = bManualAttachment;
+	params.RelativeTransform = RelativeTransform;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (NewComponent != nullptr)
+		*NewComponent = params.NewComponent;
+
+	return params.ReturnValue;
+}
+
+
+// Function HeadMountedDisplay.AsyncTask_LoadXRDeviceVisComponent.AddDeviceVisualizationComponentAsync
+// (Final, Native, Static, Public, HasOutParms, HasDefaults, BlueprintCallable)
+// Parameters:
+// class AActor*                  Target                         (Parm, ZeroConstructor, IsPlainOldData)
+// struct FXRDeviceId             XRDeviceId                     (ConstParm, Parm, OutParm, ReferenceParm)
+// bool                           bManualAttachment              (Parm, ZeroConstructor, IsPlainOldData)
+// struct FTransform              RelativeTransform              (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
+// class UPrimitiveComponent*     NewComponent                   (Parm, OutParm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// class UAsyncTask_LoadXRDeviceVisComponent* ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+class UAsyncTask_LoadXRDeviceVisComponent* UAsyncTask_LoadXRDeviceVisComponent::STATIC_AddDeviceVisualizationComponentAsync(class AActor* Target, const struct FXRDeviceId& XRDeviceId, bool bManualAttachment, const struct FTransform& RelativeTransform, class UPrimitiveComponent** NewComponent)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HeadMountedDisplay.AsyncTask_LoadXRDeviceVisComponent.AddDeviceVisualizationComponentAsync");
+
+	UAsyncTask_LoadXRDeviceVisComponent_AddDeviceVisualizationComponentAsync_Params params;
+	params.Target = Target;
+	params.XRDeviceId = XRDeviceId;
+	params.bManualAttachment = bManualAttachment;
+	params.RelativeTransform = RelativeTransform;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (NewComponent != nullptr)
+		*NewComponent = params.NewComponent;
+
+	return params.ReturnValue;
 }
 
 

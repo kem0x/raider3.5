@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,11 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function CheckFrontEndRewardsAction.CheckFrontEndRewardsAction_C.PopulateItemCacheRewards
+struct ACheckFrontEndRewardsAction_C_PopulateItemCacheRewards_Params
+{
+};
 
 // Function CheckFrontEndRewardsAction.CheckFrontEndRewardsAction_C.PopulateNewGiftBoxes
 struct ACheckFrontEndRewardsAction_C_PopulateNewGiftBoxes_Params

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -37,8 +37,8 @@ struct UKeybindWidget_C_Get_Brush_Size_Params
 	TEnumAsByte<EFortBrushSize>                        Brush_Size;                                               // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function KeybindWidget.KeybindWidget_C.Construct
-struct UKeybindWidget_C_Construct_Params
+// Function KeybindWidget.KeybindWidget_C.UpdateFrameSize
+struct UKeybindWidget_C_UpdateFrameSize_Params
 {
 };
 
@@ -47,20 +47,20 @@ struct UKeybindWidget_C_Update_Params
 {
 };
 
+// Function KeybindWidget.KeybindWidget_C.Destruct
+struct UKeybindWidget_C_Destruct_Params
+{
+};
+
+// Function KeybindWidget.KeybindWidget_C.Construct
+struct UKeybindWidget_C_Construct_Params
+{
+};
+
 // Function KeybindWidget.KeybindWidget_C.PreConstruct
 struct UKeybindWidget_C_PreConstruct_Params
 {
 	bool*                                              IsDesignTime;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function KeybindWidget.KeybindWidget_C.UpdateFrameSize
-struct UKeybindWidget_C_UpdateFrameSize_Params
-{
-};
-
-// Function KeybindWidget.KeybindWidget_C.Destruct
-struct UKeybindWidget_C_Destruct_Params
-{
 };
 
 // Function KeybindWidget.KeybindWidget_C.ExecuteUbergraph_KeybindWidget

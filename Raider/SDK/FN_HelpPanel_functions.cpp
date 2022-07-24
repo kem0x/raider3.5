@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,43 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function HelpPanel.HelpPanel_C.Setup Header
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UHelpPanel_C::Setup_Header()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HelpPanel.HelpPanel_C.Setup Header");
+
+	UHelpPanel_C_Setup_Header_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function HelpPanel.HelpPanel_C.SetSelectedItemByID
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// struct FName                   SelectedItemID                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UHelpPanel_C::SetSelectedItemByID(const struct FName& SelectedItemID)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HelpPanel.HelpPanel_C.SetSelectedItemByID");
+
+	UHelpPanel_C_SetSelectedItemByID_Params params;
+	params.SelectedItemID = SelectedItemID;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function HelpPanel.HelpPanel_C.UnbindDelegates
 // (Public, BlueprintCallable, BlueprintEvent)

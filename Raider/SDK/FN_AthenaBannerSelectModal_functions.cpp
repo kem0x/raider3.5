@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,31 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function AthenaBannerSelectModal.AthenaBannerSelectModal_C.On_BorderTouch_MouseButtonDown_1
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// struct FGeometry               MyGeometry                     (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
+// struct FPointerEvent           MouseEvent                     (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+// struct FEventReply             ReturnValue                    (Parm, OutParm, ReturnParm)
+
+struct FEventReply UAthenaBannerSelectModal_C::On_BorderTouch_MouseButtonDown_1(const struct FGeometry& MyGeometry, const struct FPointerEvent& MouseEvent)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaBannerSelectModal.AthenaBannerSelectModal_C.On_BorderTouch_MouseButtonDown_1");
+
+	UAthenaBannerSelectModal_C_On_BorderTouch_MouseButtonDown_1_Params params;
+	params.MyGeometry = MyGeometry;
+	params.MouseEvent = MouseEvent;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
 
 // Function AthenaBannerSelectModal.AthenaBannerSelectModal_C.HandleNextAction
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
@@ -176,6 +201,23 @@ void UAthenaBannerSelectModal_C::OnActivated()
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaBannerSelectModal.AthenaBannerSelectModal_C.OnActivated");
 
 	UAthenaBannerSelectModal_C_OnActivated_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaBannerSelectModal.AthenaBannerSelectModal_C.Close
+// (BlueprintCallable, BlueprintEvent)
+
+void UAthenaBannerSelectModal_C::Close()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaBannerSelectModal.AthenaBannerSelectModal_C.Close");
+
+	UAthenaBannerSelectModal_C_Close_Params params;
 
 	auto flags = fn->FunctionFlags;
 

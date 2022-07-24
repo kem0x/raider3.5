@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,57 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function HeroSquadSlotsView.HeroSquadSlotsView_C.Bonus
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UHeroSquadSlotsView_C::Bonus()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HeroSquadSlotsView.HeroSquadSlotsView_C.Bonus");
+
+	UHeroSquadSlotsView_C_Bonus_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function HeroSquadSlotsView.HeroSquadSlotsView_C.Defenders
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UHeroSquadSlotsView_C::Defenders()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HeroSquadSlotsView.HeroSquadSlotsView_C.Defenders");
+
+	UHeroSquadSlotsView_C_Defenders_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function HeroSquadSlotsView.HeroSquadSlotsView_C.Primary
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UHeroSquadSlotsView_C::Primary()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HeroSquadSlotsView.HeroSquadSlotsView_C.Primary");
+
+	UHeroSquadSlotsView_C_Primary_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function HeroSquadSlotsView.HeroSquadSlotsView_C.UndarkenAllSlots
 // (Public, BlueprintCallable, BlueprintEvent)

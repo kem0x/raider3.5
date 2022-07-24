@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -72,6 +70,17 @@ enum class EDragPivot : uint8_t
 	BottomCenter                   = 8,
 	BottomRight                    = 9,
 	EDragPivot_MAX                 = 10
+};
+
+
+// Enum UMG.EDynamicBoxType
+enum class EDynamicBoxType : uint8_t
+{
+	Horizontal                     = 0,
+	Vertical                       = 1,
+	Wrap                           = 2,
+	Overlay                        = 3,
+	EDynamicBoxType_MAX            = 4
 };
 
 
@@ -190,15 +199,13 @@ struct FPaintContext
 };
 
 // ScriptStruct UMG.ShapedTextOptions
-// 0x0008
+// 0x0003
 struct FShapedTextOptions
 {
 	unsigned char                                      bOverride_TextShapingMethod : 1;                          // 0x0000(0x0001) (Edit)
 	unsigned char                                      bOverride_TextFlowDirection : 1;                          // 0x0000(0x0001) (Edit)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0001(0x0003) MISSED OFFSET
-	ETextShapingMethod                                 TextShapingMethod;                                        // 0x0004(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	ETextFlowDirection                                 TextFlowDirection;                                        // 0x0005(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x2];                                       // 0x0006(0x0002) MISSED OFFSET
+	ETextShapingMethod                                 TextShapingMethod;                                        // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	ETextFlowDirection                                 TextFlowDirection;                                        // 0x0002(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct UMG.PropertyPathSegment
@@ -286,27 +293,27 @@ struct FWidgetNavigationData
 };
 
 // ScriptStruct UMG.MovieScene2DTransformSectionTemplate
-// 0x0318 (0x0360 - 0x0048)
+// 0x03F8 (0x0440 - 0x0048)
 struct FMovieScene2DTransformSectionTemplate : public FMovieScenePropertySectionTemplate
 {
-	struct FRichCurve                                  Translation[0x2];                                         // 0x0048(0x0070)
-	struct FRichCurve                                  Rotation;                                                 // 0x0128(0x0070)
-	struct FRichCurve                                  Scale[0x2];                                               // 0x0198(0x0070)
-	struct FRichCurve                                  Shear[0x2];                                               // 0x0278(0x0070)
-	EMovieSceneBlendType                               BlendType;                                                // 0x0358(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0359(0x0007) MISSED OFFSET
+	struct FMovieSceneFloatChannel                     Translation[0x2];                                         // 0x0048(0x0090)
+	struct FMovieSceneFloatChannel                     Rotation;                                                 // 0x0168(0x0090)
+	struct FMovieSceneFloatChannel                     Scale[0x2];                                               // 0x01F8(0x0090)
+	struct FMovieSceneFloatChannel                     Shear[0x2];                                               // 0x0318(0x0090)
+	EMovieSceneBlendType                               BlendType;                                                // 0x0438(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0439(0x0007) MISSED OFFSET
 };
 
 // ScriptStruct UMG.MovieSceneMarginSectionTemplate
-// 0x01C8 (0x0210 - 0x0048)
+// 0x0248 (0x0290 - 0x0048)
 struct FMovieSceneMarginSectionTemplate : public FMovieScenePropertySectionTemplate
 {
-	struct FRichCurve                                  TopCurve;                                                 // 0x0048(0x0070)
-	struct FRichCurve                                  LeftCurve;                                                // 0x00B8(0x0070)
-	struct FRichCurve                                  RightCurve;                                               // 0x0128(0x0070)
-	struct FRichCurve                                  BottomCurve;                                              // 0x0198(0x0070)
-	EMovieSceneBlendType                               BlendType;                                                // 0x0208(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0209(0x0007) MISSED OFFSET
+	struct FMovieSceneFloatChannel                     TopCurve;                                                 // 0x0048(0x0090)
+	struct FMovieSceneFloatChannel                     LeftCurve;                                                // 0x00D8(0x0090)
+	struct FMovieSceneFloatChannel                     RightCurve;                                               // 0x0168(0x0090)
+	struct FMovieSceneFloatChannel                     BottomCurve;                                              // 0x01F8(0x0090)
+	EMovieSceneBlendType                               BlendType;                                                // 0x0288(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0289(0x0007) MISSED OFFSET
 };
 
 // ScriptStruct UMG.MovieSceneWidgetMaterialSectionTemplate

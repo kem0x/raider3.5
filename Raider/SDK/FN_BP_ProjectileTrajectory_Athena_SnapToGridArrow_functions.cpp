@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,16 +12,16 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function BP_ProjectileTrajectory_Athena_SnapToGridArrow.BP_ProjectileTrajectory_Athena_SnapToGridArrow_C.HandleGridSnapSound
-// (Public, BlueprintCallable, BlueprintEvent)
+// Function BP_ProjectileTrajectory_Athena_SnapToGridArrow.BP_ProjectileTrajectory_Athena_SnapToGridArrow_C.HandleGridSnapUpdates
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // struct FVector                 NewLocation                    (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
 
-void ABP_ProjectileTrajectory_Athena_SnapToGridArrow_C::HandleGridSnapSound(const struct FVector& NewLocation)
+void ABP_ProjectileTrajectory_Athena_SnapToGridArrow_C::HandleGridSnapUpdates(const struct FVector& NewLocation)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_ProjectileTrajectory_Athena_SnapToGridArrow.BP_ProjectileTrajectory_Athena_SnapToGridArrow_C.HandleGridSnapSound");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_ProjectileTrajectory_Athena_SnapToGridArrow.BP_ProjectileTrajectory_Athena_SnapToGridArrow_C.HandleGridSnapUpdates");
 
-	ABP_ProjectileTrajectory_Athena_SnapToGridArrow_C_HandleGridSnapSound_Params params;
+	ABP_ProjectileTrajectory_Athena_SnapToGridArrow_C_HandleGridSnapUpdates_Params params;
 	params.NewLocation = NewLocation;
 
 	auto flags = fn->FunctionFlags;

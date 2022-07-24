@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,19 +13,19 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass ProjectileHuskLobber.ProjectileHuskLobber_C
-// 0x00C9 (0x08E9 - 0x0820)
+// 0x00C9 (0x0791 - 0x06C8)
 class AProjectileHuskLobber_C : public AFortProjectileBase
 {
 public:
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0820(0x0008) (Transient, DuplicateTransient)
-	class UAudioComponent*                             LobberProjLoopingSound;                                   // 0x0828(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UParticleSystemComponent*                    ProjectileParticleSystem;                                 // 0x0830(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UParticleSystem*                             Effect_Explosion;                                         // 0x0838(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	struct FVector                                     Pushed_Off_Location;                                      // 0x0840(0x000C) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x084C(0x0004) MISSED OFFSET
-	struct FScriptMulticastDelegate                    ProjectileShot;                                           // 0x0850(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, BlueprintAssignable)
-	struct FHitResult                                  HitResult;                                                // 0x0860(0x0088) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
-	bool                                               Exploded;                                                 // 0x08E8(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x06C8(0x0008) (Transient, DuplicateTransient)
+	class UAudioComponent*                             LobberProjLoopingSound;                                   // 0x06D0(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UParticleSystemComponent*                    ProjectileParticleSystem;                                 // 0x06D8(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UParticleSystem*                             Effect_Explosion;                                         // 0x06E0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FVector                                     Pushed_Off_Location;                                      // 0x06E8(0x000C) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x06F4(0x0004) MISSED OFFSET
+	struct FScriptMulticastDelegate                    ProjectileShot;                                           // 0x06F8(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, BlueprintAssignable)
+	struct FHitResult                                  HitResult;                                                // 0x0708(0x0088) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
+	bool                                               Exploded;                                                 // 0x0790(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{

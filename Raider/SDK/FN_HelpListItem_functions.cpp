@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -49,17 +49,17 @@ void UHelpListItem_C::InitializeItem()
 }
 
 
-// Function HelpListItem.HelpListItem_C.ExpansionChanged
+// Function HelpListItem.HelpListItem_C.OnListItemObjectSet
 // (Event, Protected, BlueprintEvent)
 // Parameters:
-// bool*                          bExpanded                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UObject**                ListItemObject                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UHelpListItem_C::ExpansionChanged(bool* bExpanded)
+void UHelpListItem_C::OnListItemObjectSet(class UObject** ListItemObject)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function HelpListItem.HelpListItem_C.ExpansionChanged");
+	static auto fn = UObject::FindObject<UFunction>("Function HelpListItem.HelpListItem_C.OnListItemObjectSet");
 
-	UHelpListItem_C_ExpansionChanged_Params params;
-	params.bExpanded = bExpanded;
+	UHelpListItem_C_OnListItemObjectSet_Params params;
+	params.ListItemObject = ListItemObject;
 
 	auto flags = fn->FunctionFlags;
 
@@ -69,31 +69,17 @@ void UHelpListItem_C::ExpansionChanged(bool* bExpanded)
 }
 
 
-// Function HelpListItem.HelpListItem_C.Construct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
-
-void UHelpListItem_C::Construct()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function HelpListItem.HelpListItem_C.Construct");
-
-	UHelpListItem_C_Construct_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function HelpListItem.HelpListItem_C.OnHelpItemSet
+// Function HelpListItem.HelpListItem_C.BP_OnItemExpansionChanged
 // (Event, Protected, BlueprintEvent)
+// Parameters:
+// bool*                          bIsExpanded                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UHelpListItem_C::OnHelpItemSet()
+void UHelpListItem_C::BP_OnItemExpansionChanged(bool* bIsExpanded)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function HelpListItem.HelpListItem_C.OnHelpItemSet");
+	static auto fn = UObject::FindObject<UFunction>("Function HelpListItem.HelpListItem_C.BP_OnItemExpansionChanged");
 
-	UHelpListItem_C_OnHelpItemSet_Params params;
+	UHelpListItem_C_BP_OnItemExpansionChanged_Params params;
+	params.bIsExpanded = bIsExpanded;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -141,14 +141,17 @@ void UStoreMain_Root_C::HandleBack(bool* Passthrough)
 }
 
 
-// Function StoreMain_Root.StoreMain_Root_C.AboutToEnterChat
+// Function StoreMain_Root.StoreMain_Root_C.HandleChatEntered
 // (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           Entered_Chat                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UStoreMain_Root_C::AboutToEnterChat()
+void UStoreMain_Root_C::HandleChatEntered(bool Entered_Chat)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function StoreMain_Root.StoreMain_Root_C.AboutToEnterChat");
+	static auto fn = UObject::FindObject<UFunction>("Function StoreMain_Root.StoreMain_Root_C.HandleChatEntered");
 
-	UStoreMain_Root_C_AboutToEnterChat_Params params;
+	UStoreMain_Root_C_HandleChatEntered_Params params;
+	params.Entered_Chat = Entered_Chat;
 
 	auto flags = fn->FunctionFlags;
 
@@ -234,6 +237,23 @@ void UStoreMain_Root_C::AddOffer(class UFortMtxStoreOfferBase* MtxOffer)
 }
 
 
+// Function StoreMain_Root.StoreMain_Root_C.NoOffersAvailable
+// (Event, Public, BlueprintEvent)
+
+void UStoreMain_Root_C::NoOffersAvailable()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function StoreMain_Root.StoreMain_Root_C.NoOffersAvailable");
+
+	UStoreMain_Root_C_NoOffersAvailable_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function StoreMain_Root.StoreMain_Root_C.OnMtxOfferGenerated
 // (Event, Public, BlueprintEvent)
 // Parameters:
@@ -262,40 +282,6 @@ void UStoreMain_Root_C::OnOffersGenerated()
 	static auto fn = UObject::FindObject<UFunction>("Function StoreMain_Root.StoreMain_Root_C.OnOffersGenerated");
 
 	UStoreMain_Root_C_OnOffersGenerated_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function StoreMain_Root.StoreMain_Root_C.OnActivated
-// (Event, Protected, BlueprintEvent)
-
-void UStoreMain_Root_C::OnActivated()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function StoreMain_Root.StoreMain_Root_C.OnActivated");
-
-	UStoreMain_Root_C_OnActivated_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function StoreMain_Root.StoreMain_Root_C.OnDeactivated
-// (Event, Protected, BlueprintEvent)
-
-void UStoreMain_Root_C::OnDeactivated()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function StoreMain_Root.StoreMain_Root_C.OnDeactivated");
-
-	UStoreMain_Root_C_OnDeactivated_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -356,14 +342,53 @@ void UStoreMain_Root_C::OnStartReadingOffers()
 }
 
 
-// Function StoreMain_Root.StoreMain_Root_C.NoOffersAvailable
+// Function StoreMain_Root.StoreMain_Root_C.OnBeginIntro
 // (Event, Public, BlueprintEvent)
 
-void UStoreMain_Root_C::NoOffersAvailable()
+void UStoreMain_Root_C::OnBeginIntro()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function StoreMain_Root.StoreMain_Root_C.NoOffersAvailable");
+	static auto fn = UObject::FindObject<UFunction>("Function StoreMain_Root.StoreMain_Root_C.OnBeginIntro");
 
-	UStoreMain_Root_C_NoOffersAvailable_Params params;
+	UStoreMain_Root_C_OnBeginIntro_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function StoreMain_Root.StoreMain_Root_C.OnBeginOutro
+// (Event, Public, BlueprintEvent)
+
+void UStoreMain_Root_C::OnBeginOutro()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function StoreMain_Root.StoreMain_Root_C.OnBeginOutro");
+
+	UStoreMain_Root_C_OnBeginOutro_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function StoreMain_Root.StoreMain_Root_C.OnUpdateOtherPlatformMTXMessage
+// (Event, Protected, HasOutParms, BlueprintEvent)
+// Parameters:
+// bool*                          HasOtherPlatformCurrency       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FText*                  CurrencyMessageLocText         (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+
+void UStoreMain_Root_C::OnUpdateOtherPlatformMTXMessage(bool* HasOtherPlatformCurrency, struct FText* CurrencyMessageLocText)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function StoreMain_Root.StoreMain_Root_C.OnUpdateOtherPlatformMTXMessage");
+
+	UStoreMain_Root_C_OnUpdateOtherPlatformMTXMessage_Params params;
+	params.HasOtherPlatformCurrency = HasOtherPlatformCurrency;
+	params.CurrencyMessageLocText = CurrencyMessageLocText;
 
 	auto flags = fn->FunctionFlags;
 
@@ -374,7 +399,7 @@ void UStoreMain_Root_C::NoOffersAvailable()
 
 
 // Function StoreMain_Root.StoreMain_Root_C.ExecuteUbergraph_StoreMain_Root
-// ()
+// (HasDefaults)
 // Parameters:
 // int                            EntryPoint                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 

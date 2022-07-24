@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -52,9 +52,9 @@ void UNews_C::Init()
 // Function News.News_C.PopulateEntries
 // (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
-// bool                           isEmpty                        (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+// bool                           IsEmpty                        (Parm, OutParm, ZeroConstructor, IsPlainOldData)
 
-void UNews_C::PopulateEntries(bool* isEmpty)
+void UNews_C::PopulateEntries(bool* IsEmpty)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function News.News_C.PopulateEntries");
 
@@ -66,8 +66,8 @@ void UNews_C::PopulateEntries(bool* isEmpty)
 
 	fn->FunctionFlags = flags;
 
-	if (isEmpty != nullptr)
-		*isEmpty = params.isEmpty;
+	if (IsEmpty != nullptr)
+		*IsEmpty = params.IsEmpty;
 }
 
 

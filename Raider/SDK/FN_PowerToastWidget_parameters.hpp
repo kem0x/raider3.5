@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -92,8 +92,8 @@ struct UPowerToastWidget_C_BndEvt__Outro_K2Node_ComponentBoundEvent_1_OnWidgetAn
 {
 };
 
-// Function PowerToastWidget.PowerToastWidget_C.OnTeamMemberFinishedSynchronizing_Event_0_1
-struct UPowerToastWidget_C_OnTeamMemberFinishedSynchronizing_Event_0_1_Params
+// Function PowerToastWidget.PowerToastWidget_C.OnTeamMemberFinishedSynchronizing_Event_1
+struct UPowerToastWidget_C_OnTeamMemberFinishedSynchronizing_Event_1_Params
 {
 	struct FUniqueNetIdRepl                            NewTeamMemberId;                                          // (BlueprintVisible, BlueprintReadOnly, Parm)
 };

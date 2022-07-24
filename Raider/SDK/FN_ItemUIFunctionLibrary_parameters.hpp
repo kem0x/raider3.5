@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,14 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function ItemUIFunctionLibrary.ItemUIFunctionLibrary_C.IsNullItem
+struct UItemUIFunctionLibrary_C_IsNullItem_Params
+{
+	class UObject*                                     ItemObject;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class UObject*                                     __WorldContext;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               Is_Null_Item;                                             // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function ItemUIFunctionLibrary.ItemUIFunctionLibrary_C.Truncate Integer Value
 struct UItemUIFunctionLibrary_C_Truncate_Integer_Value_Params

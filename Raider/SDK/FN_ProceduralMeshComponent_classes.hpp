@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -39,19 +37,19 @@ public:
 
 
 // Class ProceduralMeshComponent.ProceduralMeshComponent
-// 0x0060 (0x06E0 - 0x0680)
+// 0x0060 (0x05F0 - 0x0590)
 class UProceduralMeshComponent : public UMeshComponent
 {
 public:
-	bool                                               bUseComplexAsSimpleCollision;                             // 0x0680(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bUseAsyncCooking;                                         // 0x0681(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x6];                                       // 0x0682(0x0006) MISSED OFFSET
-	class UBodySetup*                                  ProcMeshBodySetup;                                        // 0x0688(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TArray<struct FProcMeshSection>                    ProcMeshSections;                                         // 0x0690(0x0010) (ZeroConstructor)
-	TArray<struct FKConvexElem>                        CollisionConvexElems;                                     // 0x06A0(0x0010) (ZeroConstructor)
-	struct FBoxSphereBounds                            LocalBounds;                                              // 0x06B0(0x001C) (IsPlainOldData)
-	unsigned char                                      UnknownData01[0x4];                                       // 0x06CC(0x0004) MISSED OFFSET
-	TArray<class UBodySetup*>                          AsyncBodySetupQueue;                                      // 0x06D0(0x0010) (ZeroConstructor, Transient)
+	bool                                               bUseComplexAsSimpleCollision;                             // 0x0590(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bUseAsyncCooking;                                         // 0x0591(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x6];                                       // 0x0592(0x0006) MISSED OFFSET
+	class UBodySetup*                                  ProcMeshBodySetup;                                        // 0x0598(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TArray<struct FProcMeshSection>                    ProcMeshSections;                                         // 0x05A0(0x0010) (ZeroConstructor)
+	TArray<struct FKConvexElem>                        CollisionConvexElems;                                     // 0x05B0(0x0010) (ZeroConstructor)
+	struct FBoxSphereBounds                            LocalBounds;                                              // 0x05C0(0x001C) (IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x05DC(0x0004) MISSED OFFSET
+	TArray<class UBodySetup*>                          AsyncBodySetupQueue;                                      // 0x05E0(0x0010) (ZeroConstructor, Transient)
 
 	static UClass* StaticClass()
 	{

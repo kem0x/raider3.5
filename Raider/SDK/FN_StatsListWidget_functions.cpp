@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,57 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function StatsListWidget.StatsListWidget_C.Trigger Initial Reset
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UStatsListWidget_C::Trigger_Initial_Reset()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function StatsListWidget.StatsListWidget_C.Trigger Initial Reset");
+
+	UStatsListWidget_C_Trigger_Initial_Reset_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function StatsListWidget.StatsListWidget_C.Trigger Update Anim
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+
+void UStatsListWidget_C::Trigger_Update_Anim()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function StatsListWidget.StatsListWidget_C.Trigger Update Anim");
+
+	UStatsListWidget_C_Trigger_Update_Anim_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function StatsListWidget.StatsListWidget_C.Update
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+
+void UStatsListWidget_C::Update()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function StatsListWidget.StatsListWidget_C.Update");
+
+	UStatsListWidget_C_Update_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function StatsListWidget.StatsListWidget_C.AdjustClampCount
 // (Public, HasDefaults, BlueprintCallable, BlueprintEvent)

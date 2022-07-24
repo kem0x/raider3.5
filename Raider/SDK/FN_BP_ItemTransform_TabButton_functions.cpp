@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,74 +12,20 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.Get FortPC
-// (Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure)
-// Parameters:
-// class AFortPlayerController*   FortPC                         (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.Refresh Bang State Internal
+// (Private, BlueprintCallable, BlueprintEvent)
 
-void UBP_ItemTransform_TabButton_C::Get_FortPC(class AFortPlayerController** FortPC)
+void UBP_ItemTransform_TabButton_C::Refresh_Bang_State_Internal()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.Get FortPC");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.Refresh Bang State Internal");
 
-	UBP_ItemTransform_TabButton_C_Get_FortPC_Params params;
+	UBP_ItemTransform_TabButton_C_Refresh_Bang_State_Internal_Params params;
 
 	auto flags = fn->FunctionFlags;
 
 	UObject::ProcessEvent(fn, &params);
 
 	fn->FunctionFlags = flags;
-
-	if (FortPC != nullptr)
-		*FortPC = params.FortPC;
-}
-
-
-// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.Get Item from Transform Seen State
-// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
-// Parameters:
-// class UFortAccountItem*        Transform_Key                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class UFortAccountItem*        Item                           (Parm, OutParm, ZeroConstructor, IsPlainOldData)
-
-void UBP_ItemTransform_TabButton_C::Get_Item_from_Transform_Seen_State(class UFortAccountItem* Transform_Key, class UFortAccountItem** Item)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.Get Item from Transform Seen State");
-
-	UBP_ItemTransform_TabButton_C_Get_Item_from_Transform_Seen_State_Params params;
-	params.Transform_Key = Transform_Key;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-
-	if (Item != nullptr)
-		*Item = params.Item;
-}
-
-
-// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.Calculate Unseen Keys
-// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
-// Parameters:
-// TArray<class UFortAccountItem*> Array                          (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
-// int                            NumUnseen                      (Parm, OutParm, ZeroConstructor, IsPlainOldData)
-
-void UBP_ItemTransform_TabButton_C::Calculate_Unseen_Keys(TArray<class UFortAccountItem*>* Array, int* NumUnseen)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.Calculate Unseen Keys");
-
-	UBP_ItemTransform_TabButton_C_Calculate_Unseen_Keys_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-
-	if (Array != nullptr)
-		*Array = params.Array;
-	if (NumUnseen != nullptr)
-		*NumUnseen = params.NumUnseen;
 }
 
 
@@ -125,7 +71,7 @@ void UBP_ItemTransform_TabButton_C::Set_Tab_Id(const struct FName& TabId)
 
 
 // Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.Refresh Bang State
-// (Public, BlueprintCallable, BlueprintEvent)
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
 
 void UBP_ItemTransform_TabButton_C::Refresh_Bang_State()
 {
@@ -255,14 +201,14 @@ void UBP_ItemTransform_TabButton_C::Construct()
 }
 
 
-// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.OnSelected
+// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void UBP_ItemTransform_TabButton_C::OnSelected()
+void UBP_ItemTransform_TabButton_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.BP_OnSelected");
 
-	UBP_ItemTransform_TabButton_C_OnSelected_Params params;
+	UBP_ItemTransform_TabButton_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -272,14 +218,14 @@ void UBP_ItemTransform_TabButton_C::OnSelected()
 }
 
 
-// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.OnDeselected
+// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.BP_OnDeselected
 // (Event, Protected, BlueprintEvent)
 
-void UBP_ItemTransform_TabButton_C::OnDeselected()
+void UBP_ItemTransform_TabButton_C::BP_OnDeselected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.OnDeselected");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.BP_OnDeselected");
 
-	UBP_ItemTransform_TabButton_C_OnDeselected_Params params;
+	UBP_ItemTransform_TabButton_C_BP_OnDeselected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -289,14 +235,14 @@ void UBP_ItemTransform_TabButton_C::OnDeselected()
 }
 
 
-// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.OnHovered
+// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UBP_ItemTransform_TabButton_C::OnHovered()
+void UBP_ItemTransform_TabButton_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.BP_OnHovered");
 
-	UBP_ItemTransform_TabButton_C_OnHovered_Params params;
+	UBP_ItemTransform_TabButton_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -306,14 +252,14 @@ void UBP_ItemTransform_TabButton_C::OnHovered()
 }
 
 
-// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.OnUnhovered
+// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.BP_OnUnhovered
 // (Event, Protected, BlueprintEvent)
 
-void UBP_ItemTransform_TabButton_C::OnUnhovered()
+void UBP_ItemTransform_TabButton_C::BP_OnUnhovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.OnUnhovered");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.BP_OnUnhovered");
 
-	UBP_ItemTransform_TabButton_C_OnUnhovered_Params params;
+	UBP_ItemTransform_TabButton_C_BP_OnUnhovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 

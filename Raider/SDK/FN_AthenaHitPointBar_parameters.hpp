@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -17,7 +17,7 @@ namespace SDK
 // Function AthenaHitPointBar.AthenaHitPointBar_C.SetSize
 struct UAthenaHitPointBar_C_SetSize_Params
 {
-	bool                                               useLargeSize;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               UseLargeSize;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function AthenaHitPointBar.AthenaHitPointBar_C.UpdateDBNOState

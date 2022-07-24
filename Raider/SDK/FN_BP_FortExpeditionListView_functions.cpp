@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -73,13 +73,15 @@ void UBP_FortExpeditionListView_C::BndEvt__ExpeditionListView_K2Node_ComponentBo
 // (BlueprintEvent)
 // Parameters:
 // class UObject*                 Item                           (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           bIsHovered                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UBP_FortExpeditionListView_C::BndEvt__ExpeditionListView_K2Node_ComponentBoundEvent_6_OnListViewItemClicked__DelegateSignature(class UObject* Item)
+void UBP_FortExpeditionListView_C::BndEvt__ExpeditionListView_K2Node_ComponentBoundEvent_6_OnListViewItemClicked__DelegateSignature(class UObject* Item, bool bIsHovered)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionListView.BP_FortExpeditionListView_C.BndEvt__ExpeditionListView_K2Node_ComponentBoundEvent_6_OnListViewItemClicked__DelegateSignature");
 
 	UBP_FortExpeditionListView_C_BndEvt__ExpeditionListView_K2Node_ComponentBoundEvent_6_OnListViewItemClicked__DelegateSignature_Params params;
 	params.Item = Item;
+	params.bIsHovered = bIsHovered;
 
 	auto flags = fn->FunctionFlags;
 

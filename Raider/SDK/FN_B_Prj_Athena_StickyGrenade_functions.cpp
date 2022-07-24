@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,6 +12,118 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
+// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.HandleHits
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UObject*                 Object                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UPrimitiveComponent*     Component                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void AB_Prj_Athena_StickyGrenade_C::HandleHits(class UObject* Object, class UPrimitiveComponent* Component)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.HandleHits");
+
+	AB_Prj_Athena_StickyGrenade_C_HandleHits_Params params;
+	params.Object = Object;
+	params.Component = Component;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.HandleHitSupplyDrop
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UObject*                 Object                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UPrimitiveComponent*     Component                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void AB_Prj_Athena_StickyGrenade_C::HandleHitSupplyDrop(class UObject* Object, class UPrimitiveComponent* Component)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.HandleHitSupplyDrop");
+
+	AB_Prj_Athena_StickyGrenade_C_HandleHitSupplyDrop_Params params;
+	params.Object = Object;
+	params.Component = Component;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.HandleHitVehicle
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UObject*                 Object                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UPrimitiveComponent*     Component                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void AB_Prj_Athena_StickyGrenade_C::HandleHitVehicle(class UObject* Object, class UPrimitiveComponent* Component)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.HandleHitVehicle");
+
+	AB_Prj_Athena_StickyGrenade_C_HandleHitVehicle_Params params;
+	params.Object = Object;
+	params.Component = Component;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.HandleHitBuildingWall
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UObject*                 Object                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UPrimitiveComponent*     Component                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void AB_Prj_Athena_StickyGrenade_C::HandleHitBuildingWall(class UObject* Object, class UPrimitiveComponent* Component)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.HandleHitBuildingWall");
+
+	AB_Prj_Athena_StickyGrenade_C_HandleHitBuildingWall_Params params;
+	params.Object = Object;
+	params.Component = Component;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.PlayStickSound
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// struct FVector                 Location                       (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
+// class AActor*                  HitActor                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           Success                        (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void AB_Prj_Athena_StickyGrenade_C::PlayStickSound(const struct FVector& Location, class AActor* HitActor, bool Success)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.PlayStickSound");
+
+	AB_Prj_Athena_StickyGrenade_C_PlayStickSound_Params params;
+	params.Location = Location;
+	params.HitActor = HitActor;
+	params.Success = Success;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.UserConstructionScript
 // (Event, Public, BlueprintCallable, BlueprintEvent)
 
@@ -20,6 +132,40 @@ void AB_Prj_Athena_StickyGrenade_C::UserConstructionScript()
 	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.UserConstructionScript");
 
 	AB_Prj_Athena_StickyGrenade_C_UserConstructionScript_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.WobbleOnStick__FinishedFunc
+// (BlueprintEvent)
+
+void AB_Prj_Athena_StickyGrenade_C::WobbleOnStick__FinishedFunc()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.WobbleOnStick__FinishedFunc");
+
+	AB_Prj_Athena_StickyGrenade_C_WobbleOnStick__FinishedFunc_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.WobbleOnStick__UpdateFunc
+// (BlueprintEvent)
+
+void AB_Prj_Athena_StickyGrenade_C::WobbleOnStick__UpdateFunc()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.WobbleOnStick__UpdateFunc");
+
+	AB_Prj_Athena_StickyGrenade_C_WobbleOnStick__UpdateFunc_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -105,62 +251,6 @@ void AB_Prj_Athena_StickyGrenade_C::OnExploded(TArray<class AActor*>* HitActors,
 }
 
 
-// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.ReceiveAnyDamage
-// (BlueprintAuthorityOnly, Event, Public, BlueprintEvent)
-// Parameters:
-// float*                         Damage                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class UDamageType**            DamageType                     (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class AController**            InstigatedBy                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class AActor**                 DamageCauser                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void AB_Prj_Athena_StickyGrenade_C::ReceiveAnyDamage(float* Damage, class UDamageType** DamageType, class AController** InstigatedBy, class AActor** DamageCauser)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.ReceiveAnyDamage");
-
-	AB_Prj_Athena_StickyGrenade_C_ReceiveAnyDamage_Params params;
-	params.Damage = Damage;
-	params.DamageType = DamageType;
-	params.InstigatedBy = InstigatedBy;
-	params.DamageCauser = DamageCauser;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.BndEvt__OverlapCapsule_K2Node_ComponentBoundEvent_1_ComponentBeginOverlapSignature__DelegateSignature
-// (HasOutParms, BlueprintEvent)
-// Parameters:
-// class UPrimitiveComponent*     OverlappedComponent            (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-// class AActor*                  OtherActor                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class UPrimitiveComponent*     OtherComp                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-// int                            OtherBodyIndex                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// bool                           bFromSweep                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// struct FHitResult              SweepResult                    (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
-
-void AB_Prj_Athena_StickyGrenade_C::BndEvt__OverlapCapsule_K2Node_ComponentBoundEvent_1_ComponentBeginOverlapSignature__DelegateSignature(class UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const struct FHitResult& SweepResult)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.BndEvt__OverlapCapsule_K2Node_ComponentBoundEvent_1_ComponentBeginOverlapSignature__DelegateSignature");
-
-	AB_Prj_Athena_StickyGrenade_C_BndEvt__OverlapCapsule_K2Node_ComponentBoundEvent_1_ComponentBeginOverlapSignature__DelegateSignature_Params params;
-	params.OverlappedComponent = OverlappedComponent;
-	params.OtherActor = OtherActor;
-	params.OtherComp = OtherComp;
-	params.OtherBodyIndex = OtherBodyIndex;
-	params.bFromSweep = bFromSweep;
-	params.SweepResult = SweepResult;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.Event_BuildingActorDied
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
@@ -195,21 +285,23 @@ void AB_Prj_Athena_StickyGrenade_C::Event_BuildingActorDied(class AActor* Damage
 }
 
 
-// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.AttachToTarget
-// (BlueprintCallable, BlueprintEvent)
+// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.OnTouched
+// (Event, Public, HasOutParms, BlueprintEvent)
 // Parameters:
-// struct FVector                 WorldPosition                  (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
-// struct FName                   SocketName                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class AFortPlayerPawnAthena*   PawnToStickTo                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class AActor**                 OtherActor                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UPrimitiveComponent**    OtherComp                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// struct FHitResult*             HitResult                      (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
+// bool*                          bIsOverlap                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void AB_Prj_Athena_StickyGrenade_C::AttachToTarget(const struct FVector& WorldPosition, const struct FName& SocketName, class AFortPlayerPawnAthena* PawnToStickTo)
+void AB_Prj_Athena_StickyGrenade_C::OnTouched(class AActor** OtherActor, class UPrimitiveComponent** OtherComp, struct FHitResult* HitResult, bool* bIsOverlap)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.AttachToTarget");
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.OnTouched");
 
-	AB_Prj_Athena_StickyGrenade_C_AttachToTarget_Params params;
-	params.WorldPosition = WorldPosition;
-	params.SocketName = SocketName;
-	params.PawnToStickTo = PawnToStickTo;
+	AB_Prj_Athena_StickyGrenade_C_OnTouched_Params params;
+	params.OtherActor = OtherActor;
+	params.OtherComp = OtherComp;
+	params.HitResult = HitResult;
+	params.bIsOverlap = bIsOverlap;
 
 	auto flags = fn->FunctionFlags;
 
@@ -219,23 +311,23 @@ void AB_Prj_Athena_StickyGrenade_C::AttachToTarget(const struct FVector& WorldPo
 }
 
 
-// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.AttachedToDied 2
-// (BlueprintCallable, BlueprintEvent)
+// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.OnAttachedToDied
+// (Event, Protected, BlueprintEvent)
 // Parameters:
-// class AActor*                  DamagedActor                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// float                          Damage                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class AController*             InstigatedBy                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class AActor*                  DamageCauser                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// struct FVector                 HitLocation                    (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
-// class UPrimitiveComponent*     FHitComponent                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-// struct FName                   BoneName                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// struct FVector                 Momentum                       (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
+// class AActor**                 DamagedActor                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// float*                         Damage                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class AController**            InstigatedBy                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class AActor**                 DamageCauser                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FVector*                HitLocation                    (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
+// class UPrimitiveComponent**    FHitComponent                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// struct FName*                  BoneName                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FVector*                Momentum                       (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
 
-void AB_Prj_Athena_StickyGrenade_C::AttachedToDied_2(class AActor* DamagedActor, float Damage, class AController* InstigatedBy, class AActor* DamageCauser, const struct FVector& HitLocation, class UPrimitiveComponent* FHitComponent, const struct FName& BoneName, const struct FVector& Momentum)
+void AB_Prj_Athena_StickyGrenade_C::OnAttachedToDied(class AActor** DamagedActor, float* Damage, class AController** InstigatedBy, class AActor** DamageCauser, struct FVector* HitLocation, class UPrimitiveComponent** FHitComponent, struct FName* BoneName, struct FVector* Momentum)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.AttachedToDied 2");
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.OnAttachedToDied");
 
-	AB_Prj_Athena_StickyGrenade_C_AttachedToDied_2_Params params;
+	AB_Prj_Athena_StickyGrenade_C_OnAttachedToDied_Params params;
 	params.DamagedActor = DamagedActor;
 	params.Damage = Damage;
 	params.InstigatedBy = InstigatedBy;
@@ -253,23 +345,14 @@ void AB_Prj_Athena_StickyGrenade_C::AttachedToDied_2(class AActor* DamagedActor,
 }
 
 
-// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.AttachToPawn
-// (Net, NetReliable, NetMulticast, BlueprintCallable, BlueprintEvent)
-// Parameters:
-// struct FVector                 Local_Offset_From_Capsule      (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
-// class AFortPlayerPawnAthena*   PawnToStickTo                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// struct FVector                 VelocityNormalized             (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
-// struct FHitResult              HitResult                      (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
+// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.Event_TriggerExplosion
+// (BlueprintCallable, BlueprintEvent)
 
-void AB_Prj_Athena_StickyGrenade_C::AttachToPawn(const struct FVector& Local_Offset_From_Capsule, class AFortPlayerPawnAthena* PawnToStickTo, const struct FVector& VelocityNormalized, const struct FHitResult& HitResult)
+void AB_Prj_Athena_StickyGrenade_C::Event_TriggerExplosion()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.AttachToPawn");
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.Event_TriggerExplosion");
 
-	AB_Prj_Athena_StickyGrenade_C_AttachToPawn_Params params;
-	params.Local_Offset_From_Capsule = Local_Offset_From_Capsule;
-	params.PawnToStickTo = PawnToStickTo;
-	params.VelocityNormalized = VelocityNormalized;
-	params.HitResult = HitResult;
+	AB_Prj_Athena_StickyGrenade_C_Event_TriggerExplosion_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -279,19 +362,27 @@ void AB_Prj_Athena_StickyGrenade_C::AttachToPawn(const struct FVector& Local_Off
 }
 
 
-// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.ServerAttachToPawn
-// (BlueprintCallable, BlueprintEvent)
+// Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.BndEvt__CapsuleComponent_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature
+// (HasOutParms, BlueprintEvent)
 // Parameters:
-// class AFortPlayerPawnAthena*   PawnToStickTo                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// struct FHitResult              HitResult                      (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
+// class UPrimitiveComponent*     OverlappedComponent            (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// class AActor*                  OtherActor                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UPrimitiveComponent*     OtherComp                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// int                            OtherBodyIndex                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           bFromSweep                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FHitResult              SweepResult                    (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
 
-void AB_Prj_Athena_StickyGrenade_C::ServerAttachToPawn(class AFortPlayerPawnAthena* PawnToStickTo, const struct FHitResult& HitResult)
+void AB_Prj_Athena_StickyGrenade_C::BndEvt__CapsuleComponent_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature(class UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const struct FHitResult& SweepResult)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.ServerAttachToPawn");
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_StickyGrenade.B_Prj_Athena_StickyGrenade_C.BndEvt__CapsuleComponent_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature");
 
-	AB_Prj_Athena_StickyGrenade_C_ServerAttachToPawn_Params params;
-	params.PawnToStickTo = PawnToStickTo;
-	params.HitResult = HitResult;
+	AB_Prj_Athena_StickyGrenade_C_BndEvt__CapsuleComponent_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature_Params params;
+	params.OverlappedComponent = OverlappedComponent;
+	params.OtherActor = OtherActor;
+	params.OtherComp = OtherComp;
+	params.OtherBodyIndex = OtherBodyIndex;
+	params.bFromSweep = bFromSweep;
+	params.SweepResult = SweepResult;
 
 	auto flags = fn->FunctionFlags;
 

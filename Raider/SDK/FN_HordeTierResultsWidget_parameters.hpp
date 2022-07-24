@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,13 +13,6 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
-
-// Function HordeTierResultsWidget.HordeTierResultsWidget_C.OnHandleAction
-struct UHordeTierResultsWidget_C_OnHandleAction_Params
-{
-	struct FEventReply                                 Result;                                                   // (Parm, OutParm)
-	bool                                               bPassThrough;                                             // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
-};
 
 // Function HordeTierResultsWidget.HordeTierResultsWidget_C.OnEndOfMovieReached
 struct UHordeTierResultsWidget_C_OnEndOfMovieReached_Params
@@ -41,6 +34,22 @@ struct UHordeTierResultsWidget_C_Initialize_Params
 // Function HordeTierResultsWidget.HordeTierResultsWidget_C.InitializeMovie
 struct UHordeTierResultsWidget_C_InitializeMovie_Params
 {
+};
+
+// Function HordeTierResultsWidget.HordeTierResultsWidget_C.Construct
+struct UHordeTierResultsWidget_C_Construct_Params
+{
+};
+
+// Function HordeTierResultsWidget.HordeTierResultsWidget_C.Destruct
+struct UHordeTierResultsWidget_C_Destruct_Params
+{
+};
+
+// Function HordeTierResultsWidget.HordeTierResultsWidget_C.ExecuteUbergraph_HordeTierResultsWidget
+struct UHordeTierResultsWidget_C_ExecuteUbergraph_HordeTierResultsWidget_Params
+{
+	int                                                EntryPoint;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function HordeTierResultsWidget.HordeTierResultsWidget_C.OnTierResultsWidgetComplete__DelegateSignature

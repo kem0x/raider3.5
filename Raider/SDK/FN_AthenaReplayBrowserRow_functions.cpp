@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -60,6 +60,26 @@ void UAthenaReplayBrowserRow_C::OnReplayBrowserEntryDataSet()
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserRow.AthenaReplayBrowserRow_C.OnReplayBrowserEntryDataSet");
 
 	UAthenaReplayBrowserRow_C_OnReplayBrowserEntryDataSet_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaReplayBrowserRow.AthenaReplayBrowserRow_C.PreConstruct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+// Parameters:
+// bool*                          IsDesignTime                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaReplayBrowserRow_C::PreConstruct(bool* IsDesignTime)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserRow.AthenaReplayBrowserRow_C.PreConstruct");
+
+	UAthenaReplayBrowserRow_C_PreConstruct_Params params;
+	params.IsDesignTime = IsDesignTime;
 
 	auto flags = fn->FunctionFlags;
 

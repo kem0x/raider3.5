@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -70,7 +70,7 @@ float AB_Prj_Commando_FragGrenade_C::CalcGrenadeSpeed(float Angle)
 
 
 // Function B_Prj_Commando_FragGrenade.B_Prj_Commando_FragGrenade_C.OnRep_StoredHit
-// (HasDefaults, BlueprintCallable, BlueprintEvent)
+// (BlueprintCallable, BlueprintEvent)
 
 void AB_Prj_Commando_FragGrenade_C::OnRep_StoredHit()
 {
@@ -225,36 +225,6 @@ void AB_Prj_Commando_FragGrenade_C::OnBounce(struct FHitResult* Hit)
 }
 
 
-// Function B_Prj_Commando_FragGrenade.B_Prj_Commando_FragGrenade_C.BndEvt__OverlapCapsule_K2Node_ComponentBoundEvent_1_ComponentBeginOverlapSignature__DelegateSignature
-// (HasOutParms, BlueprintEvent)
-// Parameters:
-// class UPrimitiveComponent*     OverlappedComponent            (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-// class AActor*                  OtherActor                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class UPrimitiveComponent*     OtherComp                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-// int                            OtherBodyIndex                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// bool                           bFromSweep                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// struct FHitResult              SweepResult                    (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
-
-void AB_Prj_Commando_FragGrenade_C::BndEvt__OverlapCapsule_K2Node_ComponentBoundEvent_1_ComponentBeginOverlapSignature__DelegateSignature(class UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const struct FHitResult& SweepResult)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Commando_FragGrenade.B_Prj_Commando_FragGrenade_C.BndEvt__OverlapCapsule_K2Node_ComponentBoundEvent_1_ComponentBeginOverlapSignature__DelegateSignature");
-
-	AB_Prj_Commando_FragGrenade_C_BndEvt__OverlapCapsule_K2Node_ComponentBoundEvent_1_ComponentBeginOverlapSignature__DelegateSignature_Params params;
-	params.OverlappedComponent = OverlappedComponent;
-	params.OtherActor = OtherActor;
-	params.OtherComp = OtherComp;
-	params.OtherBodyIndex = OtherBodyIndex;
-	params.bFromSweep = bFromSweep;
-	params.SweepResult = SweepResult;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function B_Prj_Commando_FragGrenade.B_Prj_Commando_FragGrenade_C.On Destroy Grenade
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
@@ -368,6 +338,26 @@ void AB_Prj_Commando_FragGrenade_C::CheckKeepOutAndCluster()
 	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Commando_FragGrenade.B_Prj_Commando_FragGrenade_C.CheckKeepOutAndCluster");
 
 	AB_Prj_Commando_FragGrenade_C_CheckKeepOutAndCluster_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Prj_Commando_FragGrenade.B_Prj_Commando_FragGrenade_C.ReceiveActorBeginOverlap
+// (Event, Public, BlueprintEvent)
+// Parameters:
+// class AActor**                 OtherActor                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void AB_Prj_Commando_FragGrenade_C::ReceiveActorBeginOverlap(class AActor** OtherActor)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Commando_FragGrenade.B_Prj_Commando_FragGrenade_C.ReceiveActorBeginOverlap");
+
+	AB_Prj_Commando_FragGrenade_C_ReceiveActorBeginOverlap_Params params;
+	params.OtherActor = OtherActor;
 
 	auto flags = fn->FunctionFlags;
 

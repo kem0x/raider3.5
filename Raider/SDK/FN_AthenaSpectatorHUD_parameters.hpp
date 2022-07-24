@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,21 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.BindBroadcastEvents
+struct UAthenaSpectatorHUD_C_BindBroadcastEvents_Params
+{
+};
+
+// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.ToggleOffAirWidgetVisibility
+struct UAthenaSpectatorHUD_C_ToggleOffAirWidgetVisibility_Params
+{
+};
+
+// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.TogglePlayerListVisibility
+struct UAthenaSpectatorHUD_C_TogglePlayerListVisibility_Params
+{
+};
 
 // Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.ShowCameraControls
 struct UAthenaSpectatorHUD_C_ShowCameraControls_Params
@@ -37,10 +52,9 @@ struct UAthenaSpectatorHUD_C_HandleCameraChange_Params
 	ESpectatorCameraType                               CameraType;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.SetViewSettingsVisibility
-struct UAthenaSpectatorHUD_C_SetViewSettingsVisibility_Params
+// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.ToggleViewSettingsVisibility
+struct UAthenaSpectatorHUD_C_ToggleViewSettingsVisibility_Params
 {
-	bool                                               Visible;                                                  // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.OnLevelStreamingChanged
@@ -173,15 +187,15 @@ struct UAthenaSpectatorHUD_C_OnConfirmed_96D6B69B40224C661B08D9B34525EE86_Params
 {
 };
 
-// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.Construct
-struct UAthenaSpectatorHUD_C_Construct_Params
-{
-};
-
 // Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.OnEnterState
 struct UAthenaSpectatorHUD_C_OnEnterState_Params
 {
 	EFortUIState*                                      PreviousUIState;                                          // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.Construct
+struct UAthenaSpectatorHUD_C_Construct_Params
+{
 };
 
 // Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.QuestsCompleted
@@ -277,6 +291,12 @@ struct UAthenaSpectatorHUD_C_BndEvt__HUDVisibility_K2Node_ComponentBoundEvent_27
 struct UAthenaSpectatorHUD_C_HUDVisibilitySound_Params
 {
 	EHudVisibilityState                                HUDVisibility;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.OnHUDScaleChanged
+struct UAthenaSpectatorHUD_C_OnHUDScaleChanged_Params
+{
+	float*                                             HUDScale;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.ExecuteUbergraph_AthenaSpectatorHUD

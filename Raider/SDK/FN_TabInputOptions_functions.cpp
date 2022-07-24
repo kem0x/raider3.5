@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,14 +12,14 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function TabInputOptions.TabInputOptions_C.NewFunction_0_1
+// Function TabInputOptions.TabInputOptions_C.NewFunction_1
 // (Public, BlueprintCallable, BlueprintEvent)
 
-void UTabInputOptions_C::NewFunction_0_1()
+void UTabInputOptions_C::NewFunction_1()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TabInputOptions.TabInputOptions_C.NewFunction_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function TabInputOptions.TabInputOptions_C.NewFunction_1");
 
-	UTabInputOptions_C_NewFunction_0_1_Params params;
+	UTabInputOptions_C_NewFunction_1_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -129,14 +129,16 @@ void UTabInputOptions_C::HandleUsingGamepadChanged(ECommonInputType* bNewInputTy
 // Function TabInputOptions.TabInputOptions_C.UnbindClicked
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
-// int                            Number_In_List                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// int                            Number_in_List                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UOptionsMenuInput_C*     Widget                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 
-void UTabInputOptions_C::UnbindClicked(int Number_In_List)
+void UTabInputOptions_C::UnbindClicked(int Number_in_List, class UOptionsMenuInput_C* Widget)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function TabInputOptions.TabInputOptions_C.UnbindClicked");
 
 	UTabInputOptions_C_UnbindClicked_Params params;
-	params.Number_In_List = Number_In_List;
+	params.Number_in_List = Number_in_List;
+	params.Widget = Widget;
 
 	auto flags = fn->FunctionFlags;
 
@@ -166,15 +168,15 @@ void UTabInputOptions_C::ClearAndConstructKeybindList()
 // Function TabInputOptions.TabInputOptions_C.Input Clicked
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
-// int                            Number_In_List                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// int                            Number_in_List                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // bool                           Is_Primary_Button              (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UTabInputOptions_C::Input_Clicked(int Number_In_List, bool Is_Primary_Button)
+void UTabInputOptions_C::Input_Clicked(int Number_in_List, bool Is_Primary_Button)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function TabInputOptions.TabInputOptions_C.Input Clicked");
 
 	UTabInputOptions_C_Input_Clicked_Params params;
-	params.Number_In_List = Number_In_List;
+	params.Number_in_List = Number_in_List;
 	params.Is_Primary_Button = Is_Primary_Button;
 
 	auto flags = fn->FunctionFlags;

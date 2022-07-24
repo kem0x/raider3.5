@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -106,6 +106,12 @@ struct UMediaPlayer_SetTrackFormat_Params
 	int                                                TrackIndex;                                               // (Parm, ZeroConstructor, IsPlainOldData)
 	int                                                FormatIndex;                                              // (Parm, ZeroConstructor, IsPlainOldData)
 	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function MediaAssets.MediaPlayer.SetTimeDelay
+struct UMediaPlayer_SetTimeDelay_Params
+{
+	struct FTimespan                                   TimeDelay;                                                // (Parm)
 };
 
 // Function MediaAssets.MediaPlayer.SetRate
@@ -345,6 +351,12 @@ struct UMediaPlayer_GetTrackDisplayName_Params
 	struct FText                                       ReturnValue;                                              // (Parm, OutParm, ReturnParm)
 };
 
+// Function MediaAssets.MediaPlayer.GetTimeDelay
+struct UMediaPlayer_GetTimeDelay_Params
+{
+	struct FTimespan                                   ReturnValue;                                              // (Parm, OutParm, ReturnParm)
+};
+
 // Function MediaAssets.MediaPlayer.GetTime
 struct UMediaPlayer_GetTime_Params
 {
@@ -565,6 +577,12 @@ struct UMediaPlaylist_Add_Params
 struct UMediaSoundComponent_SetMediaPlayer_Params
 {
 	class UMediaPlayer*                                NewMediaPlayer;                                           // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function MediaAssets.MediaSoundComponent.GetMediaPlayer
+struct UMediaSoundComponent_GetMediaPlayer_Params
+{
+	class UMediaPlayer*                                ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 };
 
 // Function MediaAssets.MediaSoundComponent.BP_GetAttenuationSettingsToApply

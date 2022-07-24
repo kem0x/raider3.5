@@ -295,7 +295,7 @@ namespace Inventory
 
                 Weapon->SetOwner(dPawn);
                 Weapon->OnRep_ReplicatedWeaponData();
-                Weapon->OnRep_AmmoCount();
+                // Weapon->OnRep_AmmoCount();
                 Weapon->ClientGivenTo(Pawn);
                 Pawn->ClientInternalEquipWeapon(Weapon);
                 Pawn->OnRep_CurrentWeapon(); // i dont think this is needed but alr
@@ -598,6 +598,6 @@ namespace Inventory
         static UFortAmmoItemDefinition* EditTool = UObject::FindObject<UFortAmmoItemDefinition>("FortEditToolItemDefinition EditTool.EditTool");
         AddItemToSlot(PlayerController, EditTool, 0, EFortQuickBars::Primary, 1);
 
-        PlayerController->QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, false);
+        PlayerController->QuickBars->ServerActivateSlotInternal(EFortQuickBars::Primary, 0, 0, 0, true);
     }
 }

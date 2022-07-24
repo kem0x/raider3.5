@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -214,10 +214,12 @@ void UTooltipLibrary_C::STATIC_Create_Custom_Tooltip(class APlayerController* Ow
 // struct FText                   Body_Text                      (BlueprintVisible, BlueprintReadOnly, Parm)
 // struct FText                   Header_Text                    (BlueprintVisible, BlueprintReadOnly, Parm)
 // class USlateBrushAsset*        Icon_Brush                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UClass*                  Header_Style                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UClass*                  Body_Style                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // class UObject*                 __WorldContext                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // class UUserWidget*             Output                         (Parm, OutParm, ZeroConstructor, InstancedReference, IsPlainOldData)
 
-void UTooltipLibrary_C::STATIC_Create_Basic_Tooltip(class APlayerController* Owning_Player, const struct FText& Body_Text, const struct FText& Header_Text, class USlateBrushAsset* Icon_Brush, class UObject* __WorldContext, class UUserWidget** Output)
+void UTooltipLibrary_C::STATIC_Create_Basic_Tooltip(class APlayerController* Owning_Player, const struct FText& Body_Text, const struct FText& Header_Text, class USlateBrushAsset* Icon_Brush, class UClass* Header_Style, class UClass* Body_Style, class UObject* __WorldContext, class UUserWidget** Output)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function TooltipLibrary.TooltipLibrary_C.Create Basic Tooltip");
 
@@ -226,6 +228,8 @@ void UTooltipLibrary_C::STATIC_Create_Basic_Tooltip(class APlayerController* Own
 	params.Body_Text = Body_Text;
 	params.Header_Text = Header_Text;
 	params.Icon_Brush = Icon_Brush;
+	params.Header_Style = Header_Style;
+	params.Body_Style = Body_Style;
 	params.__WorldContext = __WorldContext;
 
 	auto flags = fn->FunctionFlags;

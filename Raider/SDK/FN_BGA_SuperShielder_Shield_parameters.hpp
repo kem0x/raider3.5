@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -16,16 +16,6 @@ namespace SDK
 
 // Function BGA_SuperShielder_Shield.BGA_SuperShielder_Shield_C.UserConstructionScript
 struct ABGA_SuperShielder_Shield_C_UserConstructionScript_Params
-{
-};
-
-// Function BGA_SuperShielder_Shield.BGA_SuperShielder_Shield_C.Opacity Control__FinishedFunc
-struct ABGA_SuperShielder_Shield_C_Opacity_Control__FinishedFunc_Params
-{
-};
-
-// Function BGA_SuperShielder_Shield.BGA_SuperShielder_Shield_C.Opacity Control__UpdateFunc
-struct ABGA_SuperShielder_Shield_C_Opacity_Control__UpdateFunc_Params
 {
 };
 

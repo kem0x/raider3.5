@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -72,9 +72,9 @@ void USimpleSquadSlotButton_C::Update_SubType_Icon_Image()
 // Function SimpleSquadSlotButton.SimpleSquadSlotButton_C.IsSlotEmpty
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
 // Parameters:
-// bool                           isEmpty                        (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+// bool                           IsEmpty                        (Parm, OutParm, ZeroConstructor, IsPlainOldData)
 
-void USimpleSquadSlotButton_C::IsSlotEmpty(bool* isEmpty)
+void USimpleSquadSlotButton_C::IsSlotEmpty(bool* IsEmpty)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function SimpleSquadSlotButton.SimpleSquadSlotButton_C.IsSlotEmpty");
 
@@ -86,8 +86,8 @@ void USimpleSquadSlotButton_C::IsSlotEmpty(bool* isEmpty)
 
 	fn->FunctionFlags = flags;
 
-	if (isEmpty != nullptr)
-		*isEmpty = params.isEmpty;
+	if (IsEmpty != nullptr)
+		*IsEmpty = params.IsEmpty;
 }
 
 
@@ -217,14 +217,14 @@ void USimpleSquadSlotButton_C::SquadSlotWidgetUpdated()
 }
 
 
-// Function SimpleSquadSlotButton.SimpleSquadSlotButton_C.OnSelected
+// Function SimpleSquadSlotButton.SimpleSquadSlotButton_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void USimpleSquadSlotButton_C::OnSelected()
+void USimpleSquadSlotButton_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function SimpleSquadSlotButton.SimpleSquadSlotButton_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function SimpleSquadSlotButton.SimpleSquadSlotButton_C.BP_OnSelected");
 
-	USimpleSquadSlotButton_C_OnSelected_Params params;
+	USimpleSquadSlotButton_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 

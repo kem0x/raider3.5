@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -77,7 +77,6 @@ struct UAthenaReplayBrowserRenameDialog_C_OnCancelRename__DelegateSignature_Para
 // Function AthenaReplayBrowserRenameDialog.AthenaReplayBrowserRenameDialog_C.OnConfirmRename__DelegateSignature
 struct UAthenaReplayBrowserRenameDialog_C_OnConfirmRename__DelegateSignature_Params
 {
-	class UAthenaReplayBrowserRowProxyInstance*        BrowserRowProxy;                                          // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	struct FText                                       NewName;                                                  // (BlueprintVisible, BlueprintReadOnly, Parm)
 };
 

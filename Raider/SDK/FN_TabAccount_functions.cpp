@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,85 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function TabAccount.TabAccount_C.CenterAppropriateWidget
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UTabAccount_C::CenterAppropriateWidget()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.CenterAppropriateWidget");
+
+	UTabAccount_C_CenterAppropriateWidget_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TabAccount.TabAccount_C.PrivacySettingsFromSelection
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, BlueprintPure)
+// Parameters:
+// int                            A                              (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FMcpPrivacySettings     McpPrivacySettings             (Parm, OutParm)
+
+void UTabAccount_C::PrivacySettingsFromSelection(int A, struct FMcpPrivacySettings* McpPrivacySettings)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.PrivacySettingsFromSelection");
+
+	UTabAccount_C_PrivacySettingsFromSelection_Params params;
+	params.A = A;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (McpPrivacySettings != nullptr)
+		*McpPrivacySettings = params.McpPrivacySettings;
+}
+
+
+// Function TabAccount.TabAccount_C.PrivacySettingsToSelection
+// (Private, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure)
+// Parameters:
+// int                            ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+int UTabAccount_C::PrivacySettingsToSelection()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.PrivacySettingsToSelection");
+
+	UTabAccount_C_PrivacySettingsToSelection_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function TabAccount.TabAccount_C.OnStWContentUninstalled
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UTabAccount_C::OnStWContentUninstalled()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.OnStWContentUninstalled");
+
+	UTabAccount_C_OnStWContentUninstalled_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function TabAccount.TabAccount_C.GetTencentId
 // (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, BlueprintPure)
@@ -165,40 +244,6 @@ void UTabAccount_C::DialogResult_38AE683A4765B23E84C880991D01C356(EFortDialogRes
 }
 
 
-// Function TabAccount.TabAccount_C.UpdateOptionsTab
-// (Event, Protected, BlueprintCallable, BlueprintEvent)
-
-void UTabAccount_C::UpdateOptionsTab()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.UpdateOptionsTab");
-
-	UTabAccount_C_UpdateOptionsTab_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function TabAccount.TabAccount_C.CenterOnTab
-// (Event, Protected, BlueprintCallable, BlueprintEvent)
-
-void UTabAccount_C::CenterOnTab()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.CenterOnTab");
-
-	UTabAccount_C_CenterOnTab_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function TabAccount.TabAccount_C.Construct
 // (BlueprintCosmetic, Event, Public, BlueprintEvent)
 
@@ -207,6 +252,26 @@ void UTabAccount_C::Construct()
 	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.Construct");
 
 	UTabAccount_C_Construct_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TabAccount.TabAccount_C.BndEvt__URLButton_K2Node_ComponentBoundEvent_75_CommonButtonClicked__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// class UCommonButton*           Button                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void UTabAccount_C::BndEvt__URLButton_K2Node_ComponentBoundEvent_75_CommonButtonClicked__DelegateSignature(class UCommonButton* Button)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.BndEvt__URLButton_K2Node_ComponentBoundEvent_75_CommonButtonClicked__DelegateSignature");
+
+	UTabAccount_C_BndEvt__URLButton_K2Node_ComponentBoundEvent_75_CommonButtonClicked__DelegateSignature_Params params;
+	params.Button = Button;
 
 	auto flags = fn->FunctionFlags;
 
@@ -236,17 +301,14 @@ void UTabAccount_C::BndEvt__FortTwitchLogin_K2Node_ComponentBoundEvent_0_OnReque
 }
 
 
-// Function TabAccount.TabAccount_C.BndEvt__URLButton_K2Node_ComponentBoundEvent_75_CommonButtonClicked__DelegateSignature
-// (BlueprintEvent)
-// Parameters:
-// class UCommonButton*           Button                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// Function TabAccount.TabAccount_C.CenterOnTab
+// (Event, Protected, BlueprintCallable, BlueprintEvent)
 
-void UTabAccount_C::BndEvt__URLButton_K2Node_ComponentBoundEvent_75_CommonButtonClicked__DelegateSignature(class UCommonButton* Button)
+void UTabAccount_C::CenterOnTab()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.BndEvt__URLButton_K2Node_ComponentBoundEvent_75_CommonButtonClicked__DelegateSignature");
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.CenterOnTab");
 
-	UTabAccount_C_BndEvt__URLButton_K2Node_ComponentBoundEvent_75_CommonButtonClicked__DelegateSignature_Params params;
-	params.Button = Button;
+	UTabAccount_C_CenterOnTab_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -347,6 +409,169 @@ void UTabAccount_C::BndEvt__Button_Logout_K2Node_ComponentBoundEvent_164_CommonB
 
 	UTabAccount_C_BndEvt__Button_Logout_K2Node_ComponentBoundEvent_164_CommonButtonClicked__DelegateSignature_Params params;
 	params.Button = Button;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TabAccount.TabAccount_C.BndEvt__UninstallStWButton_K2Node_ComponentBoundEvent_51_CommonButtonClicked__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// class UCommonButton*           Button                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void UTabAccount_C::BndEvt__UninstallStWButton_K2Node_ComponentBoundEvent_51_CommonButtonClicked__DelegateSignature(class UCommonButton* Button)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.BndEvt__UninstallStWButton_K2Node_ComponentBoundEvent_51_CommonButtonClicked__DelegateSignature");
+
+	UTabAccount_C_BndEvt__UninstallStWButton_K2Node_ComponentBoundEvent_51_CommonButtonClicked__DelegateSignature_Params params;
+	params.Button = Button;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TabAccount.TabAccount_C.UpdateOptionsTab
+// (Event, Protected, BlueprintCallable, BlueprintEvent)
+
+void UTabAccount_C::UpdateOptionsTab()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.UpdateOptionsTab");
+
+	UTabAccount_C_UpdateOptionsTab_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TabAccount.TabAccount_C.SetRefundRequestText
+// (Event, Protected, BlueprintEvent)
+// Parameters:
+// int*                           RefundsRemaining               (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// int*                           TotalRefunds                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// int*                           DaysToRefund                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UTabAccount_C::SetRefundRequestText(int* RefundsRemaining, int* TotalRefunds, int* DaysToRefund)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.SetRefundRequestText");
+
+	UTabAccount_C_SetRefundRequestText_Params params;
+	params.RefundsRemaining = RefundsRemaining;
+	params.TotalRefunds = TotalRefunds;
+	params.DaysToRefund = DaysToRefund;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TabAccount.TabAccount_C.BndEvt__Button_RefundRequest_K2Node_ComponentBoundEvent_1_CommonButtonClicked__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// class UCommonButton*           Button                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void UTabAccount_C::BndEvt__Button_RefundRequest_K2Node_ComponentBoundEvent_1_CommonButtonClicked__DelegateSignature(class UCommonButton* Button)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.BndEvt__Button_RefundRequest_K2Node_ComponentBoundEvent_1_CommonButtonClicked__DelegateSignature");
+
+	UTabAccount_C_BndEvt__Button_RefundRequest_K2Node_ComponentBoundEvent_1_CommonButtonClicked__DelegateSignature_Params params;
+	params.Button = Button;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TabAccount.TabAccount_C.BndEvt__LeaderboardPrivacy_K2Node_ComponentBoundEvent_8_Selection Changed__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// int                            Selected_Index                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UTabAccount_C::BndEvt__LeaderboardPrivacy_K2Node_ComponentBoundEvent_8_Selection_Changed__DelegateSignature(int Selected_Index)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.BndEvt__LeaderboardPrivacy_K2Node_ComponentBoundEvent_8_Selection Changed__DelegateSignature");
+
+	UTabAccount_C_BndEvt__LeaderboardPrivacy_K2Node_ComponentBoundEvent_8_Selection_Changed__DelegateSignature_Params params;
+	params.Selected_Index = Selected_Index;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TabAccount.TabAccount_C.OnReadPrivacySettings
+// (HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           bSuccess                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FMcpPrivacySettings     Settings                       (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+
+void UTabAccount_C::OnReadPrivacySettings(bool bSuccess, const struct FMcpPrivacySettings& Settings)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.OnReadPrivacySettings");
+
+	UTabAccount_C_OnReadPrivacySettings_Params params;
+	params.bSuccess = bSuccess;
+	params.Settings = Settings;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TabAccount.TabAccount_C.OnUpdatePrivacySettings
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           bSuccess                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UTabAccount_C::OnUpdatePrivacySettings(bool bSuccess)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.OnUpdatePrivacySettings");
+
+	UTabAccount_C_OnUpdatePrivacySettings_Params params;
+	params.bSuccess = bSuccess;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TabAccount.TabAccount_C.BndEvt__ReceiveGiftToggle_K2Node_ComponentBoundEvent_0_Selection Changed__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// int                            Selected_Index                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UTabAccount_C::BndEvt__ReceiveGiftToggle_K2Node_ComponentBoundEvent_0_Selection_Changed__DelegateSignature(int Selected_Index)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccount.TabAccount_C.BndEvt__ReceiveGiftToggle_K2Node_ComponentBoundEvent_0_Selection Changed__DelegateSignature");
+
+	UTabAccount_C_BndEvt__ReceiveGiftToggle_K2Node_ComponentBoundEvent_0_Selection_Changed__DelegateSignature_Params params;
+	params.Selected_Index = Selected_Index;
 
 	auto flags = fn->FunctionFlags;
 

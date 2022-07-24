@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,26 +11,6 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
-
-// Function ItemReceived_Base.ItemReceived_Base_C.Clicked
-// (Public, BlueprintCallable, BlueprintEvent)
-// Parameters:
-// class UCommonButton*           NewParam                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-
-void UItemReceived_Base_C::Clicked(class UCommonButton* NewParam)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.Clicked");
-
-	UItemReceived_Base_C_Clicked_Params params;
-	params.NewParam = NewParam;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
 
 // Function ItemReceived_Base.ItemReceived_Base_C.HandleSelectionIncrement
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
@@ -191,17 +171,34 @@ void UItemReceived_Base_C::HandleBack(bool* Passthrough)
 }
 
 
-// Function ItemReceived_Base.ItemReceived_Base_C.PreConstruct
+// Function ItemReceived_Base.ItemReceived_Base_C.Construct
 // (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UItemReceived_Base_C::Construct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.Construct");
+
+	UItemReceived_Base_C_Construct_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function ItemReceived_Base.ItemReceived_Base_C.BndEvt__PurchaseButton_K2Node_ComponentBoundEvent_66_CommonButtonClicked__DelegateSignature
+// (BlueprintEvent)
 // Parameters:
-// bool*                          IsDesignTime                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UCommonButton*           Button                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 
-void UItemReceived_Base_C::PreConstruct(bool* IsDesignTime)
+void UItemReceived_Base_C::BndEvt__PurchaseButton_K2Node_ComponentBoundEvent_66_CommonButtonClicked__DelegateSignature(class UCommonButton* Button)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.PreConstruct");
+	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.BndEvt__PurchaseButton_K2Node_ComponentBoundEvent_66_CommonButtonClicked__DelegateSignature");
 
-	UItemReceived_Base_C_PreConstruct_Params params;
-	params.IsDesignTime = IsDesignTime;
+	UItemReceived_Base_C_BndEvt__PurchaseButton_K2Node_ComponentBoundEvent_66_CommonButtonClicked__DelegateSignature_Params params;
+	params.Button = Button;
 
 	auto flags = fn->FunctionFlags;
 
@@ -211,65 +208,14 @@ void UItemReceived_Base_C::PreConstruct(bool* IsDesignTime)
 }
 
 
-// Function ItemReceived_Base.ItemReceived_Base_C.AnimateRollout
-// (BlueprintCallable, BlueprintEvent)
+// Function ItemReceived_Base.ItemReceived_Base_C.OnGiftBoxItemSet
+// (Event, Public, BlueprintEvent)
 
-void UItemReceived_Base_C::AnimateRollout()
+void UItemReceived_Base_C::OnGiftBoxItemSet()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.AnimateRollout");
+	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.OnGiftBoxItemSet");
 
-	UItemReceived_Base_C_AnimateRollout_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function ItemReceived_Base.ItemReceived_Base_C.Right
-// (BlueprintCallable, BlueprintEvent)
-
-void UItemReceived_Base_C::Right()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.Right");
-
-	UItemReceived_Base_C_Right_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function ItemReceived_Base.ItemReceived_Base_C.Left
-// (BlueprintCallable, BlueprintEvent)
-
-void UItemReceived_Base_C::Left()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.Left");
-
-	UItemReceived_Base_C_Left_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function ItemReceived_Base.ItemReceived_Base_C.UpdateRarityFlare
-// (BlueprintCallable, BlueprintEvent)
-
-void UItemReceived_Base_C::UpdateRarityFlare()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.UpdateRarityFlare");
-
-	UItemReceived_Base_C_UpdateRarityFlare_Params params;
+	UItemReceived_Base_C_OnGiftBoxItemSet_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -301,68 +247,14 @@ void UItemReceived_Base_C::SelectItem(int Index, bool CenterWidget)
 }
 
 
-// Function ItemReceived_Base.ItemReceived_Base_C.OnGiftBoxItemSet
-// (Event, Public, BlueprintEvent)
-
-void UItemReceived_Base_C::OnGiftBoxItemSet()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.OnGiftBoxItemSet");
-
-	UItemReceived_Base_C_OnGiftBoxItemSet_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function ItemReceived_Base.ItemReceived_Base_C.OnActivated
-// (Event, Protected, BlueprintEvent)
-
-void UItemReceived_Base_C::OnActivated()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.OnActivated");
-
-	UItemReceived_Base_C_OnActivated_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function ItemReceived_Base.ItemReceived_Base_C.BndEvt__PurchaseButton_K2Node_ComponentBoundEvent_66_CommonButtonClicked__DelegateSignature
-// (BlueprintEvent)
-// Parameters:
-// class UCommonButton*           Button                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-
-void UItemReceived_Base_C::BndEvt__PurchaseButton_K2Node_ComponentBoundEvent_66_CommonButtonClicked__DelegateSignature(class UCommonButton* Button)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.BndEvt__PurchaseButton_K2Node_ComponentBoundEvent_66_CommonButtonClicked__DelegateSignature");
-
-	UItemReceived_Base_C_BndEvt__PurchaseButton_K2Node_ComponentBoundEvent_66_CommonButtonClicked__DelegateSignature_Params params;
-	params.Button = Button;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function ItemReceived_Base.ItemReceived_Base_C.CustomEvent_0_1
+// Function ItemReceived_Base.ItemReceived_Base_C.AnimateRollout
 // (BlueprintCallable, BlueprintEvent)
 
-void UItemReceived_Base_C::CustomEvent_0_1()
+void UItemReceived_Base_C::AnimateRollout()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.CustomEvent_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.AnimateRollout");
 
-	UItemReceived_Base_C_CustomEvent_0_1_Params params;
+	UItemReceived_Base_C_AnimateRollout_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -372,14 +264,19 @@ void UItemReceived_Base_C::CustomEvent_0_1()
 }
 
 
-// Function ItemReceived_Base.ItemReceived_Base_C.Construct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+// Function ItemReceived_Base.ItemReceived_Base_C.UpdateRarityFlare
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           NewParam                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// int                            Who                            (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UItemReceived_Base_C::Construct()
+void UItemReceived_Base_C::UpdateRarityFlare(bool NewParam, int Who)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.Construct");
+	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.UpdateRarityFlare");
 
-	UItemReceived_Base_C_Construct_Params params;
+	UItemReceived_Base_C_UpdateRarityFlare_Params params;
+	params.NewParam = NewParam;
+	params.Who = Who;
 
 	auto flags = fn->FunctionFlags;
 
@@ -497,6 +394,43 @@ void UItemReceived_Base_C::OnBattlepassAnimFinished()
 }
 
 
+// Function ItemReceived_Base.ItemReceived_Base_C.BndEvt__IconTextButton_C_0_K2Node_ComponentBoundEvent_58_CommonButtonClicked__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// class UCommonButton*           Button                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void UItemReceived_Base_C::BndEvt__IconTextButton_C_0_K2Node_ComponentBoundEvent_58_CommonButtonClicked__DelegateSignature(class UCommonButton* Button)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.BndEvt__IconTextButton_C_0_K2Node_ComponentBoundEvent_58_CommonButtonClicked__DelegateSignature");
+
+	UItemReceived_Base_C_BndEvt__IconTextButton_C_0_K2Node_ComponentBoundEvent_58_CommonButtonClicked__DelegateSignature_Params params;
+	params.Button = Button;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function ItemReceived_Base.ItemReceived_Base_C.ShowNextItem
+// (BlueprintCallable, BlueprintEvent)
+
+void UItemReceived_Base_C::ShowNextItem()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.ShowNextItem");
+
+	UItemReceived_Base_C_ShowNextItem_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function ItemReceived_Base.ItemReceived_Base_C.ExecuteUbergraph_ItemReceived_Base
 // (HasDefaults)
 // Parameters:
@@ -508,23 +442,6 @@ void UItemReceived_Base_C::ExecuteUbergraph_ItemReceived_Base(int EntryPoint)
 
 	UItemReceived_Base_C_ExecuteUbergraph_ItemReceived_Base_Params params;
 	params.EntryPoint = EntryPoint;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function ItemReceived_Base.ItemReceived_Base_C.FinalOnGiftingComplete__DelegateSignature
-// (Public, Delegate, BlueprintCallable, BlueprintEvent)
-
-void UItemReceived_Base_C::FinalOnGiftingComplete__DelegateSignature()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_Base.ItemReceived_Base_C.FinalOnGiftingComplete__DelegateSignature");
-
-	UItemReceived_Base_C_FinalOnGiftingComplete__DelegateSignature_Params params;
 
 	auto flags = fn->FunctionFlags;
 

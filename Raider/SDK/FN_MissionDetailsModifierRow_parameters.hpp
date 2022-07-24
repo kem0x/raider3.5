@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,12 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function MissionDetailsModifierRow.MissionDetailsModifierRow_C.Show Label
+struct UMissionDetailsModifierRow_C_Show_Label_Params
+{
+	bool                                               ShowLabel;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function MissionDetailsModifierRow.MissionDetailsModifierRow_C.PlayIntroAnimation
 struct UMissionDetailsModifierRow_C_PlayIntroAnimation_Params

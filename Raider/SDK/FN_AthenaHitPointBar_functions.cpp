@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -15,14 +15,14 @@ namespace SDK
 // Function AthenaHitPointBar.AthenaHitPointBar_C.SetSize
 // (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
-// bool                           useLargeSize                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           UseLargeSize                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UAthenaHitPointBar_C::SetSize(bool useLargeSize)
+void UAthenaHitPointBar_C::SetSize(bool UseLargeSize)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaHitPointBar.AthenaHitPointBar_C.SetSize");
 
 	UAthenaHitPointBar_C_SetSize_Params params;
-	params.useLargeSize = useLargeSize;
+	params.UseLargeSize = UseLargeSize;
 
 	auto flags = fn->FunctionFlags;
 

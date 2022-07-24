@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,11 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function TabVideoOptions.TabVideoOptions_C.UpdateOverallQualityLevel
+struct UTabVideoOptions_C_UpdateOverallQualityLevel_Params
+{
+};
 
 // Function TabVideoOptions.TabVideoOptions_C.Initialize Display Resolutions
 struct UTabVideoOptions_C_Initialize_Display_Resolutions_Params
@@ -77,14 +82,14 @@ struct UTabVideoOptions_C_Window_Mode__Changed_Params
 	int                                                Selected_Index;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function TabVideoOptions.TabVideoOptions_C.CustomEvent_22_23
-struct UTabVideoOptions_C_CustomEvent_22_23_Params
+// Function TabVideoOptions.TabVideoOptions_C.CustomEvent_23
+struct UTabVideoOptions_C_CustomEvent_23_Params
 {
 	int                                                Selected_Index;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function TabVideoOptions.TabVideoOptions_C.CustomEvent_23_24
-struct UTabVideoOptions_C_CustomEvent_23_24_Params
+// Function TabVideoOptions.TabVideoOptions_C.CustomEvent_24
+struct UTabVideoOptions_C_CustomEvent_24_Params
 {
 	int                                                Selected_Index;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
@@ -123,8 +128,8 @@ struct UTabVideoOptions_C_CustomEvent_Params
 	int                                                Selected_Index;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function TabVideoOptions.TabVideoOptions_C.CustomEvent_1_2
-struct UTabVideoOptions_C_CustomEvent_1_2_Params
+// Function TabVideoOptions.TabVideoOptions_C.CustomEvent_2
+struct UTabVideoOptions_C_CustomEvent_2_Params
 {
 	int                                                Selected_Index;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
@@ -149,6 +154,12 @@ struct UTabVideoOptions_C_OnGameUserSettingsUINeedsUpdate_Params
 // Function TabVideoOptions.TabVideoOptions_C.Destruct
 struct UTabVideoOptions_C_Destruct_Params
 {
+};
+
+// Function TabVideoOptions.TabVideoOptions_C.CustomEvent_1
+struct UTabVideoOptions_C_CustomEvent_1_Params
+{
+	int                                                Selected_Index;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function TabVideoOptions.TabVideoOptions_C.ExecuteUbergraph_TabVideoOptions

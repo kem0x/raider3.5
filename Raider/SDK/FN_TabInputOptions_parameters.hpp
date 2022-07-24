@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -14,8 +14,8 @@ namespace SDK
 //Parameters
 //---------------------------------------------------------------------------
 
-// Function TabInputOptions.TabInputOptions_C.NewFunction_0_1
-struct UTabInputOptions_C_NewFunction_0_1_Params
+// Function TabInputOptions.TabInputOptions_C.NewFunction_1
+struct UTabInputOptions_C_NewFunction_1_Params
 {
 };
 
@@ -51,7 +51,8 @@ struct UTabInputOptions_C_HandleUsingGamepadChanged_Params
 // Function TabInputOptions.TabInputOptions_C.UnbindClicked
 struct UTabInputOptions_C_UnbindClicked_Params
 {
-	int                                                Number_In_List;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	int                                                Number_in_List;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class UOptionsMenuInput_C*                         Widget;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 
 // Function TabInputOptions.TabInputOptions_C.ClearAndConstructKeybindList
@@ -62,7 +63,7 @@ struct UTabInputOptions_C_ClearAndConstructKeybindList_Params
 // Function TabInputOptions.TabInputOptions_C.Input Clicked
 struct UTabInputOptions_C_Input_Clicked_Params
 {
-	int                                                Number_In_List;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	int                                                Number_in_List;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	bool                                               Is_Primary_Button;                                        // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 

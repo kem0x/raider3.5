@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -28,7 +28,7 @@ struct UNews_C_Init_Params
 // Function News.News_C.PopulateEntries
 struct UNews_C_PopulateEntries_Params
 {
-	bool                                               isEmpty;                                                  // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+	bool                                               IsEmpty;                                                  // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function News.News_C.AddEntry

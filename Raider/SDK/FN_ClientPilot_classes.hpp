@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -30,10 +28,11 @@ public:
 
 
 // Class ClientPilot.ClientPilotBlackboard
-// 0x0000 (0x0028 - 0x0028)
+// 0x0050 (0x0078 - 0x0028)
 class UClientPilotBlackboard : public UObject
 {
 public:
+	unsigned char                                      UnknownData00[0x50];                                      // 0x0028(0x0050) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{

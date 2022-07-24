@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -17,23 +17,19 @@ namespace SDK
 // Parameters:
 // class UWidget*                 Container                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 // class UTextBlock*              RewardText                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-// class UFortMultiSizeItemCard*  RewardItemCard                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-// class UImage*                  RewardImageWidget              (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-// class UCommonTextBlock*        RewardCountTextBlock           (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// class UDailyQuestRewardInfo_C* RewardInfoWidget               (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 // bool                           HasReward                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// struct FFortItemInstanceQuantityPair RewardItem                     (BlueprintVisible, BlueprintReadOnly, Parm)
+// struct FFortItemQuantityPair   RewardItem                     (BlueprintVisible, BlueprintReadOnly, Parm)
 // int                            LevelRewarded                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UPlayerEmblemAndXp_C::SetupReward(class UWidget* Container, class UTextBlock* RewardText, class UFortMultiSizeItemCard* RewardItemCard, class UImage* RewardImageWidget, class UCommonTextBlock* RewardCountTextBlock, bool HasReward, const struct FFortItemInstanceQuantityPair& RewardItem, int LevelRewarded)
+void UPlayerEmblemAndXp_C::SetupReward(class UWidget* Container, class UTextBlock* RewardText, class UDailyQuestRewardInfo_C* RewardInfoWidget, bool HasReward, const struct FFortItemQuantityPair& RewardItem, int LevelRewarded)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function PlayerEmblemAndXp.PlayerEmblemAndXp_C.SetupReward");
 
 	UPlayerEmblemAndXp_C_SetupReward_Params params;
 	params.Container = Container;
 	params.RewardText = RewardText;
-	params.RewardItemCard = RewardItemCard;
-	params.RewardImageWidget = RewardImageWidget;
-	params.RewardCountTextBlock = RewardCountTextBlock;
+	params.RewardInfoWidget = RewardInfoWidget;
 	params.HasReward = HasReward;
 	params.RewardItem = RewardItem;
 	params.LevelRewarded = LevelRewarded;

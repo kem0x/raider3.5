@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -31,21 +29,21 @@ enum class EServerClientFlag : uint8_t
 //---------------------------------------------------------------------------
 
 // ScriptStruct McpProfileSys.BaseUrlContext
-// 0x0070
+// 0x0038
 struct FBaseUrlContext
 {
-	unsigned char                                      UnknownData00[0x70];                                      // 0x0000(0x0070) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x38];                                      // 0x0000(0x0038) MISSED OFFSET
 };
 
 // ScriptStruct McpProfileSys.DedicatedServerUrlContext
-// 0x0000 (0x0070 - 0x0070)
+// 0x0000 (0x0038 - 0x0038)
 struct FDedicatedServerUrlContext : public FBaseUrlContext
 {
 
 };
 
 // ScriptStruct McpProfileSys.ClientUrlContext
-// 0x0000 (0x0070 - 0x0070)
+// 0x0000 (0x0038 - 0x0038)
 struct FClientUrlContext : public FBaseUrlContext
 {
 
@@ -62,11 +60,11 @@ struct FProfileEntry
 };
 
 // ScriptStruct McpProfileSys.ProfileHttpRequest
-// 0x0070
+// 0x0030
 struct FProfileHttpRequest
 {
 	class UMcpProfile*                                 SourceProfile;                                            // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x68];                                      // 0x0008(0x0068) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0008(0x0028) MISSED OFFSET
 };
 
 // ScriptStruct McpProfileSys.ProfileGroupEntry
@@ -90,7 +88,7 @@ struct FMcpLootEntry
 };
 
 // ScriptStruct McpProfileSys.PublicUrlContext
-// 0x0000 (0x0070 - 0x0070)
+// 0x0000 (0x0038 - 0x0038)
 struct FPublicUrlContext : public FBaseUrlContext
 {
 

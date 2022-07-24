@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,46 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function TabGamePadConfig.TabGamePadConfig_C.InputCommonListViewNav
+struct UTabGamePadConfig_C_InputCommonListViewNav_Params
+{
+	EUINavigation                                      Navigation;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class UWidget*                                     ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+};
+
+// Function TabGamePadConfig.TabGamePadConfig_C.CustomInputTemplateConfigsNav
+struct UTabGamePadConfig_C_CustomInputTemplateConfigsNav_Params
+{
+	EUINavigation                                      Navigation;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class UWidget*                                     ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+};
+
+// Function TabGamePadConfig.TabGamePadConfig_C.GamepadPlatformConfigNav
+struct UTabGamePadConfig_C_GamepadPlatformConfigNav_Params
+{
+	EUINavigation                                      Navigation;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class UWidget*                                     ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+};
+
+// Function TabGamePadConfig.TabGamePadConfig_C.IsConsole
+struct UTabGamePadConfig_C_IsConsole_Params
+{
+	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function TabGamePadConfig.TabGamePadConfig_C.GamepadConfigNav
+struct UTabGamePadConfig_C_GamepadConfigNav_Params
+{
+	EUINavigation                                      Navigation;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class UWidget*                                     ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+};
+
+// Function TabGamePadConfig.TabGamePadConfig_C.GetCurrentPlatformIndex
+struct UTabGamePadConfig_C_GetCurrentPlatformIndex_Params
+{
+	int                                                Platform_Index;                                           // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function TabGamePadConfig.TabGamePadConfig_C.IsCustomConfig
 struct UTabGamePadConfig_C_IsCustomConfig_Params
@@ -89,7 +129,7 @@ struct UTabGamePadConfig_C_BndEvt__InputCommonListView_K2Node_ComponentBoundEven
 // Function TabGamePadConfig.TabGamePadConfig_C.InputClicked_Bind
 struct UTabGamePadConfig_C_InputClicked_Bind_Params
 {
-	int                                                Number_In_List;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	int                                                Number_in_List;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	bool                                               Is_Primary_Button;                                        // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
@@ -104,10 +144,10 @@ struct UTabGamePadConfig_C_HandleGamePadToggleMode_Params
 {
 };
 
-// Function TabGamePadConfig.TabGamePadConfig_C.Unclicked_Bind
-struct UTabGamePadConfig_C_Unclicked_Bind_Params
+// Function TabGamePadConfig.TabGamePadConfig_C.UnbindClicked_Bind
+struct UTabGamePadConfig_C_UnbindClicked_Bind_Params
 {
-	int                                                Number_In_List;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	int                                                Number_in_List;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	class UOptionsMenuInputOneKey_C*                   Widget;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 

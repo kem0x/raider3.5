@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -14,11 +14,31 @@ namespace SDK
 //Parameters
 //---------------------------------------------------------------------------
 
-// Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaMemberLocationStateChanged
-struct ULobbyPlayerPadTop_C_OnAthenaMemberLocationStateChanged_Params
+// Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.RefreshChatDisabled
+struct ULobbyPlayerPadTop_C_RefreshChatDisabled_Params
 {
-	struct FUniqueNetIdRepl                            Member_Id;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
-	EFortPartyMemberLocation                           Location;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaReadyTypeChanged
+struct ULobbyPlayerPadTop_C_OnAthenaReadyTypeChanged_Params
+{
+	struct FUniqueNetIdRepl                            MemberId;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+	EAthenaPartyMemberReadyType                        ReadyType;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaTimeSpentInMatchChanged
+struct ULobbyPlayerPadTop_C_OnAthenaTimeSpentInMatchChanged_Params
+{
+	struct FUniqueNetIdRepl                            MemberId;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+	struct FText                                       Minutes;                                                  // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+	struct FText                                       Seconds;                                                  // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+};
+
+// Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaNumAliveChanged
+struct ULobbyPlayerPadTop_C_OnAthenaNumAliveChanged_Params
+{
+	struct FUniqueNetIdRepl                            MemberId;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+	int                                                NumAlive;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.UpdateMicIcon
@@ -48,16 +68,7 @@ struct ULobbyPlayerPadTop_C_HandlePlayerTalkingChanged_Params
 // Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.RefreshAthenaReadyState
 struct ULobbyPlayerPadTop_C_RefreshAthenaReadyState_Params
 {
-	bool                                               Ready;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	EFortPartyMemberLocation                           Location;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	bool                                               LocationValid;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaReadyStateChanged
-struct ULobbyPlayerPadTop_C_OnAthenaReadyStateChanged_Params
-{
-	struct FUniqueNetIdRepl                            Member_Id;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
-	bool                                               Ready;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	struct FUniqueNetIdRepl                            MemberId;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm)
 };
 
 // Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnLobbyPlayerUnhovered

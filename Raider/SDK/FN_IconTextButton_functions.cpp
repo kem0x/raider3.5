@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,28 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function IconTextButton.IconTextButton_C.Get Dynamic Material
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UMaterialInstanceDynamic* Ret_Material                   (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+
+void UIconTextButton_C::Get_Dynamic_Material(class UMaterialInstanceDynamic** Ret_Material)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function IconTextButton.IconTextButton_C.Get Dynamic Material");
+
+	UIconTextButton_C_Get_Dynamic_Material_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (Ret_Material != nullptr)
+		*Ret_Material = params.Ret_Material;
+}
+
 
 // Function IconTextButton.IconTextButton_C.ShowIcon
 // (Public, BlueprintCallable, BlueprintEvent)

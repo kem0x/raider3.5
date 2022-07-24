@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -26,13 +26,16 @@ struct AAthena_PlayerController_C_UserConstructionScript_Params
 {
 };
 
-// Function Athena_PlayerController.Athena_PlayerController_C.ReceiveBeginPlay
-struct AAthena_PlayerController_C_ReceiveBeginPlay_Params
-{
-};
-
 // Function Athena_PlayerController.Athena_PlayerController_C.PlayWinEffects
 struct AAthena_PlayerController_C_PlayWinEffects_Params
+{
+	class APawn**                                      FinisherPawn;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class UFortWeaponItemDefinition**                  FinishingWeapon;                                          // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	EDeathCause*                                       DeathCause;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function Athena_PlayerController.Athena_PlayerController_C.ReceiveBeginPlay
+struct AAthena_PlayerController_C_ReceiveBeginPlay_Params
 {
 };
 

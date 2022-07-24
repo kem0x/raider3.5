@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,16 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function StatsListItemWIdget.StatsListItemWIdget_C.Initial Reset
+struct UStatsListItemWIdget_C_Initial_Reset_Params
+{
+};
+
+// Function StatsListItemWIdget.StatsListItemWIdget_C.Populate-Update
+struct UStatsListItemWIdget_C_Populate_Update_Params
+{
+};
 
 // Function StatsListItemWIdget.StatsListItemWIdget_C.SetTextAndBorderHighlight
 struct UStatsListItemWIdget_C_SetTextAndBorderHighlight_Params

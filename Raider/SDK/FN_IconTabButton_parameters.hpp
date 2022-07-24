@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -63,13 +63,13 @@ struct UIconTabButton_C_SetTabLabelInfo_Params
 	struct FFortTabButtonLabelInfo                     TabLabelInfo;                                             // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
 };
 
-// Function IconTabButton.IconTabButton_C.OnSelected
-struct UIconTabButton_C_OnSelected_Params
+// Function IconTabButton.IconTabButton_C.BP_OnSelected
+struct UIconTabButton_C_BP_OnSelected_Params
 {
 };
 
-// Function IconTabButton.IconTabButton_C.OnDeselected
-struct UIconTabButton_C_OnDeselected_Params
+// Function IconTabButton.IconTabButton_C.BP_OnDeselected
+struct UIconTabButton_C_BP_OnDeselected_Params
 {
 };
 
@@ -78,23 +78,23 @@ struct UIconTabButton_C_Construct_Params
 {
 };
 
-// Function IconTabButton.IconTabButton_C.OnHovered
-struct UIconTabButton_C_OnHovered_Params
+// Function IconTabButton.IconTabButton_C.BP_OnHovered
+struct UIconTabButton_C_BP_OnHovered_Params
 {
 };
 
-// Function IconTabButton.IconTabButton_C.OnUnhovered
-struct UIconTabButton_C_OnUnhovered_Params
+// Function IconTabButton.IconTabButton_C.BP_OnUnhovered
+struct UIconTabButton_C_BP_OnUnhovered_Params
 {
 };
 
-// Function IconTabButton.IconTabButton_C.OnEnabled
-struct UIconTabButton_C_OnEnabled_Params
+// Function IconTabButton.IconTabButton_C.BP_OnEnabled
+struct UIconTabButton_C_BP_OnEnabled_Params
 {
 };
 
-// Function IconTabButton.IconTabButton_C.OnDisabled
-struct UIconTabButton_C_OnDisabled_Params
+// Function IconTabButton.IconTabButton_C.BP_OnDisabled
+struct UIconTabButton_C_BP_OnDisabled_Params
 {
 };
 

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -83,13 +83,13 @@ struct UMainTabIconButton_C_SetTabLabelInfo_Params
 	struct FFortTabButtonLabelInfo                     TabLabelInfo;                                             // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
 };
 
-// Function MainTabIconButton.MainTabIconButton_C.OnSelected
-struct UMainTabIconButton_C_OnSelected_Params
+// Function MainTabIconButton.MainTabIconButton_C.BP_OnSelected
+struct UMainTabIconButton_C_BP_OnSelected_Params
 {
 };
 
-// Function MainTabIconButton.MainTabIconButton_C.OnDeselected
-struct UMainTabIconButton_C_OnDeselected_Params
+// Function MainTabIconButton.MainTabIconButton_C.BP_OnDeselected
+struct UMainTabIconButton_C_BP_OnDeselected_Params
 {
 };
 
@@ -98,13 +98,13 @@ struct UMainTabIconButton_C_Construct_Params
 {
 };
 
-// Function MainTabIconButton.MainTabIconButton_C.OnHovered
-struct UMainTabIconButton_C_OnHovered_Params
+// Function MainTabIconButton.MainTabIconButton_C.BP_OnHovered
+struct UMainTabIconButton_C_BP_OnHovered_Params
 {
 };
 
-// Function MainTabIconButton.MainTabIconButton_C.OnUnhovered
-struct UMainTabIconButton_C_OnUnhovered_Params
+// Function MainTabIconButton.MainTabIconButton_C.BP_OnUnhovered
+struct UMainTabIconButton_C_BP_OnUnhovered_Params
 {
 };
 

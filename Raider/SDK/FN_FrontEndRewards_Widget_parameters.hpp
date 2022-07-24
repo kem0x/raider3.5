@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,22 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function FrontEndRewards_Widget.FrontEndRewards_Widget_C.HandleOnItemCacheRewardsClaimFailed
+struct UFrontEndRewards_Widget_C_HandleOnItemCacheRewardsClaimFailed_Params
+{
+};
+
+// Function FrontEndRewards_Widget.FrontEndRewards_Widget_C.HandleOnItemCacheRewardsClaimed
+struct UFrontEndRewards_Widget_C_HandleOnItemCacheRewardsClaimed_Params
+{
+	TArray<struct FFortItemInstanceQuantityPair>       Rewards;                                                  // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
+};
+
+// Function FrontEndRewards_Widget.FrontEndRewards_Widget_C.PopulateItemCacheReward
+struct UFrontEndRewards_Widget_C_PopulateItemCacheReward_Params
+{
+};
 
 // Function FrontEndRewards_Widget.FrontEndRewards_Widget_C.HandleOnGiftBoxRemoved
 struct UFrontEndRewards_Widget_C_HandleOnGiftBoxRemoved_Params

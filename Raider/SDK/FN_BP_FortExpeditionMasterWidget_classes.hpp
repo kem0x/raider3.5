@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,27 +13,27 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // WidgetBlueprintGeneratedClass BP_FortExpeditionMasterWidget.BP_FortExpeditionMasterWidget_C
-// 0x00D5 (0x0515 - 0x0440)
+// 0x00E5 (0x03FD - 0x0318)
 class UBP_FortExpeditionMasterWidget_C : public UFortExpeditionMasterWidget
 {
 public:
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0440(0x0008) (Transient, DuplicateTransient)
-	class UBP_FortExpeditionOverviewWidget_C*          BP_FortExpeditionOverviewWidget;                          // 0x0448(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
-	struct FDataTableRowHandle                         BackInputAction;                                          // 0x0450(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FDataTableRowHandle                         BuildExpeditionAction;                                    // 0x0460(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FDataTableRowHandle                         AbandonExpeditionAction;                                  // 0x0470(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FDataTableRowHandle                         CollectExpeditionAction;                                  // 0x0480(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FDataTableRowHandle                         SortInputAction;                                          // 0x0490(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
-	bool                                               bRewardsShowing;                                          // 0x04A0(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x04A1(0x0007) MISSED OFFSET
-	class UFrontEndRewards_Widget_C*                   RewardsWidget;                                            // 0x04A8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
-	TArray<class UFortExpeditionItem*>                 CompletedExpeditions;                                     // 0x04B0(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
-	struct FFrontEndRewards_Definition                 RewardsDefinition;                                        // 0x04C0(0x0050) (Edit, BlueprintVisible, DisableEditOnInstance)
-	EFortExpeditionListSort                            ExpeditionListSortType;                                   // 0x0510(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EFortExpeditionListSort                            ExpeditionListSortBegin;                                  // 0x0511(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EFortExpeditionListSort                            ExpeditionListSortEnd;                                    // 0x0512(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               BlockedByStorageWarningShown;                             // 0x0513(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               BlockedByProfileLockWarningShown;                         // 0x0514(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0318(0x0008) (Transient, DuplicateTransient)
+	class UBP_FortExpeditionOverviewWidget_C*          BP_FortExpeditionOverviewWidget;                          // 0x0320(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	struct FDataTableRowHandle                         BackInputAction;                                          // 0x0328(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FDataTableRowHandle                         BuildExpeditionAction;                                    // 0x0338(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FDataTableRowHandle                         AbandonExpeditionAction;                                  // 0x0348(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FDataTableRowHandle                         CollectExpeditionAction;                                  // 0x0358(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FDataTableRowHandle                         SortInputAction;                                          // 0x0368(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
+	bool                                               bRewardsShowing;                                          // 0x0378(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0379(0x0007) MISSED OFFSET
+	class UFrontEndRewards_Widget_C*                   RewardsWidget;                                            // 0x0380(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
+	TArray<class UFortExpeditionItem*>                 CompletedExpeditions;                                     // 0x0388(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
+	struct FFrontEndRewards_Definition                 RewardsDefinition;                                        // 0x0398(0x0060) (Edit, BlueprintVisible, DisableEditOnInstance)
+	EFortExpeditionListSort                            ExpeditionListSortType;                                   // 0x03F8(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EFortExpeditionListSort                            ExpeditionListSortBegin;                                  // 0x03F9(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EFortExpeditionListSort                            ExpeditionListSortEnd;                                    // 0x03FA(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               BlockedByStorageWarningShown;                             // 0x03FB(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               BlockedByProfileLockWarningShown;                         // 0x03FC(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{

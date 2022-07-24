@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -59,14 +59,14 @@ void URotatorSelectorReplaySettings_C::Update_Options(TArray<struct FText>* NewP
 }
 
 
-// Function RotatorSelectorReplaySettings.RotatorSelectorReplaySettings_C.Center on Widget
+// Function RotatorSelectorReplaySettings.RotatorSelectorReplaySettings_C.Center On Widget
 // (Public, BlueprintCallable, BlueprintEvent)
 
-void URotatorSelectorReplaySettings_C::Center_on_Widget()
+void URotatorSelectorReplaySettings_C::Center_On_Widget()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function RotatorSelectorReplaySettings.RotatorSelectorReplaySettings_C.Center on Widget");
+	static auto fn = UObject::FindObject<UFunction>("Function RotatorSelectorReplaySettings.RotatorSelectorReplaySettings_C.Center On Widget");
 
-	URotatorSelectorReplaySettings_C_Center_on_Widget_Params params;
+	URotatorSelectorReplaySettings_C_Center_On_Widget_Params params;
 
 	auto flags = fn->FunctionFlags;
 

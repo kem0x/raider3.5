@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -243,6 +243,23 @@ void AMusicManager_C::On_Stinger_Completed(class UFortMusicVoice* Voice)
 
 	AMusicManager_C_On_Stinger_Completed_Params params;
 	params.Voice = Voice;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function MusicManager.MusicManager_C.Gather Combat Graph Tresholds
+// (BlueprintCallable, BlueprintEvent)
+
+void AMusicManager_C::Gather_Combat_Graph_Tresholds()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MusicManager.MusicManager_C.Gather Combat Graph Tresholds");
+
+	AMusicManager_C_Gather_Combat_Graph_Tresholds_Params params;
 
 	auto flags = fn->FunctionFlags;
 

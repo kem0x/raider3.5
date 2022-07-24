@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -108,6 +108,45 @@ void UAthenaDirectAcquisitionScreen_C::OnActivated()
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionScreen.AthenaDirectAcquisitionScreen_C.OnActivated");
 
 	UAthenaDirectAcquisitionScreen_C_OnActivated_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionScreen.AthenaDirectAcquisitionScreen_C.ClearOfferWidgets
+// (Event, Public, BlueprintEvent)
+
+void UAthenaDirectAcquisitionScreen_C::ClearOfferWidgets()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionScreen.AthenaDirectAcquisitionScreen_C.ClearOfferWidgets");
+
+	UAthenaDirectAcquisitionScreen_C_ClearOfferWidgets_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaDirectAcquisitionScreen.AthenaDirectAcquisitionScreen_C.OnUpdateOtherPlatformMTXMessage
+// (Event, Protected, HasOutParms, BlueprintEvent)
+// Parameters:
+// bool*                          HasOtherPlatformCurrency       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FText*                  CurrencyMessageLocText         (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+
+void UAthenaDirectAcquisitionScreen_C::OnUpdateOtherPlatformMTXMessage(bool* HasOtherPlatformCurrency, struct FText* CurrencyMessageLocText)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaDirectAcquisitionScreen.AthenaDirectAcquisitionScreen_C.OnUpdateOtherPlatformMTXMessage");
+
+	UAthenaDirectAcquisitionScreen_C_OnUpdateOtherPlatformMTXMessage_Params params;
+	params.HasOtherPlatformCurrency = HasOtherPlatformCurrency;
+	params.CurrencyMessageLocText = CurrencyMessageLocText;
 
 	auto flags = fn->FunctionFlags;
 

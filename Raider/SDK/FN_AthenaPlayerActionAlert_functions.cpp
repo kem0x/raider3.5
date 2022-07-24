@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,26 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function AthenaPlayerActionAlert.AthenaPlayerActionAlert_C.OnAnimationFinished
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+// Parameters:
+// class UWidgetAnimation**       Animation                      (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void UAthenaPlayerActionAlert_C::OnAnimationFinished(class UWidgetAnimation** Animation)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaPlayerActionAlert.AthenaPlayerActionAlert_C.OnAnimationFinished");
+
+	UAthenaPlayerActionAlert_C_OnAnimationFinished_Params params;
+	params.Animation = Animation;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function AthenaPlayerActionAlert.AthenaPlayerActionAlert_C.AlertPlayer
 // (Event, Protected, HasOutParms, BlueprintEvent)
@@ -25,26 +45,6 @@ void UAthenaPlayerActionAlert_C::AlertPlayer(EAthenaPlayerActionAlert* Alert, st
 	UAthenaPlayerActionAlert_C_AlertPlayer_Params params;
 	params.Alert = Alert;
 	params.DetailText = DetailText;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function AthenaPlayerActionAlert.AthenaPlayerActionAlert_C.OnAnimationFinished
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
-// Parameters:
-// class UWidgetAnimation**       Animation                      (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-
-void UAthenaPlayerActionAlert_C::OnAnimationFinished(class UWidgetAnimation** Animation)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaPlayerActionAlert.AthenaPlayerActionAlert_C.OnAnimationFinished");
-
-	UAthenaPlayerActionAlert_C_OnAnimationFinished_Params params;
-	params.Animation = Animation;
 
 	auto flags = fn->FunctionFlags;
 

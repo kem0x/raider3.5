@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -33,8 +33,8 @@ struct URotatorSelector_C_Update_Options_Params
 	TArray<struct FText>                               NewParam;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
 };
 
-// Function RotatorSelector.RotatorSelector_C.Center on Widget
-struct URotatorSelector_C_Center_on_Widget_Params
+// Function RotatorSelector.RotatorSelector_C.Center On Widget
+struct URotatorSelector_C_Center_On_Widget_Params
 {
 };
 
@@ -87,6 +87,12 @@ struct URotatorSelector_C_BndEvt__ButtonLeft_K2Node_ComponentBoundEvent_1_Common
 struct URotatorSelector_C_BndEvt__ButtonRight_K2Node_ComponentBoundEvent_15_CommonButtonClicked__DelegateSignature_Params
 {
 	class UCommonButton*                               Button;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+};
+
+// Function RotatorSelector.RotatorSelector_C.PreConstruct
+struct URotatorSelector_C_PreConstruct_Params
+{
+	bool*                                              IsDesignTime;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function RotatorSelector.RotatorSelector_C.ExecuteUbergraph_RotatorSelector

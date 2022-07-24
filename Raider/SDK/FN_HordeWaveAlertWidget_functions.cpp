@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -60,16 +60,16 @@ void UHordeWaveAlertWidget_C::OnWaveCompleted(int Wave, TArray<struct FFortItemI
 }
 
 
-// Function HordeWaveAlertWidget.HordeWaveAlertWidget_C.OnHordeTierInitialized_Event_0_1
+// Function HordeWaveAlertWidget.HordeWaveAlertWidget_C.OnHordeTierInitialized_Event_1
 // (HasOutParms, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // TArray<struct FFortItemInstanceQuantityPair> Items                          (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
 
-void UHordeWaveAlertWidget_C::OnHordeTierInitialized_Event_0_1(TArray<struct FFortItemInstanceQuantityPair> Items)
+void UHordeWaveAlertWidget_C::OnHordeTierInitialized_Event_1(TArray<struct FFortItemInstanceQuantityPair> Items)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function HordeWaveAlertWidget.HordeWaveAlertWidget_C.OnHordeTierInitialized_Event_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function HordeWaveAlertWidget.HordeWaveAlertWidget_C.OnHordeTierInitialized_Event_1");
 
-	UHordeWaveAlertWidget_C_OnHordeTierInitialized_Event_0_1_Params params;
+	UHordeWaveAlertWidget_C_OnHordeTierInitialized_Event_1_Params params;
 	params.Items = Items;
 
 	auto flags = fn->FunctionFlags;

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -147,6 +147,26 @@ void UTabAccessibilityOptions_C::BndEvt__HearingImpairedMode_K2Node_ComponentBou
 	static auto fn = UObject::FindObject<UFunction>("Function TabAccessibilityOptions.TabAccessibilityOptions_C.BndEvt__HearingImpairedMode_K2Node_ComponentBoundEvent_13_Selection Changed__DelegateSignature");
 
 	UTabAccessibilityOptions_C_BndEvt__HearingImpairedMode_K2Node_ComponentBoundEvent_13_Selection_Changed__DelegateSignature_Params params;
+	params.Selected_Index = Selected_Index;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TabAccessibilityOptions.TabAccessibilityOptions_C.BndEvt__IgnoreGamepadInput_K2Node_ComponentBoundEvent_5_Selection Changed__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// int                            Selected_Index                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UTabAccessibilityOptions_C::BndEvt__IgnoreGamepadInput_K2Node_ComponentBoundEvent_5_Selection_Changed__DelegateSignature(int Selected_Index)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAccessibilityOptions.TabAccessibilityOptions_C.BndEvt__IgnoreGamepadInput_K2Node_ComponentBoundEvent_5_Selection Changed__DelegateSignature");
+
+	UTabAccessibilityOptions_C_BndEvt__IgnoreGamepadInput_K2Node_ComponentBoundEvent_5_Selection_Changed__DelegateSignature_Params params;
 	params.Selected_Index = Selected_Index;
 
 	auto flags = fn->FunctionFlags;

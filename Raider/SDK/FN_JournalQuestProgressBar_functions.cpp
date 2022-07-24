@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -46,14 +46,14 @@ void UJournalQuestProgressBar_C::Construct()
 }
 
 
-// Function JournalQuestProgressBar.JournalQuestProgressBar_C.HandleNewQuestObjectiveBP
-// (Event, Protected, BlueprintEvent)
+// Function JournalQuestProgressBar.JournalQuestProgressBar_C.Handle Quests Updated
+// (BlueprintCallable, BlueprintEvent)
 
-void UJournalQuestProgressBar_C::HandleNewQuestObjectiveBP()
+void UJournalQuestProgressBar_C::Handle_Quests_Updated()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function JournalQuestProgressBar.JournalQuestProgressBar_C.HandleNewQuestObjectiveBP");
+	static auto fn = UObject::FindObject<UFunction>("Function JournalQuestProgressBar.JournalQuestProgressBar_C.Handle Quests Updated");
 
-	UJournalQuestProgressBar_C_HandleNewQuestObjectiveBP_Params params;
+	UJournalQuestProgressBar_C_Handle_Quests_Updated_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -63,14 +63,17 @@ void UJournalQuestProgressBar_C::HandleNewQuestObjectiveBP()
 }
 
 
-// Function JournalQuestProgressBar.JournalQuestProgressBar_C.Handle Quests Updated
-// (BlueprintCallable, BlueprintEvent)
+// Function JournalQuestProgressBar.JournalQuestProgressBar_C.OnListItemObjectSet
+// (Event, Protected, BlueprintEvent)
+// Parameters:
+// class UObject**                ListItemObject                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UJournalQuestProgressBar_C::Handle_Quests_Updated()
+void UJournalQuestProgressBar_C::OnListItemObjectSet(class UObject** ListItemObject)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function JournalQuestProgressBar.JournalQuestProgressBar_C.Handle Quests Updated");
+	static auto fn = UObject::FindObject<UFunction>("Function JournalQuestProgressBar.JournalQuestProgressBar_C.OnListItemObjectSet");
 
-	UJournalQuestProgressBar_C_Handle_Quests_Updated_Params params;
+	UJournalQuestProgressBar_C_OnListItemObjectSet_Params params;
+	params.ListItemObject = ListItemObject;
 
 	auto flags = fn->FunctionFlags;
 

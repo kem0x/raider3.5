@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -62,6 +62,28 @@ void ABP_ProjectileTrajectory_C::ReceiveBeginPlay()
 	static auto fn = UObject::FindObject<UFunction>("Function BP_ProjectileTrajectory.BP_ProjectileTrajectory_C.ReceiveBeginPlay");
 
 	ABP_ProjectileTrajectory_C_ReceiveBeginPlay_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function BP_ProjectileTrajectory.BP_ProjectileTrajectory_C.SetTrajectoryFromNative
+// (Event, Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// TArray<struct FVector>*        SplinePoints                   (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
+// TArray<struct FVector>*        SplineTangents                 (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
+
+void ABP_ProjectileTrajectory_C::SetTrajectoryFromNative(TArray<struct FVector>* SplinePoints, TArray<struct FVector>* SplineTangents)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function BP_ProjectileTrajectory.BP_ProjectileTrajectory_C.SetTrajectoryFromNative");
+
+	ABP_ProjectileTrajectory_C_SetTrajectoryFromNative_Params params;
+	params.SplinePoints = SplinePoints;
+	params.SplineTangents = SplineTangents;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -22,6 +22,13 @@ struct AReplicationGraphDebugActor_ServerStopDebugging_Params
 // Function ReplicationGraph.ReplicationGraphDebugActor.ServerStartDebugging
 struct AReplicationGraphDebugActor_ServerStartDebugging_Params
 {
+};
+
+// Function ReplicationGraph.ReplicationGraphDebugActor.ServerSetCullDistanceForClass
+struct AReplicationGraphDebugActor_ServerSetCullDistanceForClass_Params
+{
+	class UClass*                                      Class;                                                    // (Parm, ZeroConstructor, IsPlainOldData)
+	float                                              CullDistance;                                             // (Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function ReplicationGraph.ReplicationGraphDebugActor.ServerPrintAllActorInfo

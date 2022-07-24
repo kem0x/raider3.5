@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,57 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.BindBroadcastEvents
+// (Private, BlueprintCallable, BlueprintEvent)
+
+void UAthenaSpectatorHUD_C::BindBroadcastEvents()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.BindBroadcastEvents");
+
+	UAthenaSpectatorHUD_C_BindBroadcastEvents_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.ToggleOffAirWidgetVisibility
+// (Private, BlueprintCallable, BlueprintEvent)
+
+void UAthenaSpectatorHUD_C::ToggleOffAirWidgetVisibility()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.ToggleOffAirWidgetVisibility");
+
+	UAthenaSpectatorHUD_C_ToggleOffAirWidgetVisibility_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.TogglePlayerListVisibility
+// (Private, BlueprintCallable, BlueprintEvent)
+
+void UAthenaSpectatorHUD_C::TogglePlayerListVisibility()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.TogglePlayerListVisibility");
+
+	UAthenaSpectatorHUD_C_TogglePlayerListVisibility_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.ShowCameraControls
 // (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
@@ -88,17 +139,14 @@ void UAthenaSpectatorHUD_C::HandleCameraChange(class AFortPlayerControllerSpecta
 }
 
 
-// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.SetViewSettingsVisibility
+// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.ToggleViewSettingsVisibility
 // (Private, BlueprintCallable, BlueprintEvent)
-// Parameters:
-// bool                           Visible                        (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UAthenaSpectatorHUD_C::SetViewSettingsVisibility(bool Visible)
+void UAthenaSpectatorHUD_C::ToggleViewSettingsVisibility()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.SetViewSettingsVisibility");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.ToggleViewSettingsVisibility");
 
-	UAthenaSpectatorHUD_C_SetViewSettingsVisibility_Params params;
-	params.Visible = Visible;
+	UAthenaSpectatorHUD_C_ToggleViewSettingsVisibility_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -539,23 +587,6 @@ void UAthenaSpectatorHUD_C::OnConfirmed_96D6B69B40224C661B08D9B34525EE86()
 }
 
 
-// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.Construct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
-
-void UAthenaSpectatorHUD_C::Construct()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.Construct");
-
-	UAthenaSpectatorHUD_C_Construct_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.OnEnterState
 // (Event, Public, BlueprintEvent)
 // Parameters:
@@ -567,6 +598,23 @@ void UAthenaSpectatorHUD_C::OnEnterState(EFortUIState* PreviousUIState)
 
 	UAthenaSpectatorHUD_C_OnEnterState_Params params;
 	params.PreviousUIState = PreviousUIState;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.Construct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UAthenaSpectatorHUD_C::Construct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.Construct");
+
+	UAthenaSpectatorHUD_C_Construct_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -884,6 +932,26 @@ void UAthenaSpectatorHUD_C::HUDVisibilitySound(EHudVisibilityState HUDVisibility
 
 	UAthenaSpectatorHUD_C_HUDVisibilitySound_Params params;
 	params.HUDVisibility = HUDVisibility;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.OnHUDScaleChanged
+// (Event, Protected, BlueprintEvent)
+// Parameters:
+// float*                         HUDScale                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaSpectatorHUD_C::OnHUDScaleChanged(float* HUDScale)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSpectatorHUD.AthenaSpectatorHUD_C.OnHUDScaleChanged");
+
+	UAthenaSpectatorHUD_C_OnHUDScaleChanged_Params params;
+	params.HUDScale = HUDScale;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -34,7 +32,7 @@ public:
 
 
 // Class Party.Party
-// 0x0478 (0x04A0 - 0x0028)
+// 0x0208 (0x0230 - 0x0028)
 class UParty : public UObject
 {
 public:
@@ -42,7 +40,7 @@ public:
 	int                                                DefaultMaxPartySize;                                      // 0x0098(0x0004) (ZeroConstructor, Config, IsPlainOldData)
 	unsigned char                                      UnknownData01[0x14];                                      // 0x009C(0x0014) MISSED OFFSET
 	bool                                               bLeavingPersistentParty;                                  // 0x00B0(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x3EF];                                     // 0x00B1(0x03EF) MISSED OFFSET
+	unsigned char                                      UnknownData02[0x17F];                                     // 0x00B1(0x017F) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -54,7 +52,7 @@ public:
 
 
 // Class Party.PartyGameState
-// 0x0508 (0x0530 - 0x0028)
+// 0x0298 (0x02C0 - 0x0028)
 class UPartyGameState : public UObject
 {
 public:
@@ -70,7 +68,7 @@ public:
 	unsigned char                                      UnknownData04[0x108];                                     // 0x00E0(0x0108) MISSED OFFSET
 	class UClass*                                      ReservationBeaconClientClass;                             // 0x01E8(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
 	class APartyBeaconClient*                          ReservationBeaconClient;                                  // 0x01F0(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData05[0x338];                                     // 0x01F8(0x0338) MISSED OFFSET
+	unsigned char                                      UnknownData05[0xC8];                                      // 0x01F8(0x00C8) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{

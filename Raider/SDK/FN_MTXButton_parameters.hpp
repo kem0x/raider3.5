@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -19,8 +19,8 @@ struct UMTXButton_C_UpdateState_Params
 {
 };
 
-// Function MTXButton.MTXButton_C.Get_Button_ToolTipWidget_0_1
-struct UMTXButton_C_Get_Button_ToolTipWidget_0_1_Params
+// Function MTXButton.MTXButton_C.Get_Button_ToolTipWidget_1
+struct UMTXButton_C_Get_Button_ToolTipWidget_1_Params
 {
 	class UWidget*                                     ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
 };

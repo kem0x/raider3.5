@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,16 +13,16 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass GAB_FlingerRanged.GAB_FlingerRanged_C
-// 0x0030 (0x0B48 - 0x0B18)
+// 0x0030 (0x0968 - 0x0938)
 class UGAB_FlingerRanged_C : public UGAB_AIBaseRanged_C
 {
 public:
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0B18(0x0008) (Transient, DuplicateTransient)
-	class UParticleSystemComponent*                    ThrowFX;                                                  // 0x0B20(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
-	class UParticleSystem*                             ThrowFXTemplate;                                          // 0x0B28(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class USkeletalMeshComponent*                      FlingerMesh;                                              // 0x0B30(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
-	struct FGameplayTag                                GC_NPCRangedGrab;                                         // 0x0B38(0x0008) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FGameplayTag                                GC_NPCRangedThrow;                                        // 0x0B40(0x0008) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0938(0x0008) (Transient, DuplicateTransient)
+	class UParticleSystemComponent*                    ThrowFX;                                                  // 0x0940(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
+	class UParticleSystem*                             ThrowFXTemplate;                                          // 0x0948(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class USkeletalMeshComponent*                      FlingerMesh;                                              // 0x0950(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
+	struct FGameplayTag                                GC_NPCRangedGrab;                                         // 0x0958(0x0008) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FGameplayTag                                GC_NPCRangedThrow;                                        // 0x0960(0x0008) (Edit, BlueprintVisible, DisableEditOnInstance)
 
 	static UClass* StaticClass()
 	{

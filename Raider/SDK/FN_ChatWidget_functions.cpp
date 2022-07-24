@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -308,14 +308,17 @@ void UChatWidget_C::ExecuteUbergraph_ChatWidget(int EntryPoint)
 }
 
 
-// Function ChatWidget.ChatWidget_C.AboutToEnterChat__DelegateSignature
+// Function ChatWidget.ChatWidget_C.OnEnteredChat__DelegateSignature
 // (Public, Delegate, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           EnteredChat                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UChatWidget_C::AboutToEnterChat__DelegateSignature()
+void UChatWidget_C::OnEnteredChat__DelegateSignature(bool EnteredChat)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ChatWidget.ChatWidget_C.AboutToEnterChat__DelegateSignature");
+	static auto fn = UObject::FindObject<UFunction>("Function ChatWidget.ChatWidget_C.OnEnteredChat__DelegateSignature");
 
-	UChatWidget_C_AboutToEnterChat__DelegateSignature_Params params;
+	UChatWidget_C_OnEnteredChat__DelegateSignature_Params params;
+	params.EnteredChat = EnteredChat;
 
 	auto flags = fn->FunctionFlags;
 

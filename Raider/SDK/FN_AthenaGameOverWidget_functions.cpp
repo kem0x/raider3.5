@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,46 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function AthenaGameOverWidget.AthenaGameOverWidget_C.OnPlayerLost
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EEndOfMatchReason              LostReason                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaGameOverWidget_C::OnPlayerLost(EEndOfMatchReason LostReason)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaGameOverWidget.AthenaGameOverWidget_C.OnPlayerLost");
+
+	UAthenaGameOverWidget_C_OnPlayerLost_Params params;
+	params.LostReason = LostReason;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaGameOverWidget.AthenaGameOverWidget_C.OnWinningScoreDetermined
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// int                            Score                          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaGameOverWidget_C::OnWinningScoreDetermined(int Score)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaGameOverWidget.AthenaGameOverWidget_C.OnWinningScoreDetermined");
+
+	UAthenaGameOverWidget_C_OnWinningScoreDetermined_Params params;
+	params.Score = Score;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function AthenaGameOverWidget.AthenaGameOverWidget_C.Handle_CancelMatchmaking
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent)

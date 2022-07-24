@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -77,13 +77,13 @@ struct UAthenaQuickbarPrimary_C_OnQuickbarContentsChanged_Params
 	TArray<int>*                                       ChangedSlots;                                             // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
 };
 
-// Function AthenaQuickbarPrimary.AthenaQuickbarPrimary_C.Construct
-struct UAthenaQuickbarPrimary_C_Construct_Params
+// Function AthenaQuickbarPrimary.AthenaQuickbarPrimary_C.AnimationFinished
+struct UAthenaQuickbarPrimary_C_AnimationFinished_Params
 {
 };
 
-// Function AthenaQuickbarPrimary.AthenaQuickbarPrimary_C.AnimationFinished
-struct UAthenaQuickbarPrimary_C_AnimationFinished_Params
+// Function AthenaQuickbarPrimary.AthenaQuickbarPrimary_C.Construct
+struct UAthenaQuickbarPrimary_C_Construct_Params
 {
 };
 

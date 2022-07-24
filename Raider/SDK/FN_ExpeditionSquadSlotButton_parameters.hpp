@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -38,8 +38,8 @@ struct UExpeditionSquadSlotButton_C_HandlePostDifferentSquadSlotSetBP_Params
 {
 };
 
-// Function ExpeditionSquadSlotButton.ExpeditionSquadSlotButton_C.OnSelected
-struct UExpeditionSquadSlotButton_C_OnSelected_Params
+// Function ExpeditionSquadSlotButton.ExpeditionSquadSlotButton_C.BP_OnSelected
+struct UExpeditionSquadSlotButton_C_BP_OnSelected_Params
 {
 };
 

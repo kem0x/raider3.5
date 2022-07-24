@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,22 +13,22 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass GAB_TakerEvade.GAB_TakerEvade_C
-// 0x0050 (0x0B40 - 0x0AF0)
+// 0x0050 (0x0960 - 0x0910)
 class UGAB_TakerEvade_C : public UFortGameplayAbility
 {
 public:
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0AF0(0x0008) (Transient, DuplicateTransient)
-	class ATakerPawn_C*                                TakerPawn;                                                // 0x0AF8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
-	class UEnvQuery*                                   EQS_TakerEvade;                                           // 0x0B00(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	struct FGameplayTagContainer                       TC_WeaponRanged;                                          // 0x0B08(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	bool                                               Debug;                                                    // 0x0B28(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               RangedEvade;                                              // 0x0B29(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x2];                                       // 0x0B2A(0x0002) MISSED OFFSET
-	float                                              DistanceToAllowMeleeEvade;                                // 0x0B2C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              DesiredEvadeDistance;                                     // 0x0B30(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              RangedEvadePlayRate;                                      // 0x0B34(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              MeleeEvadePlayRate;                                       // 0x0B38(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              AnimatedEvadeDistance;                                    // 0x0B3C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0910(0x0008) (Transient, DuplicateTransient)
+	class ATakerPawn_C*                                TakerPawn;                                                // 0x0918(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
+	class UEnvQuery*                                   EQS_TakerEvade;                                           // 0x0920(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FGameplayTagContainer                       TC_WeaponRanged;                                          // 0x0928(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	bool                                               Debug;                                                    // 0x0948(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               RangedEvade;                                              // 0x0949(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x2];                                       // 0x094A(0x0002) MISSED OFFSET
+	float                                              DistanceToAllowMeleeEvade;                                // 0x094C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              DesiredEvadeDistance;                                     // 0x0950(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              RangedEvadePlayRate;                                      // 0x0954(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              MeleeEvadePlayRate;                                       // 0x0958(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              AnimatedEvadeDistance;                                    // 0x095C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{

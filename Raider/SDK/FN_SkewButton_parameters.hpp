@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -58,13 +58,13 @@ struct USkewButton_C_OnMouseEnter_Params
 	struct FPointerEvent*                              MouseEvent;                                               // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
 };
 
-// Function SkewButton.SkewButton_C.OnHovered
-struct USkewButton_C_OnHovered_Params
+// Function SkewButton.SkewButton_C.BP_OnHovered
+struct USkewButton_C_BP_OnHovered_Params
 {
 };
 
-// Function SkewButton.SkewButton_C.OnUnhovered
-struct USkewButton_C_OnUnhovered_Params
+// Function SkewButton.SkewButton_C.BP_OnUnhovered
+struct USkewButton_C_BP_OnUnhovered_Params
 {
 };
 
@@ -74,8 +74,8 @@ struct USkewButton_C_OnMouseLeave_Params
 	struct FPointerEvent*                              MouseEvent;                                               // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
 };
 
-// Function SkewButton.SkewButton_C.OnClicked
-struct USkewButton_C_OnClicked_Params
+// Function SkewButton.SkewButton_C.BP_OnClicked
+struct USkewButton_C_BP_OnClicked_Params
 {
 };
 

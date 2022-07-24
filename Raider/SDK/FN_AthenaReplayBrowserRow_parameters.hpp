@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -29,6 +29,12 @@ struct UAthenaReplayBrowserRow_C_Refresh_Params
 // Function AthenaReplayBrowserRow.AthenaReplayBrowserRow_C.OnReplayBrowserEntryDataSet
 struct UAthenaReplayBrowserRow_C_OnReplayBrowserEntryDataSet_Params
 {
+};
+
+// Function AthenaReplayBrowserRow.AthenaReplayBrowserRow_C.PreConstruct
+struct UAthenaReplayBrowserRow_C_PreConstruct_Params
+{
+	bool*                                              IsDesignTime;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function AthenaReplayBrowserRow.AthenaReplayBrowserRow_C.ExecuteUbergraph_AthenaReplayBrowserRow

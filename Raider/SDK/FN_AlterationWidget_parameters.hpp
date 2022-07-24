@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -14,23 +14,58 @@ namespace SDK
 //Parameters
 //---------------------------------------------------------------------------
 
+// Function AlterationWidget.AlterationWidget_C.GetValidBrush
+struct UAlterationWidget_C_GetValidBrush_Params
+{
+	struct FSlateBrush                                 ReturnValue;                                              // (Parm, OutParm, ReturnParm)
+};
+
+// Function AlterationWidget.AlterationWidget_C.HasValidBrush
+struct UAlterationWidget_C_HasValidBrush_Params
+{
+	bool                                               ValidBrush;                                               // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AlterationWidget.AlterationWidget_C.IsGamplaySlot
+struct UAlterationWidget_C_IsGamplaySlot_Params
+{
+	class UFortAlterationItemDefinition*               Alteration;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               Result;                                                   // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AlterationWidget.AlterationWidget_C.TriggerTextAnimation
+struct UAlterationWidget_C_TriggerTextAnimation_Params
+{
+};
+
+// Function AlterationWidget.AlterationWidget_C.SetWidgetSettings
+struct UAlterationWidget_C_SetWidgetSettings_Params
+{
+	bool                                               bInIncludeName;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               bInIncludeShortDescription;                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               bInIncludeDescription;                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	TEnumAsByte<EFortBrushSize>                        InIconSize;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               bInUseLargeFormatName;                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               InShouldShowRarity;                                       // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AlterationWidget.AlterationWidget_C.InitLockedLayout
+struct UAlterationWidget_C_InitLockedLayout_Params
+{
+};
+
 // Function AlterationWidget.AlterationWidget_C.SetEvolutionDetails
 struct UAlterationWidget_C_SetEvolutionDetails_Params
 {
 };
 
-// Function AlterationWidget.AlterationWidget_C.UpdateRaritySwitcherVisiblity
-struct UAlterationWidget_C_UpdateRaritySwitcherVisiblity_Params
+// Function AlterationWidget.AlterationWidget_C.UpdatePips
+struct UAlterationWidget_C_UpdatePips_Params
 {
 };
 
-// Function AlterationWidget.AlterationWidget_C.SetLevelText
-struct UAlterationWidget_C_SetLevelText_Params
-{
-};
-
-// Function AlterationWidget.AlterationWidget_C.InitText
-struct UAlterationWidget_C_InitText_Params
+// Function AlterationWidget.AlterationWidget_C.InitDescriptiveText
+struct UAlterationWidget_C_InitDescriptiveText_Params
 {
 };
 
@@ -51,8 +86,8 @@ struct UAlterationWidget_C_GetHighlightColor_Params
 	struct FLinearColor                                ReturnValue;                                              // (Parm, OutParm, ReturnParm, IsPlainOldData)
 };
 
-// Function AlterationWidget.AlterationWidget_C.Construct
-struct UAlterationWidget_C_Construct_Params
+// Function AlterationWidget.AlterationWidget_C.OnSetup
+struct UAlterationWidget_C_OnSetup_Params
 {
 };
 

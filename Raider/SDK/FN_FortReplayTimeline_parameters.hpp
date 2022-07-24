@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,14 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function FortReplayTimeline.FortReplayTimeline_C.AddMarkerToTimeline
+struct UFortReplayTimeline_C_AddMarkerToTimeline_Params
+{
+	EFortReplayEventType                               EventType;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	float                                              RelativeTime;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	int                                                EventIdx;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function FortReplayTimeline.FortReplayTimeline_C.OnHUDVisibilityChanged
 struct UFortReplayTimeline_C_OnHUDVisibilityChanged_Params
@@ -80,6 +88,21 @@ struct UFortReplayTimeline_C_BndEvt__SliderGamepadSlider_K2Node_ComponentBoundEv
 
 // Function FortReplayTimeline.FortReplayTimeline_C.BndEvt__SliderGamepadSlider_K2Node_ComponentBoundEvent_110_OnControllerCaptureEndEvent__DelegateSignature
 struct UFortReplayTimeline_C_BndEvt__SliderGamepadSlider_K2Node_ComponentBoundEvent_110_OnControllerCaptureEndEvent__DelegateSignature_Params
+{
+};
+
+// Function FortReplayTimeline.FortReplayTimeline_C.Construct
+struct UFortReplayTimeline_C_Construct_Params
+{
+};
+
+// Function FortReplayTimeline.FortReplayTimeline_C.Destruct
+struct UFortReplayTimeline_C_Destruct_Params
+{
+};
+
+// Function FortReplayTimeline.FortReplayTimeline_C.ClearTimelineMarkers
+struct UFortReplayTimeline_C_ClearTimelineMarkers_Params
 {
 };
 

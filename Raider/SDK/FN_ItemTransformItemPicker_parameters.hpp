@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -76,11 +76,6 @@ struct UItemTransformItemPicker_C_SetupItemPicker_Params
 {
 };
 
-// Function ItemTransformItemPicker.ItemTransformItemPicker_C.Construct
-struct UItemTransformItemPicker_C_Construct_Params
-{
-};
-
 // Function ItemTransformItemPicker.ItemTransformItemPicker_C.PreConstruct
 struct UItemTransformItemPicker_C_PreConstruct_Params
 {
@@ -91,6 +86,11 @@ struct UItemTransformItemPicker_C_PreConstruct_Params
 struct UItemTransformItemPicker_C_BndEvt__FilterTabList_K2Node_ComponentBoundEvent_0_OnTabSelected__DelegateSignature_Params
 {
 	struct FName                                       TabId;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function ItemTransformItemPicker.ItemTransformItemPicker_C.Construct
+struct UItemTransformItemPicker_C_Construct_Params
+{
 };
 
 // Function ItemTransformItemPicker.ItemTransformItemPicker_C.ExecuteUbergraph_ItemTransformItemPicker

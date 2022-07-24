@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -519,14 +519,14 @@ void UFrontEndRewards_ChoiceRewards_C::OnDeactivated()
 }
 
 
-// Function FrontEndRewards_ChoiceRewards.FrontEndRewards_ChoiceRewards_C.CustomEvent_0_1
+// Function FrontEndRewards_ChoiceRewards.FrontEndRewards_ChoiceRewards_C.CustomEvent_1
 // (BlueprintCallable, BlueprintEvent)
 
-void UFrontEndRewards_ChoiceRewards_C::CustomEvent_0_1()
+void UFrontEndRewards_ChoiceRewards_C::CustomEvent_1()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function FrontEndRewards_ChoiceRewards.FrontEndRewards_ChoiceRewards_C.CustomEvent_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function FrontEndRewards_ChoiceRewards.FrontEndRewards_ChoiceRewards_C.CustomEvent_1");
 
-	UFrontEndRewards_ChoiceRewards_C_CustomEvent_0_1_Params params;
+	UFrontEndRewards_ChoiceRewards_C_CustomEvent_1_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -536,14 +536,14 @@ void UFrontEndRewards_ChoiceRewards_C::CustomEvent_0_1()
 }
 
 
-// Function FrontEndRewards_ChoiceRewards.FrontEndRewards_ChoiceRewards_C.CustomEvent_1_2
+// Function FrontEndRewards_ChoiceRewards.FrontEndRewards_ChoiceRewards_C.CustomEvent_2
 // (BlueprintCallable, BlueprintEvent)
 
-void UFrontEndRewards_ChoiceRewards_C::CustomEvent_1_2()
+void UFrontEndRewards_ChoiceRewards_C::CustomEvent_2()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function FrontEndRewards_ChoiceRewards.FrontEndRewards_ChoiceRewards_C.CustomEvent_1_2");
+	static auto fn = UObject::FindObject<UFunction>("Function FrontEndRewards_ChoiceRewards.FrontEndRewards_ChoiceRewards_C.CustomEvent_2");
 
-	UFrontEndRewards_ChoiceRewards_C_CustomEvent_1_2_Params params;
+	UFrontEndRewards_ChoiceRewards_C_CustomEvent_2_Params params;
 
 	auto flags = fn->FunctionFlags;
 

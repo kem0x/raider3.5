@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -113,6 +113,26 @@ void UGA_Athena_PurpleStuff_C::K2_ActivateAbility()
 	static auto fn = UObject::FindObject<UFunction>("Function GA_Athena_PurpleStuff.GA_Athena_PurpleStuff_C.K2_ActivateAbility");
 
 	UGA_Athena_PurpleStuff_C_K2_ActivateAbility_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function GA_Athena_PurpleStuff.GA_Athena_PurpleStuff_C.K2_OnEndAbility
+// (Event, Protected, BlueprintEvent)
+// Parameters:
+// bool*                          bWasCancelled                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UGA_Athena_PurpleStuff_C::K2_OnEndAbility(bool* bWasCancelled)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GA_Athena_PurpleStuff.GA_Athena_PurpleStuff_C.K2_OnEndAbility");
+
+	UGA_Athena_PurpleStuff_C_K2_OnEndAbility_Params params;
+	params.bWasCancelled = bWasCancelled;
 
 	auto flags = fn->FunctionFlags;
 

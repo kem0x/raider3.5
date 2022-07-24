@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -213,15 +213,13 @@ void UAthenaReplayBrowserRenameDialog_C::OnCancelRename__DelegateSignature()
 // Function AthenaReplayBrowserRenameDialog.AthenaReplayBrowserRenameDialog_C.OnConfirmRename__DelegateSignature
 // (Public, Delegate, BlueprintCallable, BlueprintEvent)
 // Parameters:
-// class UAthenaReplayBrowserRowProxyInstance* BrowserRowProxy                (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // struct FText                   NewName                        (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void UAthenaReplayBrowserRenameDialog_C::OnConfirmRename__DelegateSignature(class UAthenaReplayBrowserRowProxyInstance* BrowserRowProxy, const struct FText& NewName)
+void UAthenaReplayBrowserRenameDialog_C::OnConfirmRename__DelegateSignature(const struct FText& NewName)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserRenameDialog.AthenaReplayBrowserRenameDialog_C.OnConfirmRename__DelegateSignature");
 
 	UAthenaReplayBrowserRenameDialog_C_OnConfirmRename__DelegateSignature_Params params;
-	params.BrowserRowProxy = BrowserRowProxy;
 	params.NewName = NewName;
 
 	auto flags = fn->FunctionFlags;

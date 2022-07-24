@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -93,14 +93,14 @@ void UKeybindWidget_C::Get_Brush_Size(TEnumAsByte<EFortBrushSize>* Brush_Size)
 }
 
 
-// Function KeybindWidget.KeybindWidget_C.Construct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+// Function KeybindWidget.KeybindWidget_C.UpdateFrameSize
+// (BlueprintCallable, BlueprintEvent)
 
-void UKeybindWidget_C::Construct()
+void UKeybindWidget_C::UpdateFrameSize()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function KeybindWidget.KeybindWidget_C.Construct");
+	static auto fn = UObject::FindObject<UFunction>("Function KeybindWidget.KeybindWidget_C.UpdateFrameSize");
 
-	UKeybindWidget_C_Construct_Params params;
+	UKeybindWidget_C_UpdateFrameSize_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -127,6 +127,40 @@ void UKeybindWidget_C::Update()
 }
 
 
+// Function KeybindWidget.KeybindWidget_C.Destruct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UKeybindWidget_C::Destruct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function KeybindWidget.KeybindWidget_C.Destruct");
+
+	UKeybindWidget_C_Destruct_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function KeybindWidget.KeybindWidget_C.Construct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UKeybindWidget_C::Construct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function KeybindWidget.KeybindWidget_C.Construct");
+
+	UKeybindWidget_C_Construct_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function KeybindWidget.KeybindWidget_C.PreConstruct
 // (BlueprintCosmetic, Event, Public, BlueprintEvent)
 // Parameters:
@@ -138,40 +172,6 @@ void UKeybindWidget_C::PreConstruct(bool* IsDesignTime)
 
 	UKeybindWidget_C_PreConstruct_Params params;
 	params.IsDesignTime = IsDesignTime;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function KeybindWidget.KeybindWidget_C.UpdateFrameSize
-// (BlueprintCallable, BlueprintEvent)
-
-void UKeybindWidget_C::UpdateFrameSize()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function KeybindWidget.KeybindWidget_C.UpdateFrameSize");
-
-	UKeybindWidget_C_UpdateFrameSize_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function KeybindWidget.KeybindWidget_C.Destruct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
-
-void UKeybindWidget_C::Destruct()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function KeybindWidget.KeybindWidget_C.Destruct");
-
-	UKeybindWidget_C_Destruct_Params params;
 
 	auto flags = fn->FunctionFlags;
 

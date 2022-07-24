@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,14 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function GAB_Emote_Generic.GAB_Emote_Generic_C.GetMontageToPlay
+struct UGAB_Emote_Generic_C_GetMontageToPlay_Params
+{
+	class UFortMontageItemDefinitionBase*              EmoteAsset;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	TEnumAsByte<EFortCustomBodyType>                   BodyType;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	TEnumAsByte<EFortCustomGender>                     Gender;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function GAB_Emote_Generic.GAB_Emote_Generic_C.GetBodyTypeAndGender
 struct UGAB_Emote_Generic_C_GetBodyTypeAndGender_Params
@@ -54,8 +62,28 @@ struct UGAB_Emote_Generic_C_OnLoaded_D5C2B0D14DEB9277D15965B97800FD1D_Params
 	class UObject*                                     Loaded;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
+// Function GAB_Emote_Generic.GAB_Emote_Generic_C.OnFinish_98AA3C42453EEDB1D4A56BB2002955E1
+struct UGAB_Emote_Generic_C_OnFinish_98AA3C42453EEDB1D4A56BB2002955E1_Params
+{
+};
+
 // Function GAB_Emote_Generic.GAB_Emote_Generic_C.K2_ActivateAbility
 struct UGAB_Emote_Generic_C_K2_ActivateAbility_Params
+{
+};
+
+// Function GAB_Emote_Generic.GAB_Emote_Generic_C.OnMontageStartedPlaying
+struct UGAB_Emote_Generic_C_OnMontageStartedPlaying_Params
+{
+};
+
+// Function GAB_Emote_Generic.GAB_Emote_Generic_C.PlayInitialEmoteMontage
+struct UGAB_Emote_Generic_C_PlayInitialEmoteMontage_Params
+{
+};
+
+// Function GAB_Emote_Generic.GAB_Emote_Generic_C.OnAbilityTriggered
+struct UGAB_Emote_Generic_C_OnAbilityTriggered_Params
 {
 };
 

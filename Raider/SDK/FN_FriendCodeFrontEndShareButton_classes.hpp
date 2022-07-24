@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,11 +13,11 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // WidgetBlueprintGeneratedClass FriendCodeFrontEndShareButton.FriendCodeFrontEndShareButton_C
-// 0x0008 (0x0848 - 0x0840)
+// 0x0008 (0x08C8 - 0x08C0)
 class UFriendCodeFrontEndShareButton_C : public UFriendCodeShareButtonBase
 {
 public:
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0840(0x0008) (Transient, DuplicateTransient)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x08C0(0x0008) (Transient, DuplicateTransient)
 
 	static UClass* StaticClass()
 	{
@@ -28,7 +26,7 @@ public:
 	}
 
 
-	void OnClicked();
+	void BP_OnClicked();
 	void Construct();
 	void ExecuteUbergraph_FriendCodeFrontEndShareButton(int EntryPoint);
 };

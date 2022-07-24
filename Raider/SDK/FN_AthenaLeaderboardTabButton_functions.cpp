@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -126,14 +126,14 @@ void UAthenaLeaderboardTabButton_C::SetTabLabelInfo(const struct FFortTabButtonL
 }
 
 
-// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.OnSelected
+// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void UAthenaLeaderboardTabButton_C::OnSelected()
+void UAthenaLeaderboardTabButton_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.BP_OnSelected");
 
-	UAthenaLeaderboardTabButton_C_OnSelected_Params params;
+	UAthenaLeaderboardTabButton_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -143,14 +143,14 @@ void UAthenaLeaderboardTabButton_C::OnSelected()
 }
 
 
-// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.OnDeselected
+// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.BP_OnDeselected
 // (Event, Protected, BlueprintEvent)
 
-void UAthenaLeaderboardTabButton_C::OnDeselected()
+void UAthenaLeaderboardTabButton_C::BP_OnDeselected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.OnDeselected");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.BP_OnDeselected");
 
-	UAthenaLeaderboardTabButton_C_OnDeselected_Params params;
+	UAthenaLeaderboardTabButton_C_BP_OnDeselected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -177,14 +177,14 @@ void UAthenaLeaderboardTabButton_C::Construct()
 }
 
 
-// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.OnHovered
+// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UAthenaLeaderboardTabButton_C::OnHovered()
+void UAthenaLeaderboardTabButton_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.BP_OnHovered");
 
-	UAthenaLeaderboardTabButton_C_OnHovered_Params params;
+	UAthenaLeaderboardTabButton_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -194,14 +194,14 @@ void UAthenaLeaderboardTabButton_C::OnHovered()
 }
 
 
-// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.OnUnhovered
+// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.BP_OnUnhovered
 // (Event, Protected, BlueprintEvent)
 
-void UAthenaLeaderboardTabButton_C::OnUnhovered()
+void UAthenaLeaderboardTabButton_C::BP_OnUnhovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.OnUnhovered");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.BP_OnUnhovered");
 
-	UAthenaLeaderboardTabButton_C_OnUnhovered_Params params;
+	UAthenaLeaderboardTabButton_C_BP_OnUnhovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 

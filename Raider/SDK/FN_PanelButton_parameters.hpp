@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -69,13 +69,13 @@ struct UPanelButton_C_Construct_Params
 {
 };
 
-// Function PanelButton.PanelButton_C.OnHovered
-struct UPanelButton_C_OnHovered_Params
+// Function PanelButton.PanelButton_C.BP_OnHovered
+struct UPanelButton_C_BP_OnHovered_Params
 {
 };
 
-// Function PanelButton.PanelButton_C.OnUnhovered
-struct UPanelButton_C_OnUnhovered_Params
+// Function PanelButton.PanelButton_C.BP_OnUnhovered
+struct UPanelButton_C_BP_OnUnhovered_Params
 {
 };
 

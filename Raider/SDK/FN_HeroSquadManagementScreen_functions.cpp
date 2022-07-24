@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,40 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function HeroSquadManagementScreen.HeroSquadManagementScreen_C.Intro
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UHeroSquadManagementScreen_C::Intro()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HeroSquadManagementScreen.HeroSquadManagementScreen_C.Intro");
+
+	UHeroSquadManagementScreen_C_Intro_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function HeroSquadManagementScreen.HeroSquadManagementScreen_C.Intro Initial Reset
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UHeroSquadManagementScreen_C::Intro_Initial_Reset()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HeroSquadManagementScreen.HeroSquadManagementScreen_C.Intro Initial Reset");
+
+	UHeroSquadManagementScreen_C_Intro_Initial_Reset_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function HeroSquadManagementScreen.HeroSquadManagementScreen_C.HandlePickerHideAni
 // (Public, BlueprintCallable, BlueprintEvent)
@@ -329,6 +363,23 @@ void UHeroSquadManagementScreen_C::BndEvt__SquadSlotsView_K2Node_ComponentBoundE
 
 	UHeroSquadManagementScreen_C_BndEvt__SquadSlotsView_K2Node_ComponentBoundEvent_2_OnDifferentSquadSlotSelected__DelegateSignature_Params params;
 	params.SquadSlotIndex = SquadSlotIndex;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function HeroSquadManagementScreen.HeroSquadManagementScreen_C.OnBeginIntro
+// (Event, Public, BlueprintEvent)
+
+void UHeroSquadManagementScreen_C::OnBeginIntro()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HeroSquadManagementScreen.HeroSquadManagementScreen_C.OnBeginIntro");
+
+	UHeroSquadManagementScreen_C_OnBeginIntro_Params params;
 
 	auto flags = fn->FunctionFlags;
 

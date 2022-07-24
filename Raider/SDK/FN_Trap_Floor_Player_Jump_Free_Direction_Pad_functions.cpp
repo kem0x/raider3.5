@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,29 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function Trap_Floor_Player_Jump_Free_Direction_Pad.Trap_Floor_Player_Jump_Free_Direction_Pad_C.BP_ShouldTrigger
+// (Event, Protected, HasOutParms, BlueprintCallable, BlueprintEvent, Const)
+// Parameters:
+// TArray<class AActor*>*         TouchingActors                 (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
+// bool                           ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+bool ATrap_Floor_Player_Jump_Free_Direction_Pad_C::BP_ShouldTrigger(TArray<class AActor*>* TouchingActors)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function Trap_Floor_Player_Jump_Free_Direction_Pad.Trap_Floor_Player_Jump_Free_Direction_Pad_C.BP_ShouldTrigger");
+
+	ATrap_Floor_Player_Jump_Free_Direction_Pad_C_BP_ShouldTrigger_Params params;
+	params.TouchingActors = TouchingActors;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
 
 // Function Trap_Floor_Player_Jump_Free_Direction_Pad.Trap_Floor_Player_Jump_Free_Direction_Pad_C.UserConstructionScript
 // (Event, Public, BlueprintCallable, BlueprintEvent)

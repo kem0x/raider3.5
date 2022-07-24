@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -39,11 +39,6 @@ struct UToastDisplayArea_C_Destruct_Params
 {
 };
 
-// Function ToastDisplayArea.ToastDisplayArea_C.BndEvt__ToastWidget_K2Node_ComponentBoundEvent_2_OnFinishedToast__DelegateSignature
-struct UToastDisplayArea_C_BndEvt__ToastWidget_K2Node_ComponentBoundEvent_2_OnFinishedToast__DelegateSignature_Params
-{
-};
-
 // Function ToastDisplayArea.ToastDisplayArea_C.BndEvt__PowerToastWidget_K2Node_ComponentBoundEvent_8_OnFinishedToast__DelegateSignature
 struct UToastDisplayArea_C_BndEvt__PowerToastWidget_K2Node_ComponentBoundEvent_8_OnFinishedToast__DelegateSignature_Params
 {
@@ -51,6 +46,21 @@ struct UToastDisplayArea_C_BndEvt__PowerToastWidget_K2Node_ComponentBoundEvent_8
 
 // Function ToastDisplayArea.ToastDisplayArea_C.BndEvt__ToastWidget_New_K2Node_ComponentBoundEvent_9_OnFinishedToast__DelegateSignature
 struct UToastDisplayArea_C_BndEvt__ToastWidget_New_K2Node_ComponentBoundEvent_9_OnFinishedToast__DelegateSignature_Params
+{
+};
+
+// Function ToastDisplayArea.ToastDisplayArea_C.BndEvt__VoteResultNotificationWidget_K2Node_ComponentBoundEvent_0_OnToastFinished__DelegateSignature
+struct UToastDisplayArea_C_BndEvt__VoteResultNotificationWidget_K2Node_ComponentBoundEvent_0_OnToastFinished__DelegateSignature_Params
+{
+};
+
+// Function ToastDisplayArea.ToastDisplayArea_C.BndEvt__VoteUpdateNotificationWidget_K2Node_ComponentBoundEvent_1_OnToastFinished__DelegateSignature
+struct UToastDisplayArea_C_BndEvt__VoteUpdateNotificationWidget_K2Node_ComponentBoundEvent_1_OnToastFinished__DelegateSignature_Params
+{
+};
+
+// Function ToastDisplayArea.ToastDisplayArea_C.BndEvt__ToastWidget_MinorError_K2Node_ComponentBoundEvent_3_OnFinishedToast__DelegateSignature
+struct UToastDisplayArea_C_BndEvt__ToastWidget_MinorError_K2Node_ComponentBoundEvent_3_OnFinishedToast__DelegateSignature_Params
 {
 };
 

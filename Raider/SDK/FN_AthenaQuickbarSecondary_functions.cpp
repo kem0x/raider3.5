@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -32,23 +32,6 @@ void UAthenaQuickbarSecondary_C::UpdateQuickBarCaching(bool Desire_Caching)
 }
 
 
-// Function AthenaQuickbarSecondary.AthenaQuickbarSecondary_C.HandleMaximizeShowing
-// (Public, BlueprintCallable, BlueprintEvent)
-
-void UAthenaQuickbarSecondary_C::HandleMaximizeShowing()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaQuickbarSecondary.AthenaQuickbarSecondary_C.HandleMaximizeShowing");
-
-	UAthenaQuickbarSecondary_C_HandleMaximizeShowing_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function AthenaQuickbarSecondary.AthenaQuickbarSecondary_C.HandleShowHideRail
 // (Public, BlueprintCallable, BlueprintEvent)
 
@@ -57,23 +40,6 @@ void UAthenaQuickbarSecondary_C::HandleShowHideRail()
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaQuickbarSecondary.AthenaQuickbarSecondary_C.HandleShowHideRail");
 
 	UAthenaQuickbarSecondary_C_HandleShowHideRail_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function AthenaQuickbarSecondary.AthenaQuickbarSecondary_C.HandleMinimizeHiding
-// (Public, BlueprintCallable, BlueprintEvent)
-
-void UAthenaQuickbarSecondary_C::HandleMinimizeHiding()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaQuickbarSecondary.AthenaQuickbarSecondary_C.HandleMinimizeHiding");
-
-	UAthenaQuickbarSecondary_C_HandleMinimizeHiding_Params params;
 
 	auto flags = fn->FunctionFlags;
 

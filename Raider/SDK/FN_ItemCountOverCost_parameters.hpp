@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,12 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function ItemCountOverCost.ItemCountOverCost_C.HasRequired
+struct UItemCountOverCost_C_HasRequired_Params
+{
+	bool                                               bHasRequired;                                             // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function ItemCountOverCost.ItemCountOverCost_C.Calculate Total Item Def in Inventory
 struct UItemCountOverCost_C_Calculate_Total_Item_Def_in_Inventory_Params

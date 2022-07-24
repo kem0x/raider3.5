@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -46,19 +46,17 @@ void UBP_BannerEditorTile_C::Update_Bang_State()
 }
 
 
-// Function BP_BannerEditorTile.BP_BannerEditorTile_C.SetData
-// (Event, Public, BlueprintCallable, BlueprintEvent)
+// Function BP_BannerEditorTile.BP_BannerEditorTile_C.OnListItemObjectSet
+// (Event, Protected, BlueprintEvent)
 // Parameters:
-// class UObject**                InData                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class UCommonListView**        OwningList                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// class UObject**                ListItemObject                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UBP_BannerEditorTile_C::SetData(class UObject** InData, class UCommonListView** OwningList)
+void UBP_BannerEditorTile_C::OnListItemObjectSet(class UObject** ListItemObject)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_BannerEditorTile.BP_BannerEditorTile_C.SetData");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_BannerEditorTile.BP_BannerEditorTile_C.OnListItemObjectSet");
 
-	UBP_BannerEditorTile_C_SetData_Params params;
-	params.InData = InData;
-	params.OwningList = OwningList;
+	UBP_BannerEditorTile_C_OnListItemObjectSet_Params params;
+	params.ListItemObject = ListItemObject;
 
 	auto flags = fn->FunctionFlags;
 
@@ -105,14 +103,14 @@ void UBP_BannerEditorTile_C::HandleBannerIconLoadGuardFinished(class UObject* Ob
 }
 
 
-// Function BP_BannerEditorTile.BP_BannerEditorTile_C.OnSelected
+// Function BP_BannerEditorTile.BP_BannerEditorTile_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void UBP_BannerEditorTile_C::OnSelected()
+void UBP_BannerEditorTile_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_BannerEditorTile.BP_BannerEditorTile_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_BannerEditorTile.BP_BannerEditorTile_C.BP_OnSelected");
 
-	UBP_BannerEditorTile_C_OnSelected_Params params;
+	UBP_BannerEditorTile_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -122,14 +120,14 @@ void UBP_BannerEditorTile_C::OnSelected()
 }
 
 
-// Function BP_BannerEditorTile.BP_BannerEditorTile_C.OnHovered
+// Function BP_BannerEditorTile.BP_BannerEditorTile_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UBP_BannerEditorTile_C::OnHovered()
+void UBP_BannerEditorTile_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_BannerEditorTile.BP_BannerEditorTile_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_BannerEditorTile.BP_BannerEditorTile_C.BP_OnHovered");
 
-	UBP_BannerEditorTile_C_OnHovered_Params params;
+	UBP_BannerEditorTile_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 

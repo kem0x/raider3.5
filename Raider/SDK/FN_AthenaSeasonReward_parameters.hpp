@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,28 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function AthenaSeasonReward.AthenaSeasonReward_C.ViewInVault
+struct UAthenaSeasonReward_C_ViewInVault_Params
+{
+};
+
+// Function AthenaSeasonReward.AthenaSeasonReward_C.SetSecondaryItem
+struct UAthenaSeasonReward_C_SetSecondaryItem_Params
+{
+	class UFortItem*                                   SecondaryItem;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AthenaSeasonReward.AthenaSeasonReward_C.EnableRarityFlare
+struct UAthenaSeasonReward_C_EnableRarityFlare_Params
+{
+};
+
+// Function AthenaSeasonReward.AthenaSeasonReward_C.SetViewOnHover
+struct UAthenaSeasonReward_C_SetViewOnHover_Params
+{
+	bool                                               ShouldViewOnHover;                                        // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function AthenaSeasonReward.AthenaSeasonReward_C.SetState
 struct UAthenaSeasonReward_C_SetState_Params
@@ -29,10 +51,11 @@ struct UAthenaSeasonReward_C_Setup_Params
 	bool                                               Claimed;                                                  // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	bool                                               Locked;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	bool                                               LevelAchieved;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	EFortItemCardSize                                  ItemCardSize;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function AthenaSeasonReward.AthenaSeasonReward_C.OnHovered
-struct UAthenaSeasonReward_C_OnHovered_Params
+// Function AthenaSeasonReward.AthenaSeasonReward_C.BP_OnHovered
+struct UAthenaSeasonReward_C_BP_OnHovered_Params
 {
 };
 
@@ -46,8 +69,8 @@ struct UAthenaSeasonReward_C_ViewItem_Params
 {
 };
 
-// Function AthenaSeasonReward.AthenaSeasonReward_C.OnClicked
-struct UAthenaSeasonReward_C_OnClicked_Params
+// Function AthenaSeasonReward.AthenaSeasonReward_C.BP_OnClicked
+struct UAthenaSeasonReward_C_BP_OnClicked_Params
 {
 };
 

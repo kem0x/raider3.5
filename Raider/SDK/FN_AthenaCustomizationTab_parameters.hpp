@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,23 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function AthenaCustomizationTab.AthenaCustomizationTab_C.GetWidgetForFramingViewedItem
+struct UAthenaCustomizationTab_C_GetWidgetForFramingViewedItem_Params
+{
+	class UWidget*                                     ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+};
+
+// Function AthenaCustomizationTab.AthenaCustomizationTab_C.HandleShiftCosmeticTier
+struct UAthenaCustomizationTab_C_HandleShiftCosmeticTier_Params
+{
+	bool                                               Passthrough;                                              // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AthenaCustomizationTab.AthenaCustomizationTab_C.RegisterShiftCosmeticTier
+struct UAthenaCustomizationTab_C_RegisterShiftCosmeticTier_Params
+{
+};
 
 // Function AthenaCustomizationTab.AthenaCustomizationTab_C.HandleFavorite
 struct UAthenaCustomizationTab_C_HandleFavorite_Params
@@ -181,6 +198,11 @@ struct UAthenaCustomizationTab_C_BndEvt__ButtonCancel_K2Node_ComponentBoundEvent
 struct UAthenaCustomizationTab_C_BndEvt__ButtonConfirm_K2Node_ComponentBoundEvent_30_CommonButtonClicked__DelegateSignature_Params
 {
 	class UCommonButton*                               Button;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+};
+
+// Function AthenaCustomizationTab.AthenaCustomizationTab_C.ProcessLoadoutChanged
+struct UAthenaCustomizationTab_C_ProcessLoadoutChanged_Params
+{
 };
 
 // Function AthenaCustomizationTab.AthenaCustomizationTab_C.ExecuteUbergraph_AthenaCustomizationTab

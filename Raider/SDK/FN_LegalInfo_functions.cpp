@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -148,6 +148,23 @@ void ULegalInfo_C::Close()
 	static auto fn = UObject::FindObject<UFunction>("Function LegalInfo.LegalInfo_C.Close");
 
 	ULegalInfo_C_Close_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function LegalInfo.LegalInfo_C.OnActivated
+// (Event, Protected, BlueprintEvent)
+
+void ULegalInfo_C::OnActivated()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function LegalInfo.LegalInfo_C.OnActivated");
+
+	ULegalInfo_C_OnActivated_Params params;
 
 	auto flags = fn->FunctionFlags;
 

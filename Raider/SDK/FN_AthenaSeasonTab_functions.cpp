@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,83 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function AthenaSeasonTab.AthenaSeasonTab_C.GetWidgetForFramingViewedItem
+// (Event, Protected, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UWidget*                 ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+
+class UWidget* UAthenaSeasonTab_C::GetWidgetForFramingViewedItem()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonTab.AthenaSeasonTab_C.GetWidgetForFramingViewedItem");
+
+	UAthenaSeasonTab_C_GetWidgetForFramingViewedItem_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function AthenaSeasonTab.AthenaSeasonTab_C.OnMovieFinished
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UAthenaSeasonTab_C::OnMovieFinished()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonTab.AthenaSeasonTab_C.OnMovieFinished");
+
+	UAthenaSeasonTab_C_OnMovieFinished_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaSeasonTab.AthenaSeasonTab_C.PlaySeasonCinematic
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UAthenaSeasonTab_C::PlaySeasonCinematic()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonTab.AthenaSeasonTab_C.PlaySeasonCinematic");
+
+	UAthenaSeasonTab_C_PlaySeasonCinematic_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaSeasonTab.AthenaSeasonTab_C.Handle_ReplayCinematic
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           Passthrough                    (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaSeasonTab_C::Handle_ReplayCinematic(bool* Passthrough)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonTab.AthenaSeasonTab_C.Handle_ReplayCinematic");
+
+	UAthenaSeasonTab_C_Handle_ReplayCinematic_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (Passthrough != nullptr)
+		*Passthrough = params.Passthrough;
+}
+
 
 // Function AthenaSeasonTab.AthenaSeasonTab_C.UpdateLevelPageWidgetSwitcherTranslation
 // (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
@@ -89,7 +166,7 @@ void UAthenaSeasonTab_C::Handle_GiftBattlePass(bool* Passthrough)
 
 
 // Function AthenaSeasonTab.AthenaSeasonTab_C.Handle_ShowFAQ
-// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // bool                           Passthrough                    (Parm, OutParm, ZeroConstructor, IsPlainOldData)
 
@@ -298,60 +375,6 @@ void UAthenaSeasonTab_C::OnNavigateToLevel(int* Level)
 }
 
 
-// Function AthenaSeasonTab.AthenaSeasonTab_C.OnStartReadingOffers
-// (Event, Public, BlueprintEvent)
-
-void UAthenaSeasonTab_C::OnStartReadingOffers()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonTab.AthenaSeasonTab_C.OnStartReadingOffers");
-
-	UAthenaSeasonTab_C_OnStartReadingOffers_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function AthenaSeasonTab.AthenaSeasonTab_C.OnOffersGenerated
-// (Event, Public, BlueprintEvent)
-
-void UAthenaSeasonTab_C::OnOffersGenerated()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonTab.AthenaSeasonTab_C.OnOffersGenerated");
-
-	UAthenaSeasonTab_C_OnOffersGenerated_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function AthenaSeasonTab.AthenaSeasonTab_C.GenerateOfferWidget
-// (Event, Public, BlueprintEvent)
-// Parameters:
-// class UFortDirectAcquisitionOfferInfo** OfferData                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void UAthenaSeasonTab_C::GenerateOfferWidget(class UFortDirectAcquisitionOfferInfo** OfferData)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonTab.AthenaSeasonTab_C.GenerateOfferWidget");
-
-	UAthenaSeasonTab_C_GenerateOfferWidget_Params params;
-	params.OfferData = OfferData;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function AthenaSeasonTab.AthenaSeasonTab_C.OnSeasonPassChanged
 // (Event, Protected, BlueprintEvent)
 
@@ -522,23 +545,6 @@ void UAthenaSeasonTab_C::BndEvt__PurchaseLevelBtn_K2Node_ComponentBoundEvent_40_
 }
 
 
-// Function AthenaSeasonTab.AthenaSeasonTab_C.NoOffersAvailable
-// (Event, Public, BlueprintEvent)
-
-void UAthenaSeasonTab_C::NoOffersAvailable()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonTab.AthenaSeasonTab_C.NoOffersAvailable");
-
-	UAthenaSeasonTab_C_NoOffersAvailable_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function AthenaSeasonTab.AthenaSeasonTab_C.ScrollPositive
 // (Event, Protected, BlueprintEvent)
 
@@ -698,6 +704,26 @@ void UAthenaSeasonTab_C::OnNoCurrentSeason()
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonTab.AthenaSeasonTab_C.OnNoCurrentSeason");
 
 	UAthenaSeasonTab_C_OnNoCurrentSeason_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaSeasonTab.AthenaSeasonTab_C.OnSetGiftability
+// (Event, Protected, BlueprintEvent)
+// Parameters:
+// bool*                          bIsGiftable                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaSeasonTab_C::OnSetGiftability(bool* bIsGiftable)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonTab.AthenaSeasonTab_C.OnSetGiftability");
+
+	UAthenaSeasonTab_C_OnSetGiftability_Params params;
+	params.bIsGiftable = bIsGiftable;
 
 	auto flags = fn->FunctionFlags;
 

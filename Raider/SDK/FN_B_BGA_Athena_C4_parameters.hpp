@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,27 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.HandleHits
+struct AB_BGA_Athena_C4_C_HandleHits_Params
+{
+	class UObject*                                     Object;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class UPrimitiveComponent*                         Comp;                                                     // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+};
+
+// Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.HandleHitSupplyDrop
+struct AB_BGA_Athena_C4_C_HandleHitSupplyDrop_Params
+{
+	class UObject*                                     Object;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class UPrimitiveComponent*                         Component;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+};
+
+// Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.HandleHitVehicle
+struct AB_BGA_Athena_C4_C_HandleHitVehicle_Params
+{
+	class UObject*                                     Object;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class USceneComponent*                             Component;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+};
 
 // Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.OnRep_bTriggeredExplosion
 struct AB_BGA_Athena_C4_C_OnRep_bTriggeredExplosion_Params
@@ -159,6 +180,11 @@ struct AB_BGA_Athena_C4_C_OnDeathServer_Params
 	class AController**                                InstigatedBy;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	class AActor**                                     DamageCauser;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	struct FGameplayEffectContextHandle*               EffectContext;                                            // (BlueprintVisible, BlueprintReadOnly, Parm)
+};
+
+// Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.Delete another actor
+struct AB_BGA_Athena_C4_C_Delete_another_actor_Params
+{
 };
 
 // Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.ExecuteUbergraph_B_BGA_Athena_C4

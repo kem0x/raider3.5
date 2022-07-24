@@ -6,9 +6,9 @@
 
 #include "../SDK.hpp"
 
-namespace SDK
-{
-TUObjectArray* UObject::GObjects = nullptr;
+uintptr_t base_address = (uintptr_t)GetModuleHandle(NULL);
+TUObjectArray* UObject::GObjects = reinterpret_cast<TUObjectArray*>((PBYTE)base_address + 0x4EB7DF8);
+
 //---------------------------------------------------------------------------
 bool FWeakObjectPtr::IsValid() const
 {
@@ -29,8 +29,6 @@ UObject* FWeakObjectPtr::Get() const
 	}
 	
 	return nullptr;
-}
-//---------------------------------------------------------------------------
 }
 
 #ifdef _MSC_VER

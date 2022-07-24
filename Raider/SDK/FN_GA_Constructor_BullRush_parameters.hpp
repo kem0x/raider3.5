@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,11 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function GA_Constructor_BullRush.GA_Constructor_BullRush_C.ForceDamageWallClose
+struct UGA_Constructor_BullRush_C_ForceDamageWallClose_Params
+{
+};
 
 // Function GA_Constructor_BullRush.GA_Constructor_BullRush_C.HighOffGround
 struct UGA_Constructor_BullRush_C_HighOffGround_Params
@@ -371,8 +376,8 @@ struct UGA_Constructor_BullRush_C_BeginFallingTimer_Params
 {
 };
 
-// Function GA_Constructor_BullRush.GA_Constructor_BullRush_C.OnPawnLanded_Event_0_1
-struct UGA_Constructor_BullRush_C_OnPawnLanded_Event_0_1_Params
+// Function GA_Constructor_BullRush.GA_Constructor_BullRush_C.OnPawnLanded_Event_1
+struct UGA_Constructor_BullRush_C_OnPawnLanded_Event_1_Params
 {
 	struct FHitResult                                  Hit;                                                      // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
 };

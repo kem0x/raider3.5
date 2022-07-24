@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,80 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function AthenaSeasonReward.AthenaSeasonReward_C.ViewInVault
+// (Private, BlueprintCallable, BlueprintEvent)
+
+void UAthenaSeasonReward_C::ViewInVault()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonReward.AthenaSeasonReward_C.ViewInVault");
+
+	UAthenaSeasonReward_C_ViewInVault_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaSeasonReward.AthenaSeasonReward_C.SetSecondaryItem
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UFortItem*               SecondaryItem                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaSeasonReward_C::SetSecondaryItem(class UFortItem* SecondaryItem)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonReward.AthenaSeasonReward_C.SetSecondaryItem");
+
+	UAthenaSeasonReward_C_SetSecondaryItem_Params params;
+	params.SecondaryItem = SecondaryItem;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaSeasonReward.AthenaSeasonReward_C.EnableRarityFlare
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UAthenaSeasonReward_C::EnableRarityFlare()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonReward.AthenaSeasonReward_C.EnableRarityFlare");
+
+	UAthenaSeasonReward_C_EnableRarityFlare_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaSeasonReward.AthenaSeasonReward_C.SetViewOnHover
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           ShouldViewOnHover              (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaSeasonReward_C::SetViewOnHover(bool ShouldViewOnHover)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonReward.AthenaSeasonReward_C.SetViewOnHover");
+
+	UAthenaSeasonReward_C_SetViewOnHover_Params params;
+	params.ShouldViewOnHover = ShouldViewOnHover;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function AthenaSeasonReward.AthenaSeasonReward_C.SetState
 // (Public, BlueprintCallable, BlueprintEvent)
@@ -43,8 +117,9 @@ void UAthenaSeasonReward_C::SetState(bool Claimed, bool Locked, bool LevelAchiev
 // bool                           Claimed                        (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // bool                           Locked                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // bool                           LevelAchieved                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// EFortItemCardSize              ItemCardSize                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UAthenaSeasonReward_C::Setup(class UFortItem* ItemToRepresent, bool Claimed, bool Locked, bool LevelAchieved)
+void UAthenaSeasonReward_C::Setup(class UFortItem* ItemToRepresent, bool Claimed, bool Locked, bool LevelAchieved, EFortItemCardSize ItemCardSize)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonReward.AthenaSeasonReward_C.Setup");
 
@@ -53,6 +128,7 @@ void UAthenaSeasonReward_C::Setup(class UFortItem* ItemToRepresent, bool Claimed
 	params.Claimed = Claimed;
 	params.Locked = Locked;
 	params.LevelAchieved = LevelAchieved;
+	params.ItemCardSize = ItemCardSize;
 
 	auto flags = fn->FunctionFlags;
 
@@ -62,14 +138,14 @@ void UAthenaSeasonReward_C::Setup(class UFortItem* ItemToRepresent, bool Claimed
 }
 
 
-// Function AthenaSeasonReward.AthenaSeasonReward_C.OnHovered
+// Function AthenaSeasonReward.AthenaSeasonReward_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UAthenaSeasonReward_C::OnHovered()
+void UAthenaSeasonReward_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonReward.AthenaSeasonReward_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonReward.AthenaSeasonReward_C.BP_OnHovered");
 
-	UAthenaSeasonReward_C_OnHovered_Params params;
+	UAthenaSeasonReward_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -113,14 +189,14 @@ void UAthenaSeasonReward_C::ViewItem()
 }
 
 
-// Function AthenaSeasonReward.AthenaSeasonReward_C.OnClicked
+// Function AthenaSeasonReward.AthenaSeasonReward_C.BP_OnClicked
 // (Event, Protected, BlueprintEvent)
 
-void UAthenaSeasonReward_C::OnClicked()
+void UAthenaSeasonReward_C::BP_OnClicked()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonReward.AthenaSeasonReward_C.OnClicked");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaSeasonReward.AthenaSeasonReward_C.BP_OnClicked");
 
-	UAthenaSeasonReward_C_OnClicked_Params params;
+	UAthenaSeasonReward_C_BP_OnClicked_Params params;
 
 	auto flags = fn->FunctionFlags;
 

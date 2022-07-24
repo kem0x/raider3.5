@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -19,11 +19,9 @@ struct UPlayerEmblemAndXp_C_SetupReward_Params
 {
 	class UWidget*                                     Container;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 	class UTextBlock*                                  RewardText;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortMultiSizeItemCard*                      RewardItemCard;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      RewardImageWidget;                                        // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            RewardCountTextBlock;                                     // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UDailyQuestRewardInfo_C*                     RewardInfoWidget;                                         // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 	bool                                               HasReward;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	struct FFortItemInstanceQuantityPair               RewardItem;                                               // (BlueprintVisible, BlueprintReadOnly, Parm)
+	struct FFortItemQuantityPair                       RewardItem;                                               // (BlueprintVisible, BlueprintReadOnly, Parm)
 	int                                                LevelRewarded;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 

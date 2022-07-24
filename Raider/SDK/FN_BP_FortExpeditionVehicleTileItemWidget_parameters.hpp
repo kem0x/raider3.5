@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -32,15 +32,14 @@ struct UBP_FortExpeditionVehicleTileItemWidget_C_Set_Icon_Params
 	struct FName                                       SquadId;                                                  // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm, IsPlainOldData)
 };
 
-// Function BP_FortExpeditionVehicleTileItemWidget.BP_FortExpeditionVehicleTileItemWidget_C.SetData
-struct UBP_FortExpeditionVehicleTileItemWidget_C_SetData_Params
+// Function BP_FortExpeditionVehicleTileItemWidget.BP_FortExpeditionVehicleTileItemWidget_C.OnListItemObjectSet
+struct UBP_FortExpeditionVehicleTileItemWidget_C_OnListItemObjectSet_Params
 {
-	class UObject**                                    InData;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	class UCommonListView**                            OwningList;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UObject**                                    ListItemObject;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function BP_FortExpeditionVehicleTileItemWidget.BP_FortExpeditionVehicleTileItemWidget_C.OnClicked
-struct UBP_FortExpeditionVehicleTileItemWidget_C_OnClicked_Params
+// Function BP_FortExpeditionVehicleTileItemWidget.BP_FortExpeditionVehicleTileItemWidget_C.BP_OnClicked
+struct UBP_FortExpeditionVehicleTileItemWidget_C_BP_OnClicked_Params
 {
 };
 

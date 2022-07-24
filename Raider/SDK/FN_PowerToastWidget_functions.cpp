@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -272,16 +272,16 @@ void UPowerToastWidget_C::BndEvt__Outro_K2Node_ComponentBoundEvent_1_OnWidgetAni
 }
 
 
-// Function PowerToastWidget.PowerToastWidget_C.OnTeamMemberFinishedSynchronizing_Event_0_1
+// Function PowerToastWidget.PowerToastWidget_C.OnTeamMemberFinishedSynchronizing_Event_1
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // struct FUniqueNetIdRepl        NewTeamMemberId                (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void UPowerToastWidget_C::OnTeamMemberFinishedSynchronizing_Event_0_1(const struct FUniqueNetIdRepl& NewTeamMemberId)
+void UPowerToastWidget_C::OnTeamMemberFinishedSynchronizing_Event_1(const struct FUniqueNetIdRepl& NewTeamMemberId)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function PowerToastWidget.PowerToastWidget_C.OnTeamMemberFinishedSynchronizing_Event_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function PowerToastWidget.PowerToastWidget_C.OnTeamMemberFinishedSynchronizing_Event_1");
 
-	UPowerToastWidget_C_OnTeamMemberFinishedSynchronizing_Event_0_1_Params params;
+	UPowerToastWidget_C_OnTeamMemberFinishedSynchronizing_Event_1_Params params;
 	params.NewTeamMemberId = NewTeamMemberId;
 
 	auto flags = fn->FunctionFlags;

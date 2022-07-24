@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,19 +13,19 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass GAB_AthenaDBNO.GAB_AthenaDBNO_C
-// 0x00F8 (0x0BE8 - 0x0AF0)
+// 0x00F8 (0x0A08 - 0x0910)
 class UGAB_AthenaDBNO_C : public UFortGameplayAbility
 {
 public:
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0AF0(0x0008) (Transient, DuplicateTransient)
-	class UAnimMontage*                                DeathMontage;                                             // 0x0AF8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	struct FVector                                     DeathHitDirection;                                        // 0x0B00(0x000C) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x0B0C(0x0004) MISSED OFFSET
-	struct FHitResult                                  DeathHitResult;                                           // 0x0B10(0x0088) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
-	struct FGameplayTagContainer                       DamageTags;                                               // 0x0B98(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FGameplayTagContainer                       GameplayStatusAfflicted;                                  // 0x0BB8(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	class UAnimMontage*                                DeathMontageSkydive;                                      // 0x0BD8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	struct FActiveGameplayEffectHandle                 DBNOBleedGEHandle;                                        // 0x0BE0(0x0008) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0910(0x0008) (Transient, DuplicateTransient)
+	class UAnimMontage*                                DeathMontage;                                             // 0x0918(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FVector                                     DeathHitDirection;                                        // 0x0920(0x000C) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x092C(0x0004) MISSED OFFSET
+	struct FHitResult                                  DeathHitResult;                                           // 0x0930(0x0088) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
+	struct FGameplayTagContainer                       DamageTags;                                               // 0x09B8(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FGameplayTagContainer                       GameplayStatusAfflicted;                                  // 0x09D8(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	class UAnimMontage*                                DeathMontageSkydive;                                      // 0x09F8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FActiveGameplayEffectHandle                 DBNOBleedGEHandle;                                        // 0x0A00(0x0008) (Edit, BlueprintVisible, DisableEditOnInstance)
 
 	static UClass* StaticClass()
 	{

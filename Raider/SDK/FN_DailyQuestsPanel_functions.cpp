@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -20,23 +20,6 @@ void UDailyQuestsPanel_C::Reset_Button_Anim()
 	static auto fn = UObject::FindObject<UFunction>("Function DailyQuestsPanel.DailyQuestsPanel_C.Reset Button Anim");
 
 	UDailyQuestsPanel_C_Reset_Button_Anim_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function DailyQuestsPanel.DailyQuestsPanel_C.SetHeightBasedOnInputMode
-// (Public, BlueprintCallable, BlueprintEvent)
-
-void UDailyQuestsPanel_C::SetHeightBasedOnInputMode()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function DailyQuestsPanel.DailyQuestsPanel_C.SetHeightBasedOnInputMode");
-
-	UDailyQuestsPanel_C_SetHeightBasedOnInputMode_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -326,26 +309,6 @@ void UDailyQuestsPanel_C::BndEvt__ClaimReward_K2Node_ComponentBoundEvent_0_OnWid
 	static auto fn = UObject::FindObject<UFunction>("Function DailyQuestsPanel.DailyQuestsPanel_C.BndEvt__ClaimReward_K2Node_ComponentBoundEvent_0_OnWidgetAnimationPlaybackStatusChanged__DelegateSignature");
 
 	UDailyQuestsPanel_C_BndEvt__ClaimReward_K2Node_ComponentBoundEvent_0_OnWidgetAnimationPlaybackStatusChanged__DelegateSignature_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function DailyQuestsPanel.DailyQuestsPanel_C.PreConstruct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
-// Parameters:
-// bool*                          IsDesignTime                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void UDailyQuestsPanel_C::PreConstruct(bool* IsDesignTime)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function DailyQuestsPanel.DailyQuestsPanel_C.PreConstruct");
-
-	UDailyQuestsPanel_C_PreConstruct_Params params;
-	params.IsDesignTime = IsDesignTime;
 
 	auto flags = fn->FunctionFlags;
 

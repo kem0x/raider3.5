@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -44,8 +44,8 @@ struct UFriendCodePC_C_OnMouseLeave_Params
 	struct FPointerEvent*                              MouseEvent;                                               // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
 };
 
-// Function FriendCodePC.FriendCodePC_C.OnClicked
-struct UFriendCodePC_C_OnClicked_Params
+// Function FriendCodePC.FriendCodePC_C.BP_OnClicked
+struct UFriendCodePC_C_BP_OnClicked_Params
 {
 };
 

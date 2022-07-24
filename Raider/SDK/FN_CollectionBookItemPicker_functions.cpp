@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,30 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function CollectionBookItemPicker.CollectionBookItemPicker_C.Get Plural Type Text
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UFortItem*               Item                           (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FText                   Type                           (Parm, OutParm)
+
+void UCollectionBookItemPicker_C::Get_Plural_Type_Text(class UFortItem* Item, struct FText* Type)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function CollectionBookItemPicker.CollectionBookItemPicker_C.Get Plural Type Text");
+
+	UCollectionBookItemPicker_C_Get_Plural_Type_Text_Params params;
+	params.Item = Item;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (Type != nullptr)
+		*Type = params.Type;
+}
+
 
 // Function CollectionBookItemPicker.CollectionBookItemPicker_C.Get Type Text
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent)

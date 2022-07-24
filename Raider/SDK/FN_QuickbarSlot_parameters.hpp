@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -41,24 +41,6 @@ struct UQuickbarSlot_C_InitializeCooldowns_Params
 {
 };
 
-// Function QuickbarSlot.QuickbarSlot_C.Maximize
-struct UQuickbarSlot_C_Maximize_Params
-{
-	bool                                               ShouldSkipAnimation;                                      // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function QuickbarSlot.QuickbarSlot_C.Minimize
-struct UQuickbarSlot_C_Minimize_Params
-{
-	bool                                               ShouldSkipAnimation;                                      // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function QuickbarSlot.QuickbarSlot_C.SetSelected
-struct UQuickbarSlot_C_SetSelected_Params
-{
-	bool                                               Selected;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
 // Function QuickbarSlot.QuickbarSlot_C.HandleMaximizeStarted
 struct UQuickbarSlot_C_HandleMaximizeStarted_Params
 {
@@ -94,6 +76,24 @@ struct UQuickbarSlot_C_PreConstruct_Params
 struct UQuickbarSlot_C_SetAnimatedBoxScaleFactor_Params
 {
 	float                                              AnimatedBoxScaleFactor;                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function QuickbarSlot.QuickbarSlot_C.MaximizeSlot
+struct UQuickbarSlot_C_MaximizeSlot_Params
+{
+	bool*                                              bShouldSkipAnimation;                                     // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function QuickbarSlot.QuickbarSlot_C.MinimizeSlot
+struct UQuickbarSlot_C_MinimizeSlot_Params
+{
+	bool*                                              bShouldSkipAnimation;                                     // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function QuickbarSlot.QuickbarSlot_C.SetSlotSelected
+struct UQuickbarSlot_C_SetSlotSelected_Params
+{
+	bool*                                              bSelected;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function QuickbarSlot.QuickbarSlot_C.ExecuteUbergraph_QuickbarSlot

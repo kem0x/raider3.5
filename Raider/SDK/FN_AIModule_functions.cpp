@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -827,6 +827,150 @@ void UCrowdFollowingComponent::SuspendCrowdSteering(bool bSuspend)
 }
 
 
+// Function AIModule.AISystem.AILoggingVerbose
+// (Exec, Native, Public)
+
+void UAISystem::AILoggingVerbose()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AIModule.AISystem.AILoggingVerbose");
+
+	UAISystem_AILoggingVerbose_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AIModule.AISystem.AIIgnorePlayers
+// (Exec, Native, Public)
+
+void UAISystem::AIIgnorePlayers()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AIModule.AISystem.AIIgnorePlayers");
+
+	UAISystem_AIIgnorePlayers_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AIModule.NavLinkProxy.SetSmartLinkEnabled
+// (Final, Native, Public, BlueprintCallable)
+// Parameters:
+// bool                           bEnabled                       (Parm, ZeroConstructor, IsPlainOldData)
+
+void ANavLinkProxy::SetSmartLinkEnabled(bool bEnabled)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AIModule.NavLinkProxy.SetSmartLinkEnabled");
+
+	ANavLinkProxy_SetSmartLinkEnabled_Params params;
+	params.bEnabled = bEnabled;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AIModule.NavLinkProxy.ResumePathFollowing
+// (Final, Native, Public, BlueprintCallable)
+// Parameters:
+// class AActor*                  Agent                          (Parm, ZeroConstructor, IsPlainOldData)
+
+void ANavLinkProxy::ResumePathFollowing(class AActor* Agent)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AIModule.NavLinkProxy.ResumePathFollowing");
+
+	ANavLinkProxy_ResumePathFollowing_Params params;
+	params.Agent = Agent;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AIModule.NavLinkProxy.ReceiveSmartLinkReached
+// (Event, Public, HasOutParms, HasDefaults, BlueprintEvent)
+// Parameters:
+// class AActor*                  Agent                          (Parm, ZeroConstructor, IsPlainOldData)
+// struct FVector                 Destination                    (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
+
+void ANavLinkProxy::ReceiveSmartLinkReached(class AActor* Agent, const struct FVector& Destination)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AIModule.NavLinkProxy.ReceiveSmartLinkReached");
+
+	ANavLinkProxy_ReceiveSmartLinkReached_Params params;
+	params.Agent = Agent;
+	params.Destination = Destination;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AIModule.NavLinkProxy.IsSmartLinkEnabled
+// (Final, Native, Public, BlueprintCallable, BlueprintPure, Const)
+// Parameters:
+// bool                           ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+bool ANavLinkProxy::IsSmartLinkEnabled()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AIModule.NavLinkProxy.IsSmartLinkEnabled");
+
+	ANavLinkProxy_IsSmartLinkEnabled_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function AIModule.NavLinkProxy.HasMovingAgents
+// (Final, Native, Public, BlueprintCallable, BlueprintPure, Const)
+// Parameters:
+// bool                           ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+bool ANavLinkProxy::HasMovingAgents()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AIModule.NavLinkProxy.HasMovingAgents");
+
+	ANavLinkProxy_HasMovingAgents_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
 // Function AIModule.AITask_MoveTo.AIMoveTo
 // (Final, Native, Static, Public, HasDefaults, BlueprintCallable)
 // Parameters:
@@ -988,42 +1132,6 @@ class UClass* UAIPerceptionSystem::STATIC_GetSenseClassForStimulus(class UObject
 }
 
 
-// Function AIModule.AISystem.AILoggingVerbose
-// (Exec, Native, Public)
-
-void UAISystem::AILoggingVerbose()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AIModule.AISystem.AILoggingVerbose");
-
-	UAISystem_AILoggingVerbose_Params params;
-
-	auto flags = fn->FunctionFlags;
-	fn->FunctionFlags |= 0x400;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function AIModule.AISystem.AIIgnorePlayers
-// (Exec, Native, Public)
-
-void UAISystem::AIIgnorePlayers()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AIModule.AISystem.AIIgnorePlayers");
-
-	UAISystem_AIIgnorePlayers_Params params;
-
-	auto flags = fn->FunctionFlags;
-	fn->FunctionFlags |= 0x400;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function AIModule.BrainComponent.StopLogic
 // (Native, Public, BlueprintCallable)
 // Parameters:
@@ -1182,15 +1290,15 @@ void UBehaviorTreeComponent::AddCooldownTagDuration(const struct FGameplayTag& C
 // Function AIModule.AIAsyncTaskBlueprintProxy.OnMoveCompleted
 // (Final, Native, Public)
 // Parameters:
-// struct FAIRequestID            RequestID                      (Parm)
+// struct FAIRequestID            RequestId                      (Parm)
 // TEnumAsByte<EPathFollowingResult> MovementResult                 (Parm, ZeroConstructor, IsPlainOldData)
 
-void UAIAsyncTaskBlueprintProxy::OnMoveCompleted(const struct FAIRequestID& RequestID, TEnumAsByte<EPathFollowingResult> MovementResult)
+void UAIAsyncTaskBlueprintProxy::OnMoveCompleted(const struct FAIRequestID& RequestId, TEnumAsByte<EPathFollowingResult> MovementResult)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function AIModule.AIAsyncTaskBlueprintProxy.OnMoveCompleted");
 
 	UAIAsyncTaskBlueprintProxy_OnMoveCompleted_Params params;
-	params.RequestID = RequestID;
+	params.RequestId = RequestId;
 	params.MovementResult = MovementResult;
 
 	auto flags = fn->FunctionFlags;
@@ -1258,6 +1366,52 @@ class APawn* UAIBlueprintHelperLibrary::STATIC_SpawnAIFromClass(class UObject* W
 	fn->FunctionFlags = flags;
 
 	return params.ReturnValue;
+}
+
+
+// Function AIModule.AIBlueprintHelperLibrary.SimpleMoveToLocation
+// (Final, Native, Static, Public, HasOutParms, HasDefaults, BlueprintCallable)
+// Parameters:
+// class AController*             Controller                     (Parm, ZeroConstructor, IsPlainOldData)
+// struct FVector                 Goal                           (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
+
+void UAIBlueprintHelperLibrary::STATIC_SimpleMoveToLocation(class AController* Controller, const struct FVector& Goal)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AIModule.AIBlueprintHelperLibrary.SimpleMoveToLocation");
+
+	UAIBlueprintHelperLibrary_SimpleMoveToLocation_Params params;
+	params.Controller = Controller;
+	params.Goal = Goal;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AIModule.AIBlueprintHelperLibrary.SimpleMoveToActor
+// (Final, Native, Static, Public, BlueprintCallable)
+// Parameters:
+// class AController*             Controller                     (Parm, ZeroConstructor, IsPlainOldData)
+// class AActor*                  Goal                           (ConstParm, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAIBlueprintHelperLibrary::STATIC_SimpleMoveToActor(class AController* Controller, class AActor* Goal)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AIModule.AIBlueprintHelperLibrary.SimpleMoveToActor");
+
+	UAIBlueprintHelperLibrary_SimpleMoveToActor_Params params;
+	params.Controller = Controller;
+	params.Goal = Goal;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
 }
 
 
@@ -3615,15 +3769,15 @@ bool UBTService_BlueprintBase::IsServiceActive()
 // (Final, Native, Protected, BlueprintCallable)
 // Parameters:
 // struct FName                   MessageName                    (Parm, ZeroConstructor, IsPlainOldData)
-// int                            RequestID                      (Parm, ZeroConstructor, IsPlainOldData)
+// int                            RequestId                      (Parm, ZeroConstructor, IsPlainOldData)
 
-void UBTTask_BlueprintBase::SetFinishOnMessageWithId(const struct FName& MessageName, int RequestID)
+void UBTTask_BlueprintBase::SetFinishOnMessageWithId(const struct FName& MessageName, int RequestId)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function AIModule.BTTask_BlueprintBase.SetFinishOnMessageWithId");
 
 	UBTTask_BlueprintBase_SetFinishOnMessageWithId_Params params;
 	params.MessageName = MessageName;
-	params.RequestID = RequestID;
+	params.RequestId = RequestId;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;

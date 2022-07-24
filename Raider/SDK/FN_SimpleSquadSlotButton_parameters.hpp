@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -34,7 +34,7 @@ struct USimpleSquadSlotButton_C_Update_SubType_Icon_Image_Params
 // Function SimpleSquadSlotButton.SimpleSquadSlotButton_C.IsSlotEmpty
 struct USimpleSquadSlotButton_C_IsSlotEmpty_Params
 {
-	bool                                               isEmpty;                                                  // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+	bool                                               IsEmpty;                                                  // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function SimpleSquadSlotButton.SimpleSquadSlotButton_C.Mark Squad Slot Seen State
@@ -74,8 +74,8 @@ struct USimpleSquadSlotButton_C_SquadSlotWidgetUpdated_Params
 {
 };
 
-// Function SimpleSquadSlotButton.SimpleSquadSlotButton_C.OnSelected
-struct USimpleSquadSlotButton_C_OnSelected_Params
+// Function SimpleSquadSlotButton.SimpleSquadSlotButton_C.BP_OnSelected
+struct USimpleSquadSlotButton_C_BP_OnSelected_Params
 {
 };
 

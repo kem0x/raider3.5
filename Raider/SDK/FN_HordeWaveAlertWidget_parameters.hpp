@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -30,8 +30,8 @@ struct UHordeWaveAlertWidget_C_OnWaveCompleted_Params
 	TArray<struct FFortItemInstanceQuantityPair>       Rewards;                                                  // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
 };
 
-// Function HordeWaveAlertWidget.HordeWaveAlertWidget_C.OnHordeTierInitialized_Event_0_1
-struct UHordeWaveAlertWidget_C_OnHordeTierInitialized_Event_0_1_Params
+// Function HordeWaveAlertWidget.HordeWaveAlertWidget_C.OnHordeTierInitialized_Event_1
+struct UHordeWaveAlertWidget_C_OnHordeTierInitialized_Event_1_Params
 {
 	TArray<struct FFortItemInstanceQuantityPair>       Items;                                                    // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
 };

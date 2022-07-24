@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -25,20 +25,16 @@ struct UHelpListItem_C_InitializeItem_Params
 {
 };
 
-// Function HelpListItem.HelpListItem_C.ExpansionChanged
-struct UHelpListItem_C_ExpansionChanged_Params
+// Function HelpListItem.HelpListItem_C.OnListItemObjectSet
+struct UHelpListItem_C_OnListItemObjectSet_Params
 {
-	bool*                                              bExpanded;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class UObject**                                    ListItemObject;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function HelpListItem.HelpListItem_C.Construct
-struct UHelpListItem_C_Construct_Params
+// Function HelpListItem.HelpListItem_C.BP_OnItemExpansionChanged
+struct UHelpListItem_C_BP_OnItemExpansionChanged_Params
 {
-};
-
-// Function HelpListItem.HelpListItem_C.OnHelpItemSet
-struct UHelpListItem_C_OnHelpItemSet_Params
-{
+	bool*                                              bIsExpanded;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function HelpListItem.HelpListItem_C.ExecuteUbergraph_HelpListItem

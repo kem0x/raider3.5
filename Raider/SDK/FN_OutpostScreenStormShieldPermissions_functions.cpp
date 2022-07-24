@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -165,16 +165,16 @@ void UOutpostScreenStormShieldPermissions_C::Construct()
 }
 
 
-// Function OutpostScreenStormShieldPermissions.OutpostScreenStormShieldPermissions_C.UpdatePrivilagesEvent_0_1
+// Function OutpostScreenStormShieldPermissions.OutpostScreenStormShieldPermissions_C.UpdatePrivilagesEvent_1
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // struct FFortTeamMemberInfo     NewTeamMemberInfo              (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void UOutpostScreenStormShieldPermissions_C::UpdatePrivilagesEvent_0_1(const struct FFortTeamMemberInfo& NewTeamMemberInfo)
+void UOutpostScreenStormShieldPermissions_C::UpdatePrivilagesEvent_1(const struct FFortTeamMemberInfo& NewTeamMemberInfo)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function OutpostScreenStormShieldPermissions.OutpostScreenStormShieldPermissions_C.UpdatePrivilagesEvent_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function OutpostScreenStormShieldPermissions.OutpostScreenStormShieldPermissions_C.UpdatePrivilagesEvent_1");
 
-	UOutpostScreenStormShieldPermissions_C_UpdatePrivilagesEvent_0_1_Params params;
+	UOutpostScreenStormShieldPermissions_C_UpdatePrivilagesEvent_1_Params params;
 	params.NewTeamMemberInfo = NewTeamMemberInfo;
 
 	auto flags = fn->FunctionFlags;
@@ -185,16 +185,16 @@ void UOutpostScreenStormShieldPermissions_C::UpdatePrivilagesEvent_0_1(const str
 }
 
 
-// Function OutpostScreenStormShieldPermissions.OutpostScreenStormShieldPermissions_C.UpdatePrivilagesEvent_1_2
+// Function OutpostScreenStormShieldPermissions.OutpostScreenStormShieldPermissions_C.UpdatePrivilagesEvent_2
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // int                            PlayerIndex                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UOutpostScreenStormShieldPermissions_C::UpdatePrivilagesEvent_1_2(int PlayerIndex)
+void UOutpostScreenStormShieldPermissions_C::UpdatePrivilagesEvent_2(int PlayerIndex)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function OutpostScreenStormShieldPermissions.OutpostScreenStormShieldPermissions_C.UpdatePrivilagesEvent_1_2");
+	static auto fn = UObject::FindObject<UFunction>("Function OutpostScreenStormShieldPermissions.OutpostScreenStormShieldPermissions_C.UpdatePrivilagesEvent_2");
 
-	UOutpostScreenStormShieldPermissions_C_UpdatePrivilagesEvent_1_2_Params params;
+	UOutpostScreenStormShieldPermissions_C_UpdatePrivilagesEvent_2_Params params;
 	params.PlayerIndex = PlayerIndex;
 
 	auto flags = fn->FunctionFlags;

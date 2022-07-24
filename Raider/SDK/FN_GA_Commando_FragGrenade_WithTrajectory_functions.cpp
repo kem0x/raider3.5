@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -424,6 +424,23 @@ void UGA_Commando_FragGrenade_WithTrajectory_C::CleanupTrajectoryDisplay()
 }
 
 
+// Function GA_Commando_FragGrenade_WithTrajectory.GA_Commando_FragGrenade_WithTrajectory_C.TossGrenade
+// (BlueprintCallable, BlueprintEvent)
+
+void UGA_Commando_FragGrenade_WithTrajectory_C::TossGrenade()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GA_Commando_FragGrenade_WithTrajectory.GA_Commando_FragGrenade_WithTrajectory_C.TossGrenade");
+
+	UGA_Commando_FragGrenade_WithTrajectory_C_TossGrenade_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function GA_Commando_FragGrenade_WithTrajectory.GA_Commando_FragGrenade_WithTrajectory_C.K2_ActivateAbility
 // (Event, Protected, BlueprintEvent)
 
@@ -441,14 +458,14 @@ void UGA_Commando_FragGrenade_WithTrajectory_C::K2_ActivateAbility()
 }
 
 
-// Function GA_Commando_FragGrenade_WithTrajectory.GA_Commando_FragGrenade_WithTrajectory_C.TossGrenade
-// (BlueprintCallable, BlueprintEvent)
+// Function GA_Commando_FragGrenade_WithTrajectory.GA_Commando_FragGrenade_WithTrajectory_C.CommitOnSever
+// (Net, NetServer, BlueprintCallable, BlueprintEvent)
 
-void UGA_Commando_FragGrenade_WithTrajectory_C::TossGrenade()
+void UGA_Commando_FragGrenade_WithTrajectory_C::CommitOnSever()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function GA_Commando_FragGrenade_WithTrajectory.GA_Commando_FragGrenade_WithTrajectory_C.TossGrenade");
+	static auto fn = UObject::FindObject<UFunction>("Function GA_Commando_FragGrenade_WithTrajectory.GA_Commando_FragGrenade_WithTrajectory_C.CommitOnSever");
 
-	UGA_Commando_FragGrenade_WithTrajectory_C_TossGrenade_Params params;
+	UGA_Commando_FragGrenade_WithTrajectory_C_CommitOnSever_Params params;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -29,14 +29,14 @@ void ABP_VictoryDrone_C::NotifyTeleportFinishedTriggered()
 }
 
 
-// Function BP_VictoryDrone.BP_VictoryDrone_C.PlaySpawnOutAnim
+// Function BP_VictoryDrone.BP_VictoryDrone_C.PlaySpawnAnim
 // (Public, BlueprintCallable, BlueprintEvent)
 
-void ABP_VictoryDrone_C::PlaySpawnOutAnim()
+void ABP_VictoryDrone_C::PlaySpawnAnim()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_VictoryDrone.BP_VictoryDrone_C.PlaySpawnOutAnim");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_VictoryDrone.BP_VictoryDrone_C.PlaySpawnAnim");
 
-	ABP_VictoryDrone_C_PlaySpawnOutAnim_Params params;
+	ABP_VictoryDrone_C_PlaySpawnAnim_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -54,23 +54,6 @@ void ABP_VictoryDrone_C::InitDrone()
 	static auto fn = UObject::FindObject<UFunction>("Function BP_VictoryDrone.BP_VictoryDrone_C.InitDrone");
 
 	ABP_VictoryDrone_C_InitDrone_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function BP_VictoryDrone.BP_VictoryDrone_C.TriggerPlayerSpawnEffects
-// (Public, BlueprintCallable, BlueprintEvent)
-
-void ABP_VictoryDrone_C::TriggerPlayerSpawnEffects()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function BP_VictoryDrone.BP_VictoryDrone_C.TriggerPlayerSpawnEffects");
-
-	ABP_VictoryDrone_C_TriggerPlayerSpawnEffects_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -157,7 +140,7 @@ void ABP_VictoryDrone_C::ReceiveTick(float* DeltaSeconds)
 
 
 // Function BP_VictoryDrone.BP_VictoryDrone_C.ExecuteUbergraph_BP_VictoryDrone
-// ()
+// (HasDefaults)
 // Parameters:
 // int                            EntryPoint                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -228,16 +228,6 @@ struct UHeadMountedDisplayFunctionLibrary_EnableHMD_Params
 	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 };
 
-// Function HeadMountedDisplay.HeadMountedDisplayFunctionLibrary.AddDeviceVisualizationComponent
-struct UHeadMountedDisplayFunctionLibrary_AddDeviceVisualizationComponent_Params
-{
-	class AActor*                                      Target;                                                   // (Parm, ZeroConstructor, IsPlainOldData)
-	struct FXRDeviceId                                 XRDeviceId;                                               // (ConstParm, Parm, OutParm, ReferenceParm)
-	bool                                               bManualAttachment;                                        // (Parm, ZeroConstructor, IsPlainOldData)
-	struct FTransform                                  RelativeTransform;                                        // (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
-	class UPrimitiveComponent*                         ReturnValue;                                              // (ExportObject, Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
-};
-
 // Function HeadMountedDisplay.MotionControllerComponent.SetTrackingSource
 struct UMotionControllerComponent_SetTrackingSource_Params
 {
@@ -346,6 +336,12 @@ struct UMotionTrackedDeviceFunctionLibrary_GetMaximumMotionTrackedControllerCoun
 	int                                                ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 };
 
+// Function HeadMountedDisplay.MotionTrackedDeviceFunctionLibrary.GetActiveTrackingSystemName
+struct UMotionTrackedDeviceFunctionLibrary_GetActiveTrackingSystemName_Params
+{
+	struct FName                                       ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
 // Function HeadMountedDisplay.MotionTrackedDeviceFunctionLibrary.EnumerateMotionSources
 struct UMotionTrackedDeviceFunctionLibrary_EnumerateMotionSources_Params
 {
@@ -404,6 +400,50 @@ struct UMotionTrackedDeviceFunctionLibrary_DisableMotionTrackingOfAllControllers
 struct UMotionTrackedDeviceFunctionLibrary_DisableMotionTrackingForComponent_Params
 {
 	class UMotionControllerComponent*                  MotionControllerComponent;                                // (ConstParm, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+};
+
+// Function HeadMountedDisplay.XRAssetFunctionLibrary.AddNamedDeviceVisualizationComponentBlocking
+struct UXRAssetFunctionLibrary_AddNamedDeviceVisualizationComponentBlocking_Params
+{
+	class AActor*                                      Target;                                                   // (Parm, ZeroConstructor, IsPlainOldData)
+	struct FName                                       SystemName;                                               // (ConstParm, Parm, ZeroConstructor, IsPlainOldData)
+	struct FName                                       DeviceName;                                               // (ConstParm, Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               bManualAttachment;                                        // (Parm, ZeroConstructor, IsPlainOldData)
+	struct FTransform                                  RelativeTransform;                                        // (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
+	class UPrimitiveComponent*                         ReturnValue;                                              // (ExportObject, Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+};
+
+// Function HeadMountedDisplay.XRAssetFunctionLibrary.AddDeviceVisualizationComponentBlocking
+struct UXRAssetFunctionLibrary_AddDeviceVisualizationComponentBlocking_Params
+{
+	class AActor*                                      Target;                                                   // (Parm, ZeroConstructor, IsPlainOldData)
+	struct FXRDeviceId                                 XRDeviceId;                                               // (ConstParm, Parm, OutParm, ReferenceParm)
+	bool                                               bManualAttachment;                                        // (Parm, ZeroConstructor, IsPlainOldData)
+	struct FTransform                                  RelativeTransform;                                        // (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
+	class UPrimitiveComponent*                         ReturnValue;                                              // (ExportObject, Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+};
+
+// Function HeadMountedDisplay.AsyncTask_LoadXRDeviceVisComponent.AddNamedDeviceVisualizationComponentAsync
+struct UAsyncTask_LoadXRDeviceVisComponent_AddNamedDeviceVisualizationComponentAsync_Params
+{
+	class AActor*                                      Target;                                                   // (Parm, ZeroConstructor, IsPlainOldData)
+	struct FName                                       SystemName;                                               // (ConstParm, Parm, ZeroConstructor, IsPlainOldData)
+	struct FName                                       DeviceName;                                               // (ConstParm, Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               bManualAttachment;                                        // (Parm, ZeroConstructor, IsPlainOldData)
+	struct FTransform                                  RelativeTransform;                                        // (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
+	class UPrimitiveComponent*                         NewComponent;                                             // (Parm, OutParm, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UAsyncTask_LoadXRDeviceVisComponent*         ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function HeadMountedDisplay.AsyncTask_LoadXRDeviceVisComponent.AddDeviceVisualizationComponentAsync
+struct UAsyncTask_LoadXRDeviceVisComponent_AddDeviceVisualizationComponentAsync_Params
+{
+	class AActor*                                      Target;                                                   // (Parm, ZeroConstructor, IsPlainOldData)
+	struct FXRDeviceId                                 XRDeviceId;                                               // (ConstParm, Parm, OutParm, ReferenceParm)
+	bool                                               bManualAttachment;                                        // (Parm, ZeroConstructor, IsPlainOldData)
+	struct FTransform                                  RelativeTransform;                                        // (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
+	class UPrimitiveComponent*                         NewComponent;                                             // (Parm, OutParm, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UAsyncTask_LoadXRDeviceVisComponent*         ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 };
 
 }

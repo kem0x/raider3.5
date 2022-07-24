@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -25,8 +25,8 @@ struct UBP_BattlePassUnlockAnim_C_AnimComplete_Params
 {
 };
 
-// Function BP_BattlePassUnlockAnim.BP_BattlePassUnlockAnim_C.CustomEvent_0_1
-struct UBP_BattlePassUnlockAnim_C_CustomEvent_0_1_Params
+// Function BP_BattlePassUnlockAnim.BP_BattlePassUnlockAnim_C.CustomEvent_1
+struct UBP_BattlePassUnlockAnim_C_CustomEvent_1_Params
 {
 };
 

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -216,6 +216,23 @@ void ABP_Hex_PARENT_C::OnLoaded_192496DB41CC2100CC1C729DB594CEF8(class UObject* 
 }
 
 
+// Function BP_Hex_PARENT.BP_Hex_PARENT_C.ForceDefocus
+// (BlueprintCallable, BlueprintEvent)
+
+void ABP_Hex_PARENT_C::ForceDefocus()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function BP_Hex_PARENT.BP_Hex_PARENT_C.ForceDefocus");
+
+	ABP_Hex_PARENT_C_ForceDefocus_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function BP_Hex_PARENT.BP_Hex_PARENT_C.CheckFocus
 // (BlueprintCallable, BlueprintEvent)
 
@@ -241,23 +258,6 @@ void ABP_Hex_PARENT_C::FireLightningA()
 	static auto fn = UObject::FindObject<UFunction>("Function BP_Hex_PARENT.BP_Hex_PARENT_C.FireLightningA");
 
 	ABP_Hex_PARENT_C_FireLightningA_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function BP_Hex_PARENT.BP_Hex_PARENT_C.ForceDefocus
-// (BlueprintCallable, BlueprintEvent)
-
-void ABP_Hex_PARENT_C::ForceDefocus()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function BP_Hex_PARENT.BP_Hex_PARENT_C.ForceDefocus");
-
-	ABP_Hex_PARENT_C_ForceDefocus_Params params;
 
 	auto flags = fn->FunctionFlags;
 

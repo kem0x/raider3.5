@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -15,14 +15,14 @@ namespace SDK
 // Function Athena_Matchmaking_GameModeButton.Athena_Matchmaking_GameModeButton_C.SetButtonSize
 // (Public, BlueprintCallable, BlueprintEvent)
 // Parameters:
-// bool                           useLargeSize                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           UseLargeSize                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UAthena_Matchmaking_GameModeButton_C::SetButtonSize(bool useLargeSize)
+void UAthena_Matchmaking_GameModeButton_C::SetButtonSize(bool UseLargeSize)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function Athena_Matchmaking_GameModeButton.Athena_Matchmaking_GameModeButton_C.SetButtonSize");
 
 	UAthena_Matchmaking_GameModeButton_C_SetButtonSize_Params params;
-	params.useLargeSize = useLargeSize;
+	params.UseLargeSize = UseLargeSize;
 
 	auto flags = fn->FunctionFlags;
 

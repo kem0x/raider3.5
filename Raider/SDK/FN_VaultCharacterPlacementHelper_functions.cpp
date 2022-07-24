@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -66,16 +66,16 @@ void AVaultCharacterPlacementHelper_C::ReceiveBeginPlay()
 }
 
 
-// Function VaultCharacterPlacementHelper.VaultCharacterPlacementHelper_C.SubGameChanged_Event_0_1
+// Function VaultCharacterPlacementHelper.VaultCharacterPlacementHelper_C.SubGameChanged_Event_1
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // ESubGame                       SubGame                        (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void AVaultCharacterPlacementHelper_C::SubGameChanged_Event_0_1(ESubGame SubGame)
+void AVaultCharacterPlacementHelper_C::SubGameChanged_Event_1(ESubGame SubGame)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function VaultCharacterPlacementHelper.VaultCharacterPlacementHelper_C.SubGameChanged_Event_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function VaultCharacterPlacementHelper.VaultCharacterPlacementHelper_C.SubGameChanged_Event_1");
 
-	AVaultCharacterPlacementHelper_C_SubGameChanged_Event_0_1_Params params;
+	AVaultCharacterPlacementHelper_C_SubGameChanged_Event_1_Params params;
 	params.SubGame = SubGame;
 
 	auto flags = fn->FunctionFlags;

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,17 +12,104 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function AthenaHUD.AthenaHUD_C.HasClientBeenNotifiedOfWin
+// Function AthenaHUD.AthenaHUD_C.OnKeyDown
+// (BlueprintCosmetic, Event, Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// struct FGeometry*              MyGeometry                     (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
+// struct FKeyEvent*              InKeyEvent                     (BlueprintVisible, BlueprintReadOnly, Parm)
+// struct FEventReply             ReturnValue                    (Parm, OutParm, ReturnParm)
+
+struct FEventReply UAthenaHUD_C::OnKeyDown(struct FGeometry* MyGeometry, struct FKeyEvent* InKeyEvent)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.OnKeyDown");
+
+	UAthenaHUD_C_OnKeyDown_Params params;
+	params.MyGeometry = MyGeometry;
+	params.InKeyEvent = InKeyEvent;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function AthenaHUD.AthenaHUD_C.HandleGameViewportActivationChanged
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           IsActive                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaHUD_C::HandleGameViewportActivationChanged(bool IsActive)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.HandleGameViewportActivationChanged");
+
+	UAthenaHUD_C_HandleGameViewportActivationChanged_Params params;
+	params.IsActive = IsActive;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaHUD.AthenaHUD_C.UpdateCursorModeVisibility
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// struct FName                   CursorMode                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaHUD_C::UpdateCursorModeVisibility(const struct FName& CursorMode)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.UpdateCursorModeVisibility");
+
+	UAthenaHUD_C_UpdateCursorModeVisibility_Params params;
+	params.CursorMode = CursorMode;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaHUD.AthenaHUD_C.AllowCursorModeWhenDead
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure)
+// Parameters:
+// bool                           Allow                          (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaHUD_C::AllowCursorModeWhenDead(bool* Allow)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.AllowCursorModeWhenDead");
+
+	UAthenaHUD_C_AllowCursorModeWhenDead_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (Allow != nullptr)
+		*Allow = params.Allow;
+}
+
+
+// Function AthenaHUD.AthenaHUD_C.IsClientNotifiedOfWin
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure, Const)
 // Parameters:
 // bool                           bClientWon                     (Parm, OutParm, ZeroConstructor, IsPlainOldData)
 // bool                           bTeamWon                       (Parm, OutParm, ZeroConstructor, IsPlainOldData)
 
-void UAthenaHUD_C::HasClientBeenNotifiedOfWin(bool* bClientWon, bool* bTeamWon)
+void UAthenaHUD_C::IsClientNotifiedOfWin(bool* bClientWon, bool* bTeamWon)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.HasClientBeenNotifiedOfWin");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.IsClientNotifiedOfWin");
 
-	UAthenaHUD_C_HasClientBeenNotifiedOfWin_Params params;
+	UAthenaHUD_C_IsClientNotifiedOfWin_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -58,22 +145,24 @@ void UAthenaHUD_C::HandlePawnSet_RCPawnVisibilityUpdates(ESlateVisibility InVisi
 
 
 // Function AthenaHUD.AthenaHUD_C.HandlePawnSet_VisibilityUpdates
-// (Public, BlueprintCallable, BlueprintEvent)
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
-// ESlateVisibility               InVisibility                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           bHideElements                  (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm, IsPlainOldData)
 
-void UAthenaHUD_C::HandlePawnSet_VisibilityUpdates(ESlateVisibility InVisibility)
+void UAthenaHUD_C::HandlePawnSet_VisibilityUpdates(bool* bHideElements)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.HandlePawnSet_VisibilityUpdates");
 
 	UAthenaHUD_C_HandlePawnSet_VisibilityUpdates_Params params;
-	params.InVisibility = InVisibility;
 
 	auto flags = fn->FunctionFlags;
 
 	UObject::ProcessEvent(fn, &params);
 
 	fn->FunctionFlags = flags;
+
+	if (bHideElements != nullptr)
+		*bHideElements = params.bHideElements;
 }
 
 
@@ -296,26 +385,6 @@ void UAthenaHUD_C::HandleIndicatorModeChanged(bool InidicatorsEnabled)
 }
 
 
-// Function AthenaHUD.AthenaHUD_C.OnPlayerTargetingChanged
-// (Public, BlueprintCallable, BlueprintEvent)
-// Parameters:
-// bool                           IsTargeting                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void UAthenaHUD_C::OnPlayerTargetingChanged(bool IsTargeting)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.OnPlayerTargetingChanged");
-
-	UAthenaHUD_C_OnPlayerTargetingChanged_Params params;
-	params.IsTargeting = IsTargeting;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function AthenaHUD.AthenaHUD_C.HandleKeybindsChanged
 // (Public, BlueprintCallable, BlueprintEvent)
 
@@ -495,23 +564,6 @@ void UAthenaHUD_C::QuestsCompleted(TArray<class UFortQuestItem*> Quests)
 }
 
 
-// Function AthenaHUD.AthenaHUD_C.Construct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
-
-void UAthenaHUD_C::Construct()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.Construct");
-
-	UAthenaHUD_C_Construct_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function AthenaHUD.AthenaHUD_C.PushContentWidgetInternal
 // (Event, Protected, BlueprintEvent)
 // Parameters:
@@ -542,6 +594,23 @@ void UAthenaHUD_C::Destruct()
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.Destruct");
 
 	UAthenaHUD_C_Destruct_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaHUD.AthenaHUD_C.Construct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UAthenaHUD_C::Construct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.Construct");
+
+	UAthenaHUD_C_Construct_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -766,6 +835,105 @@ void UAthenaHUD_C::SetFullScreenMapVisibility(bool* bIsVisible)
 
 	UAthenaHUD_C_SetFullScreenMapVisibility_Params params;
 	params.bIsVisible = bIsVisible;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaHUD.AthenaHUD_C.OnPlaylistExtensionWidgetCreated
+// (Event, Protected, BlueprintEvent)
+// Parameters:
+// EPlaylistUIExtensionSlot*      ExtensionSlot                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UUserWidget**            Widget                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void UAthenaHUD_C::OnPlaylistExtensionWidgetCreated(EPlaylistUIExtensionSlot* ExtensionSlot, class UUserWidget** Widget)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.OnPlaylistExtensionWidgetCreated");
+
+	UAthenaHUD_C_OnPlaylistExtensionWidgetCreated_Params params;
+	params.ExtensionSlot = ExtensionSlot;
+	params.Widget = Widget;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaHUD.AthenaHUD_C.OnCountdownStarted
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// int                            TimeRemaining                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaHUD_C::OnCountdownStarted(int TimeRemaining)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.OnCountdownStarted");
+
+	UAthenaHUD_C_OnCountdownStarted_Params params;
+	params.TimeRemaining = TimeRemaining;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaHUD.AthenaHUD_C.OnCountdownFinished
+// (BlueprintCallable, BlueprintEvent)
+
+void UAthenaHUD_C::OnCountdownFinished()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.OnCountdownFinished");
+
+	UAthenaHUD_C_OnCountdownFinished_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaHUD.AthenaHUD_C.OnPlayerLost
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EEndOfMatchReason              LostReason                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaHUD_C::OnPlayerLost(EEndOfMatchReason LostReason)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.OnPlayerLost");
+
+	UAthenaHUD_C_OnPlayerLost_Params params;
+	params.LostReason = LostReason;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaHUD.AthenaHUD_C.OnPhaseStepChanged
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EAthenaGamePhaseStep           NewPhaseStep                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaHUD_C::OnPhaseStepChanged(EAthenaGamePhaseStep NewPhaseStep)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUD.AthenaHUD_C.OnPhaseStepChanged");
+
+	UAthenaHUD_C_OnPhaseStepChanged_Params params;
+	params.NewPhaseStep = NewPhaseStep;
 
 	auto flags = fn->FunctionFlags;
 

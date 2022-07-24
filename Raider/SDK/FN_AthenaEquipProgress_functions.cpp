@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -51,18 +51,18 @@ void UAthenaEquipProgress_C::Construct()
 }
 
 
-// Function AthenaEquipProgress.AthenaEquipProgress_C.OnUIGameplayCue_Event_0_1
+// Function AthenaEquipProgress.AthenaEquipProgress_C.OnUIGameplayCue_Event_1
 // (HasOutParms, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // struct FName                   CueName                        (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // TEnumAsByte<EGameplayCueEvent> EventType                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // struct FGameplayCueParameters  Parameters                     (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
 
-void UAthenaEquipProgress_C::OnUIGameplayCue_Event_0_1(const struct FName& CueName, TEnumAsByte<EGameplayCueEvent> EventType, const struct FGameplayCueParameters& Parameters)
+void UAthenaEquipProgress_C::OnUIGameplayCue_Event_1(const struct FName& CueName, TEnumAsByte<EGameplayCueEvent> EventType, const struct FGameplayCueParameters& Parameters)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaEquipProgress.AthenaEquipProgress_C.OnUIGameplayCue_Event_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaEquipProgress.AthenaEquipProgress_C.OnUIGameplayCue_Event_1");
 
-	UAthenaEquipProgress_C_OnUIGameplayCue_Event_0_1_Params params;
+	UAthenaEquipProgress_C_OnUIGameplayCue_Event_1_Params params;
 	params.CueName = CueName;
 	params.EventType = EventType;
 	params.Parameters = Parameters;

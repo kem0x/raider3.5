@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -14,26 +14,8 @@ namespace SDK
 //Parameters
 //---------------------------------------------------------------------------
 
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.DoesItemHaveChildren
-struct UOptionsMenuInputOneKey_C_DoesItemHaveChildren_Params
-{
-	int                                                ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
-};
-
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.GetIndentLevel
-struct UOptionsMenuInputOneKey_C_GetIndentLevel_Params
-{
-	int                                                ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
-};
-
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.IsItemExpanded
-struct UOptionsMenuInputOneKey_C_IsItemExpanded_Params
-{
-	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
-};
-
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.GetData
-struct UOptionsMenuInputOneKey_C_GetData_Params
+// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.GetListItemObject
+struct UOptionsMenuInputOneKey_C_GetListItemObject_Params
 {
 	class UObject*                                     ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 };
@@ -51,44 +33,15 @@ struct UOptionsMenuInputOneKey_C_OnFocusReceived_Params
 	struct FEventReply                                 ReturnValue;                                              // (Parm, OutParm, ReturnParm)
 };
 
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.Center on Widget
-struct UOptionsMenuInputOneKey_C_Center_on_Widget_Params
+// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.Center On Widget
+struct UOptionsMenuInputOneKey_C_Center_On_Widget_Params
 {
 };
 
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.SetExpanded
-struct UOptionsMenuInputOneKey_C_SetExpanded_Params
+// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.OnListItemObjectSet
+struct UOptionsMenuInputOneKey_C_OnListItemObjectSet_Params
 {
-	bool                                               bExpanded;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.SetIndexInList
-struct UOptionsMenuInputOneKey_C_SetIndexInList_Params
-{
-	int                                                InIndexInList;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.SetSelected
-struct UOptionsMenuInputOneKey_C_SetSelected_Params
-{
-	bool                                               bSelected;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.ToggleExpansion
-struct UOptionsMenuInputOneKey_C_ToggleExpansion_Params
-{
-};
-
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.Reset
-struct UOptionsMenuInputOneKey_C_Reset_Params
-{
-};
-
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.SetData
-struct UOptionsMenuInputOneKey_C_SetData_Params
-{
-	class UObject*                                     InData;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	class UCommonListView*                             OwningList;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UObject*                                     ListItemObject;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.OnMouseLeave
@@ -116,24 +69,20 @@ struct UOptionsMenuInputOneKey_C_BndEvt__GamepadKeyButton_K2Node_ComponentBoundE
 	class UCommonButton*                               Button;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.RegisterOnClicked
-struct UOptionsMenuInputOneKey_C_RegisterOnClicked_Params
+// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.BP_OnItemSelectionChanged
+struct UOptionsMenuInputOneKey_C_BP_OnItemSelectionChanged_Params
 {
-	struct FScriptDelegate                             Callback;                                                 // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
+	bool                                               bIsSelected;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.Private_OnExpanderArrowShiftClicked
-struct UOptionsMenuInputOneKey_C_Private_OnExpanderArrowShiftClicked_Params
+// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.BP_OnItemExpansionChanged
+struct UOptionsMenuInputOneKey_C_BP_OnItemExpansionChanged_Params
 {
+	bool                                               bIsExpanded;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.OnReleaseToPool
-struct UOptionsMenuInputOneKey_C_OnReleaseToPool_Params
-{
-};
-
-// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.OnAcquireFromPool
-struct UOptionsMenuInputOneKey_C_OnAcquireFromPool_Params
+// Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.BP_OnEntryReleased
+struct UOptionsMenuInputOneKey_C_BP_OnEntryReleased_Params
 {
 };
 
@@ -146,14 +95,14 @@ struct UOptionsMenuInputOneKey_C_ExecuteUbergraph_OptionsMenuInputOneKey_Params
 // Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.UnbindClicked__DelegateSignature
 struct UOptionsMenuInputOneKey_C_UnbindClicked__DelegateSignature_Params
 {
-	int                                                Number_In_List;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	int                                                Number_in_List;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	class UOptionsMenuInputOneKey_C*                   Widget;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 
 // Function OptionsMenuInputOneKey.OptionsMenuInputOneKey_C.Input Clicked__DelegateSignature
 struct UOptionsMenuInputOneKey_C_Input_Clicked__DelegateSignature_Params
 {
-	int                                                Number_In_List;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	int                                                Number_in_List;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	bool                                               Is_Primary_Button;                                        // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 

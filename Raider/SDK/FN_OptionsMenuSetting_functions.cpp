@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,79 +12,71 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function OptionsMenuSetting.OptionsMenuSetting_C.DoesItemHaveChildren
-// (Event, Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure, Const)
-// Parameters:
-// int                            ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
-
-int UOptionsMenuSetting_C::DoesItemHaveChildren()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.DoesItemHaveChildren");
-
-	UOptionsMenuSetting_C_DoesItemHaveChildren_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-
-	return params.ReturnValue;
-}
-
-
-// Function OptionsMenuSetting.OptionsMenuSetting_C.GetIndentLevel
-// (Event, Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure, Const)
-// Parameters:
-// int                            ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
-
-int UOptionsMenuSetting_C::GetIndentLevel()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.GetIndentLevel");
-
-	UOptionsMenuSetting_C_GetIndentLevel_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-
-	return params.ReturnValue;
-}
-
-
-// Function OptionsMenuSetting.OptionsMenuSetting_C.IsItemExpanded
-// (Event, Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure, Const)
-// Parameters:
-// bool                           ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
-
-bool UOptionsMenuSetting_C::IsItemExpanded()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.IsItemExpanded");
-
-	UOptionsMenuSetting_C_IsItemExpanded_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-
-	return params.ReturnValue;
-}
-
-
-// Function OptionsMenuSetting.OptionsMenuSetting_C.GetData
-// (Event, Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure, Const)
+// Function OptionsMenuSetting.OptionsMenuSetting_C.GetListItemObject
+// (Event, Protected, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure, Const)
 // Parameters:
 // class UObject*                 ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 
-class UObject* UOptionsMenuSetting_C::GetData()
+class UObject* UOptionsMenuSetting_C::GetListItemObject()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.GetData");
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.GetListItemObject");
 
-	UOptionsMenuSetting_C_GetData_Params params;
+	UOptionsMenuSetting_C_GetListItemObject_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function OptionsMenuSetting.OptionsMenuSetting_C.Hide Tooltip
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UOptionsMenuSetting_C::Hide_Tooltip()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.Hide Tooltip");
+
+	UOptionsMenuSetting_C_Hide_Tooltip_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function OptionsMenuSetting.OptionsMenuSetting_C.Show Tooltip
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UOptionsMenuSetting_C::Show_Tooltip()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.Show Tooltip");
+
+	UOptionsMenuSetting_C_Show_Tooltip_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function OptionsMenuSetting.OptionsMenuSetting_C.OnGetMenuContent
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UWidget*                 ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+
+class UWidget* UOptionsMenuSetting_C::OnGetMenuContent()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.OnGetMenuContent");
+
+	UOptionsMenuSetting_C_OnGetMenuContent_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -150,14 +142,14 @@ void UOptionsMenuSetting_C::Update_Setting(class UCommonTextBlock* Tooltip_Text_
 }
 
 
-// Function OptionsMenuSetting.OptionsMenuSetting_C.Center on Widget
+// Function OptionsMenuSetting.OptionsMenuSetting_C.Center On Widget
 // (Public, BlueprintCallable, BlueprintEvent)
 
-void UOptionsMenuSetting_C::Center_on_Widget()
+void UOptionsMenuSetting_C::Center_On_Widget()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.Center on Widget");
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.Center On Widget");
 
-	UOptionsMenuSetting_C_Center_on_Widget_Params params;
+	UOptionsMenuSetting_C_Center_On_Widget_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -167,51 +159,17 @@ void UOptionsMenuSetting_C::Center_on_Widget()
 }
 
 
-// Function OptionsMenuSetting.OptionsMenuSetting_C.OnAcquireFromPool
+// Function OptionsMenuSetting.OptionsMenuSetting_C.BP_OnItemExpansionChanged
 // (Event, Protected, BlueprintEvent)
-
-void UOptionsMenuSetting_C::OnAcquireFromPool()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.OnAcquireFromPool");
-
-	UOptionsMenuSetting_C_OnAcquireFromPool_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function OptionsMenuSetting.OptionsMenuSetting_C.Private_OnExpanderArrowShiftClicked
-// (Event, Public, BlueprintCallable, BlueprintEvent)
-
-void UOptionsMenuSetting_C::Private_OnExpanderArrowShiftClicked()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.Private_OnExpanderArrowShiftClicked");
-
-	UOptionsMenuSetting_C_Private_OnExpanderArrowShiftClicked_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function OptionsMenuSetting.OptionsMenuSetting_C.RegisterOnClicked
-// (Event, Public, HasOutParms, BlueprintCallable, BlueprintEvent)
 // Parameters:
-// struct FScriptDelegate         Callback                       (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
+// bool                           bIsExpanded                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UOptionsMenuSetting_C::RegisterOnClicked(const struct FScriptDelegate& Callback)
+void UOptionsMenuSetting_C::BP_OnItemExpansionChanged(bool bIsExpanded)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.RegisterOnClicked");
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.BP_OnItemExpansionChanged");
 
-	UOptionsMenuSetting_C_RegisterOnClicked_Params params;
-	params.Callback = Callback;
+	UOptionsMenuSetting_C_BP_OnItemExpansionChanged_Params params;
+	params.bIsExpanded = bIsExpanded;
 
 	auto flags = fn->FunctionFlags;
 
@@ -221,91 +179,17 @@ void UOptionsMenuSetting_C::RegisterOnClicked(const struct FScriptDelegate& Call
 }
 
 
-// Function OptionsMenuSetting.OptionsMenuSetting_C.SetExpanded
-// (Event, Public, BlueprintCallable, BlueprintEvent)
+// Function OptionsMenuSetting.OptionsMenuSetting_C.BP_OnItemSelectionChanged
+// (Event, Protected, BlueprintEvent)
 // Parameters:
-// bool                           bExpanded                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           bIsSelected                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UOptionsMenuSetting_C::SetExpanded(bool bExpanded)
+void UOptionsMenuSetting_C::BP_OnItemSelectionChanged(bool bIsSelected)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.SetExpanded");
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.BP_OnItemSelectionChanged");
 
-	UOptionsMenuSetting_C_SetExpanded_Params params;
-	params.bExpanded = bExpanded;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function OptionsMenuSetting.OptionsMenuSetting_C.SetIndexInList
-// (Event, Public, BlueprintCallable, BlueprintEvent)
-// Parameters:
-// int                            InIndexInList                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void UOptionsMenuSetting_C::SetIndexInList(int InIndexInList)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.SetIndexInList");
-
-	UOptionsMenuSetting_C_SetIndexInList_Params params;
-	params.InIndexInList = InIndexInList;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function OptionsMenuSetting.OptionsMenuSetting_C.SetSelected
-// (Event, Public, BlueprintCallable, BlueprintEvent)
-// Parameters:
-// bool                           bSelected                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void UOptionsMenuSetting_C::SetSelected(bool bSelected)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.SetSelected");
-
-	UOptionsMenuSetting_C_SetSelected_Params params;
-	params.bSelected = bSelected;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function OptionsMenuSetting.OptionsMenuSetting_C.ToggleExpansion
-// (Event, Public, BlueprintCallable, BlueprintEvent)
-
-void UOptionsMenuSetting_C::ToggleExpansion()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.ToggleExpansion");
-
-	UOptionsMenuSetting_C_ToggleExpansion_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function OptionsMenuSetting.OptionsMenuSetting_C.Reset
-// (Event, Public, BlueprintCallable, BlueprintEvent)
-
-void UOptionsMenuSetting_C::Reset()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.Reset");
-
-	UOptionsMenuSetting_C_Reset_Params params;
+	UOptionsMenuSetting_C_BP_OnItemSelectionChanged_Params params;
+	params.bIsSelected = bIsSelected;
 
 	auto flags = fn->FunctionFlags;
 
@@ -468,36 +352,17 @@ void UOptionsMenuSetting_C::BndEvt__TextRotator_K2Node_ComponentBoundEvent_20_On
 }
 
 
-// Function OptionsMenuSetting.OptionsMenuSetting_C.SetData
-// (Event, Public, BlueprintCallable, BlueprintEvent)
-// Parameters:
-// class UObject*                 InData                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class UCommonListView*         OwningList                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-
-void UOptionsMenuSetting_C::SetData(class UObject* InData, class UCommonListView* OwningList)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.SetData");
-
-	UOptionsMenuSetting_C_SetData_Params params;
-	params.InData = InData;
-	params.OwningList = OwningList;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function OptionsMenuSetting.OptionsMenuSetting_C.OnReleaseToPool
+// Function OptionsMenuSetting.OptionsMenuSetting_C.OnListItemObjectSet
 // (Event, Protected, BlueprintEvent)
+// Parameters:
+// class UObject*                 ListItemObject                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UOptionsMenuSetting_C::OnReleaseToPool()
+void UOptionsMenuSetting_C::OnListItemObjectSet(class UObject* ListItemObject)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.OnReleaseToPool");
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.OnListItemObjectSet");
 
-	UOptionsMenuSetting_C_OnReleaseToPool_Params params;
+	UOptionsMenuSetting_C_OnListItemObjectSet_Params params;
+	params.ListItemObject = ListItemObject;
 
 	auto flags = fn->FunctionFlags;
 
@@ -538,6 +403,80 @@ void UOptionsMenuSetting_C::BndEvt__ButtonRight_K2Node_ComponentBoundEvent_15_Co
 
 	UOptionsMenuSetting_C_BndEvt__ButtonRight_K2Node_ComponentBoundEvent_15_CommonButtonClicked__DelegateSignature_Params params;
 	params.Button = Button;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function OptionsMenuSetting.OptionsMenuSetting_C.BP_OnEntryReleased
+// (Event, Protected, BlueprintEvent)
+
+void UOptionsMenuSetting_C::BP_OnEntryReleased()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.BP_OnEntryReleased");
+
+	UOptionsMenuSetting_C_BP_OnEntryReleased_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function OptionsMenuSetting.OptionsMenuSetting_C.BndEvt__MenuAnchorSettingDescription_K2Node_ComponentBoundEvent_22_OnMenuOpenChangedEvent__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// bool                           bIsOpen                        (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UOptionsMenuSetting_C::BndEvt__MenuAnchorSettingDescription_K2Node_ComponentBoundEvent_22_OnMenuOpenChangedEvent__DelegateSignature(bool bIsOpen)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.BndEvt__MenuAnchorSettingDescription_K2Node_ComponentBoundEvent_22_OnMenuOpenChangedEvent__DelegateSignature");
+
+	UOptionsMenuSetting_C_BndEvt__MenuAnchorSettingDescription_K2Node_ComponentBoundEvent_22_OnMenuOpenChangedEvent__DelegateSignature_Params params;
+	params.bIsOpen = bIsOpen;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function OptionsMenuSetting.OptionsMenuSetting_C.BndEvt__ButtonTouchTooltip_K2Node_ComponentBoundEvent_69_CommonButtonClicked__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// class UCommonButton*           Button                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void UOptionsMenuSetting_C::BndEvt__ButtonTouchTooltip_K2Node_ComponentBoundEvent_69_CommonButtonClicked__DelegateSignature(class UCommonButton* Button)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.BndEvt__ButtonTouchTooltip_K2Node_ComponentBoundEvent_69_CommonButtonClicked__DelegateSignature");
+
+	UOptionsMenuSetting_C_BndEvt__ButtonTouchTooltip_K2Node_ComponentBoundEvent_69_CommonButtonClicked__DelegateSignature_Params params;
+	params.Button = Button;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function OptionsMenuSetting.OptionsMenuSetting_C.OnReleaseToPool_2
+// (BlueprintCallable, BlueprintEvent)
+
+void UOptionsMenuSetting_C::OnReleaseToPool_2()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSetting.OptionsMenuSetting_C.OnReleaseToPool_2");
+
+	UOptionsMenuSetting_C_OnReleaseToPool_2_Params params;
 
 	auto flags = fn->FunctionFlags;
 

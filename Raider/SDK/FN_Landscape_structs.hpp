@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -130,6 +128,24 @@ enum class ETerrainCoordMappingType : uint8_t
 //---------------------------------------------------------------------------
 //Script Structs
 //---------------------------------------------------------------------------
+
+// ScriptStruct Landscape.LandscapeProxyMaterialOverride
+// 0x0010
+struct FLandscapeProxyMaterialOverride
+{
+	int8_t                                             LODIndex;                                                 // 0x0000(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0001(0x0007) MISSED OFFSET
+	class UMaterialInterface*                          Material;                                                 // 0x0008(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+};
+
+// ScriptStruct Landscape.LandscapeComponentMaterialOverride
+// 0x0010
+struct FLandscapeComponentMaterialOverride
+{
+	int8_t                                             LODIndex;                                                 // 0x0000(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0001(0x0007) MISSED OFFSET
+	class UMaterialInterface*                          Material;                                                 // 0x0008(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+};
 
 // ScriptStruct Landscape.WeightmapLayerAllocationInfo
 // 0x0010

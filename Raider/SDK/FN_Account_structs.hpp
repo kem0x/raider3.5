@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -22,7 +20,8 @@ enum class EExternalAccountType : uint8_t
 	Google                         = 2,
 	Epic_PSN                       = 3,
 	Epic_XBL                       = 4,
-	EExternalAccountType_MAX       = 5
+	Epic_Erebus                    = 5,
+	EExternalAccountType_MAX       = 6
 };
 
 
@@ -70,15 +69,16 @@ enum class ELoginResult : uint8_t
 	GenericError                   = 24,
 	RejoinCheckFailure             = 25,
 	ConnectionFailed               = 26,
-	ExternalAuth_AddedAuthAssociation = 27,
-	ExternalAuth_ConnectionTimeout = 28,
-	ExternalAuth_AuthFailure       = 29,
-	ExternalAuth_AssociationFailure = 30,
-	ExternalAuth_MissingAuthAssociation = 31,
-	FailedToCreateParty            = 32,
-	ProfileQueryFailed             = 33,
-	ClientSettingsDownloadFailed   = 34,
-	ELoginResult_MAX               = 35
+	NetworkConnectionUnavailable   = 27,
+	ExternalAuth_AddedAuthAssociation = 28,
+	ExternalAuth_ConnectionTimeout = 29,
+	ExternalAuth_AuthFailure       = 30,
+	ExternalAuth_AssociationFailure = 31,
+	ExternalAuth_MissingAuthAssociation = 32,
+	FailedToCreateParty            = 33,
+	ProfileQueryFailed             = 34,
+	ClientSettingsDownloadFailed   = 35,
+	ELoginResult_MAX               = 36
 };
 
 
@@ -91,7 +91,9 @@ enum class EConsoleAuthLinkState : uint8_t
 	ThisEpicAccountLinked          = 3,
 	OtherEpicAccountLinked         = 4,
 	NoEpicAccountLinked            = 5,
-	EConsoleAuthLinkState_MAX      = 6
+	PrimaryIdNotLinked             = 6,
+	SecondaryIdNotLinked           = 7,
+	EConsoleAuthLinkState_MAX      = 8
 };
 
 
@@ -157,7 +159,7 @@ struct FOnlineAccountTexts_FailedLoginConsole
 };
 
 // ScriptStruct Account.OnlineAccountTexts
-// 0x0930
+// 0x0960
 struct FOnlineAccountTexts
 {
 	struct FText                                       AllGiftCodesUsed;                                         // 0x0000(0x0018) (Edit)
@@ -217,35 +219,37 @@ struct FOnlineAccountTexts
 	struct FText                                       LostConnection;                                           // 0x0510(0x0018) (Edit)
 	struct FText                                       MCPTimeout;                                               // 0x0528(0x0018) (Edit)
 	struct FText                                       LightswitchCheckNetworkFailureMsg;                        // 0x0540(0x0018) (Edit)
-	struct FText                                       NoPlayEntitlement;                                        // 0x0558(0x0018) (Edit)
-	struct FText                                       NoServerAccess;                                           // 0x0570(0x0018) (Edit)
-	struct FText                                       PlayAccessRevoked;                                        // 0x0588(0x0018) (Edit)
-	struct FText                                       PremiumAccountName_Default;                               // 0x05A0(0x0018) (Edit)
-	struct FText                                       PremiumAccountName_PS4;                                   // 0x05B8(0x0018) (Edit)
-	struct FText                                       PremiumAccountName_Switch;                                // 0x05D0(0x0018) (Edit)
-	struct FText                                       PremiumAccountName_XboxOne;                               // 0x05E8(0x0018) (Edit)
-	struct FText                                       RedeemOfflinePurchases;                                   // 0x0600(0x0018) (Edit)
-	struct FText                                       ServiceDowntime;                                          // 0x0618(0x0018) (Edit)
-	struct FText                                       SignInCompleting;                                         // 0x0630(0x0018) (Edit)
-	struct FText                                       SignIntoConsoleServices;                                  // 0x0648(0x0018) (Edit)
-	struct FText                                       TokenExpired;                                             // 0x0660(0x0018) (Edit)
-	struct FText                                       UnableToConnect;                                          // 0x0678(0x0018) (Edit)
-	struct FText                                       UnableToJoinWaitingRoomLoginQueue;                        // 0x0690(0x0018) (Edit)
-	struct FText                                       UnexpectedConsoleAuthFailure;                             // 0x06A8(0x0018) (Edit)
-	struct FText                                       UnlinkConsoleFailed;                                      // 0x06C0(0x0018) (Edit)
-	struct FText                                       UserLoginFailed;                                          // 0x06D8(0x0018) (Edit)
-	struct FText                                       WaitingRoom;                                              // 0x06F0(0x0018) (Edit)
-	struct FText                                       WaitingRoomError;                                         // 0x0708(0x0018) (Edit)
-	struct FText                                       WaitingRoomFailure;                                       // 0x0720(0x0018) (Edit)
-	struct FText                                       WaitingRoomWaiting;                                       // 0x0738(0x0018) (Edit)
-	struct FOnlineAccountTexts_FailedLoginConsole      FailedLoginConsole;                                       // 0x0750(0x0138) (Edit)
-	struct FText                                       LoggingInExternalAuth;                                    // 0x0888(0x0018) (Edit)
-	struct FText                                       CreateDeviceAuth;                                         // 0x08A0(0x0018) (Edit)
-	struct FText                                       ExtAuthCanceled;                                          // 0x08B8(0x0018) (Edit)
-	struct FText                                       ExtAuthFailure;                                           // 0x08D0(0x0018) (Edit)
-	struct FText                                       ExtAuthAssociationFailure;                                // 0x08E8(0x0018) (Edit)
-	struct FText                                       ExtAuthTimeout;                                           // 0x0900(0x0018) (Edit)
-	struct FText                                       ExtAuthMissingAuthAssociation;                            // 0x0918(0x0018) (Edit)
+	struct FText                                       NetworkConnectionUnavailable;                             // 0x0558(0x0018) (Edit)
+	struct FText                                       NoPlayEntitlement;                                        // 0x0570(0x0018) (Edit)
+	struct FText                                       NoServerAccess;                                           // 0x0588(0x0018) (Edit)
+	struct FText                                       PlayAccessRevoked;                                        // 0x05A0(0x0018) (Edit)
+	struct FText                                       PremiumAccountName_Default;                               // 0x05B8(0x0018) (Edit)
+	struct FText                                       PremiumAccountName_PS4;                                   // 0x05D0(0x0018) (Edit)
+	struct FText                                       PremiumAccountName_Switch;                                // 0x05E8(0x0018) (Edit)
+	struct FText                                       PremiumAccountName_XboxOne;                               // 0x0600(0x0018) (Edit)
+	struct FText                                       RedeemOfflinePurchases;                                   // 0x0618(0x0018) (Edit)
+	struct FText                                       ServiceDowntime;                                          // 0x0630(0x0018) (Edit)
+	struct FText                                       SignInCompleting;                                         // 0x0648(0x0018) (Edit)
+	struct FText                                       SignIntoConsoleServices;                                  // 0x0660(0x0018) (Edit)
+	struct FText                                       TokenExpired;                                             // 0x0678(0x0018) (Edit)
+	struct FText                                       UnableToConnect;                                          // 0x0690(0x0018) (Edit)
+	struct FText                                       UnableToJoinWaitingRoomLoginQueue;                        // 0x06A8(0x0018) (Edit)
+	struct FText                                       UnexpectedConsoleAuthFailure;                             // 0x06C0(0x0018) (Edit)
+	struct FText                                       UnlinkConsoleFailed;                                      // 0x06D8(0x0018) (Edit)
+	struct FText                                       UserLoginFailed;                                          // 0x06F0(0x0018) (Edit)
+	struct FText                                       WaitingRoom;                                              // 0x0708(0x0018) (Edit)
+	struct FText                                       WaitingRoomError;                                         // 0x0720(0x0018) (Edit)
+	struct FText                                       WaitingRoomFailure;                                       // 0x0738(0x0018) (Edit)
+	struct FText                                       WaitingRoomWaiting;                                       // 0x0750(0x0018) (Edit)
+	struct FOnlineAccountTexts_FailedLoginConsole      FailedLoginConsole;                                       // 0x0768(0x0138) (Edit)
+	struct FText                                       LoggingInExternalAuth;                                    // 0x08A0(0x0018) (Edit)
+	struct FText                                       CreateDeviceAuth;                                         // 0x08B8(0x0018) (Edit)
+	struct FText                                       ExtAuthCanceled;                                          // 0x08D0(0x0018) (Edit)
+	struct FText                                       ExtAuthFailure;                                           // 0x08E8(0x0018) (Edit)
+	struct FText                                       ExtAuthAssociationFailure;                                // 0x0900(0x0018) (Edit)
+	struct FText                                       ExtAuthTimeout;                                           // 0x0918(0x0018) (Edit)
+	struct FText                                       ExtAuthMissingAuthAssociation;                            // 0x0930(0x0018) (Edit)
+	struct FText                                       UnableToQueryReceipts;                                    // 0x0948(0x0018) (Edit, DisableEditOnInstance)
 };
 
 }

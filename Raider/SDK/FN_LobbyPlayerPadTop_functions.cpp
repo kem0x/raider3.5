@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,18 +12,35 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaMemberLocationStateChanged
+// Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.RefreshChatDisabled
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+
+void ULobbyPlayerPadTop_C::RefreshChatDisabled()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.RefreshChatDisabled");
+
+	ULobbyPlayerPadTop_C_RefreshChatDisabled_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaReadyTypeChanged
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
 // Parameters:
-// struct FUniqueNetIdRepl        Member_Id                      (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
-// EFortPartyMemberLocation       Location                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FUniqueNetIdRepl        MemberId                       (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+// EAthenaPartyMemberReadyType    ReadyType                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void ULobbyPlayerPadTop_C::OnAthenaMemberLocationStateChanged(EFortPartyMemberLocation Location, struct FUniqueNetIdRepl* Member_Id)
+void ULobbyPlayerPadTop_C::OnAthenaReadyTypeChanged(EAthenaPartyMemberReadyType ReadyType, struct FUniqueNetIdRepl* MemberId)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaMemberLocationStateChanged");
+	static auto fn = UObject::FindObject<UFunction>("Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaReadyTypeChanged");
 
-	ULobbyPlayerPadTop_C_OnAthenaMemberLocationStateChanged_Params params;
-	params.Location = Location;
+	ULobbyPlayerPadTop_C_OnAthenaReadyTypeChanged_Params params;
+	params.ReadyType = ReadyType;
 
 	auto flags = fn->FunctionFlags;
 
@@ -31,8 +48,60 @@ void ULobbyPlayerPadTop_C::OnAthenaMemberLocationStateChanged(EFortPartyMemberLo
 
 	fn->FunctionFlags = flags;
 
-	if (Member_Id != nullptr)
-		*Member_Id = params.Member_Id;
+	if (MemberId != nullptr)
+		*MemberId = params.MemberId;
+}
+
+
+// Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaTimeSpentInMatchChanged
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// struct FUniqueNetIdRepl        MemberId                       (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+// struct FText                   Minutes                        (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+// struct FText                   Seconds                        (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+
+void ULobbyPlayerPadTop_C::OnAthenaTimeSpentInMatchChanged(struct FUniqueNetIdRepl* MemberId, struct FText* Minutes, struct FText* Seconds)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaTimeSpentInMatchChanged");
+
+	ULobbyPlayerPadTop_C_OnAthenaTimeSpentInMatchChanged_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (MemberId != nullptr)
+		*MemberId = params.MemberId;
+	if (Minutes != nullptr)
+		*Minutes = params.Minutes;
+	if (Seconds != nullptr)
+		*Seconds = params.Seconds;
+}
+
+
+// Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaNumAliveChanged
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// struct FUniqueNetIdRepl        MemberId                       (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+// int                            NumAlive                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void ULobbyPlayerPadTop_C::OnAthenaNumAliveChanged(int NumAlive, struct FUniqueNetIdRepl* MemberId)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaNumAliveChanged");
+
+	ULobbyPlayerPadTop_C_OnAthenaNumAliveChanged_Params params;
+	params.NumAlive = NumAlive;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (MemberId != nullptr)
+		*MemberId = params.MemberId;
 }
 
 
@@ -117,48 +186,20 @@ void ULobbyPlayerPadTop_C::HandlePlayerTalkingChanged(const struct FUniqueNetIdR
 // Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.RefreshAthenaReadyState
 // (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
-// bool                           Ready                          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// EFortPartyMemberLocation       Location                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// bool                           LocationValid                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FUniqueNetIdRepl        MemberId                       (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void ULobbyPlayerPadTop_C::RefreshAthenaReadyState(bool Ready, EFortPartyMemberLocation Location, bool LocationValid)
+void ULobbyPlayerPadTop_C::RefreshAthenaReadyState(const struct FUniqueNetIdRepl& MemberId)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.RefreshAthenaReadyState");
 
 	ULobbyPlayerPadTop_C_RefreshAthenaReadyState_Params params;
-	params.Ready = Ready;
-	params.Location = Location;
-	params.LocationValid = LocationValid;
+	params.MemberId = MemberId;
 
 	auto flags = fn->FunctionFlags;
 
 	UObject::ProcessEvent(fn, &params);
 
 	fn->FunctionFlags = flags;
-}
-
-
-// Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaReadyStateChanged
-// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
-// Parameters:
-// struct FUniqueNetIdRepl        Member_Id                      (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
-// bool                           Ready                          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void ULobbyPlayerPadTop_C::OnAthenaReadyStateChanged(bool Ready, struct FUniqueNetIdRepl* Member_Id)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function LobbyPlayerPadTop.LobbyPlayerPadTop_C.OnAthenaReadyStateChanged");
-
-	ULobbyPlayerPadTop_C_OnAthenaReadyStateChanged_Params params;
-	params.Ready = Ready;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-
-	if (Member_Id != nullptr)
-		*Member_Id = params.Member_Id;
 }
 
 

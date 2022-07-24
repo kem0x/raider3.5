@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,7 +13,7 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // UserDefinedStruct FrontEndRewards_Definition.FrontEndRewards_Definition
-// 0x004A
+// 0x0060
 struct FFrontEndRewards_Definition
 {
 	bool                                               ShowMissionRewards_1_C7BDE40E456913658E82C99BDF716FD0;    // 0x0000(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
@@ -27,6 +25,8 @@ struct FFrontEndRewards_Definition
 	TArray<struct FFortCollectionBookRewards>          CollectionBookRewards_14_257477CC44DB7B3E9CE221BEFD80F48E;// 0x0038(0x0010) (Edit, BlueprintVisible, ZeroConstructor)
 	bool                                               ShowDifficultyIncreaseRewards_23_65788A384F15925597F8D2BC507844A4;// 0x0048(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
 	bool                                               NewGiftBoxes_25_8CF5BBD04ED2FF67BBD1278A910766B6;         // 0x0049(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x6];                                       // 0x004A(0x0006) MISSED OFFSET
+	TArray<class UFortItem*>                           ItemCacheRewards_31_92CF1A0A40AB5D12F4ABAC8731BF4329;     // 0x0050(0x0010) (Edit, BlueprintVisible, ZeroConstructor)
 };
 
 }

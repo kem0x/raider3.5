@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -78,6 +78,11 @@ struct ABP_Hex_PARENT_C_OnLoaded_192496DB41CC2100CC1C729DB594CEF8_Params
 	class UObject*                                     Loaded;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
+// Function BP_Hex_PARENT.BP_Hex_PARENT_C.ForceDefocus
+struct ABP_Hex_PARENT_C_ForceDefocus_Params
+{
+};
+
 // Function BP_Hex_PARENT.BP_Hex_PARENT_C.CheckFocus
 struct ABP_Hex_PARENT_C_CheckFocus_Params
 {
@@ -85,11 +90,6 @@ struct ABP_Hex_PARENT_C_CheckFocus_Params
 
 // Function BP_Hex_PARENT.BP_Hex_PARENT_C.FireLightningA
 struct ABP_Hex_PARENT_C_FireLightningA_Params
-{
-};
-
-// Function BP_Hex_PARENT.BP_Hex_PARENT_C.ForceDefocus
-struct ABP_Hex_PARENT_C_ForceDefocus_Params
 {
 };
 

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,23 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function CheckFrontEndRewardsAction.CheckFrontEndRewardsAction_C.PopulateItemCacheRewards
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void ACheckFrontEndRewardsAction_C::PopulateItemCacheRewards()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function CheckFrontEndRewardsAction.CheckFrontEndRewardsAction_C.PopulateItemCacheRewards");
+
+	ACheckFrontEndRewardsAction_C_PopulateItemCacheRewards_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function CheckFrontEndRewardsAction.CheckFrontEndRewardsAction_C.PopulateNewGiftBoxes
 // (Public, BlueprintCallable, BlueprintEvent)

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,25 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function GA_Athena_Grenade_WithTrajectory.GA_Athena_Grenade_WithTrajectory_C.GetProjectileTrajectoryPoints
+struct UGA_Athena_Grenade_WithTrajectory_C_GetProjectileTrajectoryPoints_Params
+{
+	TArray<struct FVector>                             OutSplinePoints;                                          // (Parm, OutParm, ZeroConstructor)
+	TArray<struct FVector>                             OutSplineTangents;                                        // (Parm, OutParm, ZeroConstructor)
+};
+
+// Function GA_Athena_Grenade_WithTrajectory.GA_Athena_Grenade_WithTrajectory_C.GetProjectileTrajectoryActor
+struct UGA_Athena_Grenade_WithTrajectory_C_GetProjectileTrajectoryActor_Params
+{
+	class UClass*                                      ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function GA_Athena_Grenade_WithTrajectory.GA_Athena_Grenade_WithTrajectory_C.GetOwningPlayer
+struct UGA_Athena_Grenade_WithTrajectory_C_GetOwningPlayer_Params
+{
+	class AFortPlayerPawn*                             Player_Pawn;                                              // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function GA_Athena_Grenade_WithTrajectory.GA_Athena_Grenade_WithTrajectory_C.CalcGrenadeSpeedFromPitch
 struct UGA_Athena_Grenade_WithTrajectory_C_CalcGrenadeSpeedFromPitch_Params
@@ -175,6 +194,11 @@ struct UGA_Athena_Grenade_WithTrajectory_C_CleanupTrajectoryDisplay_Params
 
 // Function GA_Athena_Grenade_WithTrajectory.GA_Athena_Grenade_WithTrajectory_C.TossGrenade
 struct UGA_Athena_Grenade_WithTrajectory_C_TossGrenade_Params
+{
+};
+
+// Function GA_Athena_Grenade_WithTrajectory.GA_Athena_Grenade_WithTrajectory_C.InitTrajectoryVariables
+struct UGA_Athena_Grenade_WithTrajectory_C_InitTrajectoryVariables_Params
 {
 };
 

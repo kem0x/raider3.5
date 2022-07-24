@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,23 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.Show Athena Gadget Fuel Widget
+struct UAthenaInventoryEquipSlot_C_Show_Athena_Gadget_Fuel_Widget_Params
+{
+	class UFortItem*                                   Item;                                                     // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.Hide Athena Gadget Fuel Widget
+struct UAthenaInventoryEquipSlot_C_Hide_Athena_Gadget_Fuel_Widget_Params
+{
+};
+
+// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.Update Athena Gadget Fuel Widget
+struct UAthenaInventoryEquipSlot_C_Update_Athena_Gadget_Fuel_Widget_Params
+{
+	class UFortItem*                                   ItemInSlot;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.IsFocusOfDrop
 struct UAthenaInventoryEquipSlot_C_IsFocusOfDrop_Params
@@ -89,15 +106,15 @@ struct UAthenaInventoryEquipSlot_C_Tick_Params
 	float*                                             InDeltaTime;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.OnQuickbarContentsChanged_Event_0_1
-struct UAthenaInventoryEquipSlot_C_OnQuickbarContentsChanged_Event_0_1_Params
+// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.OnQuickbarContentsChanged_Event_1
+struct UAthenaInventoryEquipSlot_C_OnQuickbarContentsChanged_Event_1_Params
 {
 	EFortQuickBars                                     QuickbarIndex;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	TArray<int>                                        ChangedSlots;                                             // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
 };
 
-// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.OnClicked
-struct UAthenaInventoryEquipSlot_C_OnClicked_Params
+// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.BP_OnClicked
+struct UAthenaInventoryEquipSlot_C_BP_OnClicked_Params
 {
 };
 
@@ -107,23 +124,23 @@ struct UAthenaInventoryEquipSlot_C_OnAddedToFocusPath_Params
 	struct FFocusEvent*                                InFocusEvent;                                             // (BlueprintVisible, BlueprintReadOnly, Parm)
 };
 
-// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.OnSelected
-struct UAthenaInventoryEquipSlot_C_OnSelected_Params
+// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.BP_OnSelected
+struct UAthenaInventoryEquipSlot_C_BP_OnSelected_Params
 {
 };
 
-// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.OnDeselected
-struct UAthenaInventoryEquipSlot_C_OnDeselected_Params
+// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.BP_OnDeselected
+struct UAthenaInventoryEquipSlot_C_BP_OnDeselected_Params
 {
 };
 
-// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.OnDoubleClicked
-struct UAthenaInventoryEquipSlot_C_OnDoubleClicked_Params
+// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.BP_OnDoubleClicked
+struct UAthenaInventoryEquipSlot_C_BP_OnDoubleClicked_Params
 {
 };
 
-// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.OnInventoryItemSelected_Event_0_1
-struct UAthenaInventoryEquipSlot_C_OnInventoryItemSelected_Event_0_1_Params
+// Function AthenaInventoryEquipSlot.AthenaInventoryEquipSlot_C.OnInventoryItemSelected_Event_1
+struct UAthenaInventoryEquipSlot_C_OnInventoryItemSelected_Event_1_Params
 {
 	class UFortItem*                                   Item;                                                     // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };

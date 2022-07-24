@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -226,6 +226,23 @@ void UInfoWindow_C::ExecuteUbergraph_InfoWindow(int EntryPoint)
 
 	UInfoWindow_C_ExecuteUbergraph_InfoWindow_Params params;
 	params.EntryPoint = EntryPoint;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function InfoWindow.InfoWindow_C.OnInfoIndowClosed__DelegateSignature
+// (Public, Delegate, BlueprintCallable, BlueprintEvent)
+
+void UInfoWindow_C::OnInfoIndowClosed__DelegateSignature()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function InfoWindow.InfoWindow_C.OnInfoIndowClosed__DelegateSignature");
+
+	UInfoWindow_C_OnInfoIndowClosed__DelegateSignature_Params params;
 
 	auto flags = fn->FunctionFlags;
 

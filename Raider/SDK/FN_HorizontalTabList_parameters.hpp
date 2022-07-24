@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -61,8 +61,8 @@ struct UHorizontalTabList_C_Previous_Visibility_Params
 {
 };
 
-// Function HorizontalTabList.HorizontalTabList_C.CustomEvent_0_1
-struct UHorizontalTabList_C_CustomEvent_0_1_Params
+// Function HorizontalTabList.HorizontalTabList_C.CustomEvent_1
+struct UHorizontalTabList_C_CustomEvent_1_Params
 {
 	struct FName                                       TabId;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };

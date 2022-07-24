@@ -92,8 +92,8 @@ namespace Hooks
 
             auto OnlinePlatformName = FString(L"");
 
-            Native::NetConnection::ReceiveFString(Bunch, Connection->ClientResponse);
-            Native::NetConnection::ReceiveFString(Bunch, Connection->RequestURL);
+            // Native::NetConnection::ReceiveFString(Bunch, Connection->ClientResponse);
+            // Native::NetConnection::ReceiveFString(Bunch, Connection->RequestURL);
             Native::NetConnection::ReceiveUniqueIdRepl(Bunch, Connection->PlayerID);
             Native::NetConnection::ReceiveFString(Bunch, OnlinePlatformName);
 

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,23 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function DailyRewardsCurrent.DailyRewardsCurrent_C.InitializeRewardView
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+
+void UDailyRewardsCurrent_C::InitializeRewardView()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function DailyRewardsCurrent.DailyRewardsCurrent_C.InitializeRewardView");
+
+	UDailyRewardsCurrent_C_InitializeRewardView_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function DailyRewardsCurrent.DailyRewardsCurrent_C.Set Item Flare
 // (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
@@ -30,7 +47,7 @@ void UDailyRewardsCurrent_C::Set_Item_Flare()
 
 
 // Function DailyRewardsCurrent.DailyRewardsCurrent_C.Set Item
-// (Public, BlueprintCallable, BlueprintEvent)
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // class UFortItem*               Item_To_Represent              (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // int                            Quantity                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
@@ -69,7 +86,7 @@ void UDailyRewardsCurrent_C::Construct()
 
 
 // Function DailyRewardsCurrent.DailyRewardsCurrent_C.ExecuteUbergraph_DailyRewardsCurrent
-// (HasDefaults)
+// ()
 // Parameters:
 // int                            EntryPoint                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 

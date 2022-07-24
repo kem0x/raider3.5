@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -134,14 +134,14 @@ void UStoreMain_MTXOffer_C::OnClick(class UCommonButton* Button)
 }
 
 
-// Function StoreMain_MTXOffer.StoreMain_MTXOffer_C.OnHovered
+// Function StoreMain_MTXOffer.StoreMain_MTXOffer_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UStoreMain_MTXOffer_C::OnHovered()
+void UStoreMain_MTXOffer_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function StoreMain_MTXOffer.StoreMain_MTXOffer_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function StoreMain_MTXOffer.StoreMain_MTXOffer_C.BP_OnHovered");
 
-	UStoreMain_MTXOffer_C_OnHovered_Params params;
+	UStoreMain_MTXOffer_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -151,14 +151,14 @@ void UStoreMain_MTXOffer_C::OnHovered()
 }
 
 
-// Function StoreMain_MTXOffer.StoreMain_MTXOffer_C.OnUnhovered
+// Function StoreMain_MTXOffer.StoreMain_MTXOffer_C.BP_OnUnhovered
 // (Event, Protected, BlueprintEvent)
 
-void UStoreMain_MTXOffer_C::OnUnhovered()
+void UStoreMain_MTXOffer_C::BP_OnUnhovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function StoreMain_MTXOffer.StoreMain_MTXOffer_C.OnUnhovered");
+	static auto fn = UObject::FindObject<UFunction>("Function StoreMain_MTXOffer.StoreMain_MTXOffer_C.BP_OnUnhovered");
 
-	UStoreMain_MTXOffer_C_OnUnhovered_Params params;
+	UStoreMain_MTXOffer_C_BP_OnUnhovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 

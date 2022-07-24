@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -108,16 +108,16 @@ void UOutpostScreenStormShieldContent_C::SetButtonState(bool enabled_)
 }
 
 
-// Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.Get_GetHelpButton_ToolTipWidget_0_1
+// Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.Get_GetHelpButton_ToolTipWidget_1
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure)
 // Parameters:
 // class UWidget*                 ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
 
-class UWidget* UOutpostScreenStormShieldContent_C::Get_GetHelpButton_ToolTipWidget_0_1()
+class UWidget* UOutpostScreenStormShieldContent_C::Get_GetHelpButton_ToolTipWidget_1()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.Get_GetHelpButton_ToolTipWidget_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.Get_GetHelpButton_ToolTipWidget_1");
 
-	UOutpostScreenStormShieldContent_C_Get_GetHelpButton_ToolTipWidget_0_1_Params params;
+	UOutpostScreenStormShieldContent_C_Get_GetHelpButton_ToolTipWidget_1_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -325,16 +325,16 @@ void UOutpostScreenStormShieldContent_C::ResrouceProgress_Wood(int NewParam, int
 }
 
 
-// Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.GetPercent_2_3
+// Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.GetPercent_3
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure)
 // Parameters:
 // float                          ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 
-float UOutpostScreenStormShieldContent_C::GetPercent_2_3()
+float UOutpostScreenStormShieldContent_C::GetPercent_3()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.GetPercent_2_3");
+	static auto fn = UObject::FindObject<UFunction>("Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.GetPercent_3");
 
-	UOutpostScreenStormShieldContent_C_GetPercent_2_3_Params params;
+	UOutpostScreenStormShieldContent_C_GetPercent_3_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -346,16 +346,16 @@ float UOutpostScreenStormShieldContent_C::GetPercent_2_3()
 }
 
 
-// Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.GetPercent_1_2
+// Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.GetPercent_2
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure)
 // Parameters:
 // float                          ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 
-float UOutpostScreenStormShieldContent_C::GetPercent_1_2()
+float UOutpostScreenStormShieldContent_C::GetPercent_2()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.GetPercent_1_2");
+	static auto fn = UObject::FindObject<UFunction>("Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.GetPercent_2");
 
-	UOutpostScreenStormShieldContent_C_GetPercent_1_2_Params params;
+	UOutpostScreenStormShieldContent_C_GetPercent_2_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -367,16 +367,16 @@ float UOutpostScreenStormShieldContent_C::GetPercent_1_2()
 }
 
 
-// Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.GetPercent_0_1
+// Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.GetPercent_1
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure)
 // Parameters:
 // float                          ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 
-float UOutpostScreenStormShieldContent_C::GetPercent_0_1()
+float UOutpostScreenStormShieldContent_C::GetPercent_1()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.GetPercent_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function OutpostScreenStormShieldContent.OutpostScreenStormShieldContent_C.GetPercent_1");
 
-	UOutpostScreenStormShieldContent_C_GetPercent_0_1_Params params;
+	UOutpostScreenStormShieldContent_C_GetPercent_1_Params params;
 
 	auto flags = fn->FunctionFlags;
 

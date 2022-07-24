@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -712,7 +710,7 @@ struct FEnvDirection
 // 0x0004
 struct FAIRequestID
 {
-	uint32_t                                           RequestID;                                                // 0x0000(0x0004) (ZeroConstructor, IsPlainOldData)
+	uint32_t                                           RequestId;                                                // 0x0000(0x0004) (ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct AIModule.AIDamageEvent
@@ -850,11 +848,11 @@ struct FEnvNamedValue
 };
 
 // ScriptStruct AIModule.EnvQueryInstanceCache
-// 0x01C0
+// 0x0178
 struct FEnvQueryInstanceCache
 {
 	class UEnvQuery*                                   Template;                                                 // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x1B8];                                     // 0x0008(0x01B8) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x170];                                     // 0x0008(0x0170) MISSED OFFSET
 };
 
 // ScriptStruct AIModule.EnvOverlapData

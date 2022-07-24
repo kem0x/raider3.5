@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -63,14 +63,14 @@ void UFriendCodeEntry_C::SetUsedDisplayState()
 }
 
 
-// Function FriendCodeEntry.FriendCodeEntry_C.OnClicked
+// Function FriendCodeEntry.FriendCodeEntry_C.BP_OnClicked
 // (Event, Protected, BlueprintEvent)
 
-void UFriendCodeEntry_C::OnClicked()
+void UFriendCodeEntry_C::BP_OnClicked()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function FriendCodeEntry.FriendCodeEntry_C.OnClicked");
+	static auto fn = UObject::FindObject<UFunction>("Function FriendCodeEntry.FriendCodeEntry_C.BP_OnClicked");
 
-	UFriendCodeEntry_C_OnClicked_Params params;
+	UFriendCodeEntry_C_BP_OnClicked_Params params;
 
 	auto flags = fn->FunctionFlags;
 

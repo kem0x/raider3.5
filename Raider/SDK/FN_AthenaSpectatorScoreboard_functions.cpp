@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -31,12 +31,15 @@ void UAthenaSpectatorScoreboard_C::SetConsoleInputImages()
 
 // Function AthenaSpectatorScoreboard.AthenaSpectatorScoreboard_C.UpdateListUI
 // (Event, Protected, BlueprintEvent)
+// Parameters:
+// bool*                          bResetFocus                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UAthenaSpectatorScoreboard_C::UpdateListUI()
+void UAthenaSpectatorScoreboard_C::UpdateListUI(bool* bResetFocus)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaSpectatorScoreboard.AthenaSpectatorScoreboard_C.UpdateListUI");
 
 	UAthenaSpectatorScoreboard_C_UpdateListUI_Params params;
+	params.bResetFocus = bResetFocus;
 
 	auto flags = fn->FunctionFlags;
 

@@ -4,22 +4,6 @@
 #include <format>
 #include <mutex>
 
-enum class CustomMode
-{
-    NONE,
-    JUGGERNAUT,
-    // Gives the players 500 health and makes you slower.
-    LATEGAME,
-    // TODO: You know what late game is.
-    LIFESTEAL,
-    // TODO: You know what life steal is, but this might be a stupid idea.
-    SPACE,
-    // Sets gravity like the moon // BUG: Unfortunately, the gravityscale variable doesn't update for the client, making them rubberband and making it look weird.
-    SIPHON // Gives 50 shield/health whenever you finish someone. (Late game also has this)
-};
-
-// constexpr CustomMode Mode = CustomMode::NONE;
-
 namespace GUI
 {
     std::mutex mtx;

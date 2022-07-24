@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -19,15 +19,11 @@ struct AB_DualPistol_Athena_C_UserConstructionScript_Params
 {
 };
 
-// Function B_DualPistol_Athena.B_DualPistol_Athena_C.ReceiveBeginPlay
-struct AB_DualPistol_Athena_C_ReceiveBeginPlay_Params
+// Function B_DualPistol_Athena.B_DualPistol_Athena_C.OnPlayWeaponFireFX
+struct AB_DualPistol_Athena_C_OnPlayWeaponFireFX_Params
 {
-};
-
-// Function B_DualPistol_Athena.B_DualPistol_Athena_C.OnSetTargeting
-struct AB_DualPistol_Athena_C_OnSetTargeting_Params
-{
-	bool*                                              bNewIsTargeting;                                          // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	bool*                                              bPersistentFire;                                          // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	bool*                                              bSecondaryFire;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function B_DualPistol_Athena.B_DualPistol_Athena_C.ExecuteUbergraph_B_DualPistol_Athena

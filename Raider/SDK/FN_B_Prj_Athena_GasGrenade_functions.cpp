@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -29,27 +29,14 @@ void AB_Prj_Athena_GasGrenade_C::UserConstructionScript()
 }
 
 
-// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.BndEvt__OverlapCapsule_K2Node_ComponentBoundEvent_1_ComponentBeginOverlapSignature__DelegateSignature
-// (HasOutParms, BlueprintEvent)
-// Parameters:
-// class UPrimitiveComponent*     OverlappedComponent            (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-// class AActor*                  OtherActor                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class UPrimitiveComponent*     OtherComp                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-// int                            OtherBodyIndex                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// bool                           bFromSweep                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// struct FHitResult              SweepResult                    (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
+// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.FadeSmokeTL__FinishedFunc
+// (BlueprintEvent)
 
-void AB_Prj_Athena_GasGrenade_C::BndEvt__OverlapCapsule_K2Node_ComponentBoundEvent_1_ComponentBeginOverlapSignature__DelegateSignature(class UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const struct FHitResult& SweepResult)
+void AB_Prj_Athena_GasGrenade_C::FadeSmokeTL__FinishedFunc()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.BndEvt__OverlapCapsule_K2Node_ComponentBoundEvent_1_ComponentBeginOverlapSignature__DelegateSignature");
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.FadeSmokeTL__FinishedFunc");
 
-	AB_Prj_Athena_GasGrenade_C_BndEvt__OverlapCapsule_K2Node_ComponentBoundEvent_1_ComponentBeginOverlapSignature__DelegateSignature_Params params;
-	params.OverlappedComponent = OverlappedComponent;
-	params.OtherActor = OtherActor;
-	params.OtherComp = OtherComp;
-	params.OtherBodyIndex = OtherBodyIndex;
-	params.bFromSweep = bFromSweep;
-	params.SweepResult = SweepResult;
+	AB_Prj_Athena_GasGrenade_C_FadeSmokeTL__FinishedFunc_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -59,14 +46,34 @@ void AB_Prj_Athena_GasGrenade_C::BndEvt__OverlapCapsule_K2Node_ComponentBoundEve
 }
 
 
-// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.DamageTick
-// (BlueprintCallable, BlueprintEvent)
+// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.FadeSmokeTL__UpdateFunc
+// (BlueprintEvent)
 
-void AB_Prj_Athena_GasGrenade_C::DamageTick()
+void AB_Prj_Athena_GasGrenade_C::FadeSmokeTL__UpdateFunc()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.DamageTick");
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.FadeSmokeTL__UpdateFunc");
 
-	AB_Prj_Athena_GasGrenade_C_DamageTick_Params params;
+	AB_Prj_Athena_GasGrenade_C_FadeSmokeTL__UpdateFunc_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.OnStop
+// (Event, Public, HasOutParms, BlueprintEvent)
+// Parameters:
+// struct FHitResult*             Hit                            (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
+
+void AB_Prj_Athena_GasGrenade_C::OnStop(struct FHitResult* Hit)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.OnStop");
+
+	AB_Prj_Athena_GasGrenade_C_OnStop_Params params;
+	params.Hit = Hit;
 
 	auto flags = fn->FunctionFlags;
 
@@ -93,17 +100,14 @@ void AB_Prj_Athena_GasGrenade_C::Stop_Rotation()
 }
 
 
-// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.OnBounce
-// (Event, Public, HasOutParms, BlueprintEvent)
-// Parameters:
-// struct FHitResult*             Hit                            (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
+// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.DamageTick
+// (BlueprintCallable, BlueprintEvent)
 
-void AB_Prj_Athena_GasGrenade_C::OnBounce(struct FHitResult* Hit)
+void AB_Prj_Athena_GasGrenade_C::DamageTick()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.OnBounce");
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.DamageTick");
 
-	AB_Prj_Athena_GasGrenade_C_OnBounce_Params params;
-	params.Hit = Hit;
+	AB_Prj_Athena_GasGrenade_C_DamageTick_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -113,17 +117,48 @@ void AB_Prj_Athena_GasGrenade_C::OnBounce(struct FHitResult* Hit)
 }
 
 
-// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.OnStop
-// (Event, Public, HasOutParms, BlueprintEvent)
-// Parameters:
-// struct FHitResult*             Hit                            (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
+// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.FadeIn
+// (BlueprintCallable, BlueprintEvent)
 
-void AB_Prj_Athena_GasGrenade_C::OnStop(struct FHitResult* Hit)
+void AB_Prj_Athena_GasGrenade_C::FadeIn()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.OnStop");
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.FadeIn");
 
-	AB_Prj_Athena_GasGrenade_C_OnStop_Params params;
-	params.Hit = Hit;
+	AB_Prj_Athena_GasGrenade_C_FadeIn_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.FadeOut
+// (BlueprintCallable, BlueprintEvent)
+
+void AB_Prj_Athena_GasGrenade_C::FadeOut()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.FadeOut");
+
+	AB_Prj_Athena_GasGrenade_C_FadeOut_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.SyncedTimer
+// (BlueprintCallable, BlueprintEvent)
+
+void AB_Prj_Athena_GasGrenade_C::SyncedTimer()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.SyncedTimer");
+
+	AB_Prj_Athena_GasGrenade_C_SyncedTimer_Params params;
 
 	auto flags = fn->FunctionFlags;
 

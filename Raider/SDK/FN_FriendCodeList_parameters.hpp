@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -14,8 +14,8 @@ namespace SDK
 //Parameters
 //---------------------------------------------------------------------------
 
-// Function FriendCodeList.FriendCodeList_C.On_Border_MainPanel_MouseButtonDown_0_1
-struct UFriendCodeList_C_On_Border_MainPanel_MouseButtonDown_0_1_Params
+// Function FriendCodeList.FriendCodeList_C.On_Border_MainPanel_MouseButtonDown_1
+struct UFriendCodeList_C_On_Border_MainPanel_MouseButtonDown_1_Params
 {
 	struct FGeometry                                   MyGeometry;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
 	struct FPointerEvent                               MouseEvent;                                               // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
@@ -27,8 +27,8 @@ struct UFriendCodeList_C_CloseFriendCodeList_Params
 {
 };
 
-// Function FriendCodeList.FriendCodeList_C.On_B_ClickBlocker_MouseButtonDown_0_1
-struct UFriendCodeList_C_On_B_ClickBlocker_MouseButtonDown_0_1_Params
+// Function FriendCodeList.FriendCodeList_C.On_B_ClickBlocker_MouseButtonDown_1
+struct UFriendCodeList_C_On_B_ClickBlocker_MouseButtonDown_1_Params
 {
 	struct FGeometry                                   MyGeometry;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
 	struct FPointerEvent                               MouseEvent;                                               // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)

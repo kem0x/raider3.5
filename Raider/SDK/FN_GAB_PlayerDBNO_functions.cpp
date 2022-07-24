@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -32,14 +32,19 @@ void UGAB_PlayerDBNO_C::InitializeDeathHitDirection(const struct FGameplayEventD
 }
 
 
-// Function GAB_PlayerDBNO.GAB_PlayerDBNO_C.OnCancelled_4B0F8658452931EE3B297A9E70C9C496
-// (BlueprintCallable, BlueprintEvent)
+// Function GAB_PlayerDBNO.GAB_PlayerDBNO_C.Completed_F61877974D2CED083195EF8A8CDA60C2
+// (HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// struct FGameplayAbilityTargetDataHandle TargetData                     (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+// struct FGameplayTag            ApplicationTag                 (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void UGAB_PlayerDBNO_C::OnCancelled_4B0F8658452931EE3B297A9E70C9C496()
+void UGAB_PlayerDBNO_C::Completed_F61877974D2CED083195EF8A8CDA60C2(const struct FGameplayAbilityTargetDataHandle& TargetData, const struct FGameplayTag& ApplicationTag)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function GAB_PlayerDBNO.GAB_PlayerDBNO_C.OnCancelled_4B0F8658452931EE3B297A9E70C9C496");
+	static auto fn = UObject::FindObject<UFunction>("Function GAB_PlayerDBNO.GAB_PlayerDBNO_C.Completed_F61877974D2CED083195EF8A8CDA60C2");
 
-	UGAB_PlayerDBNO_C_OnCancelled_4B0F8658452931EE3B297A9E70C9C496_Params params;
+	UGAB_PlayerDBNO_C_Completed_F61877974D2CED083195EF8A8CDA60C2_Params params;
+	params.TargetData = TargetData;
+	params.ApplicationTag = ApplicationTag;
 
 	auto flags = fn->FunctionFlags;
 
@@ -49,14 +54,19 @@ void UGAB_PlayerDBNO_C::OnCancelled_4B0F8658452931EE3B297A9E70C9C496()
 }
 
 
-// Function GAB_PlayerDBNO.GAB_PlayerDBNO_C.OnInterrupted_4B0F8658452931EE3B297A9E70C9C496
-// (BlueprintCallable, BlueprintEvent)
+// Function GAB_PlayerDBNO.GAB_PlayerDBNO_C.Cancelled_F61877974D2CED083195EF8A8CDA60C2
+// (HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// struct FGameplayAbilityTargetDataHandle TargetData                     (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+// struct FGameplayTag            ApplicationTag                 (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void UGAB_PlayerDBNO_C::OnInterrupted_4B0F8658452931EE3B297A9E70C9C496()
+void UGAB_PlayerDBNO_C::Cancelled_F61877974D2CED083195EF8A8CDA60C2(const struct FGameplayAbilityTargetDataHandle& TargetData, const struct FGameplayTag& ApplicationTag)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function GAB_PlayerDBNO.GAB_PlayerDBNO_C.OnInterrupted_4B0F8658452931EE3B297A9E70C9C496");
+	static auto fn = UObject::FindObject<UFunction>("Function GAB_PlayerDBNO.GAB_PlayerDBNO_C.Cancelled_F61877974D2CED083195EF8A8CDA60C2");
 
-	UGAB_PlayerDBNO_C_OnInterrupted_4B0F8658452931EE3B297A9E70C9C496_Params params;
+	UGAB_PlayerDBNO_C_Cancelled_F61877974D2CED083195EF8A8CDA60C2_Params params;
+	params.TargetData = TargetData;
+	params.ApplicationTag = ApplicationTag;
 
 	auto flags = fn->FunctionFlags;
 
@@ -66,31 +76,19 @@ void UGAB_PlayerDBNO_C::OnInterrupted_4B0F8658452931EE3B297A9E70C9C496()
 }
 
 
-// Function GAB_PlayerDBNO.GAB_PlayerDBNO_C.OnBlendOut_4B0F8658452931EE3B297A9E70C9C496
-// (BlueprintCallable, BlueprintEvent)
+// Function GAB_PlayerDBNO.GAB_PlayerDBNO_C.Triggered_F61877974D2CED083195EF8A8CDA60C2
+// (HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// struct FGameplayAbilityTargetDataHandle TargetData                     (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+// struct FGameplayTag            ApplicationTag                 (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void UGAB_PlayerDBNO_C::OnBlendOut_4B0F8658452931EE3B297A9E70C9C496()
+void UGAB_PlayerDBNO_C::Triggered_F61877974D2CED083195EF8A8CDA60C2(const struct FGameplayAbilityTargetDataHandle& TargetData, const struct FGameplayTag& ApplicationTag)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function GAB_PlayerDBNO.GAB_PlayerDBNO_C.OnBlendOut_4B0F8658452931EE3B297A9E70C9C496");
+	static auto fn = UObject::FindObject<UFunction>("Function GAB_PlayerDBNO.GAB_PlayerDBNO_C.Triggered_F61877974D2CED083195EF8A8CDA60C2");
 
-	UGAB_PlayerDBNO_C_OnBlendOut_4B0F8658452931EE3B297A9E70C9C496_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function GAB_PlayerDBNO.GAB_PlayerDBNO_C.OnCompleted_4B0F8658452931EE3B297A9E70C9C496
-// (BlueprintCallable, BlueprintEvent)
-
-void UGAB_PlayerDBNO_C::OnCompleted_4B0F8658452931EE3B297A9E70C9C496()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function GAB_PlayerDBNO.GAB_PlayerDBNO_C.OnCompleted_4B0F8658452931EE3B297A9E70C9C496");
-
-	UGAB_PlayerDBNO_C_OnCompleted_4B0F8658452931EE3B297A9E70C9C496_Params params;
+	UGAB_PlayerDBNO_C_Triggered_F61877974D2CED083195EF8A8CDA60C2_Params params;
+	params.TargetData = TargetData;
+	params.ApplicationTag = ApplicationTag;
 
 	auto flags = fn->FunctionFlags;
 

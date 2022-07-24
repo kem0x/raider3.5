@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,26 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function Car_Copper.Car_Copper_C.PlayJumpOnCarSound
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// struct FVector                 Location                       (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
+
+void ACar_Copper_C::PlayJumpOnCarSound(const struct FVector& Location)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function Car_Copper.Car_Copper_C.PlayJumpOnCarSound");
+
+	ACar_Copper_C_PlayJumpOnCarSound_Params params;
+	params.Location = Location;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function Car_Copper.Car_Copper_C.toggle light visibility
 // (Public, BlueprintCallable, BlueprintEvent)

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,12 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function HUD.HUD_C.HandleGameViewportActivationChanged
+struct UHUD_C_HandleGameViewportActivationChanged_Params
+{
+	bool                                               IsActive;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function HUD.HUD_C.InitializeTagVisibilityWidgets
 struct UHUD_C_InitializeTagVisibilityWidgets_Params
@@ -278,6 +284,12 @@ struct UHUD_C_InputActionHoldStopped_Params
 // Function HUD.HUD_C.ShowPersonalVehicleMounting
 struct UHUD_C_ShowPersonalVehicleMounting_Params
 {
+};
+
+// Function HUD.HUD_C.OnHUDScaleChanged
+struct UHUD_C_OnHUDScaleChanged_Params
+{
+	float*                                             HUDScale;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function HUD.HUD_C.ExecuteUbergraph_HUD

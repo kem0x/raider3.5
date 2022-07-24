@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -203,14 +203,14 @@ struct UMainTabsScreen_C_Destruct_Params
 {
 };
 
-// Function MainTabsScreen.MainTabsScreen_C.OnQuestSeen_Event_0_1
-struct UMainTabsScreen_C_OnQuestSeen_Event_0_1_Params
+// Function MainTabsScreen.MainTabsScreen_C.OnQuestSeen_Event_1
+struct UMainTabsScreen_C_OnQuestSeen_Event_1_Params
 {
 	class UFortQuestItem*                              Quest;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function MainTabsScreen.MainTabsScreen_C.SquadSlotMarkedAsSeen_Event_0_1
-struct UMainTabsScreen_C_SquadSlotMarkedAsSeen_Event_0_1_Params
+// Function MainTabsScreen.MainTabsScreen_C.SquadSlotMarkedAsSeen_Event_1
+struct UMainTabsScreen_C_SquadSlotMarkedAsSeen_Event_1_Params
 {
 };
 

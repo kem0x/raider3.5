@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,18 +12,18 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function FriendCodeList.FriendCodeList_C.On_Border_MainPanel_MouseButtonDown_0_1
+// Function FriendCodeList.FriendCodeList_C.On_Border_MainPanel_MouseButtonDown_1
 // (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // struct FGeometry               MyGeometry                     (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
 // struct FPointerEvent           MouseEvent                     (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
 // struct FEventReply             ReturnValue                    (Parm, OutParm, ReturnParm)
 
-struct FEventReply UFriendCodeList_C::On_Border_MainPanel_MouseButtonDown_0_1(const struct FGeometry& MyGeometry, const struct FPointerEvent& MouseEvent)
+struct FEventReply UFriendCodeList_C::On_Border_MainPanel_MouseButtonDown_1(const struct FGeometry& MyGeometry, const struct FPointerEvent& MouseEvent)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function FriendCodeList.FriendCodeList_C.On_Border_MainPanel_MouseButtonDown_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function FriendCodeList.FriendCodeList_C.On_Border_MainPanel_MouseButtonDown_1");
 
-	UFriendCodeList_C_On_Border_MainPanel_MouseButtonDown_0_1_Params params;
+	UFriendCodeList_C_On_Border_MainPanel_MouseButtonDown_1_Params params;
 	params.MyGeometry = MyGeometry;
 	params.MouseEvent = MouseEvent;
 
@@ -54,18 +54,18 @@ void UFriendCodeList_C::CloseFriendCodeList()
 }
 
 
-// Function FriendCodeList.FriendCodeList_C.On_B_ClickBlocker_MouseButtonDown_0_1
+// Function FriendCodeList.FriendCodeList_C.On_B_ClickBlocker_MouseButtonDown_1
 // (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // struct FGeometry               MyGeometry                     (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
 // struct FPointerEvent           MouseEvent                     (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
 // struct FEventReply             ReturnValue                    (Parm, OutParm, ReturnParm)
 
-struct FEventReply UFriendCodeList_C::On_B_ClickBlocker_MouseButtonDown_0_1(const struct FGeometry& MyGeometry, const struct FPointerEvent& MouseEvent)
+struct FEventReply UFriendCodeList_C::On_B_ClickBlocker_MouseButtonDown_1(const struct FGeometry& MyGeometry, const struct FPointerEvent& MouseEvent)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function FriendCodeList.FriendCodeList_C.On_B_ClickBlocker_MouseButtonDown_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function FriendCodeList.FriendCodeList_C.On_B_ClickBlocker_MouseButtonDown_1");
 
-	UFriendCodeList_C_On_B_ClickBlocker_MouseButtonDown_0_1_Params params;
+	UFriendCodeList_C_On_B_ClickBlocker_MouseButtonDown_1_Params params;
 	params.MyGeometry = MyGeometry;
 	params.MouseEvent = MouseEvent;
 

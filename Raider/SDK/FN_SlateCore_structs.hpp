@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -334,6 +332,15 @@ enum class ESlateCheckBoxType : uint8_t
 };
 
 
+// Enum SlateCore.ESlateParentWindowSearchMethod
+enum class ESlateParentWindowSearchMethod : uint8_t
+{
+	ActiveWindow                   = 0,
+	MainWindow                     = 1,
+	ESlateParentWindowSearchMethod_MAX = 2
+};
+
+
 // Enum SlateCore.EConsumeMouseWheel
 enum class EConsumeMouseWheel : uint8_t
 {
@@ -446,7 +453,8 @@ struct FFontOutlineSettings
 	unsigned char                                      UnknownData00[0x4];                                       // 0x0004(0x0004) MISSED OFFSET
 	class UObject*                                     OutlineMaterial;                                          // 0x0008(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
 	struct FLinearColor                                OutlineColor;                                             // 0x0010(0x0010) (Edit, BlueprintVisible, IsPlainOldData)
-	bool                                               bSeparateFillAlpha;                                       // 0x0020(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      bSeparateFillAlpha : 1;                                   // 0x0020(0x0001) (Edit, BlueprintVisible)
+	unsigned char                                      bApplyOutlineToDropShadows : 1;                           // 0x0020(0x0001) (Edit, BlueprintVisible)
 	unsigned char                                      UnknownData01[0x7];                                       // 0x0021(0x0007) MISSED OFFSET
 };
 

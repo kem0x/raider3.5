@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -56,8 +56,8 @@ struct UAthenaRotator_C_PreConstruct_Params
 	bool*                                              IsDesignTime;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function AthenaRotator.AthenaRotator_C.OnClicked
-struct UAthenaRotator_C_OnClicked_Params
+// Function AthenaRotator.AthenaRotator_C.BP_OnClicked
+struct UAthenaRotator_C_BP_OnClicked_Params
 {
 };
 

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,11 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function GAB_Melee_ImpactCombo_Athena.GAB_Melee_ImpactCombo_Athena_C.K2_CommitExecute
+struct UGAB_Melee_ImpactCombo_Athena_C_K2_CommitExecute_Params
+{
+};
 
 }
 

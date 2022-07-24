@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -358,6 +358,26 @@ void UFortReplayCameraSettingsTab_C::OnActivated()
 	static auto fn = UObject::FindObject<UFunction>("Function FortReplayCameraSettingsTab.FortReplayCameraSettingsTab_C.OnActivated");
 
 	UFortReplayCameraSettingsTab_C_OnActivated_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function FortReplayCameraSettingsTab.FortReplayCameraSettingsTab_C.BndEvt__ShareLensSettings_K2Node_ComponentBoundEvent_5_Selection Changed__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// int                            Selected_Index                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UFortReplayCameraSettingsTab_C::BndEvt__ShareLensSettings_K2Node_ComponentBoundEvent_5_Selection_Changed__DelegateSignature(int Selected_Index)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function FortReplayCameraSettingsTab.FortReplayCameraSettingsTab_C.BndEvt__ShareLensSettings_K2Node_ComponentBoundEvent_5_Selection Changed__DelegateSignature");
+
+	UFortReplayCameraSettingsTab_C_BndEvt__ShareLensSettings_K2Node_ComponentBoundEvent_5_Selection_Changed__DelegateSignature_Params params;
+	params.Selected_Index = Selected_Index;
 
 	auto flags = fn->FunctionFlags;
 

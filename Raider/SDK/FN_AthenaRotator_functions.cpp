@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -151,14 +151,14 @@ void UAthenaRotator_C::PreConstruct(bool* IsDesignTime)
 }
 
 
-// Function AthenaRotator.AthenaRotator_C.OnClicked
+// Function AthenaRotator.AthenaRotator_C.BP_OnClicked
 // (Event, Protected, BlueprintEvent)
 
-void UAthenaRotator_C::OnClicked()
+void UAthenaRotator_C::BP_OnClicked()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaRotator.AthenaRotator_C.OnClicked");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaRotator.AthenaRotator_C.BP_OnClicked");
 
-	UAthenaRotator_C_OnClicked_Params params;
+	UAthenaRotator_C_BP_OnClicked_Params params;
 
 	auto flags = fn->FunctionFlags;
 

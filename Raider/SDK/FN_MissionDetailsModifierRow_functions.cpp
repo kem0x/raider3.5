@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,26 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function MissionDetailsModifierRow.MissionDetailsModifierRow_C.Show Label
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           ShowLabel                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UMissionDetailsModifierRow_C::Show_Label(bool ShowLabel)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MissionDetailsModifierRow.MissionDetailsModifierRow_C.Show Label");
+
+	UMissionDetailsModifierRow_C_Show_Label_Params params;
+	params.ShowLabel = ShowLabel;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function MissionDetailsModifierRow.MissionDetailsModifierRow_C.PlayIntroAnimation
 // (Public, BlueprintCallable, BlueprintEvent)

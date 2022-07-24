@@ -1,0 +1,34 @@
+#pragma once
+
+// Fortnite (4.5-CL-4159770) SDK
+
+#ifdef _MSC_VER
+	#pragma pack(push, 0x8)
+#endif
+
+#include "../SDK.hpp"
+
+namespace SDK
+{
+//---------------------------------------------------------------------------
+//Parameters
+//---------------------------------------------------------------------------
+
+// Function GC_SpecialEvent_Halloween_PumpkinHead.GC_SpecialEvent_Halloween_PumpkinHead_C.OnActive
+struct AGC_SpecialEvent_Halloween_PumpkinHead_C_OnActive_Params
+{
+	class AActor**                                     MyTarget;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	struct FGameplayCueParameters*                     Parameters;                                               // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function GC_SpecialEvent_Halloween_PumpkinHead.GC_SpecialEvent_Halloween_PumpkinHead_C.UserConstructionScript
+struct AGC_SpecialEvent_Halloween_PumpkinHead_C_UserConstructionScript_Params
+{
+};
+
+}
+
+#ifdef _MSC_VER
+	#pragma pack(pop)
+#endif

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -257,6 +257,12 @@ struct UWidget_GetParent_Params
 struct UWidget_GetOwningPlayer_Params
 {
 	class APlayerController*                           ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function UMG.Widget.GetOwningLocalPlayer
+struct UWidget_GetOwningLocalPlayer_Params
+{
+	class ULocalPlayer*                                ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 };
 
 // DelegateFunction UMG.Widget.GetMouseCursor__DelegateSignature
@@ -1082,6 +1088,12 @@ struct UButton_SetStyle_Params
 	struct FButtonStyle                                InStyle;                                                  // (ConstParm, Parm, OutParm, ReferenceParm)
 };
 
+// Function UMG.Button.SetPressMethod
+struct UButton_SetPressMethod_Params
+{
+	TEnumAsByte<EButtonPressMethod>                    InPressMethod;                                            // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
 // Function UMG.Button.SetColorAndOpacity
 struct UButton_SetColorAndOpacity_Params
 {
@@ -1245,6 +1257,190 @@ struct UImage_SetBrush_Params
 struct UImage_GetDynamicMaterial_Params
 {
 	class UMaterialInstanceDynamic*                    ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function UMG.ListViewBase.ScrollToTop
+struct UListViewBase_ScrollToTop_Params
+{
+};
+
+// Function UMG.ListViewBase.ScrollToBottom
+struct UListViewBase_ScrollToBottom_Params
+{
+};
+
+// Function UMG.ListViewBase.RegenerateAllEntries
+struct UListViewBase_RegenerateAllEntries_Params
+{
+};
+
+// Function UMG.ListViewBase.GetDisplayedEntryWidgets
+struct UListViewBase_GetDisplayedEntryWidgets_Params
+{
+	TArray<class UUserWidget*>                         ReturnValue;                                              // (ConstParm, ExportObject, Parm, OutParm, ZeroConstructor, ReturnParm, ReferenceParm)
+};
+
+// Function UMG.ListView.SetSelectionMode
+struct UListView_SetSelectionMode_Params
+{
+	TEnumAsByte<ESelectionMode>                        SelectionMode;                                            // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.ListView.SetSelectedIndex
+struct UListView_SetSelectedIndex_Params
+{
+	int                                                Index;                                                    // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.ListView.ScrollIndexIntoView
+struct UListView_ScrollIndexIntoView_Params
+{
+	int                                                Index;                                                    // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.ListView.NavigateToIndex
+struct UListView_NavigateToIndex_Params
+{
+	int                                                Index;                                                    // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.ListView.IsRefreshPending
+struct UListView_IsRefreshPending_Params
+{
+	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function UMG.ListView.GetNumItems
+struct UListView_GetNumItems_Params
+{
+	int                                                ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function UMG.ListView.GetListItems
+struct UListView_GetListItems_Params
+{
+	TArray<class UObject*>                             ReturnValue;                                              // (ConstParm, Parm, OutParm, ZeroConstructor, ReturnParm, ReferenceParm)
+};
+
+// Function UMG.ListView.GetItemAt
+struct UListView_GetItemAt_Params
+{
+	int                                                Index;                                                    // (Parm, ZeroConstructor, IsPlainOldData)
+	class UObject*                                     ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function UMG.ListView.GetIndexForItem
+struct UListView_GetIndexForItem_Params
+{
+	class UObject*                                     Item;                                                     // (Parm, ZeroConstructor, IsPlainOldData)
+	int                                                ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function UMG.ListView.ClearListItems
+struct UListView_ClearListItems_Params
+{
+};
+
+// Function UMG.ListView.BP_SetSelectedItem
+struct UListView_BP_SetSelectedItem_Params
+{
+	class UObject*                                     Item;                                                     // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.ListView.BP_SetListItems
+struct UListView_BP_SetListItems_Params
+{
+	TArray<class UObject*>                             InListItems;                                              // (ConstParm, Parm, OutParm, ZeroConstructor, ReferenceParm)
+};
+
+// Function UMG.ListView.BP_SetItemSelection
+struct UListView_BP_SetItemSelection_Params
+{
+	class UObject*                                     Item;                                                     // (Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               bSelected;                                                // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.ListView.BP_ScrollItemIntoView
+struct UListView_BP_ScrollItemIntoView_Params
+{
+	class UObject*                                     Item;                                                     // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.ListView.BP_NavigateToItem
+struct UListView_BP_NavigateToItem_Params
+{
+	class UObject*                                     Item;                                                     // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.ListView.BP_IsItemVisible
+struct UListView_BP_IsItemVisible_Params
+{
+	class UObject*                                     Item;                                                     // (Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function UMG.ListView.BP_GetSelectedItems
+struct UListView_BP_GetSelectedItems_Params
+{
+	TArray<class UObject*>                             Items;                                                    // (Parm, OutParm, ZeroConstructor)
+	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function UMG.ListView.BP_GetSelectedItem
+struct UListView_BP_GetSelectedItem_Params
+{
+	class UObject*                                     ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function UMG.ListView.BP_GetNumItemsSelected
+struct UListView_BP_GetNumItemsSelected_Params
+{
+	int                                                ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function UMG.ListView.BP_ClearSelection
+struct UListView_BP_ClearSelection_Params
+{
+};
+
+// Function UMG.ListView.BP_CancelScrollIntoView
+struct UListView_BP_CancelScrollIntoView_Params
+{
+};
+
+// Function UMG.ListView.AddItem
+struct UListView_AddItem_Params
+{
+	class UObject*                                     Item;                                                     // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.TileView.SetEntryWidth
+struct UTileView_SetEntryWidth_Params
+{
+	float                                              NewWidth;                                                 // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.TileView.SetEntryHeight
+struct UTileView_SetEntryHeight_Params
+{
+	float                                              NewHeight;                                                // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.TreeView.SetItemExpansion
+struct UTreeView_SetItemExpansion_Params
+{
+	class UObject*                                     Item;                                                     // (Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               bExpandItem;                                              // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.TreeView.ExpandAll
+struct UTreeView_ExpandAll_Params
+{
+};
+
+// Function UMG.TreeView.CollapseAll
+struct UTreeView_CollapseAll_Params
+{
 };
 
 // Function UMG.WidgetSwitcher.SetActiveWidgetIndex
@@ -1670,6 +1866,42 @@ struct UDragDropOperation_DragCancelled_Params
 	struct FPointerEvent                               PointerEvent;                                             // (ConstParm, Parm, OutParm, ReferenceParm)
 };
 
+// Function UMG.DynamicEntryBox.SetEntrySpacing
+struct UDynamicEntryBox_SetEntrySpacing_Params
+{
+	struct FVector2D                                   InEntrySpacing;                                           // (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
+};
+
+// Function UMG.DynamicEntryBox.Reset
+struct UDynamicEntryBox_Reset_Params
+{
+	bool                                               bDeleteWidgets;                                           // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.DynamicEntryBox.RemoveEntry
+struct UDynamicEntryBox_RemoveEntry_Params
+{
+	class UUserWidget*                                 EntryWidget;                                              // (Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+};
+
+// Function UMG.DynamicEntryBox.GetNumEntries
+struct UDynamicEntryBox_GetNumEntries_Params
+{
+	int                                                ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function UMG.DynamicEntryBox.GetAllEntries
+struct UDynamicEntryBox_GetAllEntries_Params
+{
+	TArray<class UUserWidget*>                         ReturnValue;                                              // (ConstParm, ExportObject, Parm, OutParm, ZeroConstructor, ReturnParm, ReferenceParm)
+};
+
+// Function UMG.DynamicEntryBox.BP_CreateEntry
+struct UDynamicEntryBox_BP_CreateEntry_Params
+{
+	class UUserWidget*                                 ReturnValue;                                              // (ExportObject, Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+};
+
 // Function UMG.EditableText.SetText
 struct UEditableText_SetText_Params
 {
@@ -1973,6 +2205,47 @@ struct UInvalidationBox_GetCanCache_Params
 	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 };
 
+// Function UMG.NativeUserListEntry.IsListItemSelected
+struct UNativeUserListEntry_IsListItemSelected_Params
+{
+	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function UMG.NativeUserListEntry.IsListItemExpanded
+struct UNativeUserListEntry_IsListItemExpanded_Params
+{
+	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function UMG.UserListEntry.BP_OnItemSelectionChanged
+struct UUserListEntry_BP_OnItemSelectionChanged_Params
+{
+	bool                                               bIsSelected;                                              // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.UserListEntry.BP_OnItemExpansionChanged
+struct UUserListEntry_BP_OnItemExpansionChanged_Params
+{
+	bool                                               bIsExpanded;                                              // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.UserListEntry.BP_OnEntryReleased
+struct UUserListEntry_BP_OnEntryReleased_Params
+{
+};
+
+// Function UMG.UserObjectListEntry.OnListItemObjectSet
+struct UUserObjectListEntry_OnListItemObjectSet_Params
+{
+	class UObject*                                     ListItemObject;                                           // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function UMG.UserObjectListEntry.GetListItemObject
+struct UUserObjectListEntry_GetListItemObject_Params
+{
+	class UObject*                                     ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
 // Function UMG.MenuAnchor.ToggleOpen
 struct UMenuAnchor_ToggleOpen_Params
 {
@@ -2167,6 +2440,13 @@ struct URichTextBlock_SetText_Params
 	struct FText                                       InText;                                                   // (ConstParm, Parm, OutParm, ReferenceParm)
 };
 
+// Function UMG.RichTextBlock.GetDecoratorByClass
+struct URichTextBlock_GetDecoratorByClass_Params
+{
+	class UClass*                                      DecoratorClass;                                           // (Parm, ZeroConstructor, IsPlainOldData)
+	class URichTextBlockDecorator*                     ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
 // Function UMG.SafeZone.SetSidesToPad
 struct USafeZone_SetSidesToPad_Params
 {
@@ -2277,6 +2557,12 @@ struct UScrollBox_ScrollToStart_Params
 // Function UMG.ScrollBox.ScrollToEnd
 struct UScrollBox_ScrollToEnd_Params
 {
+};
+
+// Function UMG.ScrollBox.GetViewOffsetFraction
+struct UScrollBox_GetViewOffsetFraction_Params
+{
+	float                                              ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 };
 
 // Function UMG.ScrollBox.GetScrollOffset
@@ -2632,23 +2918,6 @@ struct UThrobber_SetAnimateOpacity_Params
 struct UThrobber_SetAnimateHorizontally_Params
 {
 	bool                                               bInAnimateHorizontally;                                   // (Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function UMG.TileView.SetItemWidth
-struct UTileView_SetItemWidth_Params
-{
-	float                                              Width;                                                    // (Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function UMG.TileView.SetItemHeight
-struct UTileView_SetItemHeight_Params
-{
-	float                                              Height;                                                   // (Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function UMG.TileView.RequestListRefresh
-struct UTileView_RequestListRefresh_Params
-{
 };
 
 // Function UMG.UniformGridPanel.SetSlotPadding
@@ -3049,21 +3318,21 @@ struct UWidgetBlueprintLibrary_GetDragDroppingContent_Params
 // Function UMG.WidgetBlueprintLibrary.GetBrushResourceAsTexture2D
 struct UWidgetBlueprintLibrary_GetBrushResourceAsTexture2D_Params
 {
-	struct FSlateBrush                                 Brush;                                                    // (Parm, OutParm, ReferenceParm)
+	struct FSlateBrush                                 Brush;                                                    // (ConstParm, Parm, OutParm, ReferenceParm)
 	class UTexture2D*                                  ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 };
 
 // Function UMG.WidgetBlueprintLibrary.GetBrushResourceAsMaterial
 struct UWidgetBlueprintLibrary_GetBrushResourceAsMaterial_Params
 {
-	struct FSlateBrush                                 Brush;                                                    // (Parm, OutParm, ReferenceParm)
+	struct FSlateBrush                                 Brush;                                                    // (ConstParm, Parm, OutParm, ReferenceParm)
 	class UMaterialInterface*                          ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 };
 
 // Function UMG.WidgetBlueprintLibrary.GetBrushResource
 struct UWidgetBlueprintLibrary_GetBrushResource_Params
 {
-	struct FSlateBrush                                 Brush;                                                    // (Parm, OutParm, ReferenceParm)
+	struct FSlateBrush                                 Brush;                                                    // (ConstParm, Parm, OutParm, ReferenceParm)
 	class UObject*                                     ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 };
 

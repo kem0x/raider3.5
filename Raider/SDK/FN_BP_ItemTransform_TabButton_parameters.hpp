@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -14,24 +14,9 @@ namespace SDK
 //Parameters
 //---------------------------------------------------------------------------
 
-// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.Get FortPC
-struct UBP_ItemTransform_TabButton_C_Get_FortPC_Params
+// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.Refresh Bang State Internal
+struct UBP_ItemTransform_TabButton_C_Refresh_Bang_State_Internal_Params
 {
-	class AFortPlayerController*                       FortPC;                                                   // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.Get Item from Transform Seen State
-struct UBP_ItemTransform_TabButton_C_Get_Item_from_Transform_Seen_State_Params
-{
-	class UFortAccountItem*                            Transform_Key;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	class UFortAccountItem*                            Item;                                                     // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.Calculate Unseen Keys
-struct UBP_ItemTransform_TabButton_C_Calculate_Unseen_Keys_Params
-{
-	TArray<class UFortAccountItem*>                    Array;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
-	int                                                NumUnseen;                                                // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.Get Tab Id as Request Type
@@ -85,23 +70,23 @@ struct UBP_ItemTransform_TabButton_C_Construct_Params
 {
 };
 
-// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.OnSelected
-struct UBP_ItemTransform_TabButton_C_OnSelected_Params
+// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.BP_OnSelected
+struct UBP_ItemTransform_TabButton_C_BP_OnSelected_Params
 {
 };
 
-// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.OnDeselected
-struct UBP_ItemTransform_TabButton_C_OnDeselected_Params
+// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.BP_OnDeselected
+struct UBP_ItemTransform_TabButton_C_BP_OnDeselected_Params
 {
 };
 
-// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.OnHovered
-struct UBP_ItemTransform_TabButton_C_OnHovered_Params
+// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.BP_OnHovered
+struct UBP_ItemTransform_TabButton_C_BP_OnHovered_Params
 {
 };
 
-// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.OnUnhovered
-struct UBP_ItemTransform_TabButton_C_OnUnhovered_Params
+// Function BP_ItemTransform_TabButton.BP_ItemTransform_TabButton_C.BP_OnUnhovered
+struct UBP_ItemTransform_TabButton_C_BP_OnUnhovered_Params
 {
 };
 

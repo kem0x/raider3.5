@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -151,14 +151,14 @@ void USkewButton_C::OnMouseEnter(struct FGeometry* MyGeometry, struct FPointerEv
 }
 
 
-// Function SkewButton.SkewButton_C.OnHovered
+// Function SkewButton.SkewButton_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void USkewButton_C::OnHovered()
+void USkewButton_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function SkewButton.SkewButton_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function SkewButton.SkewButton_C.BP_OnHovered");
 
-	USkewButton_C_OnHovered_Params params;
+	USkewButton_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -168,14 +168,14 @@ void USkewButton_C::OnHovered()
 }
 
 
-// Function SkewButton.SkewButton_C.OnUnhovered
+// Function SkewButton.SkewButton_C.BP_OnUnhovered
 // (Event, Protected, BlueprintEvent)
 
-void USkewButton_C::OnUnhovered()
+void USkewButton_C::BP_OnUnhovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function SkewButton.SkewButton_C.OnUnhovered");
+	static auto fn = UObject::FindObject<UFunction>("Function SkewButton.SkewButton_C.BP_OnUnhovered");
 
-	USkewButton_C_OnUnhovered_Params params;
+	USkewButton_C_BP_OnUnhovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -205,14 +205,14 @@ void USkewButton_C::OnMouseLeave(struct FPointerEvent* MouseEvent)
 }
 
 
-// Function SkewButton.SkewButton_C.OnClicked
+// Function SkewButton.SkewButton_C.BP_OnClicked
 // (Event, Protected, BlueprintEvent)
 
-void USkewButton_C::OnClicked()
+void USkewButton_C::BP_OnClicked()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function SkewButton.SkewButton_C.OnClicked");
+	static auto fn = UObject::FindObject<UFunction>("Function SkewButton.SkewButton_C.BP_OnClicked");
 
-	USkewButton_C_OnClicked_Params params;
+	USkewButton_C_BP_OnClicked_Params params;
 
 	auto flags = fn->FunctionFlags;
 

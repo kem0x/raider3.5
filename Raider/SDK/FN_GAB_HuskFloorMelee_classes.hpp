@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,7 +13,7 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass GAB_HuskFloorMelee.GAB_HuskFloorMelee_C
-// 0x0000 (0x0B28 - 0x0B28)
+// 0x0000 (0x0948 - 0x0948)
 class UGAB_HuskFloorMelee_C : public UGAB_HuskMelee_C
 {
 public:

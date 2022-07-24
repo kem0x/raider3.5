@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -151,14 +151,14 @@ void UAthenaInventoryFortItemTileButton_C::UpdateStyle()
 }
 
 
-// Function AthenaInventoryFortItemTileButton.AthenaInventoryFortItemTileButton_C.OnSelected
+// Function AthenaInventoryFortItemTileButton.AthenaInventoryFortItemTileButton_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void UAthenaInventoryFortItemTileButton_C::OnSelected()
+void UAthenaInventoryFortItemTileButton_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaInventoryFortItemTileButton.AthenaInventoryFortItemTileButton_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaInventoryFortItemTileButton.AthenaInventoryFortItemTileButton_C.BP_OnSelected");
 
-	UAthenaInventoryFortItemTileButton_C_OnSelected_Params params;
+	UAthenaInventoryFortItemTileButton_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 

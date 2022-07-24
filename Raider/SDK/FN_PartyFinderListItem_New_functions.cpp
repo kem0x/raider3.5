@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -188,65 +188,6 @@ void UPartyFinderListItem_New_C::InitializeItem()
 }
 
 
-// Function PartyFinderListItem_New.PartyFinderListItem_New_C.DialogResult_58DE7379408F85443A0936A25405A46F
-// (BlueprintCallable, BlueprintEvent)
-// Parameters:
-// EFortDialogResult              Result                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// struct FName                   ResultName                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void UPartyFinderListItem_New_C::DialogResult_58DE7379408F85443A0936A25405A46F(EFortDialogResult Result, const struct FName& ResultName)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function PartyFinderListItem_New.PartyFinderListItem_New_C.DialogResult_58DE7379408F85443A0936A25405A46F");
-
-	UPartyFinderListItem_New_C_DialogResult_58DE7379408F85443A0936A25405A46F_Params params;
-	params.Result = Result;
-	params.ResultName = ResultName;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function PartyFinderListItem_New.PartyFinderListItem_New_C.OnSocialItemSet
-// (Event, Protected, BlueprintEvent)
-
-void UPartyFinderListItem_New_C::OnSocialItemSet()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function PartyFinderListItem_New.PartyFinderListItem_New_C.OnSocialItemSet");
-
-	UPartyFinderListItem_New_C_OnSocialItemSet_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function PartyFinderListItem_New.PartyFinderListItem_New_C.ExpansionChanged
-// (Event, Protected, BlueprintEvent)
-// Parameters:
-// bool*                          bExpanded                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void UPartyFinderListItem_New_C::ExpansionChanged(bool* bExpanded)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function PartyFinderListItem_New.PartyFinderListItem_New_C.ExpansionChanged");
-
-	UPartyFinderListItem_New_C_ExpansionChanged_Params params;
-	params.bExpanded = bExpanded;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function PartyFinderListItem_New.PartyFinderListItem_New_C.Construct
 // (BlueprintCosmetic, Event, Public, BlueprintEvent)
 
@@ -378,17 +319,17 @@ void UPartyFinderListItem_New_C::ReEnableInviteButtonAfterDelay()
 }
 
 
-// Function PartyFinderListItem_New.PartyFinderListItem_New_C.SetSelected
-// (Event, Public, BlueprintCallable, BlueprintEvent)
+// Function PartyFinderListItem_New.PartyFinderListItem_New_C.BP_OnItemSelectionChanged
+// (Event, Protected, BlueprintEvent)
 // Parameters:
-// bool*                          bSelected                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool*                          bIsSelected                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UPartyFinderListItem_New_C::SetSelected(bool* bSelected)
+void UPartyFinderListItem_New_C::BP_OnItemSelectionChanged(bool* bIsSelected)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function PartyFinderListItem_New.PartyFinderListItem_New_C.SetSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function PartyFinderListItem_New.PartyFinderListItem_New_C.BP_OnItemSelectionChanged");
 
-	UPartyFinderListItem_New_C_SetSelected_Params params;
-	params.bSelected = bSelected;
+	UPartyFinderListItem_New_C_BP_OnItemSelectionChanged_Params params;
+	params.bIsSelected = bIsSelected;
 
 	auto flags = fn->FunctionFlags;
 
@@ -398,14 +339,14 @@ void UPartyFinderListItem_New_C::SetSelected(bool* bSelected)
 }
 
 
-// Function PartyFinderListItem_New.PartyFinderListItem_New_C.OnHovered
+// Function PartyFinderListItem_New.PartyFinderListItem_New_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UPartyFinderListItem_New_C::OnHovered()
+void UPartyFinderListItem_New_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function PartyFinderListItem_New.PartyFinderListItem_New_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function PartyFinderListItem_New.PartyFinderListItem_New_C.BP_OnHovered");
 
-	UPartyFinderListItem_New_C_OnHovered_Params params;
+	UPartyFinderListItem_New_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -415,14 +356,14 @@ void UPartyFinderListItem_New_C::OnHovered()
 }
 
 
-// Function PartyFinderListItem_New.PartyFinderListItem_New_C.OnUnhovered
+// Function PartyFinderListItem_New.PartyFinderListItem_New_C.BP_OnUnhovered
 // (Event, Protected, BlueprintEvent)
 
-void UPartyFinderListItem_New_C::OnUnhovered()
+void UPartyFinderListItem_New_C::BP_OnUnhovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function PartyFinderListItem_New.PartyFinderListItem_New_C.OnUnhovered");
+	static auto fn = UObject::FindObject<UFunction>("Function PartyFinderListItem_New.PartyFinderListItem_New_C.BP_OnUnhovered");
 
-	UPartyFinderListItem_New_C_OnUnhovered_Params params;
+	UPartyFinderListItem_New_C_BP_OnUnhovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -500,6 +441,46 @@ void UPartyFinderListItem_New_C::BndEvt__DisplayFriendsButton_K2Node_ComponentBo
 
 	UPartyFinderListItem_New_C_BndEvt__DisplayFriendsButton_K2Node_ComponentBoundEvent_51_CommonButtonClicked__DelegateSignature_Params params;
 	params.Button = Button;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function PartyFinderListItem_New.PartyFinderListItem_New_C.BP_OnItemExpansionChanged
+// (Event, Protected, BlueprintEvent)
+// Parameters:
+// bool*                          bIsExpanded                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UPartyFinderListItem_New_C::BP_OnItemExpansionChanged(bool* bIsExpanded)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function PartyFinderListItem_New.PartyFinderListItem_New_C.BP_OnItemExpansionChanged");
+
+	UPartyFinderListItem_New_C_BP_OnItemExpansionChanged_Params params;
+	params.bIsExpanded = bIsExpanded;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function PartyFinderListItem_New.PartyFinderListItem_New_C.OnListItemObjectSet
+// (Event, Protected, BlueprintEvent)
+// Parameters:
+// class UObject**                ListItemObject                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UPartyFinderListItem_New_C::OnListItemObjectSet(class UObject** ListItemObject)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function PartyFinderListItem_New.PartyFinderListItem_New_C.OnListItemObjectSet");
+
+	UPartyFinderListItem_New_C_OnListItemObjectSet_Params params;
+	params.ListItemObject = ListItemObject;
 
 	auto flags = fn->FunctionFlags;
 

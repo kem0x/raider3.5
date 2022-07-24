@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -26,8 +26,8 @@ struct UAthenaEquipProgress_C_Construct_Params
 {
 };
 
-// Function AthenaEquipProgress.AthenaEquipProgress_C.OnUIGameplayCue_Event_0_1
-struct UAthenaEquipProgress_C_OnUIGameplayCue_Event_0_1_Params
+// Function AthenaEquipProgress.AthenaEquipProgress_C.OnUIGameplayCue_Event_1
+struct UAthenaEquipProgress_C_OnUIGameplayCue_Event_1_Params
 {
 	struct FName                                       CueName;                                                  // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	TEnumAsByte<EGameplayCueEvent>                     EventType;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)

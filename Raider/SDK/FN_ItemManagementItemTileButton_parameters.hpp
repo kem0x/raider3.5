@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,22 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function ItemManagementItemTileButton.ItemManagementItemTileButton_C.Populate
+struct UItemManagementItemTileButton_C_Populate_Params
+{
+};
+
+// Function ItemManagementItemTileButton.ItemManagementItemTileButton_C.Initial Reset
+struct UItemManagementItemTileButton_C_Initial_Reset_Params
+{
+};
+
+// Function ItemManagementItemTileButton.ItemManagementItemTileButton_C.IsItemMulchable
+struct UItemManagementItemTileButton_C_IsItemMulchable_Params
+{
+	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
 
 // Function ItemManagementItemTileButton.ItemManagementItemTileButton_C.UpdateCollectionBookIndicator
 struct UItemManagementItemTileButton_C_UpdateCollectionBookIndicator_Params
@@ -81,13 +97,13 @@ struct UItemManagementItemTileButton_C_HandleDifferentItemManagementModeSetBP_Pa
 {
 };
 
-// Function ItemManagementItemTileButton.ItemManagementItemTileButton_C.OnHovered
-struct UItemManagementItemTileButton_C_OnHovered_Params
+// Function ItemManagementItemTileButton.ItemManagementItemTileButton_C.BP_OnHovered
+struct UItemManagementItemTileButton_C_BP_OnHovered_Params
 {
 };
 
-// Function ItemManagementItemTileButton.ItemManagementItemTileButton_C.OnUnhovered
-struct UItemManagementItemTileButton_C_OnUnhovered_Params
+// Function ItemManagementItemTileButton.ItemManagementItemTileButton_C.BP_OnUnhovered
+struct UItemManagementItemTileButton_C_BP_OnUnhovered_Params
 {
 };
 
@@ -114,8 +130,8 @@ struct UItemManagementItemTileButton_C_OnDragCancelled_Params
 	class UDragDropOperation**                         Operation;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function ItemManagementItemTileButton.ItemManagementItemTileButton_C.OnSelected
-struct UItemManagementItemTileButton_C_OnSelected_Params
+// Function ItemManagementItemTileButton.ItemManagementItemTileButton_C.BP_OnSelected
+struct UItemManagementItemTileButton_C_BP_OnSelected_Params
 {
 };
 

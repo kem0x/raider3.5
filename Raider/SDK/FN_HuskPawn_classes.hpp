@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,54 +13,53 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass HuskPawn.HuskPawn_C
-// 0x01A4 (0x2180 - 0x1FDC)
+// 0x01A0 (0x2070 - 0x1ED0)
 class AHuskPawn_C : public AEnemyPawn_Parent_C
 {
 public:
-	unsigned char                                      UnknownData00[0x4];                                       // 0x1FDC(0x0004) MISSED OFFSET
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x1FE0(0x0008) (Transient, DuplicateTransient)
-	int                                                HitCount;                                                 // 0x1FE8(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              LastTakeHitTime;                                          // 0x1FEC(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               PushFromFlingerSpawn;                                     // 0x1FF0(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x1FF1(0x0007) MISSED OFFSET
-	class AFortPawn*                                   PawnThatSpawnedMe;                                        // 0x1FF8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	struct FVector                                     PawnThatSpawnedMeLocation;                                // 0x2000(0x000C) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x4];                                       // 0x200C(0x0004) MISSED OFFSET
-	struct FGameplayTagContainer                       TC_HitReactionAdditiveSingleOneShot;                      // 0x2010(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FGameplayTagContainer                       TC_HitReactionAdditiveLoop;                               // 0x2030(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FGameplayTagContainer                       TC_HitReactionFullBody;                                   // 0x2050(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FGameplayTagContainer                       TC_HitReactionBlockAll;                                   // 0x2070(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FGameplayTagContainer                       TC_HitReactionBlockMelee;                                 // 0x2090(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FGameplayTagContainer                       TC_HitReactionBlockRanged;                                // 0x20B0(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	bool                                               HitReactForMelee;                                         // 0x20D0(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               HuskIsInFlingersHand;                                     // 0x20D1(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               HuskIsAirborne;                                           // 0x20D2(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x1];                                       // 0x20D3(0x0001) MISSED OFFSET
-	struct FVector                                     HuskFlingerHandOffset;                                    // 0x20D4(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
-	struct FRotator                                    HuskFlingerHandRotation;                                  // 0x20E0(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
-	struct FVector                                     HuskFlingerProjectileOffset;                              // 0x20EC(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
-	struct FRotator                                    HuskFlingerProjectileRotation;                            // 0x20F8(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
-	unsigned char                                      UnknownData04[0x4];                                       // 0x2104(0x0004) MISSED OFFSET
-	class UParticleSystem*                             ImpactParticles_Default;                                  // 0x2108(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	class UParticleSystem*                             ImpactParticles_HumanFlesh;                               // 0x2110(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UParticleSystem*                             ImpactParticles_Wood;                                     // 0x2118(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UParticleSystem*                             ImpactParticles_Stone;                                    // 0x2120(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UParticleSystem*                             ImpactParticles_Metal;                                    // 0x2128(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               MeleeImpact_UseSocketTransforms;                          // 0x2130(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData05[0x7];                                       // 0x2131(0x0007) MISSED OFFSET
-	struct FName                                       Impact_MeleeSocket;                                       // 0x2138(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	bool                                               IsHeadshot_HideHead;                                      // 0x2140(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData06[0x3];                                       // 0x2141(0x0003) MISSED OFFSET
-	float                                              PreviousLargestDeathRadius;                               // 0x2144(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class USoundBase*                                  Death_Normal_Sound;                                       // 0x2148(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	class USoundBase*                                  Death_RedLaser_Sound;                                     // 0x2150(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	class UParticleSystem*                             Spawn_Dust_Particles;                                     // 0x2158(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              SafetyTimerDuration;                                      // 0x2160(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               DeathFX_HQ;                                               // 0x2164(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData07[0x3];                                       // 0x2165(0x0003) MISSED OFFSET
-	class USkeletalMeshComponent*                      ShieldSkeletalMesh;                                       // 0x2168(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
-	class AShielderSpringArm_C*                        ShieldArm;                                                // 0x2170(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
-	class UTexture*                                    Diffuse_Texture;                                          // 0x2178(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x1ED0(0x0008) (Transient, DuplicateTransient)
+	int                                                HitCount;                                                 // 0x1ED8(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              LastTakeHitTime;                                          // 0x1EDC(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               PushFromFlingerSpawn;                                     // 0x1EE0(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x1EE1(0x0007) MISSED OFFSET
+	class AFortPawn*                                   PawnThatSpawnedMe;                                        // 0x1EE8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	struct FVector                                     PawnThatSpawnedMeLocation;                                // 0x1EF0(0x000C) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x1EFC(0x0004) MISSED OFFSET
+	struct FGameplayTagContainer                       TC_HitReactionAdditiveSingleOneShot;                      // 0x1F00(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FGameplayTagContainer                       TC_HitReactionAdditiveLoop;                               // 0x1F20(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FGameplayTagContainer                       TC_HitReactionFullBody;                                   // 0x1F40(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FGameplayTagContainer                       TC_HitReactionBlockAll;                                   // 0x1F60(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FGameplayTagContainer                       TC_HitReactionBlockMelee;                                 // 0x1F80(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FGameplayTagContainer                       TC_HitReactionBlockRanged;                                // 0x1FA0(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	bool                                               HitReactForMelee;                                         // 0x1FC0(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               HuskIsInFlingersHand;                                     // 0x1FC1(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               HuskIsAirborne;                                           // 0x1FC2(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x1];                                       // 0x1FC3(0x0001) MISSED OFFSET
+	struct FVector                                     HuskFlingerHandOffset;                                    // 0x1FC4(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
+	struct FRotator                                    HuskFlingerHandRotation;                                  // 0x1FD0(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
+	struct FVector                                     HuskFlingerProjectileOffset;                              // 0x1FDC(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
+	struct FRotator                                    HuskFlingerProjectileRotation;                            // 0x1FE8(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x4];                                       // 0x1FF4(0x0004) MISSED OFFSET
+	class UParticleSystem*                             ImpactParticles_Default;                                  // 0x1FF8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	class UParticleSystem*                             ImpactParticles_HumanFlesh;                               // 0x2000(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UParticleSystem*                             ImpactParticles_Wood;                                     // 0x2008(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UParticleSystem*                             ImpactParticles_Stone;                                    // 0x2010(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UParticleSystem*                             ImpactParticles_Metal;                                    // 0x2018(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               MeleeImpact_UseSocketTransforms;                          // 0x2020(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData04[0x7];                                       // 0x2021(0x0007) MISSED OFFSET
+	struct FName                                       Impact_MeleeSocket;                                       // 0x2028(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	bool                                               IsHeadshot_HideHead;                                      // 0x2030(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData05[0x3];                                       // 0x2031(0x0003) MISSED OFFSET
+	float                                              PreviousLargestDeathRadius;                               // 0x2034(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class USoundBase*                                  Death_Normal_Sound;                                       // 0x2038(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	class USoundBase*                                  Death_RedLaser_Sound;                                     // 0x2040(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	class UParticleSystem*                             Spawn_Dust_Particles;                                     // 0x2048(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              SafetyTimerDuration;                                      // 0x2050(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               DeathFX_HQ;                                               // 0x2054(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData06[0x3];                                       // 0x2055(0x0003) MISSED OFFSET
+	class USkeletalMeshComponent*                      ShieldSkeletalMesh;                                       // 0x2058(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
+	class AShielderSpringArm_C*                        ShieldArm;                                                // 0x2060(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
+	class UTexture*                                    Diffuse_Texture;                                          // 0x2068(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{

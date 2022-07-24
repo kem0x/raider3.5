@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,30 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function FortReplayTimeline.FortReplayTimeline_C.AddMarkerToTimeline
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EFortReplayEventType           EventType                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// float                          RelativeTime                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// int                            EventIdx                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UFortReplayTimeline_C::AddMarkerToTimeline(EFortReplayEventType EventType, float RelativeTime, int EventIdx)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function FortReplayTimeline.FortReplayTimeline_C.AddMarkerToTimeline");
+
+	UFortReplayTimeline_C_AddMarkerToTimeline_Params params;
+	params.EventType = EventType;
+	params.RelativeTime = RelativeTime;
+	params.EventIdx = EventIdx;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function FortReplayTimeline.FortReplayTimeline_C.OnHUDVisibilityChanged
 // (Public, BlueprintCallable, BlueprintEvent)
@@ -239,6 +263,57 @@ void UFortReplayTimeline_C::BndEvt__SliderGamepadSlider_K2Node_ComponentBoundEve
 	static auto fn = UObject::FindObject<UFunction>("Function FortReplayTimeline.FortReplayTimeline_C.BndEvt__SliderGamepadSlider_K2Node_ComponentBoundEvent_110_OnControllerCaptureEndEvent__DelegateSignature");
 
 	UFortReplayTimeline_C_BndEvt__SliderGamepadSlider_K2Node_ComponentBoundEvent_110_OnControllerCaptureEndEvent__DelegateSignature_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function FortReplayTimeline.FortReplayTimeline_C.Construct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UFortReplayTimeline_C::Construct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function FortReplayTimeline.FortReplayTimeline_C.Construct");
+
+	UFortReplayTimeline_C_Construct_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function FortReplayTimeline.FortReplayTimeline_C.Destruct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UFortReplayTimeline_C::Destruct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function FortReplayTimeline.FortReplayTimeline_C.Destruct");
+
+	UFortReplayTimeline_C_Destruct_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function FortReplayTimeline.FortReplayTimeline_C.ClearTimelineMarkers
+// (Event, Public, BlueprintCallable, BlueprintEvent)
+
+void UFortReplayTimeline_C::ClearTimelineMarkers()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function FortReplayTimeline.FortReplayTimeline_C.ClearTimelineMarkers");
+
+	UFortReplayTimeline_C_ClearTimelineMarkers_Params params;
 
 	auto flags = fn->FunctionFlags;
 

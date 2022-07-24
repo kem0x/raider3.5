@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -63,6 +63,7 @@ struct UMulchConfirmationModalWidget_C_BndEvt__ConfirmButton_K2Node_ComponentBou
 struct UMulchConfirmationModalWidget_C_BndEvt__RecycleItemTileView_K2Node_ComponentBoundEvent_21_OnListViewItemClicked__DelegateSignature_Params
 {
 	class UObject*                                     Item;                                                     // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               bIsHovered;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function MulchConfirmationModalWidget.MulchConfirmationModalWidget_C.ExecuteUbergraph_MulchConfirmationModalWidget

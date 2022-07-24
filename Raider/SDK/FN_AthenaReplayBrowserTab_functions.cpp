@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -68,17 +68,17 @@ void UAthenaReplayBrowserTab_C::OnShowLoadingThrobber()
 }
 
 
-// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnEnumerationStateChanged
+// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnActionStateChanged
 // (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
-// bool                           EnumerationInProgress          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           ActionInProgress               (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UAthenaReplayBrowserTab_C::OnEnumerationStateChanged(bool EnumerationInProgress)
+void UAthenaReplayBrowserTab_C::OnActionStateChanged(bool ActionInProgress)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnEnumerationStateChanged");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnActionStateChanged");
 
-	UAthenaReplayBrowserTab_C_OnEnumerationStateChanged_Params params;
-	params.EnumerationInProgress = EnumerationInProgress;
+	UAthenaReplayBrowserTab_C_OnActionStateChanged_Params params;
+	params.ActionInProgress = ActionInProgress;
 
 	auto flags = fn->FunctionFlags;
 
@@ -147,15 +147,13 @@ void UAthenaReplayBrowserTab_C::CloseRenameDialog()
 // Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnConfirmRename
 // (Private, BlueprintCallable, BlueprintEvent)
 // Parameters:
-// class UAthenaReplayBrowserRowProxyInstance* RowProxy                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // struct FText                   NewName                        (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void UAthenaReplayBrowserTab_C::OnConfirmRename(class UAthenaReplayBrowserRowProxyInstance* RowProxy, const struct FText& NewName)
+void UAthenaReplayBrowserTab_C::OnConfirmRename(const struct FText& NewName)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnConfirmRename");
 
 	UAthenaReplayBrowserTab_C_OnConfirmRename_Params params;
-	params.RowProxy = RowProxy;
 	params.NewName = NewName;
 
 	auto flags = fn->FunctionFlags;
@@ -303,28 +301,6 @@ void UAthenaReplayBrowserTab_C::Refresh()
 }
 
 
-// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DialogResult_580DD63848C06A1FCA8D9DABDAF6FF77
-// (BlueprintCallable, BlueprintEvent)
-// Parameters:
-// EFortDialogResult              Result                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// struct FName                   ResultName                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void UAthenaReplayBrowserTab_C::DialogResult_580DD63848C06A1FCA8D9DABDAF6FF77(EFortDialogResult Result, const struct FName& ResultName)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DialogResult_580DD63848C06A1FCA8D9DABDAF6FF77");
-
-	UAthenaReplayBrowserTab_C_DialogResult_580DD63848C06A1FCA8D9DABDAF6FF77_Params params;
-	params.Result = Result;
-	params.ResultName = ResultName;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DialogResult_12ECDF8D47346477E6D96B927F5223CE
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
@@ -336,6 +312,28 @@ void UAthenaReplayBrowserTab_C::DialogResult_12ECDF8D47346477E6D96B927F5223CE(EF
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DialogResult_12ECDF8D47346477E6D96B927F5223CE");
 
 	UAthenaReplayBrowserTab_C_DialogResult_12ECDF8D47346477E6D96B927F5223CE_Params params;
+	params.Result = Result;
+	params.ResultName = ResultName;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DialogResult_580DD63848C06A1FCA8D9DABDAF6FF77
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EFortDialogResult              Result                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FName                   ResultName                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaReplayBrowserTab_C::DialogResult_580DD63848C06A1FCA8D9DABDAF6FF77(EFortDialogResult Result, const struct FName& ResultName)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DialogResult_580DD63848C06A1FCA8D9DABDAF6FF77");
+
+	UAthenaReplayBrowserTab_C_DialogResult_580DD63848C06A1FCA8D9DABDAF6FF77_Params params;
 	params.Result = Result;
 	params.ResultName = ResultName;
 
@@ -413,28 +411,6 @@ void UAthenaReplayBrowserTab_C::DialogResult_961693C14B8B2A8E26E2AFB69251D5F8(EF
 }
 
 
-// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DialogResult_C4C0E9C14BA061EBBA451D839890A4A7
-// (BlueprintCallable, BlueprintEvent)
-// Parameters:
-// EFortDialogResult              Result                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// struct FName                   ResultName                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void UAthenaReplayBrowserTab_C::DialogResult_C4C0E9C14BA061EBBA451D839890A4A7(EFortDialogResult Result, const struct FName& ResultName)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DialogResult_C4C0E9C14BA061EBBA451D839890A4A7");
-
-	UAthenaReplayBrowserTab_C_DialogResult_C4C0E9C14BA061EBBA451D839890A4A7_Params params;
-	params.Result = Result;
-	params.ResultName = ResultName;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DialogResult_79A680104EAA90FF10D265808FD512BC
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
@@ -448,6 +424,104 @@ void UAthenaReplayBrowserTab_C::DialogResult_79A680104EAA90FF10D265808FD512BC(EF
 	UAthenaReplayBrowserTab_C_DialogResult_79A680104EAA90FF10D265808FD512BC_Params params;
 	params.Result = Result;
 	params.ResultName = ResultName;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DialogResult_F681A46A43F230E95DCC3F994D03E83C
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EFortDialogResult              Result                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FName                   ResultName                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaReplayBrowserTab_C::DialogResult_F681A46A43F230E95DCC3F994D03E83C(EFortDialogResult Result, const struct FName& ResultName)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DialogResult_F681A46A43F230E95DCC3F994D03E83C");
+
+	UAthenaReplayBrowserTab_C_DialogResult_F681A46A43F230E95DCC3F994D03E83C_Params params;
+	params.Result = Result;
+	params.ResultName = ResultName;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DialogResult_5C8831094A522B13254093A66254221F
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EFortDialogResult              Result                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FName                   ResultName                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaReplayBrowserTab_C::DialogResult_5C8831094A522B13254093A66254221F(EFortDialogResult Result, const struct FName& ResultName)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DialogResult_5C8831094A522B13254093A66254221F");
+
+	UAthenaReplayBrowserTab_C_DialogResult_5C8831094A522B13254093A66254221F_Params params;
+	params.Result = Result;
+	params.ResultName = ResultName;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnRowsUpdated
+// (Event, Protected, BlueprintEvent)
+
+void UAthenaReplayBrowserTab_C::OnRowsUpdated()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnRowsUpdated");
+
+	UAthenaReplayBrowserTab_C_OnRowsUpdated_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnActivated
+// (Event, Protected, BlueprintEvent)
+
+void UAthenaReplayBrowserTab_C::OnActivated()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnActivated");
+
+	UAthenaReplayBrowserTab_C_OnActivated_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DeleteReplay
+// (Event, Protected, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UAthenaReplayBrowserRowProxyInstance** RowProxy                       (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaReplayBrowserTab_C::DeleteReplay(class UAthenaReplayBrowserRowProxyInstance** RowProxy)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DeleteReplay");
+
+	UAthenaReplayBrowserTab_C_DeleteReplay_Params params;
+	params.RowProxy = RowProxy;
 
 	auto flags = fn->FunctionFlags;
 
@@ -554,43 +628,6 @@ void UAthenaReplayBrowserTab_C::BndEvt__ReplayListView_K2Node_ComponentBoundEven
 }
 
 
-// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DeleteReplay
-// (Event, Protected, BlueprintCallable, BlueprintEvent)
-// Parameters:
-// class UAthenaReplayBrowserRowProxyInstance** RowProxy                       (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void UAthenaReplayBrowserTab_C::DeleteReplay(class UAthenaReplayBrowserRowProxyInstance** RowProxy)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.DeleteReplay");
-
-	UAthenaReplayBrowserTab_C_DeleteReplay_Params params;
-	params.RowProxy = RowProxy;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnActivated
-// (Event, Protected, BlueprintEvent)
-
-void UAthenaReplayBrowserTab_C::OnActivated()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnActivated");
-
-	UAthenaReplayBrowserTab_C_OnActivated_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnDeleteFailed
 // (Event, Protected, HasOutParms, BlueprintEvent)
 // Parameters:
@@ -651,43 +688,6 @@ void UAthenaReplayBrowserTab_C::OnSaveFailed(struct FText* Reason)
 }
 
 
-// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnRowsUpdated
-// (Event, Protected, BlueprintEvent)
-
-void UAthenaReplayBrowserTab_C::OnRowsUpdated()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnRowsUpdated");
-
-	UAthenaReplayBrowserTab_C_OnRowsUpdated_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnCorruptReplayFound
-// (Event, Protected, HasOutParms, BlueprintEvent)
-// Parameters:
-// struct FText*                  Info                           (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
-
-void UAthenaReplayBrowserTab_C::OnCorruptReplayFound(struct FText* Info)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnCorruptReplayFound");
-
-	UAthenaReplayBrowserTab_C_OnCorruptReplayFound_Params params;
-	params.Info = Info;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.BndEvt__ReplayListView_K2Node_ComponentBoundEvent_0_OnListViewItemSelected__DelegateSignature
 // (BlueprintEvent)
 // Parameters:
@@ -730,40 +730,6 @@ void UAthenaReplayBrowserTab_C::OnPlayFailed(struct FText* Reason)
 }
 
 
-// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnReplayEnumerationStart
-// (Event, Protected, BlueprintEvent)
-
-void UAthenaReplayBrowserTab_C::OnReplayEnumerationStart()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnReplayEnumerationStart");
-
-	UAthenaReplayBrowserTab_C_OnReplayEnumerationStart_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnReplayEnumerationFinish
-// (Event, Protected, BlueprintEvent)
-
-void UAthenaReplayBrowserTab_C::OnReplayEnumerationFinish()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnReplayEnumerationFinish");
-
-	UAthenaReplayBrowserTab_C_OnReplayEnumerationFinish_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.BndEvt__OpenReplayFolder_K2Node_ComponentBoundEvent_20_CommonButtonClicked__DelegateSignature
 // (BlueprintEvent)
 // Parameters:
@@ -775,6 +741,62 @@ void UAthenaReplayBrowserTab_C::BndEvt__OpenReplayFolder_K2Node_ComponentBoundEv
 
 	UAthenaReplayBrowserTab_C_BndEvt__OpenReplayFolder_K2Node_ComponentBoundEvent_20_CommonButtonClicked__DelegateSignature_Params params;
 	params.Button = Button;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnActionStarted
+// (Event, Protected, BlueprintEvent)
+
+void UAthenaReplayBrowserTab_C::OnActionStarted()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnActionStarted");
+
+	UAthenaReplayBrowserTab_C_OnActionStarted_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnActionFinished
+// (Event, Protected, BlueprintEvent)
+
+void UAthenaReplayBrowserTab_C::OnActionFinished()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.OnActionFinished");
+
+	UAthenaReplayBrowserTab_C_OnActionFinished_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.ShowDeleteInvalidDialog
+// (Event, Protected, HasOutParms, BlueprintEvent)
+// Parameters:
+// struct FText*                  Title                          (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+// struct FText*                  MESSAGE                        (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
+
+void UAthenaReplayBrowserTab_C::ShowDeleteInvalidDialog(struct FText* Title, struct FText* MESSAGE)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaReplayBrowserTab.AthenaReplayBrowserTab_C.ShowDeleteInvalidDialog");
+
+	UAthenaReplayBrowserTab_C_ShowDeleteInvalidDialog_Params params;
+	params.Title = Title;
+	params.MESSAGE = MESSAGE;
 
 	auto flags = fn->FunctionFlags;
 

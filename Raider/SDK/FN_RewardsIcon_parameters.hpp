@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,11 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function RewardsIcon.RewardsIcon_C.PopulateFromItemCacheData
+struct URewardsIcon_C_PopulateFromItemCacheData_Params
+{
+};
 
 // Function RewardsIcon.RewardsIcon_C.PopulateFromGiftBoxData
 struct URewardsIcon_C_PopulateFromGiftBoxData_Params
@@ -44,8 +49,8 @@ struct URewardsIcon_C_PlayShowAnimation_Params
 {
 };
 
-// Function RewardsIcon.RewardsIcon_C.On_ImageIcon_MouseButtonDown_0_1
-struct URewardsIcon_C_On_ImageIcon_MouseButtonDown_0_1_Params
+// Function RewardsIcon.RewardsIcon_C.On_ImageIcon_MouseButtonDown_1
+struct URewardsIcon_C_On_ImageIcon_MouseButtonDown_1_Params
 {
 	struct FGeometry                                   MyGeometry;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
 	struct FPointerEvent                               MouseEvent;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
@@ -164,6 +169,23 @@ struct URewardsIcon_C_PreConstruct_Params
 struct URewardsIcon_C_whiteFadeOut_Params
 {
 	float                                              Percent;                                                  // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function RewardsIcon.RewardsIcon_C.BndEvt__LoadGuard_K2Node_ComponentBoundEvent_2_OnLoadingStateChanged__DelegateSignature
+struct URewardsIcon_C_BndEvt__LoadGuard_K2Node_ComponentBoundEvent_2_OnLoadingStateChanged__DelegateSignature_Params
+{
+	bool                                               bIsLoading;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function RewardsIcon.RewardsIcon_C.OnAssetLoaded
+struct URewardsIcon_C_OnAssetLoaded_Params
+{
+	class UObject*                                     Object;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function RewardsIcon.RewardsIcon_C.Destruct
+struct URewardsIcon_C_Destruct_Params
+{
 };
 
 // Function RewardsIcon.RewardsIcon_C.ExecuteUbergraph_RewardsIcon

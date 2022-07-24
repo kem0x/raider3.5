@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -53,14 +53,19 @@ void UMovieSceneSequencePlayer::Stop()
 }
 
 
-// Function MovieScene.MovieSceneSequencePlayer.StartPlayingNextTick
+// Function MovieScene.MovieSceneSequencePlayer.SetTimeRange
 // (Final, Native, Public, BlueprintCallable)
+// Parameters:
+// float                          StartTime                      (Parm, ZeroConstructor, IsPlainOldData)
+// float                          Duration                       (Parm, ZeroConstructor, IsPlainOldData)
 
-void UMovieSceneSequencePlayer::StartPlayingNextTick()
+void UMovieSceneSequencePlayer::SetTimeRange(float StartTime, float Duration)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.StartPlayingNextTick");
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.SetTimeRange");
 
-	UMovieSceneSequencePlayer_StartPlayingNextTick_Params params;
+	UMovieSceneSequencePlayer_SetTimeRange_Params params;
+	params.StartTime = StartTime;
+	params.Duration = Duration;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
@@ -136,6 +141,50 @@ void UMovieSceneSequencePlayer::SetPlaybackPosition(float NewPlaybackPosition)
 }
 
 
+// Function MovieScene.MovieSceneSequencePlayer.SetFrameRate
+// (Final, Native, Public, BlueprintCallable)
+// Parameters:
+// struct FFrameRate              FrameRate                      (Parm)
+
+void UMovieSceneSequencePlayer::SetFrameRate(const struct FFrameRate& FrameRate)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.SetFrameRate");
+
+	UMovieSceneSequencePlayer_SetFrameRate_Params params;
+	params.FrameRate = FrameRate;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function MovieScene.MovieSceneSequencePlayer.SetFrameRange
+// (Final, Native, Public, BlueprintCallable)
+// Parameters:
+// int                            StartFrame                     (Parm, ZeroConstructor, IsPlainOldData)
+// int                            Duration                       (Parm, ZeroConstructor, IsPlainOldData)
+
+void UMovieSceneSequencePlayer::SetFrameRange(int StartFrame, int Duration)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.SetFrameRange");
+
+	UMovieSceneSequencePlayer_SetFrameRange_Params params;
+	params.StartFrame = StartFrame;
+	params.Duration = Duration;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function MovieScene.MovieSceneSequencePlayer.SetDisableCameraCuts
 // (Final, Native, Public, BlueprintCallable)
 // Parameters:
@@ -157,6 +206,48 @@ void UMovieSceneSequencePlayer::SetDisableCameraCuts(bool bInDisableCameraCuts)
 }
 
 
+// Function MovieScene.MovieSceneSequencePlayer.ScrubToSeconds
+// (Final, Native, Public, BlueprintCallable)
+// Parameters:
+// float                          TimeInSeconds                  (Parm, ZeroConstructor, IsPlainOldData)
+
+void UMovieSceneSequencePlayer::ScrubToSeconds(float TimeInSeconds)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.ScrubToSeconds");
+
+	UMovieSceneSequencePlayer_ScrubToSeconds_Params params;
+	params.TimeInSeconds = TimeInSeconds;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function MovieScene.MovieSceneSequencePlayer.ScrubToFrame
+// (Final, Native, Public, BlueprintCallable)
+// Parameters:
+// struct FFrameTime              NewPosition                    (Parm)
+
+void UMovieSceneSequencePlayer::ScrubToFrame(const struct FFrameTime& NewPosition)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.ScrubToFrame");
+
+	UMovieSceneSequencePlayer_ScrubToFrame_Params params;
+	params.NewPosition = NewPosition;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function MovieScene.MovieSceneSequencePlayer.Scrub
 // (Final, Native, Public, BlueprintCallable)
 
@@ -165,6 +256,48 @@ void UMovieSceneSequencePlayer::Scrub()
 	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.Scrub");
 
 	UMovieSceneSequencePlayer_Scrub_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function MovieScene.MovieSceneSequencePlayer.PlayToSeconds
+// (Final, Native, Public, BlueprintCallable)
+// Parameters:
+// float                          TimeInSeconds                  (Parm, ZeroConstructor, IsPlainOldData)
+
+void UMovieSceneSequencePlayer::PlayToSeconds(float TimeInSeconds)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.PlayToSeconds");
+
+	UMovieSceneSequencePlayer_PlayToSeconds_Params params;
+	params.TimeInSeconds = TimeInSeconds;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function MovieScene.MovieSceneSequencePlayer.PlayToFrame
+// (Final, Native, Public, BlueprintCallable)
+// Parameters:
+// struct FFrameTime              NewPosition                    (Parm)
+
+void UMovieSceneSequencePlayer::PlayToFrame(const struct FFrameTime& NewPosition)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.PlayToFrame");
+
+	UMovieSceneSequencePlayer_PlayToFrame_Params params;
+	params.NewPosition = NewPosition;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
@@ -250,6 +383,27 @@ void UMovieSceneSequencePlayer::Pause()
 }
 
 
+// Function MovieScene.MovieSceneSequencePlayer.JumpToSeconds
+// (Final, Native, Public, BlueprintCallable)
+// Parameters:
+// float                          TimeInSeconds                  (Parm, ZeroConstructor, IsPlainOldData)
+
+void UMovieSceneSequencePlayer::JumpToSeconds(float TimeInSeconds)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.JumpToSeconds");
+
+	UMovieSceneSequencePlayer_JumpToSeconds_Params params;
+	params.TimeInSeconds = TimeInSeconds;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function MovieScene.MovieSceneSequencePlayer.JumpToPosition
 // (Final, Native, Public, BlueprintCallable)
 // Parameters:
@@ -261,6 +415,27 @@ void UMovieSceneSequencePlayer::JumpToPosition(float NewPlaybackPosition)
 
 	UMovieSceneSequencePlayer_JumpToPosition_Params params;
 	params.NewPlaybackPosition = NewPlaybackPosition;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function MovieScene.MovieSceneSequencePlayer.JumpToFrame
+// (Final, Native, Public, BlueprintCallable)
+// Parameters:
+// struct FFrameTime              NewPosition                    (Parm)
+
+void UMovieSceneSequencePlayer::JumpToFrame(const struct FFrameTime& NewPosition)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.JumpToFrame");
+
+	UMovieSceneSequencePlayer_JumpToFrame_Params params;
+	params.NewPosition = NewPosition;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
@@ -330,6 +505,28 @@ void UMovieSceneSequencePlayer::GoToEndAndStop()
 	UObject::ProcessEvent(fn, &params);
 
 	fn->FunctionFlags = flags;
+}
+
+
+// Function MovieScene.MovieSceneSequencePlayer.GetStartTime
+// (Final, Native, Public, BlueprintCallable, BlueprintPure, Const)
+// Parameters:
+// struct FQualifiedFrameTime     ReturnValue                    (Parm, OutParm, ReturnParm)
+
+struct FQualifiedFrameTime UMovieSceneSequencePlayer::GetStartTime()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.GetStartTime");
+
+	UMovieSceneSequencePlayer_GetStartTime_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
 }
 
 
@@ -443,6 +640,94 @@ float UMovieSceneSequencePlayer::GetLength()
 }
 
 
+// Function MovieScene.MovieSceneSequencePlayer.GetFrameRate
+// (Final, Native, Public, BlueprintCallable, BlueprintPure, Const)
+// Parameters:
+// struct FFrameRate              ReturnValue                    (Parm, OutParm, ReturnParm)
+
+struct FFrameRate UMovieSceneSequencePlayer::GetFrameRate()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.GetFrameRate");
+
+	UMovieSceneSequencePlayer_GetFrameRate_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function MovieScene.MovieSceneSequencePlayer.GetFrameDuration
+// (Final, Native, Public, BlueprintCallable, BlueprintPure, Const)
+// Parameters:
+// int                            ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+int UMovieSceneSequencePlayer::GetFrameDuration()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.GetFrameDuration");
+
+	UMovieSceneSequencePlayer_GetFrameDuration_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function MovieScene.MovieSceneSequencePlayer.GetEndTime
+// (Final, Native, Public, BlueprintCallable, BlueprintPure, Const)
+// Parameters:
+// struct FQualifiedFrameTime     ReturnValue                    (Parm, OutParm, ReturnParm)
+
+struct FQualifiedFrameTime UMovieSceneSequencePlayer::GetEndTime()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.GetEndTime");
+
+	UMovieSceneSequencePlayer_GetEndTime_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function MovieScene.MovieSceneSequencePlayer.GetDuration
+// (Final, Native, Public, BlueprintCallable, BlueprintPure, Const)
+// Parameters:
+// struct FQualifiedFrameTime     ReturnValue                    (Parm, OutParm, ReturnParm)
+
+struct FQualifiedFrameTime UMovieSceneSequencePlayer::GetDuration()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.GetDuration");
+
+	UMovieSceneSequencePlayer_GetDuration_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
 // Function MovieScene.MovieSceneSequencePlayer.GetDisableCameraCuts
 // (Final, Native, Public, BlueprintCallable)
 // Parameters:
@@ -453,6 +738,28 @@ bool UMovieSceneSequencePlayer::GetDisableCameraCuts()
 	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.GetDisableCameraCuts");
 
 	UMovieSceneSequencePlayer_GetDisableCameraCuts_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function MovieScene.MovieSceneSequencePlayer.GetCurrentTime
+// (Final, Native, Public, BlueprintCallable, BlueprintPure, Const)
+// Parameters:
+// struct FQualifiedFrameTime     ReturnValue                    (Parm, OutParm, ReturnParm)
+
+struct FQualifiedFrameTime UMovieSceneSequencePlayer::GetCurrentTime()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieScene.MovieSceneSequencePlayer.GetCurrentTime");
+
+	UMovieSceneSequencePlayer_GetCurrentTime_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;

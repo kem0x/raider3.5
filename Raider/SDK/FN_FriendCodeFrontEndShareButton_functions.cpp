@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,14 +12,14 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function FriendCodeFrontEndShareButton.FriendCodeFrontEndShareButton_C.OnClicked
+// Function FriendCodeFrontEndShareButton.FriendCodeFrontEndShareButton_C.BP_OnClicked
 // (Event, Protected, BlueprintEvent)
 
-void UFriendCodeFrontEndShareButton_C::OnClicked()
+void UFriendCodeFrontEndShareButton_C::BP_OnClicked()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function FriendCodeFrontEndShareButton.FriendCodeFrontEndShareButton_C.OnClicked");
+	static auto fn = UObject::FindObject<UFunction>("Function FriendCodeFrontEndShareButton.FriendCodeFrontEndShareButton_C.BP_OnClicked");
 
-	UFriendCodeFrontEndShareButton_C_OnClicked_Params params;
+	UFriendCodeFrontEndShareButton_C_BP_OnClicked_Params params;
 
 	auto flags = fn->FunctionFlags;
 

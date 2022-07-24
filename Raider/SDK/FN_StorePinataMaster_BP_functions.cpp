@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -783,16 +783,16 @@ void AStorePinataMaster_BP_C::TL_Upgrade3__TasslesDropOff2__EventFunc()
 }
 
 
-// Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_3_4
+// Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_4
 // (BlueprintEvent)
 // Parameters:
 // struct FKey                    Key                            (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void AStorePinataMaster_BP_C::InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_3_4(const struct FKey& Key)
+void AStorePinataMaster_BP_C::InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_4(const struct FKey& Key)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_3_4");
+	static auto fn = UObject::FindObject<UFunction>("Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_4");
 
-	AStorePinataMaster_BP_C_InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_3_4_Params params;
+	AStorePinataMaster_BP_C_InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_4_Params params;
 	params.Key = Key;
 
 	auto flags = fn->FunctionFlags;
@@ -803,16 +803,16 @@ void AStorePinataMaster_BP_C::InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_3_4
 }
 
 
-// Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_2_3
+// Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_3
 // (BlueprintEvent)
 // Parameters:
 // struct FKey                    Key                            (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void AStorePinataMaster_BP_C::InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_2_3(const struct FKey& Key)
+void AStorePinataMaster_BP_C::InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_3(const struct FKey& Key)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_2_3");
+	static auto fn = UObject::FindObject<UFunction>("Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_3");
 
-	AStorePinataMaster_BP_C_InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_2_3_Params params;
+	AStorePinataMaster_BP_C_InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_3_Params params;
 	params.Key = Key;
 
 	auto flags = fn->FunctionFlags;
@@ -823,16 +823,16 @@ void AStorePinataMaster_BP_C::InpActEvt_LeftMouseButton_K2Node_InputKeyEvent_2_3
 }
 
 
-// Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_1_2
+// Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_2
 // (BlueprintEvent)
 // Parameters:
 // struct FKey                    Key                            (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void AStorePinataMaster_BP_C::InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_1_2(const struct FKey& Key)
+void AStorePinataMaster_BP_C::InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_2(const struct FKey& Key)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_1_2");
+	static auto fn = UObject::FindObject<UFunction>("Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_2");
 
-	AStorePinataMaster_BP_C_InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_1_2_Params params;
+	AStorePinataMaster_BP_C_InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_2_Params params;
 	params.Key = Key;
 
 	auto flags = fn->FunctionFlags;
@@ -843,16 +843,16 @@ void AStorePinataMaster_BP_C::InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEven
 }
 
 
-// Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_0_1
+// Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_1
 // (BlueprintEvent)
 // Parameters:
 // struct FKey                    Key                            (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void AStorePinataMaster_BP_C::InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_0_1(const struct FKey& Key)
+void AStorePinataMaster_BP_C::InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_1(const struct FKey& Key)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function StorePinataMaster_BP.StorePinataMaster_BP_C.InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_1");
 
-	AStorePinataMaster_BP_C_InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_0_1_Params params;
+	AStorePinataMaster_BP_C_InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_1_Params params;
 	params.Key = Key;
 
 	auto flags = fn->FunctionFlags;

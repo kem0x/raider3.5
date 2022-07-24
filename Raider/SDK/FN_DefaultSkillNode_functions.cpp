@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -202,14 +202,14 @@ void UDefaultSkillNode_C::PreConstruct(bool* IsDesignTime)
 }
 
 
-// Function DefaultSkillNode.DefaultSkillNode_C.OnUnhovered
+// Function DefaultSkillNode.DefaultSkillNode_C.BP_OnUnhovered
 // (Event, Protected, BlueprintEvent)
 
-void UDefaultSkillNode_C::OnUnhovered()
+void UDefaultSkillNode_C::BP_OnUnhovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function DefaultSkillNode.DefaultSkillNode_C.OnUnhovered");
+	static auto fn = UObject::FindObject<UFunction>("Function DefaultSkillNode.DefaultSkillNode_C.BP_OnUnhovered");
 
-	UDefaultSkillNode_C_OnUnhovered_Params params;
+	UDefaultSkillNode_C_BP_OnUnhovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -219,14 +219,14 @@ void UDefaultSkillNode_C::OnUnhovered()
 }
 
 
-// Function DefaultSkillNode.DefaultSkillNode_C.OnHovered
+// Function DefaultSkillNode.DefaultSkillNode_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UDefaultSkillNode_C::OnHovered()
+void UDefaultSkillNode_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function DefaultSkillNode.DefaultSkillNode_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function DefaultSkillNode.DefaultSkillNode_C.BP_OnHovered");
 
-	UDefaultSkillNode_C_OnHovered_Params params;
+	UDefaultSkillNode_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -236,14 +236,14 @@ void UDefaultSkillNode_C::OnHovered()
 }
 
 
-// Function DefaultSkillNode.DefaultSkillNode_C.OnSelected
+// Function DefaultSkillNode.DefaultSkillNode_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void UDefaultSkillNode_C::OnSelected()
+void UDefaultSkillNode_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function DefaultSkillNode.DefaultSkillNode_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function DefaultSkillNode.DefaultSkillNode_C.BP_OnSelected");
 
-	UDefaultSkillNode_C_OnSelected_Params params;
+	UDefaultSkillNode_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -253,14 +253,14 @@ void UDefaultSkillNode_C::OnSelected()
 }
 
 
-// Function DefaultSkillNode.DefaultSkillNode_C.OnDeselected
+// Function DefaultSkillNode.DefaultSkillNode_C.BP_OnDeselected
 // (Event, Protected, BlueprintEvent)
 
-void UDefaultSkillNode_C::OnDeselected()
+void UDefaultSkillNode_C::BP_OnDeselected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function DefaultSkillNode.DefaultSkillNode_C.OnDeselected");
+	static auto fn = UObject::FindObject<UFunction>("Function DefaultSkillNode.DefaultSkillNode_C.BP_OnDeselected");
 
-	UDefaultSkillNode_C_OnDeselected_Params params;
+	UDefaultSkillNode_C_BP_OnDeselected_Params params;
 
 	auto flags = fn->FunctionFlags;
 

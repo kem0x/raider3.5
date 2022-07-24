@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -25,8 +25,8 @@ struct UFriendCodeConsole_C_OnSendFriendCodeMessageComplete_Params
 	bool                                               bMessageSent;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function FriendCodeConsole.FriendCodeConsole_C.OnClicked
-struct UFriendCodeConsole_C_OnClicked_Params
+// Function FriendCodeConsole.FriendCodeConsole_C.BP_OnClicked
+struct UFriendCodeConsole_C_BP_OnClicked_Params
 {
 };
 

@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -135,7 +133,7 @@ public:
 
 
 // Class EngineSettings.GeneralProjectSettings
-// 0x00E8 (0x0110 - 0x0028)
+// 0x00F0 (0x0118 - 0x0028)
 class UGeneralProjectSettings : public UObject
 {
 public:
@@ -155,11 +153,13 @@ public:
 	bool                                               bShouldWindowPreserveAspectRatio;                         // 0x0108(0x0001) (Edit, ZeroConstructor, Config, IsPlainOldData)
 	bool                                               bUseBorderlessWindow;                                     // 0x0109(0x0001) (Edit, ZeroConstructor, Config, IsPlainOldData)
 	bool                                               bStartInVR;                                               // 0x010A(0x0001) (Edit, ZeroConstructor, Config, IsPlainOldData)
-	bool                                               bStartInAR;                                               // 0x010B(0x0001) (Edit, ZeroConstructor, Config, IsPlainOldData)
-	bool                                               bAllowWindowResize;                                       // 0x010C(0x0001) (Edit, ZeroConstructor, Config, IsPlainOldData)
-	bool                                               bAllowClose;                                              // 0x010D(0x0001) (Edit, ZeroConstructor, Config, IsPlainOldData)
-	bool                                               bAllowMaximize;                                           // 0x010E(0x0001) (Edit, ZeroConstructor, Config, IsPlainOldData)
-	bool                                               bAllowMinimize;                                           // 0x010F(0x0001) (Edit, ZeroConstructor, Config, IsPlainOldData)
+	bool                                               bStartInAR;                                               // 0x010B(0x0001) (ZeroConstructor, Deprecated, IsPlainOldData)
+	bool                                               bSupportAR;                                               // 0x010C(0x0001) (Edit, ZeroConstructor, Config, IsPlainOldData)
+	bool                                               bAllowWindowResize;                                       // 0x010D(0x0001) (Edit, ZeroConstructor, Config, IsPlainOldData)
+	bool                                               bAllowClose;                                              // 0x010E(0x0001) (Edit, ZeroConstructor, Config, IsPlainOldData)
+	bool                                               bAllowMaximize;                                           // 0x010F(0x0001) (Edit, ZeroConstructor, Config, IsPlainOldData)
+	bool                                               bAllowMinimize;                                           // 0x0110(0x0001) (Edit, ZeroConstructor, Config, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0111(0x0007) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{

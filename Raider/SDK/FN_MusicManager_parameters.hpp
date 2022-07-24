@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -84,6 +84,11 @@ struct AMusicManager_C_Music_Fade_Out_Params
 struct AMusicManager_C_On_Stinger_Completed_Params
 {
 	class UFortMusicVoice*                             Voice;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function MusicManager.MusicManager_C.Gather Combat Graph Tresholds
+struct AMusicManager_C_Gather_Combat_Graph_Tresholds_Params
+{
 };
 
 // Function MusicManager.MusicManager_C.ExecuteUbergraph_MusicManager

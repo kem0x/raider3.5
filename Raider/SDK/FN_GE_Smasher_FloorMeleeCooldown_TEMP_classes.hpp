@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,7 +13,7 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass GE_Smasher_FloorMeleeCooldown_TEMP.GE_Smasher_FloorMeleeCooldown_TEMP_C
-// 0x0000 (0x0670 - 0x0670)
+// 0x0000 (0x0638 - 0x0638)
 class UGE_Smasher_FloorMeleeCooldown_TEMP_C : public UGameplayEffect
 {
 public:

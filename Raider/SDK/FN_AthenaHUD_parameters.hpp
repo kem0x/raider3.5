@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -14,8 +14,34 @@ namespace SDK
 //Parameters
 //---------------------------------------------------------------------------
 
-// Function AthenaHUD.AthenaHUD_C.HasClientBeenNotifiedOfWin
-struct UAthenaHUD_C_HasClientBeenNotifiedOfWin_Params
+// Function AthenaHUD.AthenaHUD_C.OnKeyDown
+struct UAthenaHUD_C_OnKeyDown_Params
+{
+	struct FGeometry*                                  MyGeometry;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
+	struct FKeyEvent*                                  InKeyEvent;                                               // (BlueprintVisible, BlueprintReadOnly, Parm)
+	struct FEventReply                                 ReturnValue;                                              // (Parm, OutParm, ReturnParm)
+};
+
+// Function AthenaHUD.AthenaHUD_C.HandleGameViewportActivationChanged
+struct UAthenaHUD_C_HandleGameViewportActivationChanged_Params
+{
+	bool                                               IsActive;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AthenaHUD.AthenaHUD_C.UpdateCursorModeVisibility
+struct UAthenaHUD_C_UpdateCursorModeVisibility_Params
+{
+	struct FName                                       CursorMode;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AthenaHUD.AthenaHUD_C.AllowCursorModeWhenDead
+struct UAthenaHUD_C_AllowCursorModeWhenDead_Params
+{
+	bool                                               Allow;                                                    // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AthenaHUD.AthenaHUD_C.IsClientNotifiedOfWin
+struct UAthenaHUD_C_IsClientNotifiedOfWin_Params
 {
 	bool                                               bClientWon;                                               // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
 	bool                                               bTeamWon;                                                 // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
@@ -30,7 +56,7 @@ struct UAthenaHUD_C_HandlePawnSet_RCPawnVisibilityUpdates_Params
 // Function AthenaHUD.AthenaHUD_C.HandlePawnSet_VisibilityUpdates
 struct UAthenaHUD_C_HandlePawnSet_VisibilityUpdates_Params
 {
-	ESlateVisibility                                   InVisibility;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               bHideElements;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm, IsPlainOldData)
 };
 
 // Function AthenaHUD.AthenaHUD_C.HandlePawnSet
@@ -99,12 +125,6 @@ struct UAthenaHUD_C_HandleIndicatorModeChanged_Params
 	bool                                               InidicatorsEnabled;                                       // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function AthenaHUD.AthenaHUD_C.OnPlayerTargetingChanged
-struct UAthenaHUD_C_OnPlayerTargetingChanged_Params
-{
-	bool                                               IsTargeting;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
 // Function AthenaHUD.AthenaHUD_C.HandleKeybindsChanged
 struct UAthenaHUD_C_HandleKeybindsChanged_Params
 {
@@ -159,11 +179,6 @@ struct UAthenaHUD_C_QuestsCompleted_Params
 	TArray<class UFortQuestItem*>                      Quests;                                                   // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
 };
 
-// Function AthenaHUD.AthenaHUD_C.Construct
-struct UAthenaHUD_C_Construct_Params
-{
-};
-
 // Function AthenaHUD.AthenaHUD_C.PushContentWidgetInternal
 struct UAthenaHUD_C_PushContentWidgetInternal_Params
 {
@@ -173,6 +188,11 @@ struct UAthenaHUD_C_PushContentWidgetInternal_Params
 
 // Function AthenaHUD.AthenaHUD_C.Destruct
 struct UAthenaHUD_C_Destruct_Params
+{
+};
+
+// Function AthenaHUD.AthenaHUD_C.Construct
+struct UAthenaHUD_C_Construct_Params
 {
 };
 
@@ -241,6 +261,36 @@ struct UAthenaHUD_C_OnHUDScaleChanged_Params
 struct UAthenaHUD_C_SetFullScreenMapVisibility_Params
 {
 	bool*                                              bIsVisible;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AthenaHUD.AthenaHUD_C.OnPlaylistExtensionWidgetCreated
+struct UAthenaHUD_C_OnPlaylistExtensionWidgetCreated_Params
+{
+	EPlaylistUIExtensionSlot*                          ExtensionSlot;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class UUserWidget**                                Widget;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+};
+
+// Function AthenaHUD.AthenaHUD_C.OnCountdownStarted
+struct UAthenaHUD_C_OnCountdownStarted_Params
+{
+	int                                                TimeRemaining;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AthenaHUD.AthenaHUD_C.OnCountdownFinished
+struct UAthenaHUD_C_OnCountdownFinished_Params
+{
+};
+
+// Function AthenaHUD.AthenaHUD_C.OnPlayerLost
+struct UAthenaHUD_C_OnPlayerLost_Params
+{
+	EEndOfMatchReason                                  LostReason;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AthenaHUD.AthenaHUD_C.OnPhaseStepChanged
+struct UAthenaHUD_C_OnPhaseStepChanged_Params
+{
+	EAthenaGamePhaseStep                               NewPhaseStep;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function AthenaHUD.AthenaHUD_C.ExecuteUbergraph_AthenaHUD

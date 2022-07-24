@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -31,11 +31,6 @@ struct UEquippedItemWidget_C_UpdateCurrentAmmo_Params
 {
 	int                                                LocalCount;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	int                                                LocalRemaining;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function EquippedItemWidget.EquippedItemWidget_C.UpdateAmmoCapacity
-struct UEquippedItemWidget_C_UpdateAmmoCapacity_Params
-{
 };
 
 // Function EquippedItemWidget.EquippedItemWidget_C.UpdateWidgetColor

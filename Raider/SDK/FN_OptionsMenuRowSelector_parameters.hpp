@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,12 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function OptionsMenuRowSelector.OptionsMenuRowSelector_C.DisableOption
+struct UOptionsMenuRowSelector_C_DisableOption_Params
+{
+	int                                                OptionIndex;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function OptionsMenuRowSelector.OptionsMenuRowSelector_C.Button Hovered
 struct UOptionsMenuRowSelector_C_Button_Hovered_Params
@@ -46,8 +52,8 @@ struct UOptionsMenuRowSelector_C_Construct_Params
 {
 };
 
-// Function OptionsMenuRowSelector.OptionsMenuRowSelector_C.OnSelectedButtonChanged_Event_0_1
-struct UOptionsMenuRowSelector_C_OnSelectedButtonChanged_Event_0_1_Params
+// Function OptionsMenuRowSelector.OptionsMenuRowSelector_C.OnSelectedButtonChanged_Event_1
+struct UOptionsMenuRowSelector_C_OnSelectedButtonChanged_Event_1_Params
 {
 	class UCommonButton*                               AssociatedButton;                                         // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 	int                                                ButtonIndex;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)

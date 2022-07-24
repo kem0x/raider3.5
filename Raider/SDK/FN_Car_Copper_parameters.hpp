@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,12 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function Car_Copper.Car_Copper_C.PlayJumpOnCarSound
+struct ACar_Copper_C_PlayJumpOnCarSound_Params
+{
+	struct FVector                                     Location;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
+};
 
 // Function Car_Copper.Car_Copper_C.toggle light visibility
 struct ACar_Copper_C_toggle_light_visibility_Params

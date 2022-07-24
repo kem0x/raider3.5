@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -104,9 +104,10 @@ struct UChatWidget_C_ExecuteUbergraph_ChatWidget_Params
 	int                                                EntryPoint;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function ChatWidget.ChatWidget_C.AboutToEnterChat__DelegateSignature
-struct UChatWidget_C_AboutToEnterChat__DelegateSignature_Params
+// Function ChatWidget.ChatWidget_C.OnEnteredChat__DelegateSignature
+struct UChatWidget_C_OnEnteredChat__DelegateSignature_Params
 {
+	bool                                               EnteredChat;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 }

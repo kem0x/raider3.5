@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -72,19 +72,17 @@ void UBP_FortExpeditionVehicleTileItemWidget_C::Set_Icon(const struct FName& Squ
 }
 
 
-// Function BP_FortExpeditionVehicleTileItemWidget.BP_FortExpeditionVehicleTileItemWidget_C.SetData
-// (Event, Public, BlueprintCallable, BlueprintEvent)
+// Function BP_FortExpeditionVehicleTileItemWidget.BP_FortExpeditionVehicleTileItemWidget_C.OnListItemObjectSet
+// (Event, Protected, BlueprintEvent)
 // Parameters:
-// class UObject**                InData                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class UCommonListView**        OwningList                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// class UObject**                ListItemObject                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UBP_FortExpeditionVehicleTileItemWidget_C::SetData(class UObject** InData, class UCommonListView** OwningList)
+void UBP_FortExpeditionVehicleTileItemWidget_C::OnListItemObjectSet(class UObject** ListItemObject)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionVehicleTileItemWidget.BP_FortExpeditionVehicleTileItemWidget_C.SetData");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionVehicleTileItemWidget.BP_FortExpeditionVehicleTileItemWidget_C.OnListItemObjectSet");
 
-	UBP_FortExpeditionVehicleTileItemWidget_C_SetData_Params params;
-	params.InData = InData;
-	params.OwningList = OwningList;
+	UBP_FortExpeditionVehicleTileItemWidget_C_OnListItemObjectSet_Params params;
+	params.ListItemObject = ListItemObject;
 
 	auto flags = fn->FunctionFlags;
 
@@ -94,14 +92,14 @@ void UBP_FortExpeditionVehicleTileItemWidget_C::SetData(class UObject** InData, 
 }
 
 
-// Function BP_FortExpeditionVehicleTileItemWidget.BP_FortExpeditionVehicleTileItemWidget_C.OnClicked
+// Function BP_FortExpeditionVehicleTileItemWidget.BP_FortExpeditionVehicleTileItemWidget_C.BP_OnClicked
 // (Event, Protected, BlueprintEvent)
 
-void UBP_FortExpeditionVehicleTileItemWidget_C::OnClicked()
+void UBP_FortExpeditionVehicleTileItemWidget_C::BP_OnClicked()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionVehicleTileItemWidget.BP_FortExpeditionVehicleTileItemWidget_C.OnClicked");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionVehicleTileItemWidget.BP_FortExpeditionVehicleTileItemWidget_C.BP_OnClicked");
 
-	UBP_FortExpeditionVehicleTileItemWidget_C_OnClicked_Params params;
+	UBP_FortExpeditionVehicleTileItemWidget_C_BP_OnClicked_Params params;
 
 	auto flags = fn->FunctionFlags;
 

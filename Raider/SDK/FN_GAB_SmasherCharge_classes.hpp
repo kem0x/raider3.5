@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,61 +13,62 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass GAB_SmasherCharge.GAB_SmasherCharge_C
-// 0x01B8 (0x0CA8 - 0x0AF0)
+// 0x01D8 (0x0AE8 - 0x0910)
 class UGAB_SmasherCharge_C : public UFortGameplayAbility
 {
 public:
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0AF0(0x0008) (Transient, DuplicateTransient)
-	class ASmasherPawn_C*                              SmasherPawn;                                              // 0x0AF8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
-	class AActor*                                      BumpedActor;                                              // 0x0B00(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
-	struct FVector                                     BumpedActorNormal;                                        // 0x0B08(0x000C) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
-	struct FVector                                     BumpedActorImpactPoint;                                   // 0x0B14(0x000C) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
-	float                                              BumpedActorImpactBufferHeight;                            // 0x0B20(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	struct FVector                                     BumpedActorSmasherVelocity;                               // 0x0B24(0x000C) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
-	float                                              BumpedActorExceptionZNormalThreshold;                     // 0x0B30(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               Debug;                                                    // 0x0B34(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               ChargingSpeedReached;                                     // 0x0B35(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               LastCheckWasSlow;                                         // 0x0B36(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               SmasherFaceplanted;                                       // 0x0B37(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               WaitingForMeleeSwingTargetSelection;                      // 0x0B38(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               WaitingForChargeDamageTargetSelection;                    // 0x0B39(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               ChargeDamageTargetSelectionDamagedSomething;              // 0x0B3A(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               AbilityShouldEndASAP;                                     // 0x0B3B(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               AbilityEndingNow;                                         // 0x0B3C(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0B3D(0x0003) MISSED OFFSET
-	TArray<class AActor*>                              ActorsDamagedBySmasherCharge;                             // 0x0B40(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance)
-	class UClass*                                      GE_SmasherReachedChargeSpeed;                             // 0x0B50(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UClass*                                      GE_SmasherFaceplant;                                      // 0x0B58(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	struct FGameplayTag                                EC_NPCAbilityAttackMeleeCharge;                           // 0x0B60(0x0008) (Edit, BlueprintVisible, DisableEditOnInstance)
-	float                                              MinYawAngleToLaunchPawnsFromSmasherCharge;                // 0x0B68(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              PitchAngleToLaunchPawnsFromSmasherCharge;                 // 0x0B6C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              SmasherChargeLaunchPawnVelocity;                          // 0x0B70(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              ChargeTimeoutTime;                                        // 0x0B74(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	TArray<class AActor*>                              CachedArrayOfHitActors;                                   // 0x0B78(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance)
-	bool                                               bTryingToPlayMeleeSwing;                                  // 0x0B88(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               bCancelledMontage;                                        // 0x0B89(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x2];                                       // 0x0B8A(0x0002) MISSED OFFSET
-	float                                              SmasherChargeRotationRate;                                // 0x0B8C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class AActor*                                      PreviouslyBumpedActor;                                    // 0x0B90(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
-	class AActor*                                      LastDamagedActor;                                         // 0x0B98(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
-	bool                                               ChargeMovementReachedGoalActor;                           // 0x0BA0(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               ChargeHitGoalActor;                                       // 0x0BA1(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x2];                                       // 0x0BA2(0x0002) MISSED OFFSET
-	float                                              FaceplantCheckTime;                                       // 0x0BA4(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              LastCheckWasSlowTime;                                     // 0x0BA8(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              SmasherFaceplantedTime;                                   // 0x0BAC(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	struct FGameplayTagContainer                       TC_NPCBehaviorProhibitsAbilityAttackMeleeBump;            // 0x0BB0(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FGameplayTagContainer                       TC_NPCBehaviorProbibitsAbilityAttackAny;                  // 0x0BD0(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FGameplayTag                                GC_GameplayCueNPCSmasherCharge;                           // 0x0BF0(0x0008) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FFortFeedbackHandle                         SmasherChargingFeedback;                                  // 0x0BF8(0x0018) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FGameplayTagContainer                       TC_NPCBehaviorDBNO;                                       // 0x0C10(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FGameplayTagContainer                       TC_GameplayStatusDBNO;                                    // 0x0C30(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	class AActor*                                      FaceplantActorIAmStandingOn;                              // 0x0C50(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
-	class UFortAbilityTask_MoveAI*                     ChargeMoveLocation;                                       // 0x0C58(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UFortAbilityTask_MoveAI*                     ChargeMove;                                               // 0x0C60(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	struct FGameplayTagContainer                       TC_ConstructorBullrushing;                                // 0x0C68(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	TArray<class AActor*>                              OverlappingFortPawns;                                     // 0x0C88(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance)
-	TArray<class AActor*>                              OverlappingBuildingActors;                                // 0x0C98(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0910(0x0008) (Transient, DuplicateTransient)
+	class ASmasherPawn_C*                              SmasherPawn;                                              // 0x0918(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
+	class AActor*                                      BumpedActor;                                              // 0x0920(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
+	struct FVector                                     BumpedActorNormal;                                        // 0x0928(0x000C) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
+	struct FVector                                     BumpedActorImpactPoint;                                   // 0x0934(0x000C) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
+	float                                              BumpedActorImpactBufferHeight;                            // 0x0940(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FVector                                     BumpedActorSmasherVelocity;                               // 0x0944(0x000C) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
+	float                                              BumpedActorExceptionZNormalThreshold;                     // 0x0950(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               Debug;                                                    // 0x0954(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               ChargingSpeedReached;                                     // 0x0955(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               LastCheckWasSlow;                                         // 0x0956(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               SmasherFaceplanted;                                       // 0x0957(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               WaitingForMeleeSwingTargetSelection;                      // 0x0958(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               WaitingForChargeDamageTargetSelection;                    // 0x0959(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               ChargeDamageTargetSelectionDamagedSomething;              // 0x095A(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               AbilityShouldEndASAP;                                     // 0x095B(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               AbilityEndingNow;                                         // 0x095C(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x095D(0x0003) MISSED OFFSET
+	TArray<class AActor*>                              ActorsDamagedBySmasherCharge;                             // 0x0960(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance)
+	class UClass*                                      GE_SmasherReachedChargeSpeed;                             // 0x0970(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UClass*                                      GE_SmasherFaceplant;                                      // 0x0978(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FGameplayTag                                EC_NPCAbilityAttackMeleeCharge;                           // 0x0980(0x0008) (Edit, BlueprintVisible, DisableEditOnInstance)
+	float                                              MinYawAngleToLaunchPawnsFromSmasherCharge;                // 0x0988(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              PitchAngleToLaunchPawnsFromSmasherCharge;                 // 0x098C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              SmasherChargeLaunchPawnVelocity;                          // 0x0990(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              ChargeTimeoutTime;                                        // 0x0994(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	TArray<class AActor*>                              CachedArrayOfHitActors;                                   // 0x0998(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance)
+	bool                                               bTryingToPlayMeleeSwing;                                  // 0x09A8(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               bCancelledMontage;                                        // 0x09A9(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x2];                                       // 0x09AA(0x0002) MISSED OFFSET
+	float                                              SmasherChargeRotationRate;                                // 0x09AC(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class AActor*                                      PreviouslyBumpedActor;                                    // 0x09B0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
+	class AActor*                                      LastDamagedActor;                                         // 0x09B8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
+	bool                                               ChargeMovementReachedGoalActor;                           // 0x09C0(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               ChargeHitGoalActor;                                       // 0x09C1(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x2];                                       // 0x09C2(0x0002) MISSED OFFSET
+	float                                              FaceplantCheckTime;                                       // 0x09C4(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              LastCheckWasSlowTime;                                     // 0x09C8(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              SmasherFaceplantedTime;                                   // 0x09CC(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FGameplayTagContainer                       TC_NPCBehaviorProhibitsAbilityAttackMeleeBump;            // 0x09D0(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FGameplayTagContainer                       TC_NPCBehaviorProbibitsAbilityAttackAny;                  // 0x09F0(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FGameplayTag                                GC_GameplayCueNPCSmasherCharge;                           // 0x0A10(0x0008) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FFortFeedbackHandle                         SmasherChargingFeedback;                                  // 0x0A18(0x0018) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FGameplayTagContainer                       TC_NPCBehaviorDBNO;                                       // 0x0A30(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FGameplayTagContainer                       TC_GameplayStatusDBNO;                                    // 0x0A50(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	class AActor*                                      FaceplantActorIAmStandingOn;                              // 0x0A70(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
+	class UFortAbilityTask_MoveAI*                     ChargeMoveLocation;                                       // 0x0A78(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UFortAbilityTask_MoveAI*                     ChargeMove;                                               // 0x0A80(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FGameplayTagContainer                       TC_ConstructorBullrushing;                                // 0x0A88(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	TArray<class AActor*>                              OverlappingFortPawns;                                     // 0x0AA8(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance)
+	TArray<class AActor*>                              OverlappingBuildingActors;                                // 0x0AB8(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance)
+	struct FGameplayTagContainer                       T_KnockbackImmune;                                        // 0x0AC8(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
 
 	static UClass* StaticClass()
 	{

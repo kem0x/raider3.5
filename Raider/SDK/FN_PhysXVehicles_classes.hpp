@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,71 +13,71 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // Class PhysXVehicles.WheeledVehicleMovementComponent
-// 0x0168 (0x02E0 - 0x0178)
+// 0x0168 (0x02F0 - 0x0188)
 class UWheeledVehicleMovementComponent : public UPawnMovementComponent
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0178(0x0008) MISSED OFFSET
-	unsigned char                                      bDeprecatedSpringOffsetMode : 1;                          // 0x0180(0x0001) (Edit)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0181(0x0007) MISSED OFFSET
-	TArray<struct FWheelSetup>                         WheelSetups;                                              // 0x0188(0x0010) (Edit, ZeroConstructor)
-	float                                              Mass;                                                     // 0x0198(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              DragCoefficient;                                          // 0x019C(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              ChassisWidth;                                             // 0x01A0(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              ChassisHeight;                                            // 0x01A4(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	bool                                               bReverseAsBrake;                                          // 0x01A8(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x3];                                       // 0x01A9(0x0003) MISSED OFFSET
-	float                                              DragArea;                                                 // 0x01AC(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	float                                              EstimatedMaxEngineSpeed;                                  // 0x01B0(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	float                                              MaxEngineRPM;                                             // 0x01B4(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	float                                              DebugDragMagnitude;                                       // 0x01B8(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	struct FVector                                     InertiaTensorScale;                                       // 0x01BC(0x000C) (Edit, IsPlainOldData)
-	float                                              MinNormalizedTireLoad;                                    // 0x01C8(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              MinNormalizedTireLoadFiltered;                            // 0x01CC(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              MaxNormalizedTireLoad;                                    // 0x01D0(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              MaxNormalizedTireLoadFiltered;                            // 0x01D4(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              ThresholdLongitudinalSpeed;                               // 0x01D8(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	int                                                LowForwardSpeedSubStepCount;                              // 0x01DC(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	int                                                HighForwardSpeedSubStepCount;                             // 0x01E0(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x4];                                       // 0x01E4(0x0004) MISSED OFFSET
-	TArray<class UVehicleWheel*>                       Wheels;                                                   // 0x01E8(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, DuplicateTransient)
-	unsigned char                                      UnknownData04[0x18];                                      // 0x01F8(0x0018) MISSED OFFSET
-	unsigned char                                      bUseRVOAvoidance : 1;                                     // 0x0210(0x0001) (Edit, BlueprintVisible)
-	unsigned char                                      UnknownData05[0x3];                                       // 0x0211(0x0003) MISSED OFFSET
-	float                                              RVOAvoidanceRadius;                                       // 0x0214(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              RVOAvoidanceHeight;                                       // 0x0218(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              AvoidanceConsiderationRadius;                             // 0x021C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              RVOSteeringStep;                                          // 0x0220(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              RVOThrottleStep;                                          // 0x0224(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	int                                                AvoidanceUID;                                             // 0x0228(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, EditConst, IsPlainOldData)
-	struct FNavAvoidanceMask                           AvoidanceGroup;                                           // 0x022C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
-	struct FNavAvoidanceMask                           GroupsToAvoid;                                            // 0x0230(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
-	struct FNavAvoidanceMask                           GroupsToIgnore;                                           // 0x0234(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
-	float                                              AvoidanceWeight;                                          // 0x0238(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FVector                                     PendingLaunchVelocity;                                    // 0x023C(0x000C) (IsPlainOldData)
-	struct FReplicatedVehicleState                     ReplicatedState;                                          // 0x0248(0x0014) (Net, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData06[0x4];                                       // 0x025C(0x0004) MISSED OFFSET
-	float                                              RawSteeringInput;                                         // 0x0260(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	float                                              RawThrottleInput;                                         // 0x0264(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	float                                              RawBrakeInput;                                            // 0x0268(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      bRawHandbrakeInput : 1;                                   // 0x026C(0x0001) (Transient)
-	unsigned char                                      bRawGearUpInput : 1;                                      // 0x026C(0x0001) (Transient)
-	unsigned char                                      bRawGearDownInput : 1;                                    // 0x026C(0x0001) (Transient)
-	unsigned char                                      UnknownData07[0x3];                                       // 0x026D(0x0003) MISSED OFFSET
-	float                                              SteeringInput;                                            // 0x0270(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	float                                              ThrottleInput;                                            // 0x0274(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	float                                              BrakeInput;                                               // 0x0278(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	float                                              HandbrakeInput;                                           // 0x027C(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	float                                              IdleBrakeInput;                                           // 0x0280(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              StopThreshold;                                            // 0x0284(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              WrongDirectionThreshold;                                  // 0x0288(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	struct FVehicleInputRate                           ThrottleInputRate;                                        // 0x028C(0x0008) (Edit)
-	struct FVehicleInputRate                           BrakeInputRate;                                           // 0x0294(0x0008) (Edit)
-	struct FVehicleInputRate                           HandbrakeInputRate;                                       // 0x029C(0x0008) (Edit)
-	struct FVehicleInputRate                           SteeringInputRate;                                        // 0x02A4(0x0008) (Edit)
-	unsigned char                                      bWasAvoidanceUpdated : 1;                                 // 0x02AC(0x0001) (Transient)
-	unsigned char                                      UnknownData08[0x2B];                                      // 0x02AD(0x002B) MISSED OFFSET
-	class AController*                                 OverrideController;                                       // 0x02D8(0x0008) (Net, ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0188(0x0008) MISSED OFFSET
+	unsigned char                                      bDeprecatedSpringOffsetMode : 1;                          // 0x0190(0x0001) (Edit)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0191(0x0007) MISSED OFFSET
+	TArray<struct FWheelSetup>                         WheelSetups;                                              // 0x0198(0x0010) (Edit, ZeroConstructor)
+	float                                              Mass;                                                     // 0x01A8(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              DragCoefficient;                                          // 0x01AC(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              ChassisWidth;                                             // 0x01B0(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              ChassisHeight;                                            // 0x01B4(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	bool                                               bReverseAsBrake;                                          // 0x01B8(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x3];                                       // 0x01B9(0x0003) MISSED OFFSET
+	float                                              DragArea;                                                 // 0x01BC(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	float                                              EstimatedMaxEngineSpeed;                                  // 0x01C0(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	float                                              MaxEngineRPM;                                             // 0x01C4(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	float                                              DebugDragMagnitude;                                       // 0x01C8(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	struct FVector                                     InertiaTensorScale;                                       // 0x01CC(0x000C) (Edit, IsPlainOldData)
+	float                                              MinNormalizedTireLoad;                                    // 0x01D8(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              MinNormalizedTireLoadFiltered;                            // 0x01DC(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              MaxNormalizedTireLoad;                                    // 0x01E0(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              MaxNormalizedTireLoadFiltered;                            // 0x01E4(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              ThresholdLongitudinalSpeed;                               // 0x01E8(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	int                                                LowForwardSpeedSubStepCount;                              // 0x01EC(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	int                                                HighForwardSpeedSubStepCount;                             // 0x01F0(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x4];                                       // 0x01F4(0x0004) MISSED OFFSET
+	TArray<class UVehicleWheel*>                       Wheels;                                                   // 0x01F8(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, DuplicateTransient)
+	unsigned char                                      UnknownData04[0x18];                                      // 0x0208(0x0018) MISSED OFFSET
+	unsigned char                                      bUseRVOAvoidance : 1;                                     // 0x0220(0x0001) (Edit, BlueprintVisible)
+	unsigned char                                      UnknownData05[0x3];                                       // 0x0221(0x0003) MISSED OFFSET
+	float                                              RVOAvoidanceRadius;                                       // 0x0224(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              RVOAvoidanceHeight;                                       // 0x0228(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              AvoidanceConsiderationRadius;                             // 0x022C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              RVOSteeringStep;                                          // 0x0230(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              RVOThrottleStep;                                          // 0x0234(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	int                                                AvoidanceUID;                                             // 0x0238(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, EditConst, IsPlainOldData)
+	struct FNavAvoidanceMask                           AvoidanceGroup;                                           // 0x023C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	struct FNavAvoidanceMask                           GroupsToAvoid;                                            // 0x0240(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	struct FNavAvoidanceMask                           GroupsToIgnore;                                           // 0x0244(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	float                                              AvoidanceWeight;                                          // 0x0248(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FVector                                     PendingLaunchVelocity;                                    // 0x024C(0x000C) (IsPlainOldData)
+	struct FReplicatedVehicleState                     ReplicatedState;                                          // 0x0258(0x0014) (Net, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData06[0x4];                                       // 0x026C(0x0004) MISSED OFFSET
+	float                                              RawSteeringInput;                                         // 0x0270(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	float                                              RawThrottleInput;                                         // 0x0274(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	float                                              RawBrakeInput;                                            // 0x0278(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      bRawHandbrakeInput : 1;                                   // 0x027C(0x0001) (Transient)
+	unsigned char                                      bRawGearUpInput : 1;                                      // 0x027C(0x0001) (Transient)
+	unsigned char                                      bRawGearDownInput : 1;                                    // 0x027C(0x0001) (Transient)
+	unsigned char                                      UnknownData07[0x3];                                       // 0x027D(0x0003) MISSED OFFSET
+	float                                              SteeringInput;                                            // 0x0280(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	float                                              ThrottleInput;                                            // 0x0284(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	float                                              BrakeInput;                                               // 0x0288(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	float                                              HandbrakeInput;                                           // 0x028C(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	float                                              IdleBrakeInput;                                           // 0x0290(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              StopThreshold;                                            // 0x0294(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              WrongDirectionThreshold;                                  // 0x0298(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	struct FVehicleInputRate                           ThrottleInputRate;                                        // 0x029C(0x0008) (Edit)
+	struct FVehicleInputRate                           BrakeInputRate;                                           // 0x02A4(0x0008) (Edit)
+	struct FVehicleInputRate                           HandbrakeInputRate;                                       // 0x02AC(0x0008) (Edit)
+	struct FVehicleInputRate                           SteeringInputRate;                                        // 0x02B4(0x0008) (Edit)
+	unsigned char                                      bWasAvoidanceUpdated : 1;                                 // 0x02BC(0x0001) (Transient)
+	unsigned char                                      UnknownData08[0x2B];                                      // 0x02BD(0x002B) MISSED OFFSET
+	class AController*                                 OverrideController;                                       // 0x02E8(0x0008) (Net, ZeroConstructor, Transient, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -114,7 +112,7 @@ public:
 
 
 // Class PhysXVehicles.SimpleWheeledVehicleMovementComponent
-// 0x0000 (0x02E0 - 0x02E0)
+// 0x0000 (0x02F0 - 0x02F0)
 class USimpleWheeledVehicleMovementComponent : public UWheeledVehicleMovementComponent
 {
 public:
@@ -152,13 +150,13 @@ public:
 
 
 // Class PhysXVehicles.VehicleAnimInstance
-// 0x05C0 (0x0940 - 0x0380)
+// 0x0610 (0x0970 - 0x0360)
 class UVehicleAnimInstance : public UAnimInstance
 {
 public:
-	unsigned char                                      UnknownData00[0x5B0];                                     // 0x0380(0x05B0) MISSED OFFSET
-	class UWheeledVehicleMovementComponent*            WheeledVehicleMovementComponent;                          // 0x0930(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0938(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x600];                                     // 0x0360(0x0600) MISSED OFFSET
+	class UWheeledVehicleMovementComponent*            WheeledVehicleMovementComponent;                          // 0x0960(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x0968(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -232,12 +230,12 @@ public:
 
 
 // Class PhysXVehicles.WheeledVehicle
-// 0x0010 (0x0388 - 0x0378)
+// 0x0010 (0x0398 - 0x0388)
 class AWheeledVehicle : public APawn
 {
 public:
-	class USkeletalMeshComponent*                      Mesh;                                                     // 0x0378(0x0008) (Edit, BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, EditConst, InstancedReference, IsPlainOldData)
-	class UWheeledVehicleMovementComponent*            VehicleMovement;                                          // 0x0380(0x0008) (Edit, BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, EditConst, InstancedReference, IsPlainOldData)
+	class USkeletalMeshComponent*                      Mesh;                                                     // 0x0388(0x0008) (Edit, BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, EditConst, InstancedReference, IsPlainOldData)
+	class UWheeledVehicleMovementComponent*            VehicleMovement;                                          // 0x0390(0x0008) (Edit, BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, EditConst, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -249,17 +247,17 @@ public:
 
 
 // Class PhysXVehicles.WheeledVehicleMovementComponent4W
-// 0x0160 (0x0440 - 0x02E0)
+// 0x0160 (0x0450 - 0x02F0)
 class UWheeledVehicleMovementComponent4W : public UWheeledVehicleMovementComponent
 {
 public:
-	struct FVehicleEngineData                          EngineSetup;                                              // 0x02E0(0x0090) (Edit)
-	struct FVehicleDifferential4WData                  DifferentialSetup;                                        // 0x0370(0x001C) (Edit)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x038C(0x0004) MISSED OFFSET
-	struct FVehicleTransmissionData                    TransmissionSetup;                                        // 0x0390(0x0030) (Edit)
-	struct FRuntimeFloatCurve                          SteeringCurve;                                            // 0x03C0(0x0078) (Edit)
-	float                                              AckermannAccuracy;                                        // 0x0438(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x4];                                       // 0x043C(0x0004) MISSED OFFSET
+	struct FVehicleEngineData                          EngineSetup;                                              // 0x02F0(0x0090) (Edit)
+	struct FVehicleDifferential4WData                  DifferentialSetup;                                        // 0x0380(0x001C) (Edit)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x039C(0x0004) MISSED OFFSET
+	struct FVehicleTransmissionData                    TransmissionSetup;                                        // 0x03A0(0x0030) (Edit)
+	struct FRuntimeFloatCurve                          SteeringCurve;                                            // 0x03D0(0x0078) (Edit)
+	float                                              AckermannAccuracy;                                        // 0x0448(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x044C(0x0004) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{

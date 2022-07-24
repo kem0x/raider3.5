@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,7 +13,7 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass B_Melee_Impact_Pickaxe_Athena_ArtDeco.B_Melee_Impact_Pickaxe_Athena_ArtDeco_C
-// 0x0000 (0x0B70 - 0x0B70)
+// 0x0000 (0x0BE0 - 0x0BE0)
 class AB_Melee_Impact_Pickaxe_Athena_ArtDeco_C : public AB_Melee_Impact_Pickaxe_Athena_C
 {
 public:

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -48,13 +48,13 @@ struct UAthenaLeaderboardTabButton_C_SetTabLabelInfo_Params
 	struct FFortTabButtonLabelInfo                     TabLabelInfo;                                             // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
 };
 
-// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.OnSelected
-struct UAthenaLeaderboardTabButton_C_OnSelected_Params
+// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.BP_OnSelected
+struct UAthenaLeaderboardTabButton_C_BP_OnSelected_Params
 {
 };
 
-// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.OnDeselected
-struct UAthenaLeaderboardTabButton_C_OnDeselected_Params
+// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.BP_OnDeselected
+struct UAthenaLeaderboardTabButton_C_BP_OnDeselected_Params
 {
 };
 
@@ -63,13 +63,13 @@ struct UAthenaLeaderboardTabButton_C_Construct_Params
 {
 };
 
-// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.OnHovered
-struct UAthenaLeaderboardTabButton_C_OnHovered_Params
+// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.BP_OnHovered
+struct UAthenaLeaderboardTabButton_C_BP_OnHovered_Params
 {
 };
 
-// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.OnUnhovered
-struct UAthenaLeaderboardTabButton_C_OnUnhovered_Params
+// Function AthenaLeaderboardTabButton.AthenaLeaderboardTabButton_C.BP_OnUnhovered
+struct UAthenaLeaderboardTabButton_C_BP_OnUnhovered_Params
 {
 };
 

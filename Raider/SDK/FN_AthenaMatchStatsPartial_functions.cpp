@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -91,6 +91,23 @@ void UAthenaMatchStatsPartial_C::Play_Xp_Rewards()
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaMatchStatsPartial.AthenaMatchStatsPartial_C.Play Xp Rewards");
 
 	UAthenaMatchStatsPartial_C_Play_Xp_Rewards_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaMatchStatsPartial.AthenaMatchStatsPartial_C.Destruct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UAthenaMatchStatsPartial_C::Destruct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaMatchStatsPartial.AthenaMatchStatsPartial_C.Destruct");
+
+	UAthenaMatchStatsPartial_C_Destruct_Params params;
 
 	auto flags = fn->FunctionFlags;
 

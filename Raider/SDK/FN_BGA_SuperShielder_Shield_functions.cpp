@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -20,40 +20,6 @@ void ABGA_SuperShielder_Shield_C::UserConstructionScript()
 	static auto fn = UObject::FindObject<UFunction>("Function BGA_SuperShielder_Shield.BGA_SuperShielder_Shield_C.UserConstructionScript");
 
 	ABGA_SuperShielder_Shield_C_UserConstructionScript_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function BGA_SuperShielder_Shield.BGA_SuperShielder_Shield_C.Opacity Control__FinishedFunc
-// (BlueprintEvent)
-
-void ABGA_SuperShielder_Shield_C::Opacity_Control__FinishedFunc()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function BGA_SuperShielder_Shield.BGA_SuperShielder_Shield_C.Opacity Control__FinishedFunc");
-
-	ABGA_SuperShielder_Shield_C_Opacity_Control__FinishedFunc_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function BGA_SuperShielder_Shield.BGA_SuperShielder_Shield_C.Opacity Control__UpdateFunc
-// (BlueprintEvent)
-
-void ABGA_SuperShielder_Shield_C::Opacity_Control__UpdateFunc()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function BGA_SuperShielder_Shield.BGA_SuperShielder_Shield_C.Opacity Control__UpdateFunc");
-
-	ABGA_SuperShielder_Shield_C_Opacity_Control__UpdateFunc_Params params;
 
 	auto flags = fn->FunctionFlags;
 

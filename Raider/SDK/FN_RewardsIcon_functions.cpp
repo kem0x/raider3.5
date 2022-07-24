@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,23 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function RewardsIcon.RewardsIcon_C.PopulateFromItemCacheData
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+
+void URewardsIcon_C::PopulateFromItemCacheData()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function RewardsIcon.RewardsIcon_C.PopulateFromItemCacheData");
+
+	URewardsIcon_C_PopulateFromItemCacheData_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function RewardsIcon.RewardsIcon_C.PopulateFromGiftBoxData
 // (Public, BlueprintCallable, BlueprintEvent)
@@ -114,18 +131,18 @@ void URewardsIcon_C::PlayShowAnimation()
 }
 
 
-// Function RewardsIcon.RewardsIcon_C.On_ImageIcon_MouseButtonDown_0_1
+// Function RewardsIcon.RewardsIcon_C.On_ImageIcon_MouseButtonDown_1
 // (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // struct FGeometry               MyGeometry                     (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
 // struct FPointerEvent           MouseEvent                     (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
 // struct FEventReply             ReturnValue                    (Parm, OutParm, ReturnParm)
 
-struct FEventReply URewardsIcon_C::On_ImageIcon_MouseButtonDown_0_1(const struct FGeometry& MyGeometry, struct FPointerEvent* MouseEvent)
+struct FEventReply URewardsIcon_C::On_ImageIcon_MouseButtonDown_1(const struct FGeometry& MyGeometry, struct FPointerEvent* MouseEvent)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function RewardsIcon.RewardsIcon_C.On_ImageIcon_MouseButtonDown_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function RewardsIcon.RewardsIcon_C.On_ImageIcon_MouseButtonDown_1");
 
-	URewardsIcon_C_On_ImageIcon_MouseButtonDown_0_1_Params params;
+	URewardsIcon_C_On_ImageIcon_MouseButtonDown_1_Params params;
 	params.MyGeometry = MyGeometry;
 
 	auto flags = fn->FunctionFlags;
@@ -521,6 +538,63 @@ void URewardsIcon_C::whiteFadeOut(float Percent)
 
 	URewardsIcon_C_whiteFadeOut_Params params;
 	params.Percent = Percent;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function RewardsIcon.RewardsIcon_C.BndEvt__LoadGuard_K2Node_ComponentBoundEvent_2_OnLoadingStateChanged__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// bool                           bIsLoading                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void URewardsIcon_C::BndEvt__LoadGuard_K2Node_ComponentBoundEvent_2_OnLoadingStateChanged__DelegateSignature(bool bIsLoading)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function RewardsIcon.RewardsIcon_C.BndEvt__LoadGuard_K2Node_ComponentBoundEvent_2_OnLoadingStateChanged__DelegateSignature");
+
+	URewardsIcon_C_BndEvt__LoadGuard_K2Node_ComponentBoundEvent_2_OnLoadingStateChanged__DelegateSignature_Params params;
+	params.bIsLoading = bIsLoading;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function RewardsIcon.RewardsIcon_C.OnAssetLoaded
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UObject*                 Object                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void URewardsIcon_C::OnAssetLoaded(class UObject* Object)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function RewardsIcon.RewardsIcon_C.OnAssetLoaded");
+
+	URewardsIcon_C_OnAssetLoaded_Params params;
+	params.Object = Object;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function RewardsIcon.RewardsIcon_C.Destruct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void URewardsIcon_C::Destruct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function RewardsIcon.RewardsIcon_C.Destruct");
+
+	URewardsIcon_C_Destruct_Params params;
 
 	auto flags = fn->FunctionFlags;
 

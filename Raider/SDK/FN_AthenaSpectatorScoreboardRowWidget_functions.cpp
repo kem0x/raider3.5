@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -30,7 +30,7 @@ void UAthenaSpectatorScoreboardRowWidget_C::Refresh()
 
 
 // Function AthenaSpectatorScoreboardRowWidget.AthenaSpectatorScoreboardRowWidget_C.OnEntryDataSet
-// (Event, Public, BlueprintEvent)
+// (Event, Protected, BlueprintEvent)
 
 void UAthenaSpectatorScoreboardRowWidget_C::OnEntryDataSet()
 {

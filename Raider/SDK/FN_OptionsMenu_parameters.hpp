@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,12 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function OptionsMenu.OptionsMenu_C.Update Header Text by Tab ID
+struct UOptionsMenu_C_Update_Header_Text_by_Tab_ID_Params
+{
+	struct FName                                       TabId;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function OptionsMenu.OptionsMenu_C.DoResetKBMToDefault
 struct UOptionsMenu_C_DoResetKBMToDefault_Params
@@ -133,6 +139,7 @@ struct UOptionsMenu_C_AddTab_Params
 	class UClass*                                      WidgetClass;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	struct FText                                       DisplayName;                                              // (BlueprintVisible, BlueprintReadOnly, Parm)
 	struct FName                                       NameId;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	struct FSlateBrush                                 Icon;                                                     // (BlueprintVisible, BlueprintReadOnly, Parm)
 };
 
 // Function OptionsMenu.OptionsMenu_C.HandleCursorModeChanging
@@ -393,16 +400,16 @@ struct UOptionsMenu_C_ResetVideoOptionsTimerDelegate_Params
 {
 };
 
+// Function OptionsMenu.OptionsMenu_C.ShowResetCustomGamepadToDefaultMessage
+struct UOptionsMenu_C_ShowResetCustomGamepadToDefaultMessage_Params
+{
+};
+
 // Function OptionsMenu.OptionsMenu_C.BndEvt__CurrentTabSwitcher_K2Node_ComponentBoundEvent_13_OnActiveWidgetChanged__DelegateSignature
 struct UOptionsMenu_C_BndEvt__CurrentTabSwitcher_K2Node_ComponentBoundEvent_13_OnActiveWidgetChanged__DelegateSignature_Params
 {
 	class UWidget*                                     ActiveWidget;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 	int                                                ActiveWidgetIndex;                                        // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function OptionsMenu.OptionsMenu_C.ShowResetCustomGamepadToDefaultMessage
-struct UOptionsMenu_C_ShowResetCustomGamepadToDefaultMessage_Params
-{
 };
 
 // Function OptionsMenu.OptionsMenu_C.BndEvt__ResetCustomGamepadToDefaultYes_K2Node_ComponentBoundEvent_202_CommonButtonClicked__DelegateSignature
@@ -437,6 +444,12 @@ struct UOptionsMenu_C_BndEvt__ResetKBMToDefaultNo_K2Node_ComponentBoundEvent_97_
 // Function OptionsMenu.OptionsMenu_C.ShowResetKBMToDefaultMessage
 struct UOptionsMenu_C_ShowResetKBMToDefaultMessage_Params
 {
+};
+
+// Function OptionsMenu.OptionsMenu_C.BndEvt__SettingsTabs_K2Node_ComponentBoundEvent_20_OnTabSelected__DelegateSignature
+struct UOptionsMenu_C_BndEvt__SettingsTabs_K2Node_ComponentBoundEvent_20_OnTabSelected__DelegateSignature_Params
+{
+	struct FName                                       TabId;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function OptionsMenu.OptionsMenu_C.ExecuteUbergraph_OptionsMenu

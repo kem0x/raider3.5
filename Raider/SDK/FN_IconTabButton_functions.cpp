@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -173,14 +173,14 @@ void UIconTabButton_C::SetTabLabelInfo(const struct FFortTabButtonLabelInfo& Tab
 }
 
 
-// Function IconTabButton.IconTabButton_C.OnSelected
+// Function IconTabButton.IconTabButton_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void UIconTabButton_C::OnSelected()
+void UIconTabButton_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function IconTabButton.IconTabButton_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function IconTabButton.IconTabButton_C.BP_OnSelected");
 
-	UIconTabButton_C_OnSelected_Params params;
+	UIconTabButton_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -190,14 +190,14 @@ void UIconTabButton_C::OnSelected()
 }
 
 
-// Function IconTabButton.IconTabButton_C.OnDeselected
+// Function IconTabButton.IconTabButton_C.BP_OnDeselected
 // (Event, Protected, BlueprintEvent)
 
-void UIconTabButton_C::OnDeselected()
+void UIconTabButton_C::BP_OnDeselected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function IconTabButton.IconTabButton_C.OnDeselected");
+	static auto fn = UObject::FindObject<UFunction>("Function IconTabButton.IconTabButton_C.BP_OnDeselected");
 
-	UIconTabButton_C_OnDeselected_Params params;
+	UIconTabButton_C_BP_OnDeselected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -224,14 +224,14 @@ void UIconTabButton_C::Construct()
 }
 
 
-// Function IconTabButton.IconTabButton_C.OnHovered
+// Function IconTabButton.IconTabButton_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UIconTabButton_C::OnHovered()
+void UIconTabButton_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function IconTabButton.IconTabButton_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function IconTabButton.IconTabButton_C.BP_OnHovered");
 
-	UIconTabButton_C_OnHovered_Params params;
+	UIconTabButton_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -241,14 +241,14 @@ void UIconTabButton_C::OnHovered()
 }
 
 
-// Function IconTabButton.IconTabButton_C.OnUnhovered
+// Function IconTabButton.IconTabButton_C.BP_OnUnhovered
 // (Event, Protected, BlueprintEvent)
 
-void UIconTabButton_C::OnUnhovered()
+void UIconTabButton_C::BP_OnUnhovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function IconTabButton.IconTabButton_C.OnUnhovered");
+	static auto fn = UObject::FindObject<UFunction>("Function IconTabButton.IconTabButton_C.BP_OnUnhovered");
 
-	UIconTabButton_C_OnUnhovered_Params params;
+	UIconTabButton_C_BP_OnUnhovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -258,14 +258,14 @@ void UIconTabButton_C::OnUnhovered()
 }
 
 
-// Function IconTabButton.IconTabButton_C.OnEnabled
+// Function IconTabButton.IconTabButton_C.BP_OnEnabled
 // (Event, Protected, BlueprintEvent)
 
-void UIconTabButton_C::OnEnabled()
+void UIconTabButton_C::BP_OnEnabled()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function IconTabButton.IconTabButton_C.OnEnabled");
+	static auto fn = UObject::FindObject<UFunction>("Function IconTabButton.IconTabButton_C.BP_OnEnabled");
 
-	UIconTabButton_C_OnEnabled_Params params;
+	UIconTabButton_C_BP_OnEnabled_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -275,14 +275,14 @@ void UIconTabButton_C::OnEnabled()
 }
 
 
-// Function IconTabButton.IconTabButton_C.OnDisabled
+// Function IconTabButton.IconTabButton_C.BP_OnDisabled
 // (Event, Protected, BlueprintEvent)
 
-void UIconTabButton_C::OnDisabled()
+void UIconTabButton_C::BP_OnDisabled()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function IconTabButton.IconTabButton_C.OnDisabled");
+	static auto fn = UObject::FindObject<UFunction>("Function IconTabButton.IconTabButton_C.BP_OnDisabled");
 
-	UIconTabButton_C_OnDisabled_Params params;
+	UIconTabButton_C_BP_OnDisabled_Params params;
 
 	auto flags = fn->FunctionFlags;
 

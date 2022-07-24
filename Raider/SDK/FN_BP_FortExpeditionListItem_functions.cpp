@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -256,19 +256,17 @@ void UBP_FortExpeditionListItem_C::Setup_Base_Item_Data(class UFortExpeditionIte
 }
 
 
-// Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.SetData
-// (Event, Public, BlueprintCallable, BlueprintEvent)
+// Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.OnListItemObjectSet
+// (Event, Protected, BlueprintEvent)
 // Parameters:
-// class UObject**                InData                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class UCommonListView**        OwningList                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// class UObject**                ListItemObject                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UBP_FortExpeditionListItem_C::SetData(class UObject** InData, class UCommonListView** OwningList)
+void UBP_FortExpeditionListItem_C::OnListItemObjectSet(class UObject** ListItemObject)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.SetData");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.OnListItemObjectSet");
 
-	UBP_FortExpeditionListItem_C_SetData_Params params;
-	params.InData = InData;
-	params.OwningList = OwningList;
+	UBP_FortExpeditionListItem_C_OnListItemObjectSet_Params params;
+	params.ListItemObject = ListItemObject;
 
 	auto flags = fn->FunctionFlags;
 
@@ -278,14 +276,14 @@ void UBP_FortExpeditionListItem_C::SetData(class UObject** InData, class UCommon
 }
 
 
-// Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.OnSelected
+// Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void UBP_FortExpeditionListItem_C::OnSelected()
+void UBP_FortExpeditionListItem_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.BP_OnSelected");
 
-	UBP_FortExpeditionListItem_C_OnSelected_Params params;
+	UBP_FortExpeditionListItem_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -312,14 +310,14 @@ void UBP_FortExpeditionListItem_C::OnItemChanged()
 }
 
 
-// Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.OnDeselected
+// Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.BP_OnDeselected
 // (Event, Protected, BlueprintEvent)
 
-void UBP_FortExpeditionListItem_C::OnDeselected()
+void UBP_FortExpeditionListItem_C::BP_OnDeselected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.OnDeselected");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.BP_OnDeselected");
 
-	UBP_FortExpeditionListItem_C_OnDeselected_Params params;
+	UBP_FortExpeditionListItem_C_BP_OnDeselected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -351,14 +349,14 @@ void UBP_FortExpeditionListItem_C::BndEvt__InProgressSwitcher_K2Node_ComponentBo
 }
 
 
-// Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.OnHovered
+// Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UBP_FortExpeditionListItem_C::OnHovered()
+void UBP_FortExpeditionListItem_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionListItem.BP_FortExpeditionListItem_C.BP_OnHovered");
 
-	UBP_FortExpeditionListItem_C_OnHovered_Params params;
+	UBP_FortExpeditionListItem_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 

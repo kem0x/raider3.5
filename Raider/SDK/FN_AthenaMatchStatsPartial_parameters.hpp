@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -37,6 +37,11 @@ struct UAthenaMatchStatsPartial_C_SetMatchReport_Params
 
 // Function AthenaMatchStatsPartial.AthenaMatchStatsPartial_C.Play Xp Rewards
 struct UAthenaMatchStatsPartial_C_Play_Xp_Rewards_Params
+{
+};
+
+// Function AthenaMatchStatsPartial.AthenaMatchStatsPartial_C.Destruct
+struct UAthenaMatchStatsPartial_C_Destruct_Params
 {
 };
 

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,32 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function ItemUIFunctionLibrary.ItemUIFunctionLibrary_C.IsNullItem
+// (Static, Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure)
+// Parameters:
+// class UObject*                 ItemObject                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UObject*                 __WorldContext                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           Is_Null_Item                   (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+
+void UItemUIFunctionLibrary_C::STATIC_IsNullItem(class UObject* ItemObject, class UObject* __WorldContext, bool* Is_Null_Item)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function ItemUIFunctionLibrary.ItemUIFunctionLibrary_C.IsNullItem");
+
+	UItemUIFunctionLibrary_C_IsNullItem_Params params;
+	params.ItemObject = ItemObject;
+	params.__WorldContext = __WorldContext;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (Is_Null_Item != nullptr)
+		*Is_Null_Item = params.Is_Null_Item;
+}
+
 
 // Function ItemUIFunctionLibrary.ItemUIFunctionLibrary_C.Truncate Integer Value
 // (Static, Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, BlueprintPure)

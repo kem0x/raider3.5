@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -170,6 +170,12 @@ struct UFortReplayTransport_C_BndEvt__TimelineFocusMode_K2Node_ComponentBoundEve
 // Function FortReplayTransport.FortReplayTransport_C.Construct
 struct UFortReplayTransport_C_Construct_Params
 {
+};
+
+// Function FortReplayTransport.FortReplayTransport_C.BndEvt__PlayerList_K2Node_ComponentBoundEvent_0_CommonButtonClicked__DelegateSignature
+struct UFortReplayTransport_C_BndEvt__PlayerList_K2Node_ComponentBoundEvent_0_CommonButtonClicked__DelegateSignature_Params
+{
+	class UCommonButton*                               Button;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 
 // Function FortReplayTransport.FortReplayTransport_C.ExecuteUbergraph_FortReplayTransport

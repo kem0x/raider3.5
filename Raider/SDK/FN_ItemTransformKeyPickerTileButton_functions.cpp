@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -133,19 +133,17 @@ void UItemTransformKeyPickerTileButton_C::Update_Bang_State()
 }
 
 
-// Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.SetData
-// (Event, Public, BlueprintCallable, BlueprintEvent)
+// Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.OnListItemObjectSet
+// (Event, Protected, BlueprintEvent)
 // Parameters:
-// class UObject**                InData                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class UCommonListView**        OwningList                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// class UObject**                ListItemObject                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UItemTransformKeyPickerTileButton_C::SetData(class UObject** InData, class UCommonListView** OwningList)
+void UItemTransformKeyPickerTileButton_C::OnListItemObjectSet(class UObject** ListItemObject)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.SetData");
+	static auto fn = UObject::FindObject<UFunction>("Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.OnListItemObjectSet");
 
-	UItemTransformKeyPickerTileButton_C_SetData_Params params;
-	params.InData = InData;
-	params.OwningList = OwningList;
+	UItemTransformKeyPickerTileButton_C_OnListItemObjectSet_Params params;
+	params.ListItemObject = ListItemObject;
 
 	auto flags = fn->FunctionFlags;
 
@@ -155,14 +153,14 @@ void UItemTransformKeyPickerTileButton_C::SetData(class UObject** InData, class 
 }
 
 
-// Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.OnSelected
+// Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void UItemTransformKeyPickerTileButton_C::OnSelected()
+void UItemTransformKeyPickerTileButton_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.BP_OnSelected");
 
-	UItemTransformKeyPickerTileButton_C_OnSelected_Params params;
+	UItemTransformKeyPickerTileButton_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -172,14 +170,14 @@ void UItemTransformKeyPickerTileButton_C::OnSelected()
 }
 
 
-// Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.OnHovered
+// Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UItemTransformKeyPickerTileButton_C::OnHovered()
+void UItemTransformKeyPickerTileButton_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.BP_OnHovered");
 
-	UItemTransformKeyPickerTileButton_C_OnHovered_Params params;
+	UItemTransformKeyPickerTileButton_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 

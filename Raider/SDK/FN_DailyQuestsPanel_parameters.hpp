@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -16,11 +16,6 @@ namespace SDK
 
 // Function DailyQuestsPanel.DailyQuestsPanel_C.Reset Button Anim
 struct UDailyQuestsPanel_C_Reset_Button_Anim_Params
-{
-};
-
-// Function DailyQuestsPanel.DailyQuestsPanel_C.SetHeightBasedOnInputMode
-struct UDailyQuestsPanel_C_SetHeightBasedOnInputMode_Params
 {
 };
 
@@ -107,12 +102,6 @@ struct UDailyQuestsPanel_C_BndEvt__IconTextButton_K2Node_ComponentBoundEvent_66_
 // Function DailyQuestsPanel.DailyQuestsPanel_C.BndEvt__ClaimReward_K2Node_ComponentBoundEvent_0_OnWidgetAnimationPlaybackStatusChanged__DelegateSignature
 struct UDailyQuestsPanel_C_BndEvt__ClaimReward_K2Node_ComponentBoundEvent_0_OnWidgetAnimationPlaybackStatusChanged__DelegateSignature_Params
 {
-};
-
-// Function DailyQuestsPanel.DailyQuestsPanel_C.PreConstruct
-struct UDailyQuestsPanel_C_PreConstruct_Params
-{
-	bool*                                              IsDesignTime;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function DailyQuestsPanel.DailyQuestsPanel_C.ExecuteUbergraph_DailyQuestsPanel

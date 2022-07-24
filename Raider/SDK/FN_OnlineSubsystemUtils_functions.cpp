@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,24 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function OnlineSubsystemUtils.OnlineBeaconClient.ClientOnConnected
+// (Final, Net, NetReliable, Native, Event, Private, NetClient)
+
+void AOnlineBeaconClient::ClientOnConnected()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function OnlineSubsystemUtils.OnlineBeaconClient.ClientOnConnected");
+
+	AOnlineBeaconClient_ClientOnConnected_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function OnlineSubsystemUtils.AchievementBlueprintLibrary.GetCachedAchievementProgress
 // (Final, Native, Static, Public, HasOutParms, BlueprintCallable)
@@ -686,24 +704,6 @@ class ULogoutCallbackProxy* ULogoutCallbackProxy::STATIC_Logout(class UObject* W
 	fn->FunctionFlags = flags;
 
 	return params.ReturnValue;
-}
-
-
-// Function OnlineSubsystemUtils.OnlineBeaconClient.ClientOnConnected
-// (Final, Net, NetReliable, Native, Event, Private, NetClient)
-
-void AOnlineBeaconClient::ClientOnConnected()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function OnlineSubsystemUtils.OnlineBeaconClient.ClientOnConnected");
-
-	AOnlineBeaconClient_ClientOnConnected_Params params;
-
-	auto flags = fn->FunctionFlags;
-	fn->FunctionFlags |= 0x400;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
 }
 
 

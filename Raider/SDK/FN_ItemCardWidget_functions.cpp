@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -94,14 +94,14 @@ void UItemCardWidget_C::OnFocusLost(struct FFocusEvent* InFocusEvent)
 }
 
 
-// Function ItemCardWidget.ItemCardWidget_C.OnHovered
+// Function ItemCardWidget.ItemCardWidget_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UItemCardWidget_C::OnHovered()
+void UItemCardWidget_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ItemCardWidget.ItemCardWidget_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function ItemCardWidget.ItemCardWidget_C.BP_OnHovered");
 
-	UItemCardWidget_C_OnHovered_Params params;
+	UItemCardWidget_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,25 +13,25 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass Mimic_Chest.Mimic_Chest_C
-// 0x0060 (0x0E10 - 0x0DB0)
+// 0x0060 (0x0BC0 - 0x0B60)
 class AMimic_Chest_C : public ABuildingSMActor
 {
 public:
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0DB0(0x0008) (Transient, DuplicateTransient)
-	class UStaticMeshComponent*                        S_Chest_SmokeSheet;                                       // 0x0DB8(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCapsuleComponent*                           Capsule;                                                  // 0x0DC0(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UBoxComponent*                               Box;                                                      // 0x0DC8(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortMiniMapComponent*                       FortMiniMap;                                              // 0x0DD0(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UAudioComponent*                             ChestAudio;                                               // 0x0DD8(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	float                                              Twitch_Scale_CE105FFA4C580F811CE19C91346CC37D;            // 0x0DE0(0x0004) (ZeroConstructor, IsPlainOldData)
-	TEnumAsByte<ETimelineDirection>                    Twitch__Direction_CE105FFA4C580F811CE19C91346CC37D;       // 0x0DE4(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0DE5(0x0003) MISSED OFFSET
-	class UTimelineComponent*                          TWITCH;                                                   // 0x0DE8(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class AFortPlayerPawn*                             InteractingPawn;                                          // 0x0DF0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
-	bool                                               bBlockedByStairs_;                                        // 0x0DF8(0x0001) (Edit, BlueprintVisible, Net, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0DF9(0x0007) MISSED OFFSET
-	class USoundBase*                                  Mimic_Chest_Shake_Sound;                                  // 0x0E00(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class USoundBase*                                  Mimic_Chest_Break_Sound;                                  // 0x0E08(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0B60(0x0008) (Transient, DuplicateTransient)
+	class UStaticMeshComponent*                        S_Chest_SmokeSheet;                                       // 0x0B68(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCapsuleComponent*                           Capsule;                                                  // 0x0B70(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UBoxComponent*                               Box;                                                      // 0x0B78(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortMiniMapComponent*                       FortMiniMap;                                              // 0x0B80(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UAudioComponent*                             ChestAudio;                                               // 0x0B88(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	float                                              Twitch_Scale_CE105FFA4C580F811CE19C91346CC37D;            // 0x0B90(0x0004) (ZeroConstructor, IsPlainOldData)
+	TEnumAsByte<ETimelineDirection>                    Twitch__Direction_CE105FFA4C580F811CE19C91346CC37D;       // 0x0B94(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0B95(0x0003) MISSED OFFSET
+	class UTimelineComponent*                          TWITCH;                                                   // 0x0B98(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class AFortPlayerPawn*                             InteractingPawn;                                          // 0x0BA0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
+	bool                                               bBlockedByStairs_;                                        // 0x0BA8(0x0001) (Edit, BlueprintVisible, Net, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0BA9(0x0007) MISSED OFFSET
+	class USoundBase*                                  Mimic_Chest_Shake_Sound;                                  // 0x0BB0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class USoundBase*                                  Mimic_Chest_Break_Sound;                                  // 0x0BB8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{

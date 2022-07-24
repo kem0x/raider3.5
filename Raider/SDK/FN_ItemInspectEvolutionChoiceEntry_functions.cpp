@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -53,14 +53,14 @@ void UItemInspectEvolutionChoiceEntry_C::SetItemToRepresent(class UFortItem* Ite
 }
 
 
-// Function ItemInspectEvolutionChoiceEntry.ItemInspectEvolutionChoiceEntry_C.OnSelected
+// Function ItemInspectEvolutionChoiceEntry.ItemInspectEvolutionChoiceEntry_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void UItemInspectEvolutionChoiceEntry_C::OnSelected()
+void UItemInspectEvolutionChoiceEntry_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ItemInspectEvolutionChoiceEntry.ItemInspectEvolutionChoiceEntry_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function ItemInspectEvolutionChoiceEntry.ItemInspectEvolutionChoiceEntry_C.BP_OnSelected");
 
-	UItemInspectEvolutionChoiceEntry_C_OnSelected_Params params;
+	UItemInspectEvolutionChoiceEntry_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 

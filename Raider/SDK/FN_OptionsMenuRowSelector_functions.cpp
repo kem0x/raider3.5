@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,26 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function OptionsMenuRowSelector.OptionsMenuRowSelector_C.DisableOption
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// int                            OptionIndex                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UOptionsMenuRowSelector_C::DisableOption(int OptionIndex)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuRowSelector.OptionsMenuRowSelector_C.DisableOption");
+
+	UOptionsMenuRowSelector_C_DisableOption_Params params;
+	params.OptionIndex = OptionIndex;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function OptionsMenuRowSelector.OptionsMenuRowSelector_C.Button Hovered
 // (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
@@ -117,17 +137,17 @@ void UOptionsMenuRowSelector_C::Construct()
 }
 
 
-// Function OptionsMenuRowSelector.OptionsMenuRowSelector_C.OnSelectedButtonChanged_Event_0_1
+// Function OptionsMenuRowSelector.OptionsMenuRowSelector_C.OnSelectedButtonChanged_Event_1
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // class UCommonButton*           AssociatedButton               (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 // int                            ButtonIndex                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UOptionsMenuRowSelector_C::OnSelectedButtonChanged_Event_0_1(class UCommonButton* AssociatedButton, int ButtonIndex)
+void UOptionsMenuRowSelector_C::OnSelectedButtonChanged_Event_1(class UCommonButton* AssociatedButton, int ButtonIndex)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuRowSelector.OptionsMenuRowSelector_C.OnSelectedButtonChanged_Event_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuRowSelector.OptionsMenuRowSelector_C.OnSelectedButtonChanged_Event_1");
 
-	UOptionsMenuRowSelector_C_OnSelectedButtonChanged_Event_0_1_Params params;
+	UOptionsMenuRowSelector_C_OnSelectedButtonChanged_Event_1_Params params;
 	params.AssociatedButton = AssociatedButton;
 	params.ButtonIndex = ButtonIndex;
 

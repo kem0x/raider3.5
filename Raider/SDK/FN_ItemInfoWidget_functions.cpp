@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,17 +12,19 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function ItemInfoWidget.ItemInfoWidget_C.PopulateUsingItem
+// Function ItemInfoWidget.ItemInfoWidget_C.Update Text
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
-// class UFortItem*               NewParam                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UFortItemDefinition*     ItemDefinition                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// int                            Count                          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UItemInfoWidget_C::PopulateUsingItem(class UFortItem* NewParam)
+void UItemInfoWidget_C::Update_Text(class UFortItemDefinition* ItemDefinition, int Count)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ItemInfoWidget.ItemInfoWidget_C.PopulateUsingItem");
+	static auto fn = UObject::FindObject<UFunction>("Function ItemInfoWidget.ItemInfoWidget_C.Update Text");
 
-	UItemInfoWidget_C_PopulateUsingItem_Params params;
-	params.NewParam = NewParam;
+	UItemInfoWidget_C_Update_Text_Params params;
+	params.ItemDefinition = ItemDefinition;
+	params.Count = Count;
 
 	auto flags = fn->FunctionFlags;
 
@@ -32,17 +34,59 @@ void UItemInfoWidget_C::PopulateUsingItem(class UFortItem* NewParam)
 }
 
 
-// Function ItemInfoWidget.ItemInfoWidget_C.Update Text
+// Function ItemInfoWidget.ItemInfoWidget_C.PopulateUsingItem
+// (Event, Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UFortItem**              NewItem                        (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UItemInfoWidget_C::PopulateUsingItem(class UFortItem** NewItem)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function ItemInfoWidget.ItemInfoWidget_C.PopulateUsingItem");
+
+	UItemInfoWidget_C_PopulateUsingItem_Params params;
+	params.NewItem = NewItem;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function ItemInfoWidget.ItemInfoWidget_C.PopulateUsingItemDefinition
+// (Event, Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UFortItemDefinition**    NewItem                        (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UItemInfoWidget_C::PopulateUsingItemDefinition(class UFortItemDefinition** NewItem)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function ItemInfoWidget.ItemInfoWidget_C.PopulateUsingItemDefinition");
+
+	UItemInfoWidget_C_PopulateUsingItemDefinition_Params params;
+	params.NewItem = NewItem;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function ItemInfoWidget.ItemInfoWidget_C.Populate_Internal
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
-// class UFortItem*               NewParam                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UFortItemDefinition*     ItemDefinition                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// int                            Count                          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UItemInfoWidget_C::Update_Text(class UFortItem* NewParam)
+void UItemInfoWidget_C::Populate_Internal(class UFortItemDefinition* ItemDefinition, int Count)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ItemInfoWidget.ItemInfoWidget_C.Update Text");
+	static auto fn = UObject::FindObject<UFunction>("Function ItemInfoWidget.ItemInfoWidget_C.Populate_Internal");
 
-	UItemInfoWidget_C_Update_Text_Params params;
-	params.NewParam = NewParam;
+	UItemInfoWidget_C_Populate_Internal_Params params;
+	params.ItemDefinition = ItemDefinition;
+	params.Count = Count;
 
 	auto flags = fn->FunctionFlags;
 

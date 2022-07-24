@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,16 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function ChallengeBundlePage.ChallengeBundlePage_C.Initial Reset
+struct UChallengeBundlePage_C_Initial_Reset_Params
+{
+};
+
+// Function ChallengeBundlePage.ChallengeBundlePage_C.Play Intro
+struct UChallengeBundlePage_C_Play_Intro_Params
+{
+};
 
 // Function ChallengeBundlePage.ChallengeBundlePage_C.HandleBack
 struct UChallengeBundlePage_C_HandleBack_Params
@@ -47,11 +57,6 @@ struct UChallengeBundlePage_C_UpdateBundle_Params
 {
 };
 
-// Function ChallengeBundlePage.ChallengeBundlePage_C.Construct
-struct UChallengeBundlePage_C_Construct_Params
-{
-};
-
 // Function ChallengeBundlePage.ChallengeBundlePage_C.OnBundleUpdated
 struct UChallengeBundlePage_C_OnBundleUpdated_Params
 {
@@ -82,6 +87,16 @@ struct UChallengeBundlePage_C_BndEvt__SwipePanel_K2Node_ComponentBoundEvent_11_O
 
 // Function ChallengeBundlePage.ChallengeBundlePage_C.BndEvt__SwipePanel_K2Node_ComponentBoundEvent_26_OnFortSwipeEvent__DelegateSignature
 struct UChallengeBundlePage_C_BndEvt__SwipePanel_K2Node_ComponentBoundEvent_26_OnFortSwipeEvent__DelegateSignature_Params
+{
+};
+
+// Function ChallengeBundlePage.ChallengeBundlePage_C.OnActivated
+struct UChallengeBundlePage_C_OnActivated_Params
+{
+};
+
+// Function ChallengeBundlePage.ChallengeBundlePage_C.Construct
+struct UChallengeBundlePage_C_Construct_Params
 {
 };
 

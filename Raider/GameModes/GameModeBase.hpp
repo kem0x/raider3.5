@@ -146,7 +146,7 @@ public:
 
         auto Drone = Spawners::SpawnActor<ABP_VictoryDrone_C>(Controller->K2_GetActorLocation());
         Drone->InitDrone();
-        Drone->TriggerPlayerSpawnEffects();
+        // Drone->TriggerPlayerSpawnEffects();
 
         OnPlayerJoined(Controller);
     }

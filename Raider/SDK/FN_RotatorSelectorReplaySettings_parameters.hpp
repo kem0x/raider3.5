@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -28,8 +28,8 @@ struct URotatorSelectorReplaySettings_C_Update_Options_Params
 	TArray<struct FText>                               NewParam;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
 };
 
-// Function RotatorSelectorReplaySettings.RotatorSelectorReplaySettings_C.Center on Widget
-struct URotatorSelectorReplaySettings_C_Center_on_Widget_Params
+// Function RotatorSelectorReplaySettings.RotatorSelectorReplaySettings_C.Center On Widget
+struct URotatorSelectorReplaySettings_C_Center_On_Widget_Params
 {
 };
 

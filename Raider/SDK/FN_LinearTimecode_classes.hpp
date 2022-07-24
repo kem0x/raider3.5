@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,14 +13,13 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // Class LinearTimecode.LinearTimecodeComponent
-// 0x0070 (0x0300 - 0x0290)
+// 0x0070 (0x02B0 - 0x0240)
 class ULinearTimecodeComponent : public USceneComponent
 {
 public:
-	class UMediaPlayer*                                MediaPlayer;                                              // 0x0290(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	struct FDropTimecode                               DropTimecode;                                             // 0x0298(0x0028) (BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
-	struct FScriptMulticastDelegate                    OnTimecodeChange;                                         // 0x02C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData00[0x30];                                      // 0x02D0(0x0030) MISSED OFFSET
+	struct FDropTimecode                               DropTimecode;                                             // 0x0240(0x0028) (BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	struct FScriptMulticastDelegate                    OnTimecodeChange;                                         // 0x0268(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData00[0x38];                                      // 0x0278(0x0038) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{

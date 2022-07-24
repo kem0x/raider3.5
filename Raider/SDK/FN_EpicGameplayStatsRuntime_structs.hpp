@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -65,7 +63,7 @@ struct FManagedGameplayTagDataTableItem
 };
 
 // ScriptStruct EpicGameplayStatsRuntime.GameplayStatMetadataTableRow
-// 0x0088 (0x0090 - 0x0008)
+// 0x0058 (0x0060 - 0x0008)
 struct FGameplayStatMetadataTableRow : public FTableRowBase
 {
 	struct FString                                     BackendName;                                              // 0x0008(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, EditConst)
@@ -79,7 +77,7 @@ struct FGameplayStatMetadataTableRow : public FTableRowBase
 	bool                                               bExportToBackEnd;                                         // 0x0048(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	bool                                               bShowInFrontEnd;                                          // 0x0049(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData01[0x6];                                       // 0x004A(0x0006) MISSED OFFSET
-	struct FGameplayTagReferenceHelper                 ReferenceHelper;                                          // 0x0050(0x0040) (Edit)
+	struct FGameplayTagReferenceHelper                 ReferenceHelper;                                          // 0x0050(0x0010) (Edit)
 };
 
 // ScriptStruct EpicGameplayStatsRuntime.TagTableManagerHelper

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -171,16 +171,16 @@ void UObjectivesPage_C::Destruct()
 }
 
 
-// Function ObjectivesPage.ObjectivesPage_C.OnActiveGameplayModifiersChanged_Event_0_1
+// Function ObjectivesPage.ObjectivesPage_C.OnActiveGameplayModifiersChanged_Event_1
 // (HasOutParms, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // TArray<class UFortGameplayModifierItemDefinition*> AppliedModifiers               (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
 
-void UObjectivesPage_C::OnActiveGameplayModifiersChanged_Event_0_1(TArray<class UFortGameplayModifierItemDefinition*> AppliedModifiers)
+void UObjectivesPage_C::OnActiveGameplayModifiersChanged_Event_1(TArray<class UFortGameplayModifierItemDefinition*> AppliedModifiers)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ObjectivesPage.ObjectivesPage_C.OnActiveGameplayModifiersChanged_Event_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function ObjectivesPage.ObjectivesPage_C.OnActiveGameplayModifiersChanged_Event_1");
 
-	UObjectivesPage_C_OnActiveGameplayModifiersChanged_Event_0_1_Params params;
+	UObjectivesPage_C_OnActiveGameplayModifiersChanged_Event_1_Params params;
 	params.AppliedModifiers = AppliedModifiers;
 
 	auto flags = fn->FunctionFlags;

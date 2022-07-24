@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -168,16 +168,16 @@ void UHorizontalTabList_C::Previous_Visibility()
 }
 
 
-// Function HorizontalTabList.HorizontalTabList_C.CustomEvent_0_1
+// Function HorizontalTabList.HorizontalTabList_C.CustomEvent_1
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // struct FName                   TabId                          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UHorizontalTabList_C::CustomEvent_0_1(const struct FName& TabId)
+void UHorizontalTabList_C::CustomEvent_1(const struct FName& TabId)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function HorizontalTabList.HorizontalTabList_C.CustomEvent_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function HorizontalTabList.HorizontalTabList_C.CustomEvent_1");
 
-	UHorizontalTabList_C_CustomEvent_0_1_Params params;
+	UHorizontalTabList_C_CustomEvent_1_Params params;
 	params.TabId = TabId;
 
 	auto flags = fn->FunctionFlags;

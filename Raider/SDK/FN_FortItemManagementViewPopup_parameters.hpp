@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,18 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function FortItemManagementViewPopup.FortItemManagementViewPopup_C.SetupCheckboxes
+struct UFortItemManagementViewPopup_C_SetupCheckboxes_Params
+{
+};
+
+// Function FortItemManagementViewPopup.FortItemManagementViewPopup_C.CheckboxUpdate
+struct UFortItemManagementViewPopup_C_CheckboxUpdate_Params
+{
+	class UImage*                                      CheckboxImage;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+	bool                                               Check;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function FortItemManagementViewPopup.FortItemManagementViewPopup_C.BndEvt__ToggleSizeButton_K2Node_ComponentBoundEvent_41_CommonButtonClicked__DelegateSignature
 struct UFortItemManagementViewPopup_C_BndEvt__ToggleSizeButton_K2Node_ComponentBoundEvent_41_CommonButtonClicked__DelegateSignature_Params

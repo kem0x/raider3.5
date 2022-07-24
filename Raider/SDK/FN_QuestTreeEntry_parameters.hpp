@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -90,14 +90,8 @@ struct UQuestTreeEntry_C_SetupAsQuest_Params
 	class UFortQuestItem**                             Category;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function QuestTreeEntry.QuestTreeEntry_C.ExpansionChanged
-struct UQuestTreeEntry_C_ExpansionChanged_Params
-{
-	bool*                                              bExpanded;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function QuestTreeEntry.QuestTreeEntry_C.OnSelected
-struct UQuestTreeEntry_C_OnSelected_Params
+// Function QuestTreeEntry.QuestTreeEntry_C.BP_OnSelected
+struct UQuestTreeEntry_C_BP_OnSelected_Params
 {
 };
 
@@ -106,13 +100,13 @@ struct UQuestTreeEntry_C_OnQuestsUpdated_Params
 {
 };
 
-// Function QuestTreeEntry.QuestTreeEntry_C.OnHovered
-struct UQuestTreeEntry_C_OnHovered_Params
+// Function QuestTreeEntry.QuestTreeEntry_C.BP_OnHovered
+struct UQuestTreeEntry_C_BP_OnHovered_Params
 {
 };
 
-// Function QuestTreeEntry.QuestTreeEntry_C.OnQuestSeen_Event_0_1
-struct UQuestTreeEntry_C_OnQuestSeen_Event_0_1_Params
+// Function QuestTreeEntry.QuestTreeEntry_C.OnQuestSeen_Event_1
+struct UQuestTreeEntry_C_OnQuestSeen_Event_1_Params
 {
 	class UFortQuestItem*                              Quest;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
@@ -122,9 +116,15 @@ struct UQuestTreeEntry_C_Destruct_Params
 {
 };
 
-// Function QuestTreeEntry.QuestTreeEntry_C.OnDeselected
-struct UQuestTreeEntry_C_OnDeselected_Params
+// Function QuestTreeEntry.QuestTreeEntry_C.BP_OnDeselected
+struct UQuestTreeEntry_C_BP_OnDeselected_Params
 {
+};
+
+// Function QuestTreeEntry.QuestTreeEntry_C.BP_OnItemExpansionChanged
+struct UQuestTreeEntry_C_BP_OnItemExpansionChanged_Params
+{
+	bool*                                              bIsExpanded;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function QuestTreeEntry.QuestTreeEntry_C.ExecuteUbergraph_QuestTreeEntry

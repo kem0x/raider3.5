@@ -1,18 +1,26 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
 //---------------------------------------------------------------------------
 //Enums
 //---------------------------------------------------------------------------
+
+// Enum FortniteGame.EBuildingReplacementType
+enum class EBuildingReplacementType : uint8_t
+{
+	BRT_None                       = 0,
+	BRT_Edited                     = 1,
+	BRT_Upgrade                    = 2,
+	BRT_MAX                        = 3
+};
+
 
 // Enum FortniteGame.EFortAIDirectorEvent
 enum class EFortAIDirectorEvent : uint8_t
@@ -53,146 +61,6 @@ enum class EKeepDefenseState : uint8_t
 	Defense                        = 2,
 	LastAlive                      = 3,
 	Max                            = 4
-};
-
-
-// Enum FortniteGame.EFortDayPhase
-enum class EFortDayPhase : uint8_t
-{
-	Morning                        = 0,
-	Day                            = 1,
-	Evening                        = 2,
-	Night                          = 3,
-	NumPhases                      = 4,
-	EFortDayPhase_MAX              = 5
-};
-
-
-// Enum FortniteGame.EFortInventoryType
-enum class EFortInventoryType : uint8_t
-{
-	World                          = 0,
-	Account                        = 1,
-	Outpost                        = 2,
-	MAX                            = 3
-};
-
-
-// Enum FortniteGame.EOfferPurchaseError
-enum class EOfferPurchaseError : uint8_t
-{
-	NoError                        = 0,
-	PendingServerConfirmation      = 1,
-	CannotAffordItem               = 2,
-	InvalidOfferID                 = 3,
-	InvalidPriceIndex              = 4,
-	NoneLeft                       = 5,
-	PurchaseAlreadyPending         = 6,
-	NoConnection                   = 7,
-	AccountNotEligible             = 8,
-	CannotGiftItem                 = 9,
-	EOfferPurchaseError_MAX        = 10
-};
-
-
-// Enum FortniteGame.EFortAlteration
-enum class EFortAlteration : uint8_t
-{
-	AttributeSlot                  = 0,
-	GameplaySlot                   = 1,
-	ComplexCosmeticSlot            = 2,
-	ColorSlot                      = 3,
-	HeroSpecializationTier1Slot    = 4,
-	HeroSpecializationTier2Slot    = 5,
-	HeroSpecializationTier3Slot    = 6,
-	HeroSpecializationTier4Slot    = 7,
-	HeroSpecializationTier5Slot    = 8,
-	EFortAlteration_MAX            = 9
-};
-
-
-// Enum FortniteGame.EFortItemType
-enum class EFortItemType : uint8_t
-{
-	WorldItem                      = 0,
-	Ammo                           = 1,
-	Badge                          = 2,
-	BackpackPickup                 = 3,
-	BuildingPiece                  = 4,
-	CharacterPart                  = 5,
-	Consumable                     = 6,
-	Deco                           = 7,
-	EditTool                       = 8,
-	Ingredient                     = 9,
-	Food                           = 10,
-	Gadget                         = 11,
-	AthenaGadget                   = 12,
-	HomebaseGadget                 = 13,
-	HeroAbility                    = 14,
-	MissionItem                    = 15,
-	Trap                           = 16,
-	Weapon                         = 17,
-	WeaponMelee                    = 18,
-	WeaponRanged                   = 19,
-	WeaponHarvest                  = 20,
-	WorldResource                  = 21,
-	AccountItem                    = 22,
-	AccountResource                = 23,
-	CollectedResource              = 24,
-	Alteration                     = 25,
-	CardPack                       = 26,
-	CharacterCosmetic              = 27,
-	Currency                       = 28,
-	Hero                           = 29,
-	Schematic                      = 30,
-	Worker                         = 31,
-	Token                          = 32,
-	DailyRewardScheduleToken       = 33,
-	CodeToken                      = 34,
-	Buff                           = 35,
-	BuffCredit                     = 36,
-	Quest                          = 37,
-	ChallengeBundle                = 38,
-	ChallengeBundleSchedule        = 39,
-	GameplayModifier               = 40,
-	Outpost                        = 41,
-	HomebaseNode                   = 42,
-	Defender                       = 43,
-	ConversionControl              = 44,
-	DeployableBaseCloudSave        = 45,
-	ConsumableAccountItem          = 46,
-	Quota                          = 47,
-	Expedition                     = 48,
-	HomebaseBannerIcon             = 49,
-	HomebaseBannerColor            = 50,
-	AthenaSkyDiveContrail          = 51,
-	PersonalVehicle                = 52,
-	AthenaGlider                   = 53,
-	AthenaPickaxe                  = 54,
-	AthenaHat                      = 55,
-	AthenaBackpack                 = 56,
-	AthenaCharacter                = 57,
-	AthenaDance                    = 58,
-	AthenaConsumableEmote          = 59,
-	AthenaLoadingScreen            = 60,
-	AthenaBattleBus                = 61,
-	AthenaVictoryPose              = 62,
-	AthenaSpray                    = 63,
-	AthenaSeasonTreasure           = 64,
-	AthenaSeason                   = 65,
-	EventDescription               = 66,
-	MatchAward                     = 67,
-	AthenaEventToken               = 68,
-	EventPurchaseTracker           = 69,
-	SpecialItem                    = 70,
-	Emote                          = 71,
-	Stack                          = 72,
-	CollectionBookPage             = 73,
-	BGAConsumableWrapper           = 74,
-	GiftBox                        = 75,
-	Profile                        = 76,
-	Max_None                       = 77,
-	EFortItemType_MAX              = 78
 };
 
 
@@ -307,6 +175,164 @@ enum class EFortTeam : uint8_t
 };
 
 
+// Enum FortniteGame.EFortDayPhase
+enum class EFortDayPhase : uint8_t
+{
+	Morning                        = 0,
+	Day                            = 1,
+	Evening                        = 2,
+	Night                          = 3,
+	NumPhases                      = 4,
+	EFortDayPhase_MAX              = 5
+};
+
+
+// Enum FortniteGame.EFortInventoryType
+enum class EFortInventoryType : uint8_t
+{
+	World                          = 0,
+	Account                        = 1,
+	Outpost                        = 2,
+	MAX                            = 3
+};
+
+
+// Enum FortniteGame.EOfferPurchaseError
+enum class EOfferPurchaseError : uint8_t
+{
+	NoError                        = 0,
+	PendingServerConfirmation      = 1,
+	CannotAffordItem               = 2,
+	InvalidOfferID                 = 3,
+	InvalidPriceIndex              = 4,
+	NoneLeft                       = 5,
+	PurchaseAlreadyPending         = 6,
+	NoConnection                   = 7,
+	AccountNotEligible             = 8,
+	CannotGiftItem                 = 9,
+	EOfferPurchaseError_MAX        = 10
+};
+
+
+// Enum FortniteGame.EFortAlteration
+enum class EFortAlteration : uint8_t
+{
+	AttributeSlot                  = 0,
+	GameplaySlot                   = 1,
+	ComplexCosmeticSlot            = 2,
+	ColorSlot                      = 3,
+	HeroSpecializationTier1Slot    = 4,
+	HeroSpecializationTier2Slot    = 5,
+	HeroSpecializationTier3Slot    = 6,
+	HeroSpecializationTier4Slot    = 7,
+	HeroSpecializationTier5Slot    = 8,
+	EFortAlteration_MAX            = 9
+};
+
+
+// Enum FortniteGame.EPlayerBanReasons
+enum class EPlayerBanReasons : uint8_t
+{
+	Teaming                        = 0,
+	Afk_Leeching                   = 1,
+	Harassment                     = 2,
+	TradeScamming                  = 3,
+	Exploiting                     = 4,
+	EPlayerBanReasons_MAX          = 5
+};
+
+
+// Enum FortniteGame.EFortItemType
+enum class EFortItemType : uint8_t
+{
+	WorldItem                      = 0,
+	Ammo                           = 1,
+	Badge                          = 2,
+	BackpackPickup                 = 3,
+	BuildingPiece                  = 4,
+	CharacterPart                  = 5,
+	Consumable                     = 6,
+	Deco                           = 7,
+	EditTool                       = 8,
+	Ingredient                     = 9,
+	ItemCache                      = 10,
+	Food                           = 11,
+	Gadget                         = 12,
+	AthenaGadget                   = 13,
+	HomebaseGadget                 = 14,
+	HeroAbility                    = 15,
+	MissionItem                    = 16,
+	Trap                           = 17,
+	Weapon                         = 18,
+	WeaponMelee                    = 19,
+	WeaponRanged                   = 20,
+	WeaponHarvest                  = 21,
+	WorldResource                  = 22,
+	AccountItem                    = 23,
+	AccountResource                = 24,
+	CollectedResource              = 25,
+	Alteration                     = 26,
+	CardPack                       = 27,
+	CharacterCosmetic              = 28,
+	Currency                       = 29,
+	Hero                           = 30,
+	Schematic                      = 31,
+	Worker                         = 32,
+	Token                          = 33,
+	DailyRewardScheduleToken       = 34,
+	CodeToken                      = 35,
+	Buff                           = 36,
+	BuffCredit                     = 37,
+	Quest                          = 38,
+	ChallengeBundle                = 39,
+	ChallengeBundleSchedule        = 40,
+	GameplayModifier               = 41,
+	Outpost                        = 42,
+	HomebaseNode                   = 43,
+	Defender                       = 44,
+	ConversionControl              = 45,
+	DeployableBaseCloudSave        = 46,
+	ConsumableAccountItem          = 47,
+	Quota                          = 48,
+	Expedition                     = 49,
+	HomebaseBannerIcon             = 50,
+	HomebaseBannerColor            = 51,
+	AthenaSkyDiveContrail          = 52,
+	PersonalVehicle                = 53,
+	AthenaGlider                   = 54,
+	AthenaPickaxe                  = 55,
+	AthenaHat                      = 56,
+	AthenaBackpack                 = 57,
+	AthenaCharacter                = 58,
+	AthenaDance                    = 59,
+	AthenaConsumableEmote          = 60,
+	AthenaLoadingScreen            = 61,
+	AthenaBattleBus                = 62,
+	AthenaVehicleCosmetic          = 63,
+	AthenaWeaponCosmetic           = 64,
+	AthenaCallingCard              = 65,
+	AthenaMapMarker                = 66,
+	AthenaMusicOverride            = 67,
+	AthenaVictoryPose              = 68,
+	AthenaSeasonTreasure           = 69,
+	AthenaSeason                   = 70,
+	EventDescription               = 71,
+	MatchAward                     = 72,
+	AthenaEventToken               = 73,
+	EventPurchaseTracker           = 74,
+	CosmeticVariantToken           = 75,
+	SpecialItem                    = 76,
+	Emote                          = 77,
+	Stack                          = 78,
+	CollectionBookPage             = 79,
+	BGAConsumableWrapper           = 80,
+	GiftBox                        = 81,
+	Profile                        = 82,
+	Max_None                       = 83,
+	EFortItemType_MAX              = 84
+};
+
+
 // Enum FortniteGame.EFortCustomPartType
 enum class EFortCustomPartType : uint8_t
 {
@@ -321,35 +347,37 @@ enum class EFortCustomPartType : uint8_t
 };
 
 
-// Enum FortniteGame.EFortReportDayPhase
-enum class EFortReportDayPhase : uint8_t
+// Enum FortniteGame.EAthenaTravelLogPlayerType
+enum class EAthenaTravelLogPlayerType : uint8_t
 {
-	Dawn                           = 0,
-	Dusk                           = 1,
-	ZoneFinished                   = 2,
-	PlayerLogout                   = 3,
-	EFortReportDayPhase_MAX        = 4
+	Self                           = 0,
+	Ally                           = 1,
+	Enemy                          = 2,
+	Invalid                        = 3,
+	EAthenaTravelLogPlayerType_MAX = 4
 };
 
 
 // Enum FortniteGame.EAthenaTravelEventType
 enum class EAthenaTravelEventType : uint8_t
 {
-	None                           = 0,
-	GroundMove                     = 1,
-	AirMove                        = 2,
-	BattleBusJump                  = 3,
-	LaunchJump                     = 4,
-	Landed                         = 5,
-	OpenChest                      = 6,
-	OpenAmmo                       = 7,
-	GotAssist                      = 8,
-	GotKnockdown                   = 9,
-	GotKill                        = 10,
-	PlayerDowned                   = 11,
-	PlayerDied                     = 12,
-	Won                            = 13,
-	EAthenaTravelEventType_MAX     = 14
+	GroundMove                     = 0,
+	AirMove                        = 1,
+	BattleBusJump                  = 2,
+	LaunchJump                     = 3,
+	Landed                         = 4,
+	OpenChest                      = 5,
+	OpenAmmo                       = 6,
+	GotAssist                      = 7,
+	GotKnockdown                   = 8,
+	GotKill                        = 9,
+	PlayerDowned                   = 10,
+	PlayerDied                     = 11,
+	Won                            = 12,
+	DealtDamage                    = 13,
+	Healed                         = 14,
+	Count                          = 15,
+	EAthenaTravelEventType_MAX     = 16
 };
 
 
@@ -378,8 +406,347 @@ enum class EAthenaMatchXpMultiplierSource : uint8_t
 	BattlePassFriends              = 2,
 	CosmeticSet                    = 3,
 	AntiAddictionPenalty           = 4,
-	MAX_COUNT                      = 5,
-	EAthenaMatchXpMultiplierSource_MAX = 6
+	BonusXpEvent                   = 5,
+	MAX_COUNT                      = 6,
+	EAthenaMatchXpMultiplierSource_MAX = 7
+};
+
+
+// Enum FortniteGame.EAthenaScoringEvent
+enum class EAthenaScoringEvent : uint8_t
+{
+	None                           = 0,
+	Elimination                    = 1,
+	ChestOpened                    = 2,
+	AmmoCanOpened                  = 3,
+	SupplyDropOpened               = 4,
+	SupplyLlamaOpened              = 5,
+	ForagedItemConsumed            = 6,
+	SurvivalInMinutes              = 7,
+	CollectedCoinBronze            = 8,
+	CollectedCoinSilver            = 9,
+	CollectedCoinGold              = 10,
+	EAthenaScoringEvent_MAX        = 11
+};
+
+
+// Enum FortniteGame.EFortReportDayPhase
+enum class EFortReportDayPhase : uint8_t
+{
+	Dawn                           = 0,
+	Dusk                           = 1,
+	ZoneFinished                   = 2,
+	PlayerLogout                   = 3,
+	EFortReportDayPhase_MAX        = 4
+};
+
+
+// Enum FortniteGame.EFortVoteStatus
+enum class EFortVoteStatus : uint8_t
+{
+	Begin                          = 0,
+	Update                         = 1,
+	End                            = 2,
+	BeginLockout                   = 3,
+	EndLockout                     = 4,
+	EFortVoteStatus_MAX            = 5
+};
+
+
+// Enum FortniteGame.EFortVoteType
+enum class EFortVoteType : uint8_t
+{
+	SurvivalVote                   = 0,
+	DifficultyIncrease             = 1,
+	MissionActivation              = 2,
+	EFortVoteType_MAX              = 3
+};
+
+
+// Enum FortniteGame.EFortQuickBars
+enum class EFortQuickBars : uint8_t
+{
+	Primary                        = 0,
+	Secondary                      = 1,
+	Max_None                       = 2,
+	EFortQuickBars_MAX             = 3
+};
+
+
+// Enum FortniteGame.EStatCategory
+enum class EStatCategory : uint8_t
+{
+	Combat                         = 0,
+	Building                       = 1,
+	Utility                        = 2,
+	Max_None                       = 3,
+	EStatCategory_MAX              = 4
+};
+
+
+// Enum FortniteGame.EFortResourceType
+enum class EFortResourceType : uint8_t
+{
+	Wood                           = 0,
+	Stone                          = 1,
+	Metal                          = 2,
+	Permanite                      = 3,
+	None                           = 4,
+	EFortResourceType_MAX          = 5
+};
+
+
+// Enum FortniteGame.ERichPresenceStateChange
+enum class ERichPresenceStateChange : uint8_t
+{
+	AutoUpdate                     = 0,
+	Idle                           = 1,
+	Active                         = 2,
+	Busy                           = 3,
+	NotBusy                        = 4,
+	ERichPresenceStateChange_MAX   = 5
+};
+
+
+// Enum FortniteGame.ESubGame
+enum class ESubGame : uint8_t
+{
+	Campaign                       = 0,
+	Athena                         = 1,
+	Invalid                        = 2,
+	Count                          = 3,
+	ESubGame_MAX                   = 4
+};
+
+
+// Enum FortniteGame.ELockOnState
+enum class ELockOnState : uint8_t
+{
+	NoTarget                       = 0,
+	TargetAcquired                 = 1,
+	LockingOnToTarget              = 2,
+	TargetLockedOn                 = 3,
+	Cooldown                       = 4,
+	COUNT                          = 5,
+	ELockOnState_MAX               = 6
+};
+
+
+// Enum FortniteGame.EStatMod
+enum class EStatMod : uint8_t
+{
+	Delta                          = 0,
+	Set                            = 1,
+	Maximum                        = 2,
+	EStatMod_MAX                   = 3
+};
+
+
+// Enum FortniteGame.EFortDamageZone
+enum class EFortDamageZone : uint8_t
+{
+	Light                          = 0,
+	Normal                         = 1,
+	Critical                       = 2,
+	Vulnerability                  = 3,
+	Max                            = 4
+};
+
+
+// Enum FortniteGame.TInteractionType
+enum class ETInteractionType : uint8_t
+{
+	IT_NoInteraction               = 0,
+	IT_Simple                      = 1,
+	IT_LongPress                   = 2,
+	IT_BuildingEdit                = 3,
+	IT_BuildingImprovement         = 4,
+	IT_TrapPlacement               = 5,
+	IT_MAX                         = 6
+};
+
+
+// Enum FortniteGame.EFortItemEntryState
+enum class EFortItemEntryState : uint8_t
+{
+	NoneState                      = 0,
+	NewItemCount                   = 1,
+	ShouldShowItemToast            = 2,
+	DurabilityInitialized          = 3,
+	DoNotShowSpawnParticles        = 4,
+	FromRecoveredBackpack          = 5,
+	FromGift                       = 6,
+	PendingUpgradeCriteriaProgress = 7,
+	OwnerBuildingHandle            = 8,
+	FromDroppedPickup              = 9,
+	JustCrafted                    = 10,
+	CraftAndSlotTarget             = 11,
+	GenericAttributeValueSet       = 12,
+	EFortItemEntryState_MAX        = 13
+};
+
+
+// Enum FortniteGame.EFortRequestedGameplayAction
+enum class EFortRequestedGameplayAction : uint8_t
+{
+	ContinuePlaying                = 0,
+	StartPlaying                   = 1,
+	StopPlaying                    = 2,
+	EnterZone                      = 3,
+	LeaveZone                      = 4,
+	ReturnToMainMenu               = 5,
+	QuitGame                       = 6,
+	Invalid                        = 7,
+	EFortRequestedGameplayAction_MAX = 8
+};
+
+
+// Enum FortniteGame.EFortGameplayState
+enum class EFortGameplayState : uint8_t
+{
+	NormalGameplay                 = 0,
+	WaitingToStart                 = 1,
+	EndOfZone                      = 2,
+	EnteringZone                   = 3,
+	LeavingZone                    = 4,
+	Invalid                        = 5,
+	EFortGameplayState_MAX         = 6
+};
+
+
+// Enum FortniteGame.EFortCombatEvents
+enum class EFortCombatEvents : uint8_t
+{
+	HuskFollowing                  = 0,
+	SmasherFollowing               = 1,
+	TrollFollowing                 = 2,
+	TakerFollowing                 = 3,
+	PlayerTakeDamage               = 4,
+	PlayerHealth                   = 5,
+	PlayerLookAtEnemy              = 6,
+	PlayerDamageEnemy              = 7,
+	PlayerKilledEnemy              = 8,
+	AtlasTakeDamage                = 9,
+	AtlasHealth                    = 10,
+	AtlasDestroyed                 = 11,
+	TrapFiring                     = 12,
+	BuildingTakeDamage             = 13,
+	FoodHealingPotential           = 14,
+	PlayerAmmo                     = 15,
+	EnemiesNear                    = 16,
+	PlayerMovement                 = 17,
+	BuildingDamagedNearObjective   = 18,
+	TrapDamageEnemy                = 19,
+	ObjectivePathCost              = 20,
+	PlayerPathCost                 = 21,
+	Max_None                       = 22,
+	EFortCombatEvents_MAX          = 23
+};
+
+
+// Enum FortniteGame.EFortJumpStaminaCost
+enum class EFortJumpStaminaCost : uint8_t
+{
+	None                           = 0,
+	Trigger                        = 1,
+	SprintTrigger                  = 2,
+	SprintAir                      = 3,
+	EFortJumpStaminaCost_MAX       = 4
+};
+
+
+// Enum FortniteGame.EFortCompletionResult
+enum class EFortCompletionResult : uint8_t
+{
+	Win                            = 0,
+	Loss                           = 1,
+	Draw                           = 2,
+	Undefined                      = 3,
+	EFortCompletionResult_MAX      = 4
+};
+
+
+// Enum FortniteGame.EFortRewardActivityType
+enum class EFortRewardActivityType : uint8_t
+{
+	General                        = 0,
+	MissionPrimary                 = 1,
+	MissionSecondary               = 2,
+	AccountLevelUp                 = 3,
+	Max_None                       = 4,
+	EFortRewardActivityType_MAX    = 5
+};
+
+
+// Enum FortniteGame.EFortElementalDamageType
+enum class EFortElementalDamageType : uint8_t
+{
+	None                           = 0,
+	Fire                           = 1,
+	Ice                            = 2,
+	Lightning                      = 3,
+	Energy                         = 4,
+	MAX                            = 5
+};
+
+
+// Enum FortniteGame.EFortDamageNumberType
+enum class EFortDamageNumberType : uint8_t
+{
+	None                           = 0,
+	Pawn                           = 1,
+	Building                       = 2,
+	Player                         = 3,
+	Shield                         = 4,
+	Score                          = 5,
+	DBNO                           = 6,
+	EFortDamageNumberType_MAX      = 7
+};
+
+
+// Enum FortniteGame.EFortResourceLevel
+enum class EFortResourceLevel : uint8_t
+{
+	First                          = 0,
+	Second                         = 1,
+	Third                          = 2,
+	Fourth                         = 3,
+	Fifth                          = 4,
+	Sixth                          = 5,
+	NumLevels                      = 6,
+	Invalid                        = 7,
+	EFortResourceLevel_MAX         = 8
+};
+
+
+// Enum FortniteGame.EFortCostInfoTypes
+enum class EFortCostInfoTypes : uint8_t
+{
+	Placement                      = 0,
+	Repair                         = 1,
+	Conversion                     = 2,
+	Ability                        = 3,
+	None                           = 4,
+	EFortCostInfoTypes_MAX         = 5
+};
+
+
+// Enum FortniteGame.EFortIsFinalXpUpdate
+enum class EFortIsFinalXpUpdate : uint8_t
+{
+	Uninitialized                  = 0,
+	NotFinal                       = 1,
+	Final                          = 2,
+	EFortIsFinalXpUpdate_MAX       = 3
+};
+
+
+// Enum FortniteGame.EFortVoteArbitratorType
+enum class EFortVoteArbitratorType : uint8_t
+{
+	Majority                       = 0,
+	Unanimous                      = 1,
+	EFortVoteArbitratorType_MAX    = 2
 };
 
 
@@ -409,9 +776,72 @@ enum class EAthenaGamePhaseStep : uint8_t
 	StormForming                   = 6,
 	StormHolding                   = 7,
 	StormShrinking                 = 8,
-	EndGame                        = 9,
-	Count                          = 10,
-	EAthenaGamePhaseStep_MAX       = 11
+	Countdown                      = 9,
+	FinalCountdown                 = 10,
+	EndGame                        = 11,
+	Count                          = 12,
+	EAthenaGamePhaseStep_MAX       = 13
+};
+
+
+// Enum FortniteGame.EAthenaWinConditionMsgType
+enum class EAthenaWinConditionMsgType : uint8_t
+{
+	None                           = 0,
+	IntroCondition                 = 1,
+	ScoreUpdate                    = 2,
+	CriticalScoreUpdate            = 3,
+	EAthenaWinConditionMsgType_MAX = 4
+};
+
+
+// Enum FortniteGame.EWaveRules
+enum class EWaveRules : uint8_t
+{
+	KillAllEnemies                 = 0,
+	Timed                          = 1,
+	KillPoints                     = 2,
+	EWaveRules_MAX                 = 3
+};
+
+
+// Enum FortniteGame.EAthenaAerialPhase
+enum class EAthenaAerialPhase : uint8_t
+{
+	None                           = 0,
+	BusCantExit                    = 1,
+	BusCanExit                     = 2,
+	Skydiving                      = 3,
+	Parachuting                    = 4,
+	EAthenaAerialPhase_MAX         = 5
+};
+
+
+// Enum FortniteGame.ESafeZoneStartUp
+enum class ESafeZoneStartUp : uint8_t
+{
+	UseDefaultGameBehavior         = 0,
+	StartsWithWarmUp               = 1,
+	StartsWithAirCraft             = 2,
+	ESafeZoneStartUp_MAX           = 3
+};
+
+
+// Enum FortniteGame.EFriendlyFireType
+enum class EFriendlyFireType : uint8_t
+{
+	Off                            = 0,
+	On                             = 1,
+	EFriendlyFireType_MAX          = 2
+};
+
+
+// Enum FortniteGame.EAirCraftBehavior
+enum class EAirCraftBehavior : uint8_t
+{
+	Default                        = 0,
+	OpposingAirCraftForEachTeam    = 1,
+	EAirCraftBehavior_MAX          = 2
 };
 
 
@@ -422,6 +852,17 @@ enum class EHudVisibilityState : uint8_t
 	FullyHidden                    = 1,
 	GameOnly                       = 2,
 	ReplayOnly                     = 3,
+	MAX                            = 4
+};
+
+
+// Enum FortniteGame.EFortReplayEventType
+enum class EFortReplayEventType : uint8_t
+{
+	Elimination                    = 0,
+	Eliminated                     = 1,
+	DBNO                           = 2,
+	UserPlaced                     = 3,
 	MAX                            = 4
 };
 
@@ -439,7 +880,8 @@ enum class ESpectatorCameraType : uint8_t
 	DroneFollow                    = 7,
 	DroneAttach                    = 8,
 	Projectile                     = 9,
-	MAX                            = 10
+	DroneAutoFrame                 = 10,
+	MAX                            = 11
 };
 
 
@@ -546,6 +988,17 @@ enum class EMatchmakingState : uint8_t
 };
 
 
+// Enum FortniteGame.EAthenaPartyMemberReadyType
+enum class EAthenaPartyMemberReadyType : uint8_t
+{
+	Ready                          = 0,
+	NotReady                       = 1,
+	Playing                        = 2,
+	WatchingReplay                 = 3,
+	EAthenaPartyMemberReadyType_MAX = 4
+};
+
+
 // Enum FortniteGame.EFortPartyRestriction
 enum class EFortPartyRestriction : uint8_t
 {
@@ -558,7 +1011,8 @@ enum class EFortPartyRestriction : uint8_t
 	CurrentlyNotAvailable          = 6,
 	NotPlayingThisGame             = 7,
 	GameModeRestricted             = 8,
-	Max                            = 9
+	Banned                         = 9,
+	Max                            = 10
 };
 
 
@@ -582,8 +1036,9 @@ enum class EFortPartyMemberLocation : uint8_t
 	JoiningGame                    = 3,
 	ProcessingRejoin               = 4,
 	InGame                         = 5,
-	ReturningToFrontEnd            = 6,
-	EFortPartyMemberLocation_MAX   = 7
+	WatchingReplay                 = 6,
+	ReturningToFrontEnd            = 7,
+	EFortPartyMemberLocation_MAX   = 8
 };
 
 
@@ -635,6 +1090,16 @@ enum class EFortSocialItemHeaderType : uint8_t
 };
 
 
+// Enum FortniteGame.EFortRuntimeOptionTabState
+enum class EFortRuntimeOptionTabState : uint8_t
+{
+	Default                        = 0,
+	Disabled                       = 1,
+	Hidden                         = 2,
+	EFortRuntimeOptionTabState_MAX = 3
+};
+
+
 // Enum FortniteGame.EFortDialogFeedbackType
 enum class EFortDialogFeedbackType : uint8_t
 {
@@ -643,6 +1108,15 @@ enum class EFortDialogFeedbackType : uint8_t
 	FriendRequestAccepted          = 2,
 	Default                        = 3,
 	EFortDialogFeedbackType_MAX    = 4
+};
+
+
+// Enum FortniteGame.EDualWeaponHand
+enum class EDualWeaponHand : uint8_t
+{
+	LEFT                           = 0,
+	RIGHT                          = 1,
+	MAX                            = 2
 };
 
 
@@ -705,17 +1179,6 @@ enum class EBoundingBoxSlotDirectionCalculation : uint8_t
 };
 
 
-// Enum FortniteGame.EAthenaPlaylistFillType
-enum class EAthenaPlaylistFillType : uint8_t
-{
-	NoFill                         = 0,
-	OptionalFill_DefaultOff        = 1,
-	OptionalFill_DefaultOn         = 2,
-	MandatoryFill                  = 3,
-	EAthenaPlaylistFillType_MAX    = 4
-};
-
-
 // Enum FortniteGame.EEventTokenType
 enum class EEventTokenType : uint8_t
 {
@@ -751,6 +1214,16 @@ enum class EAthenaSeasonRewardTrack : uint8_t
 };
 
 
+// Enum FortniteGame.EAthenaRewardItemType
+enum class EAthenaRewardItemType : uint8_t
+{
+	Normal                         = 0,
+	HiddenReward                   = 1,
+	NonExportedFakeReward          = 2,
+	EAthenaRewardItemType_MAX      = 3
+};
+
+
 // Enum FortniteGame.EAthenaChallengeTabVisibility
 enum class EAthenaChallengeTabVisibility : uint8_t
 {
@@ -781,6 +1254,27 @@ enum class EScoreboardState : uint8_t
 };
 
 
+// Enum FortniteGame.EFortVehicleDecoType
+enum class EFortVehicleDecoType : uint8_t
+{
+	Unknown                        = 0,
+	Flag                           = 1,
+	HoodOrnament                   = 2,
+	Wings                          = 3,
+	EFortVehicleDecoType_MAX       = 4
+};
+
+
+// Enum FortniteGame.EAutoFrameMode
+enum class EAutoFrameMode : uint8_t
+{
+	Off                            = 0,
+	ManualOverride                 = 1,
+	AutoFrame                      = 2,
+	EAutoFrameMode_MAX             = 3
+};
+
+
 // Enum FortniteGame.EAbilitySystemComponentCreationPolicy
 enum class EAbilitySystemComponentCreationPolicy : uint8_t
 {
@@ -796,7 +1290,8 @@ enum class EAttributeInitLevelSource : uint8_t
 {
 	WorldDifficulty                = 0,
 	PlayerBuildingSkill            = 1,
-	EAttributeInitLevelSource_MAX  = 2
+	AthenaPlaylist                 = 2,
+	EAttributeInitLevelSource_MAX  = 3
 };
 
 
@@ -978,16 +1473,6 @@ enum class EStructuralSupportCheck : uint8_t
 };
 
 
-// Enum FortniteGame.EBuildingReplacementType
-enum class EBuildingReplacementType : uint8_t
-{
-	BRT_None                       = 0,
-	BRT_Edited                     = 1,
-	BRT_Conversion                 = 2,
-	BRT_MAX                        = 3
-};
-
-
 // Enum FortniteGame.EPlacementType
 enum class EPlacementType : uint8_t
 {
@@ -1137,18 +1622,6 @@ enum class EFortStructuralGridQueryResults : uint8_t
 };
 
 
-// Enum FortniteGame.EFortCostInfoTypes
-enum class EFortCostInfoTypes : uint8_t
-{
-	Placement                      = 0,
-	Repair                         = 1,
-	Conversion                     = 2,
-	Ability                        = 3,
-	None                           = 4,
-	EFortCostInfoTypes_MAX         = 5
-};
-
-
 // Enum FortniteGame.EFortBuildingInitializationReason
 enum class EFortBuildingInitializationReason : uint8_t
 {
@@ -1159,9 +1632,8 @@ enum class EFortBuildingInitializationReason : uint8_t
 	DynamicBuilderPlaced           = 4,
 	PlacementTool                  = 5,
 	TrapTool                       = 6,
-	Replay                         = 7,
-	None                           = 8,
-	EFortBuildingInitializationReason_MAX = 9
+	None                           = 7,
+	EFortBuildingInitializationReason_MAX = 8
 };
 
 
@@ -1185,33 +1657,6 @@ enum class EFortBuildingState : uint8_t
 	EditMode                       = 1,
 	None                           = 2,
 	EFortBuildingState_MAX         = 3
-};
-
-
-// Enum FortniteGame.EFortResourceLevel
-enum class EFortResourceLevel : uint8_t
-{
-	First                          = 0,
-	Second                         = 1,
-	Third                          = 2,
-	Fourth                         = 3,
-	Fifth                          = 4,
-	Sixth                          = 5,
-	NumLevels                      = 6,
-	Invalid                        = 7,
-	EFortResourceLevel_MAX         = 8
-};
-
-
-// Enum FortniteGame.EFortResourceType
-enum class EFortResourceType : uint8_t
-{
-	Wood                           = 0,
-	Stone                          = 1,
-	Metal                          = 2,
-	Permanite                      = 3,
-	None                           = 4,
-	EFortResourceType_MAX          = 5
 };
 
 
@@ -1254,8 +1699,10 @@ enum class EBuildingAttachmentType : uint8_t
 	ATTACH_Corner                  = 3,
 	ATTACH_All                     = 4,
 	ATTACH_WallThenFloor           = 5,
-	ATTACH_None                    = 6,
-	ATTACH_MAX                     = 7
+	ATTACH_FloorAndStairs          = 6,
+	ATTACH_CeilingAndStairs        = 7,
+	ATTACH_None                    = 8,
+	ATTACH_MAX                     = 9
 };
 
 
@@ -1696,6 +2143,14 @@ enum class ESkydivingDirection : uint8_t
 };
 
 
+// Enum FortniteGame.ESourceSelectionMode
+enum class ESourceSelectionMode : uint8_t
+{
+	MaxDifference                  = 0,
+	ESourceSelectionMode_MAX       = 1
+};
+
+
 // Enum FortniteGame.ESpeedWarpingAxisMode
 enum class ESpeedWarpingAxisMode : uint8_t
 {
@@ -1719,6 +2174,32 @@ enum class EMontageInterrupt : uint8_t
 };
 
 
+// Enum FortniteGame.ECoastState
+enum class ECoastState : uint8_t
+{
+	Idle                           = 0,
+	Mount                          = 1,
+	Coasting                       = 2,
+	Pedaling                       = 3,
+	PreDismount                    = 4,
+	Dismount                       = 5,
+	EndCoast                       = 6,
+	ECoastState_MAX                = 7
+};
+
+
+// Enum FortniteGame.EAthenaVehicleSeats
+enum class EAthenaVehicleSeats : uint8_t
+{
+	Driver                         = 0,
+	Passenger1                     = 1,
+	Passenger2                     = 2,
+	Passenger3                     = 3,
+	MaxCount                       = 4,
+	EAthenaVehicleSeats_MAX        = 5
+};
+
+
 // Enum FortniteGame.EFortAttributeDisplay
 enum class EFortAttributeDisplay : uint8_t
 {
@@ -1736,6 +2217,17 @@ enum class EFortAttributeDisplay : uint8_t
 };
 
 
+// Enum FortniteGame.EBannerUsageContext
+enum class EBannerUsageContext : uint8_t
+{
+	Unknown                        = 0,
+	BannerIcon                     = 1,
+	PhysicalBanner                 = 2,
+	Spray                          = 3,
+	EBannerUsageContext_MAX        = 4
+};
+
+
 // Enum FortniteGame.ETargetDistanceComparisonType
 enum class ETargetDistanceComparisonType : uint8_t
 {
@@ -1743,6 +2235,27 @@ enum class ETargetDistanceComparisonType : uint8_t
 	ThreeDimensions                = 1,
 	CollisionHalfHeightMultiplier  = 2,
 	ETargetDistanceComparisonType_MAX = 3
+};
+
+
+// Enum FortniteGame.EFortBuildingSoundType
+enum class EFortBuildingSoundType : uint8_t
+{
+	Construction                   = 0,
+	GenericDestruction             = 1,
+	PlayerBuiltDestruction         = 2,
+	None                           = 3,
+	EFortBuildingSoundType_MAX     = 4
+};
+
+
+// Enum FortniteGame.EFortUICameraFrameTargetBoundingBehavior
+enum class EFortUICameraFrameTargetBoundingBehavior : uint8_t
+{
+	NoBounds                       = 0,
+	AllBounds                      = 1,
+	TopBoundOnly                   = 2,
+	EFortUICameraFrameTargetBoundingBehavior_MAX = 3
 };
 
 
@@ -1966,36 +2479,6 @@ enum class EFortCombatFactors : uint8_t
 };
 
 
-// Enum FortniteGame.EFortCombatEvents
-enum class EFortCombatEvents : uint8_t
-{
-	HuskFollowing                  = 0,
-	SmasherFollowing               = 1,
-	TrollFollowing                 = 2,
-	TakerFollowing                 = 3,
-	PlayerTakeDamage               = 4,
-	PlayerHealth                   = 5,
-	PlayerLookAtEnemy              = 6,
-	PlayerDamageEnemy              = 7,
-	PlayerKilledEnemy              = 8,
-	AtlasTakeDamage                = 9,
-	AtlasHealth                    = 10,
-	AtlasDestroyed                 = 11,
-	TrapFiring                     = 12,
-	BuildingTakeDamage             = 13,
-	FoodHealingPotential           = 14,
-	PlayerAmmo                     = 15,
-	EnemiesNear                    = 16,
-	PlayerMovement                 = 17,
-	BuildingDamagedNearObjective   = 18,
-	TrapDamageEnemy                = 19,
-	ObjectivePathCost              = 20,
-	PlayerPathCost                 = 21,
-	Max_None                       = 22,
-	EFortCombatEvents_MAX          = 23
-};
-
-
 // Enum FortniteGame.EFortAIDirectorEventParticipant
 enum class EFortAIDirectorEventParticipant : uint8_t
 {
@@ -2016,29 +2499,6 @@ enum class EFortCombatThresholds : uint8_t
 	Extreme                        = 3,
 	Max_None                       = 4,
 	EFortCombatThresholds_MAX      = 5
-};
-
-
-// Enum FortniteGame.EFortElementalDamageType
-enum class EFortElementalDamageType : uint8_t
-{
-	None                           = 0,
-	Fire                           = 1,
-	Ice                            = 2,
-	Lightning                      = 3,
-	Energy                         = 4,
-	MAX                            = 5
-};
-
-
-// Enum FortniteGame.EFortDamageZone
-enum class EFortDamageZone : uint8_t
-{
-	Light                          = 0,
-	Normal                         = 1,
-	Critical                       = 2,
-	Vulnerability                  = 3,
-	Max                            = 4
 };
 
 
@@ -2074,7 +2534,12 @@ enum class EFortWeaponCoreAnimation : uint8_t
 	C4                             = 17,
 	RemoteControl                  = 18,
 	DualWield                      = 19,
-	MAX                            = 20
+	AR_BullPup                     = 20,
+	AR_ForwardGrip                 = 21,
+	MedPackPaddles                 = 22,
+	SMG_P90                        = 23,
+	AR_DrumGun                     = 24,
+	MAX                            = 25
 };
 
 
@@ -2154,20 +2619,6 @@ enum class EFortSentenceAudioPreference : uint8_t
 	AudioAsset                     = 0,
 	FeedbackBank                   = 1,
 	EFortSentenceAudioPreference_MAX = 2
-};
-
-
-// Enum FortniteGame.EFortDamageNumberType
-enum class EFortDamageNumberType : uint8_t
-{
-	None                           = 0,
-	Pawn                           = 1,
-	Building                       = 2,
-	Player                         = 3,
-	Shield                         = 4,
-	Score                          = 5,
-	DBNO                           = 6,
-	EFortDamageNumberType_MAX      = 7
 };
 
 
@@ -2343,13 +2794,25 @@ enum class EFortFootstepAudioType : uint8_t
 };
 
 
-// Enum FortniteGame.EWaveRules
-enum class EWaveRules : uint8_t
+// Enum FortniteGame.ESubGameAccessReason
+enum class ESubGameAccessReason : uint8_t
 {
-	KillAllEnemies                 = 0,
-	Timed                          = 1,
-	KillPoints                     = 2,
-	EWaveRules_MAX                 = 3
+	NoAccess                       = 0,
+	OpenAccess                     = 1,
+	TokenItemAccess                = 2,
+	XboxHomeSharingAccess          = 3,
+	XboxServiceOutageAccess        = 4,
+	ESubGameAccessReason_MAX       = 5
+};
+
+
+// Enum FortniteGame.EPartyFeedbackType
+enum class EPartyFeedbackType : uint8_t
+{
+	PartyInProgressPlayerJoined    = 0,
+	PartyInProgressPlayerLeft      = 1,
+	Default                        = 2,
+	EPartyFeedbackType_MAX         = 3
 };
 
 
@@ -2370,6 +2833,18 @@ enum class EClampType : uint8_t
 	Minimum                        = 0,
 	Maximum                        = 1,
 	EClampType_MAX                 = 2
+};
+
+
+// Enum FortniteGame.EAircraftLaunchReason
+enum class EAircraftLaunchReason : uint8_t
+{
+	StdTimerAllPlayers             = 0,
+	EarlyTimerAllPlayers           = 1,
+	StdTimerMostPlayers            = 2,
+	EarlyTimerMostPlayers          = 3,
+	StdTimerFewPlayers             = 4,
+	EAircraftLaunchReason_MAX      = 5
 };
 
 
@@ -2427,6 +2902,16 @@ enum class EJumpBoostPackState : uint8_t
 };
 
 
+// Enum FortniteGame.EMedicPackState
+enum class EMedicPackState : uint8_t
+{
+	Idle                           = 0,
+	Active                         = 1,
+	None                           = 2,
+	EMedicPackState_MAX            = 3
+};
+
+
 // Enum FortniteGame.EPvPGameEndReasons
 enum class EPvPGameEndReasons : uint8_t
 {
@@ -2471,24 +2956,12 @@ enum class ETeamChatRoomState : uint8_t
 };
 
 
-// Enum FortniteGame.EAirCraftBehavior
-enum class EAirCraftBehavior : uint8_t
+// Enum FortniteGame.EFortScalabilityMode
+enum class EFortScalabilityMode : uint8_t
 {
-	Default                        = 0,
-	OpposingAirCraftForEachTeam    = 1,
-	EAirCraftBehavior_MAX          = 2
-};
-
-
-// Enum FortniteGame.EAthenaAerialPhase
-enum class EAthenaAerialPhase : uint8_t
-{
-	None                           = 0,
-	BusCantExit                    = 1,
-	BusCanExit                     = 2,
-	Skydiving                      = 3,
-	Parachuting                    = 4,
-	EAthenaAerialPhase_MAX         = 5
+	LowPower                       = 0,
+	Frontend                       = 1,
+	EFortScalabilityMode_MAX       = 2
 };
 
 
@@ -2523,7 +2996,19 @@ enum class EFortGiftWrapType : uint8_t
 	UserFree                       = 1,
 	UserUnlock                     = 2,
 	UserConsumable                 = 3,
-	EFortGiftWrapType_MAX          = 4
+	Message                        = 4,
+	EFortGiftWrapType_MAX          = 5
+};
+
+
+// Enum FortniteGame.EChunkInstallState
+enum class EChunkInstallState : uint8_t
+{
+	NotInstalled                   = 0,
+	Pending                        = 1,
+	Installed                      = 2,
+	Unknown                        = 3,
+	EChunkInstallState_MAX         = 4
 };
 
 
@@ -2712,19 +3197,6 @@ enum class EFortIntensityCurveSequenceType : uint8_t
 };
 
 
-// Enum FortniteGame.TInteractionType
-enum class ETInteractionType : uint8_t
-{
-	IT_NoInteraction               = 0,
-	IT_Simple                      = 1,
-	IT_LongPress                   = 2,
-	IT_BuildingEdit                = 3,
-	IT_BuildingImprovement         = 4,
-	IT_TrapPlacement               = 5,
-	IT_MAX                         = 6
-};
-
-
 // Enum FortniteGame.EItemEvolutionRestrictionReason
 enum class EItemEvolutionRestrictionReason : uint8_t
 {
@@ -2756,26 +3228,6 @@ enum class EFortTemplateAccess : uint8_t
 	Trusted                        = 1,
 	Private                        = 2,
 	EFortTemplateAccess_MAX        = 3
-};
-
-
-// Enum FortniteGame.EFortItemEntryState
-enum class EFortItemEntryState : uint8_t
-{
-	NoneState                      = 0,
-	NewItemCount                   = 1,
-	ShouldShowItemToast            = 2,
-	DurabilityInitialized          = 3,
-	DoNotShowSpawnParticles        = 4,
-	FromRecoveredBackpack          = 5,
-	FromGift                       = 6,
-	PendingUpgradeCriteriaProgress = 7,
-	OwnerBuildingHandle            = 8,
-	FromDroppedPickup              = 9,
-	JustCrafted                    = 10,
-	CraftAndSlotTarget             = 11,
-	GenericAttributeValueSet       = 12,
-	EFortItemEntryState_MAX        = 13
 };
 
 
@@ -2888,7 +3340,8 @@ enum class EFortMatchmakingPool : uint8_t
 	XboxOne                        = 3,
 	Mobile                         = 4,
 	Test                           = 5,
-	EFortMatchmakingPool_MAX       = 6
+	Erebus                         = 6,
+	EFortMatchmakingPool_MAX       = 7
 };
 
 
@@ -2978,12 +3431,14 @@ enum class EAthenaCustomizationCategory : uint8_t
 	Character                      = 5,
 	LoadingScreen                  = 6,
 	BattleBus                      = 7,
-	Dance                          = 8,
-	Spray                          = 9,
-	ConsumableEmote                = 10,
-	VictoryPose                    = 11,
-	SkyDiveContrail                = 12,
-	EAthenaCustomizationCategory_MAX = 13
+	VehicleDecoration              = 8,
+	CallingCard                    = 9,
+	MapMarker                      = 10,
+	Dance                          = 11,
+	ConsumableEmote                = 12,
+	VictoryPose                    = 13,
+	SkyDiveContrail                = 14,
+	EAthenaCustomizationCategory_MAX = 15
 };
 
 
@@ -2993,6 +3448,18 @@ enum class ECampaignCustomizationCategory : uint8_t
 	None                           = 0,
 	PersonalVehicle                = 1,
 	ECampaignCustomizationCategory_MAX = 2
+};
+
+
+// Enum FortniteGame.ESocialImportPanelPlatform
+enum class ESocialImportPanelPlatform : uint8_t
+{
+	Facebook                       = 0,
+	VK                             = 1,
+	Steam                          = 2,
+	Xbox                           = 3,
+	Playstation                    = 4,
+	ESocialImportPanelPlatform_MAX = 5
 };
 
 
@@ -3107,7 +3574,8 @@ enum class EFortMtxPlatform : uint8_t
 	EpicPCKorea                    = 5,
 	IOSAppStore                    = 6,
 	EpicAndroid                    = 7,
-	EFortMtxPlatform_MAX           = 8
+	Nintendo                       = 8,
+	EFortMtxPlatform_MAX           = 9
 };
 
 
@@ -3195,71 +3663,6 @@ enum class EFortNamedNavmesh : uint8_t
 };
 
 
-// Enum FortniteGame.ESettingTab
-enum class ESettingTab : uint8_t
-{
-	Video                          = 0,
-	Game                           = 1,
-	ESettingTab_MAX                = 2
-};
-
-
-// Enum FortniteGame.ESettingDisplayType
-enum class ESettingDisplayType : uint8_t
-{
-	Header                         = 0,
-	Slider                         = 1,
-	Rotator                        = 2,
-	Toggle                         = 3,
-	ESettingDisplayType_MAX        = 4
-};
-
-
-// Enum FortniteGame.ESettingType
-enum class ESettingType : uint8_t
-{
-	MouseSensitivity               = 0,
-	TouchDragSensitivity           = 1,
-	ControllerLookSensitivityYaw   = 2,
-	ControllerLookSensitivityPitch = 3,
-	MouseTargetingMultiplier       = 4,
-	MouseScopedMultiplier          = 5,
-	GamepadTargetingMultiplier     = 6,
-	GamepadScopedMultiplier        = 7,
-	TouchDragTargetingSensitivity  = 8,
-	TouchDragScopedSensitivity     = 9,
-	SafeZone                       = 10,
-	ConsoleUnlockedFPS             = 11,
-	Language                       = 12,
-	InvertAcceptAndBack            = 13,
-	Region                         = 14,
-	InvertMouse                    = 15,
-	ToggleSprint                   = 16,
-	SprintCancelsReload            = 17,
-	TapInteract                    = 18,
-	ToggleTargeting                = 19,
-	AutoEquipBetterItems           = 20,
-	FirstPersonCamera              = 21,
-	ForceFeedback                  = 22,
-	AimAssist                      = 23,
-	EquipFirstBuildingPieceWhenSwappingQuickbars = 24,
-	EquipFirstBuildingPieceWhenSwappingQuickbarsAthena = 25,
-	ShowHeadAccessories            = 26,
-	ShowBackpack                   = 27,
-	PeripheralLighting             = 28,
-	ShowViewerCount                = 29,
-	GamepadAutoRun                 = 30,
-	HUDScale                       = 31,
-	StreamerMode                   = 32,
-	TurboBuild                     = 33,
-	AutoChangeMaterial             = 34,
-	CrossplayPreference            = 35,
-	ReplayRecording                = 36,
-	ReplayRecordingLargeTeams      = 37,
-	ESettingType_MAX               = 38
-};
-
-
 // Enum FortniteGame.EPathUndermineEvent
 enum class EPathUndermineEvent : uint8_t
 {
@@ -3322,16 +3725,6 @@ enum class EFortAnnouncerTeamVocalChords : uint8_t
 };
 
 
-// Enum FortniteGame.EFortIsFinalXpUpdate
-enum class EFortIsFinalXpUpdate : uint8_t
-{
-	Uninitialized                  = 0,
-	NotFinal                       = 1,
-	Final                          = 2,
-	EFortIsFinalXpUpdate_MAX       = 3
-};
-
-
 // Enum FortniteGame.EFortRewardType
 enum class EFortRewardType : uint8_t
 {
@@ -3339,29 +3732,6 @@ enum class EFortRewardType : uint8_t
 	Missed                         = 1,
 	Max_None                       = 2,
 	EFortRewardType_MAX            = 3
-};
-
-
-// Enum FortniteGame.EFortRewardActivityType
-enum class EFortRewardActivityType : uint8_t
-{
-	General                        = 0,
-	MissionPrimary                 = 1,
-	MissionSecondary               = 2,
-	AccountLevelUp                 = 3,
-	Max_None                       = 4,
-	EFortRewardActivityType_MAX    = 5
-};
-
-
-// Enum FortniteGame.EStatCategory
-enum class EStatCategory : uint8_t
-{
-	Combat                         = 0,
-	Building                       = 1,
-	Utility                        = 2,
-	Max_None                       = 3,
-	EStatCategory_MAX              = 4
 };
 
 
@@ -3427,6 +3797,20 @@ enum class EFortPickupTossState : uint8_t
 };
 
 
+// Enum FortniteGame.EFortPickupSourceTypeFlag
+enum class EFortPickupSourceTypeFlag : uint8_t
+{
+	Other                          = 0,
+	Player                         = 1,
+	Destruction                    = 2,
+	Container                      = 3,
+	AI                             = 4,
+	Tossed                         = 5,
+	FloorLoot                      = 6,
+	EFortPickupSourceTypeFlag_MAX  = 7
+};
+
+
 // Enum FortniteGame.EFortPlayerAnimBodyType
 enum class EFortPlayerAnimBodyType : uint8_t
 {
@@ -3448,6 +3832,22 @@ enum class EFortCardinalDirection : uint8_t
 };
 
 
+// Enum FortniteGame.EQuickbarSlots
+enum class EQuickbarSlots : uint8_t
+{
+	HarvestingTool                 = 0,
+	Weapon1                        = 1,
+	Weapon2                        = 2,
+	Weapon3                        = 3,
+	Gadget1                        = 4,
+	Gadget2                        = 5,
+	Ability1                       = 6,
+	Ability2                       = 7,
+	Ability3                       = 8,
+	EQuickbarSlots_MAX             = 9
+};
+
+
 // Enum FortniteGame.EFortPickerToDisplay
 enum class EFortPickerToDisplay : uint8_t
 {
@@ -3456,23 +3856,32 @@ enum class EFortPickerToDisplay : uint8_t
 	SocialPicker                   = 2,
 	ChatPicker                     = 3,
 	NotePicker                     = 4,
-	SprayPicker                    = 5,
-	EmotePicker                    = 6,
-	SquadQuickChatPicker           = 7,
-	EFortPickerToDisplay_MAX       = 8
+	EmotePicker                    = 5,
+	SquadQuickChatPicker           = 6,
+	EFortPickerToDisplay_MAX       = 7
 };
 
 
-// Enum FortniteGame.ELockOnState
-enum class ELockOnState : uint8_t
+// Enum FortniteGame.EVehicleTrickType
+enum class EVehicleTrickType : uint8_t
 {
-	NoTarget                       = 0,
-	TargetAcquired                 = 1,
-	LockingOnToTarget              = 2,
-	TargetLockedOn                 = 3,
-	Cooldown                       = 4,
-	COUNT                          = 5,
-	ELockOnState_MAX               = 6
+	StartedLanding                 = 0,
+	StuckLanding                   = 1,
+	HeightIncrement                = 2,
+	DistanceIncrement              = 3,
+	AirTimeIncrement               = 4,
+	Count                          = 5,
+	EVehicleTrickType_MAX          = 6
+};
+
+
+// Enum FortniteGame.EFollow
+enum class EFollow : uint8_t
+{
+	NextTeammate                   = 0,
+	PreviousTeammate               = 1,
+	SpecialActor                   = 2,
+	EFollow_MAX                    = 3
 };
 
 
@@ -3509,7 +3918,8 @@ enum class EFortInputActionGroup : uint8_t
 	Cinematic                      = 5,
 	Picker                         = 6,
 	Other                          = 7,
-	EFortInputActionGroup_MAX      = 8
+	Vehicle                        = 8,
+	EFortInputActionGroup_MAX      = 9
 };
 
 
@@ -3534,6 +3944,17 @@ enum class EFortPawnStasisMode : uint8_t
 };
 
 
+// Enum FortniteGame.EBackpackType
+enum class EBackpackType : uint8_t
+{
+	Jetpack                        = 0,
+	Medic                          = 1,
+	StormTracker                   = 2,
+	Glider                         = 3,
+	EBackpackType_MAX              = 4
+};
+
+
 // Enum FortniteGame.ETrustedPlatformType
 enum class ETrustedPlatformType : uint8_t
 {
@@ -3541,7 +3962,8 @@ enum class ETrustedPlatformType : uint8_t
 	Untrusted                      = 1,
 	PS4                            = 2,
 	XboxOne                        = 3,
-	ETrustedPlatformType_MAX       = 4
+	Erebus                         = 4,
+	ETrustedPlatformType_MAX       = 5
 };
 
 
@@ -3565,8 +3987,14 @@ enum class EDeathCause : uint8_t
 	DBNOTimeout                    = 14,
 	Banhammer                      = 15,
 	RemovedFromGame                = 16,
-	Unspecified                    = 17,
-	EDeathCause_MAX                = 18
+	MassiveMelee                   = 17,
+	MassiveDiveBomb                = 18,
+	MassiveRanged                  = 19,
+	Vehicle                        = 20,
+	LMG                            = 21,
+	GasGrenade                     = 22,
+	Unspecified                    = 23,
+	EDeathCause_MAX                = 24
 };
 
 
@@ -3604,69 +4032,52 @@ enum class EFortPawnState : uint8_t
 };
 
 
-// Enum FortniteGame.EFriendlyFireType
-enum class EFriendlyFireType : uint8_t
+// Enum FortniteGame.EIndicatorDisplayMode
+enum class EIndicatorDisplayMode : uint8_t
 {
-	Off                            = 0,
-	On                             = 1,
-	EFriendlyFireType_MAX          = 2
+	Always                         = 0,
+	WhenFiring                     = 1,
+	WhenDamaged                    = 2,
+	EIndicatorDisplayMode_MAX      = 3
 };
 
 
-// Enum FortniteGame.EFortAthenaPlaylist
-enum class EFortAthenaPlaylist : uint8_t
+// Enum FortniteGame.ERewardPlacementBonusType
+enum class ERewardPlacementBonusType : uint8_t
 {
-	AthenaSolo                     = 0,
-	AthenaDuo                      = 1,
-	AthenaSquad                    = 2,
-	AthenaFiftyFifty               = 3,
-	AthenaEvent1                   = 4,
-	AthenaEvent2                   = 5,
-	AthenaEvent3                   = 6,
-	AthenaEvent4                   = 7,
-	AthenaEvent5                   = 8,
-	AthenaEvent6                   = 9,
-	AthenaEvent7                   = 10,
-	AthenaEvent8                   = 11,
-	AthenaPlatoon                  = 12,
-	AthenaEvent21                  = 13,
-	AthenaEvent22                  = 14,
-	AthenaEvent23                  = 15,
-	AthenaEvent24                  = 16,
-	AthenaEvent25                  = 17,
-	AthenaEvent26                  = 18,
-	AthenaEvent27                  = 19,
-	AthenaEvent28                  = 20,
-	AthenaEvent29                  = 21,
-	AthenaEvent30                  = 22,
-	AthenaEvent31                  = 23,
-	AthenaEvent32                  = 24,
-	AthenaEvent33                  = 25,
-	AthenaEvent34                  = 26,
-	AthenaEvent35                  = 27,
-	AthenaEvent36                  = 28,
-	AthenaEvent37                  = 29,
-	AthenaEvent38                  = 30,
-	AthenaEvent39                  = 31,
-	AthenaSnipersV2Solo            = 32,
-	AthenaEvent40                  = 33,
-	AthenaSnipersV2Duo             = 34,
-	AthenaEvent41                  = 35,
-	AthenaSnipersV2Squad           = 36,
-	AthenaEvent42                  = 37,
-	AthenaEvent43                  = 38,
-	AthenaEvent44                  = 39,
-	AthenaEvent45                  = 40,
-	AthenaEvent46                  = 41,
-	AthenaEvent47                  = 42,
-	AthenaEvent48                  = 43,
-	AthenaEvent49                  = 44,
-	AthenaEvent50                  = 45,
-	AthenaEvent51                  = 46,
-	AthenaEvent52                  = 47,
-	AthenaEvent53                  = 48,
-	AthenaEvent54                  = 49,
-	EFortAthenaPlaylist_MAX        = 50
+	Solo                           = 0,
+	Duo                            = 1,
+	Squad                          = 2,
+	LargeTeam                      = 3,
+	None                           = 4,
+	TwoTeam                        = 5,
+	MediumTeam                     = 6,
+	QuickSolo                      = 7,
+	QuickDuo                       = 8,
+	QuickSquad                     = 9,
+	QuickLargeTeam                 = 10,
+	QuickTwoTeam                   = 11,
+	QuickMediumTeam                = 12,
+	ERewardPlacementBonusType_MAX  = 13
+};
+
+
+// Enum FortniteGame.EPlaylistUIExtensionSlot
+enum class EPlaylistUIExtensionSlot : uint8_t
+{
+	Primary                        = 0,
+	EPlaylistUIExtensionSlot_MAX   = 1
+};
+
+
+// Enum FortniteGame.EAthenaWinCondition
+enum class EAthenaWinCondition : uint8_t
+{
+	LastManStanding                = 0,
+	LastManStandingIncludingAllies = 1,
+	TimedTeamFinalFight            = 2,
+	FirstToGoalScore               = 3,
+	EAthenaWinCondition_MAX        = 4
 };
 
 
@@ -3685,29 +4096,6 @@ enum class EAthenaRespawnType : uint8_t
 	InfiniteRespawn                = 1,
 	InfiniteRespawnExceptStorm     = 2,
 	EAthenaRespawnType_MAX         = 3
-};
-
-
-// Enum FortniteGame.EScorePlacementTable
-enum class EScorePlacementTable : uint8_t
-{
-	None                           = 0,
-	Solo                           = 1,
-	Duos                           = 2,
-	Squads                         = 3,
-	FiftyFifty                     = 4,
-	Count                          = 5,
-	EScorePlacementTable_MAX       = 6
-};
-
-
-// Enum FortniteGame.ESafeZoneStartUp
-enum class ESafeZoneStartUp : uint8_t
-{
-	UseDefaultGameBehavior         = 0,
-	StartsWithWarmUp               = 1,
-	StartsWithAirCraft             = 2,
-	ESafeZoneStartUp_MAX           = 3
 };
 
 
@@ -3774,6 +4162,17 @@ enum class ETwoPointSolverRotationA : uint8_t
 };
 
 
+// Enum FortniteGame.EObjectiveStatusUpdateType
+enum class EObjectiveStatusUpdateType : uint8_t
+{
+	Always                         = 0,
+	OnPercent                      = 1,
+	OnComplete                     = 2,
+	Never                          = 3,
+	EObjectiveStatusUpdateType_MAX = 4
+};
+
+
 // Enum FortniteGame.EFortQuestRewardType
 enum class EFortQuestRewardType : uint8_t
 {
@@ -3815,6 +4214,33 @@ enum class EFortQuestType : uint8_t
 };
 
 
+// Enum FortniteGame.ECosmeticType
+enum class ECosmeticType : uint8_t
+{
+	Image                          = 0,
+	Widget                         = 1,
+	ECosmeticType_MAX              = 2
+};
+
+
+// Enum FortniteGame.EFortQuestMapNodeLabelPosition
+enum class EFortQuestMapNodeLabelPosition : uint8_t
+{
+	Top                            = 0,
+	Bottom                         = 1,
+	EFortQuestMapNodeLabelPosition_MAX = 2
+};
+
+
+// Enum FortniteGame.EFortQuestMapNodeType
+enum class EFortQuestMapNodeType : uint8_t
+{
+	MandatoryQuest                 = 0,
+	SideQuest                      = 1,
+	EFortQuestMapNodeType_MAX      = 2
+};
+
+
 // Enum FortniteGame.EFortQuestObjectiveItemEvent
 enum class EFortQuestObjectiveItemEvent : uint8_t
 {
@@ -3834,16 +4260,18 @@ enum class EFortQuestObjectiveItemEvent : uint8_t
 	LevelUpBattlePass              = 13,
 	HasItem                        = 14,
 	SlotInCollection               = 15,
-	HasCompletedQuest              = 16,
-	HasAssignedWorker              = 17,
-	HasUpgraded                    = 18,
-	HasConverted                   = 19,
-	HasUpgradedRarity              = 20,
-	HasLeveledUpCollectionBook     = 21,
-	HasLeveledUpAthenaSeason       = 22,
-	HasLeveledUpBattlePass         = 23,
-	Max_None                       = 24,
-	EFortQuestObjectiveItemEvent_MAX = 25
+	AlterationRespec               = 16,
+	AlterationUpgrade              = 17,
+	HasCompletedQuest              = 18,
+	HasAssignedWorker              = 19,
+	HasUpgraded                    = 20,
+	HasConverted                   = 21,
+	HasUpgradedRarity              = 22,
+	HasLeveledUpCollectionBook     = 23,
+	HasLeveledUpAthenaSeason       = 24,
+	HasLeveledUpBattlePass         = 25,
+	Max_None                       = 26,
+	EFortQuestObjectiveItemEvent_MAX = 27
 };
 
 
@@ -3858,51 +4286,54 @@ enum class EFortQuestObjectiveStatEvent : uint8_t
 	Land                           = 5,
 	Emote                          = 6,
 	Spray                          = 7,
-	Build                          = 8,
-	BuildingEdit                   = 9,
-	BuildingRepair                 = 10,
-	BuildingUpgrade                = 11,
-	PlaceTrap                      = 12,
-	Complete                       = 13,
-	Craft                          = 14,
-	Collect                        = 15,
-	Win                            = 16,
-	Interact                       = 17,
-	Destroy                        = 18,
-	Ability                        = 19,
-	WaveComplete                   = 20,
-	Custom                         = 21,
-	Client                         = 22,
-	AthenaRank                     = 23,
-	AthenaOutlive                  = 24,
-	RevivePlayer                   = 25,
-	NumGameplayEvents              = 26,
-	Acquire                        = 27,
-	Consume                        = 28,
-	OpenCardPack                   = 29,
-	PurchaseCardPack               = 30,
-	Convert                        = 31,
-	Upgrade                        = 32,
-	UpgradeRarity                  = 33,
-	QuestComplete                  = 34,
-	AssignWorker                   = 35,
-	CollectExpedition              = 36,
-	CollectSuccessfulExpedition    = 37,
-	LevelUpCollectionBook          = 38,
-	LevelUpAthenaSeason            = 39,
-	LevelUpBattlePass              = 40,
-	HasItem                        = 41,
-	SlotInCollection               = 42,
-	HasCompletedQuest              = 43,
-	HasAssignedWorker              = 44,
-	HasUpgraded                    = 45,
-	HasConverted                   = 46,
-	HasUpgradedRarity              = 47,
-	HasLeveledUpCollectionBook     = 48,
-	HasLeveledUpAthenaSeason       = 49,
-	HasLeveledUpBattlePass         = 50,
-	Max_None                       = 51,
-	EFortQuestObjectiveStatEvent_MAX = 52
+	Toy                            = 8,
+	Build                          = 9,
+	BuildingEdit                   = 10,
+	BuildingRepair                 = 11,
+	BuildingUpgrade                = 12,
+	PlaceTrap                      = 13,
+	Complete                       = 14,
+	Craft                          = 15,
+	Collect                        = 16,
+	Win                            = 17,
+	Interact                       = 18,
+	Destroy                        = 19,
+	Ability                        = 20,
+	WaveComplete                   = 21,
+	Custom                         = 22,
+	Client                         = 23,
+	AthenaRank                     = 24,
+	AthenaOutlive                  = 25,
+	RevivePlayer                   = 26,
+	NumGameplayEvents              = 27,
+	Acquire                        = 28,
+	Consume                        = 29,
+	OpenCardPack                   = 30,
+	PurchaseCardPack               = 31,
+	Convert                        = 32,
+	Upgrade                        = 33,
+	UpgradeRarity                  = 34,
+	QuestComplete                  = 35,
+	AssignWorker                   = 36,
+	CollectExpedition              = 37,
+	CollectSuccessfulExpedition    = 38,
+	LevelUpCollectionBook          = 39,
+	LevelUpAthenaSeason            = 40,
+	LevelUpBattlePass              = 41,
+	HasItem                        = 42,
+	SlotInCollection               = 43,
+	AlterationRespec               = 44,
+	AlterationUpgrade              = 45,
+	HasCompletedQuest              = 46,
+	HasAssignedWorker              = 47,
+	HasUpgraded                    = 48,
+	HasConverted                   = 49,
+	HasUpgradedRarity              = 50,
+	HasLeveledUpCollectionBook     = 51,
+	HasLeveledUpAthenaSeason       = 52,
+	HasLeveledUpBattlePass         = 53,
+	Max_None                       = 54,
+	EFortQuestObjectiveStatEvent_MAX = 55
 };
 
 
@@ -3914,16 +4345,6 @@ enum class EFortQuestState : uint8_t
 	Completed                      = 2,
 	Claimed                        = 3,
 	EFortQuestState_MAX            = 4
-};
-
-
-// Enum FortniteGame.EFortQuickBars
-enum class EFortQuickBars : uint8_t
-{
-	Primary                        = 0,
-	Secondary                      = 1,
-	Max_None                       = 2,
-	EFortQuickBars_MAX             = 3
 };
 
 
@@ -3940,6 +4361,17 @@ enum class ERegisteredPlayerUnregistrationStatus : uint8_t
 };
 
 
+// Enum FortniteGame.EDroneFollowMode
+enum class EDroneFollowMode : uint8_t
+{
+	None                           = 0,
+	ForceFacingLocation            = 1,
+	ForceFacingFollowedPlayer      = 2,
+	TetherToFollowedPlayer         = 3,
+	MAX                            = 4
+};
+
+
 // Enum FortniteGame.EClassRepNodeMapping
 enum class EClassRepNodeMapping : uint8_t
 {
@@ -3951,18 +4383,6 @@ enum class EClassRepNodeMapping : uint8_t
 	EClassRepNodeMapping_MAX       = 5
 };
 
-constexpr const char* ClassRepNodeMappingToString(EClassRepNodeMapping e) 
-{
-	switch (e)
-	{
-		case EClassRepNodeMapping::NotRouted: return "NotRouted";
-		case EClassRepNodeMapping::RelevantAllConnections: return "RelevantAllConnections";
-		case EClassRepNodeMapping::Spatialize_Static: return "Spatialize_Static";
-		case EClassRepNodeMapping::Spatialize_Dynamic: return "Spatialize_Dynamic";
-		case EClassRepNodeMapping::Spatialize_Dormancy: return "Spatialize_Dormancy";
-		default: return "Invalid";
-	}
-}
 
 // Enum FortniteGame.EFortSafeZoneState
 enum class EFortSafeZoneState : uint8_t
@@ -4062,6 +4482,14 @@ enum class EFortSoundIndicatorTypes : uint8_t
 };
 
 
+// Enum FortniteGame.EFortSpawnActorTime
+enum class EFortSpawnActorTime : uint8_t
+{
+	PostPlaylistLoad               = 0,
+	EFortSpawnActorTime_MAX        = 1
+};
+
+
 // Enum FortniteGame.EFortEventConditionType
 enum class EFortEventConditionType : uint8_t
 {
@@ -4095,6 +4523,23 @@ enum class EFortEventRepeat : uint8_t
 };
 
 
+// Enum FortniteGame.ESupplyDropItemTrackType
+enum class ESupplyDropItemTrackType : uint8_t
+{
+	SpecialActors                  = 0,
+	ESupplyDropItemTrackType_MAX   = 1
+};
+
+
+// Enum FortniteGame.ESupplyDropSpawnType
+enum class ESupplyDropSpawnType : uint8_t
+{
+	SafeZoneDriven                 = 0,
+	ItemDeliveryManagement         = 1,
+	ESupplyDropSpawnType_MAX       = 2
+};
+
+
 // Enum FortniteGame.EFortAutoTestState
 enum class EFortAutoTestState : uint8_t
 {
@@ -4106,9 +4551,45 @@ enum class EFortAutoTestState : uint8_t
 	PvEMatchmaking                 = 5,
 	ZoneLoad                       = 6,
 	ZoneTest                       = 7,
-	ServerShutdown                 = 8,
-	Finished                       = 9,
-	MAX                            = 10
+	Finished                       = 8,
+	MAX                            = 9
+};
+
+
+// Enum FortniteGame.EReplaySmokeTestStep
+enum class EReplaySmokeTestStep : uint8_t
+{
+	Setup                          = 0,
+	TogglePause                    = 1,
+	StepForward                    = 2,
+	StepBackward                   = 3,
+	StepToEnd                      = 4,
+	StepToBeginning                = 5,
+	SpeedUpPlayback                = 6,
+	SlowDownPlayback               = 7,
+	ToggleHideTimeline             = 8,
+	IterateCameraModes             = 9,
+	TogglePlayerOutlines           = 10,
+	ToggleNamePlates               = 11,
+	ToggleReplayRegion             = 12,
+	ZoomIn                         = 13,
+	ZoomOut                        = 14,
+	ToggleAutoFollowThirdPerson    = 15,
+	IncreaseExposure               = 16,
+	DecreaseExposure               = 17,
+	SetAutoExposure                = 18,
+	IncreaseAperture               = 19,
+	DecreaseAperture               = 20,
+	IncreaseFocalLength            = 21,
+	DecreaseFocalLength            = 22,
+	IncreaseFocusDistance          = 23,
+	DecreaseFocusDistance          = 24,
+	SetAutoFocus                   = 25,
+	ToggleDamageEffects            = 26,
+	ToggleHideUI                   = 27,
+	ToggleMap                      = 28,
+	Reset                          = 29,
+	MAX                            = 30
 };
 
 
@@ -4226,6 +4707,38 @@ enum class ETrackDirection : uint8_t
 	XNegative                      = 3,
 	Max_None                       = 4,
 	ETrackDirection_MAX            = 5
+};
+
+
+// Enum FortniteGame.EFortErrorSeverity
+enum class EFortErrorSeverity : uint8_t
+{
+	Unspecified                    = 0,
+	Silent                         = 1,
+	Passive                        = 2,
+	Blocking                       = 3,
+	SevereBlocking                 = 4,
+	EFortErrorSeverity_MAX         = 5
+};
+
+
+// Enum FortniteGame.EFortPickerMode
+enum class EFortPickerMode : uint8_t
+{
+	BuildingCategory               = 0,
+	TrapCategory                   = 1,
+	WeaponCategory                 = 2,
+	SocialCategory                 = 3,
+	Building                       = 4,
+	Trap                           = 5,
+	TrapRadial                     = 6,
+	Weapon                         = 7,
+	Social                         = 8,
+	DirectPickEmote                = 9,
+	DirectPickSpray                = 10,
+	SquadQuickChat                 = 11,
+	WeaponsSlotted                 = 12,
+	EFortPickerMode_MAX            = 13
 };
 
 
@@ -4367,15 +4880,19 @@ enum class EFortBangType : uint8_t
 	CosmeticGlider                 = 27,
 	CosmeticContrail               = 28,
 	CosmeticBattleBus              = 29,
-	CosmeticLoadingScreen          = 30,
-	CosmeticBackpack               = 31,
-	CosmeticHat                    = 32,
-	CosmeticPickaxe                = 33,
-	CosmeticDance                  = 34,
-	CosmeticSpray                  = 35,
-	AthenaDirectedAcquisitionTab   = 36,
-	PlayerBanners                  = 37,
-	EFortBangType_MAX              = 38
+	CosmeticVehicle                = 30,
+	CosmeticWeapon                 = 31,
+	CosmeticCallingCard            = 32,
+	CosmeticMapMarker              = 33,
+	CosmeticMusicOverride          = 34,
+	CosmeticLoadingScreen          = 35,
+	CosmeticBackpack               = 36,
+	CosmeticHat                    = 37,
+	CosmeticPickaxe                = 38,
+	CosmeticDance                  = 39,
+	AthenaDirectedAcquisitionTab   = 40,
+	PlayerBanners                  = 41,
+	EFortBangType_MAX              = 42
 };
 
 
@@ -4435,18 +4952,6 @@ enum class EReadyCheckState : uint8_t
 };
 
 
-// Enum FortniteGame.ERichPresenceStateChange
-enum class ERichPresenceStateChange : uint8_t
-{
-	AutoUpdate                     = 0,
-	Idle                           = 1,
-	Active                         = 2,
-	Busy                           = 3,
-	NotBusy                        = 4,
-	ERichPresenceStateChange_MAX   = 5
-};
-
-
 // Enum FortniteGame.EFortTeamAffiliation
 enum class EFortTeamAffiliation : uint8_t
 {
@@ -4484,41 +4989,13 @@ enum class EFortAIUtility : uint8_t
 enum class EFortTileEdgeType : uint8_t
 {
 	Undefined                      = 0,
-	Outer_1                        = 1,
-	Transition_2                   = 2,
-	Inner_3                        = 3,
-	Border_4                       = 4,
-	BorderTransitionSingle_5       = 5,
-	BorderTransitionDouble_6       = 6,
+	Outer                          = 1,
+	Transition                     = 2,
+	Inner                          = 3,
+	Border                         = 4,
+	BorderTransitionSingle         = 5,
+	BorderTransitionDouble         = 6,
 	MAX                            = 7
-};
-
-
-// Enum FortniteGame.EFortRequestedGameplayAction
-enum class EFortRequestedGameplayAction : uint8_t
-{
-	ContinuePlaying                = 0,
-	StartPlaying                   = 1,
-	StopPlaying                    = 2,
-	EnterZone                      = 3,
-	LeaveZone                      = 4,
-	ReturnToMainMenu               = 5,
-	QuitGame                       = 6,
-	Invalid                        = 7,
-	EFortRequestedGameplayAction_MAX = 8
-};
-
-
-// Enum FortniteGame.EFortGameplayState
-enum class EFortGameplayState : uint8_t
-{
-	NormalGameplay                 = 0,
-	WaitingToStart                 = 1,
-	EndOfZone                      = 2,
-	EnteringZone                   = 3,
-	LeavingZone                    = 4,
-	Invalid                        = 5,
-	EFortGameplayState_MAX         = 6
 };
 
 
@@ -4568,17 +5045,6 @@ enum class EFortWeaponTriggerType : uint8_t
 };
 
 
-// Enum FortniteGame.EFortJumpStaminaCost
-enum class EFortJumpStaminaCost : uint8_t
-{
-	None                           = 0,
-	Trigger                        = 1,
-	SprintTrigger                  = 2,
-	SprintAir                      = 3,
-	EFortJumpStaminaCost_MAX       = 4
-};
-
-
 // Enum FortniteGame.EFortDayPhasePrio
 enum class EFortDayPhasePrio : uint8_t
 {
@@ -4622,17 +5088,6 @@ enum class EFortCustomGender : uint8_t
 	Female                         = 2,
 	Both                           = 3,
 	EFortCustomGender_MAX          = 4
-};
-
-
-// Enum FortniteGame.EFortCompletionResult
-enum class EFortCompletionResult : uint8_t
-{
-	Win                            = 0,
-	Loss                           = 1,
-	Draw                           = 2,
-	Undefined                      = 3,
-	EFortCompletionResult_MAX      = 4
 };
 
 
@@ -4748,6 +5203,44 @@ enum class EFortBrushSize : uint8_t
 };
 
 
+// Enum FortniteGame.ESpecialActorStatType
+enum class ESpecialActorStatType : uint8_t
+{
+	NumEliminationsNearby          = 0,
+	TimeInWorld                    = 1,
+	PickupNumSpawns                = 2,
+	PickupNumDespawns              = 3,
+	PickupNumDropped               = 4,
+	PickupNumTaken                 = 5,
+	PlayerWon                      = 6,
+	PlayerNumEliminations          = 7,
+	PlayerNum                      = 8,
+	TotalStats                     = 9,
+	ESpecialActorStatType_MAX      = 10
+};
+
+
+// Enum FortniteGame.EEndOfMatchReason
+enum class EEndOfMatchReason : uint8_t
+{
+	LastManStanding                = 0,
+	ScoreReached                   = 1,
+	TimeRanOut                     = 2,
+	EEndOfMatchReason_MAX          = 3
+};
+
+
+// Enum FortniteGame.EFortItemViewRotationMode
+enum class EFortItemViewRotationMode : uint8_t
+{
+	None                           = 0,
+	BoundsPivot                    = 1,
+	World                          = 2,
+	Relative                       = 3,
+	EFortItemViewRotationMode_MAX  = 4
+};
+
+
 // Enum FortniteGame.EFortInventoryCustomFilter
 enum class EFortInventoryCustomFilter : uint8_t
 {
@@ -4849,17 +5342,6 @@ enum class ESubGameAccessStatus : uint8_t
 };
 
 
-// Enum FortniteGame.ESubGame
-enum class ESubGame : uint8_t
-{
-	Campaign                       = 0,
-	Athena                         = 1,
-	Invalid                        = 2,
-	Count                          = 3,
-	ESubGame_MAX                   = 4
-};
-
-
 // Enum FortniteGame.EFortUIFriendNotificationType
 enum class EFortUIFriendNotificationType : uint8_t
 {
@@ -4873,12 +5355,13 @@ enum class EFortUIFriendNotificationType : uint8_t
 // Enum FortniteGame.EFortNotificationPriority
 enum class EFortNotificationPriority : uint8_t
 {
-	Friend                         = 0,
-	BoostedXP                      = 1,
-	TwitchHigh                     = 2,
-	GeneralSendNotification        = 3,
-	TwitchLow                      = 4,
-	Max                            = 5
+	Vote                           = 0,
+	Friend                         = 1,
+	BoostedXP                      = 2,
+	TwitchHigh                     = 3,
+	GeneralSendNotification        = 4,
+	TwitchLow                      = 5,
+	Max                            = 6
 };
 
 
@@ -4888,7 +5371,8 @@ enum class EFortNotificationType : uint8_t
 	Default                        = 0,
 	Power                          = 1,
 	HealthWarning                  = 2,
-	Max                            = 3
+	Error                          = 3,
+	Max                            = 4
 };
 
 
@@ -5115,6 +5599,47 @@ enum class EFrontEndCamera : uint8_t
 };
 
 
+// Enum FortniteGame.EDroneFacingLocationMode
+enum class EDroneFacingLocationMode : uint8_t
+{
+	NotFacingLocation              = 0,
+	FindingPoint                   = 1,
+	TrackingPoint                  = 2,
+	EDroneFacingLocationMode_MAX   = 3
+};
+
+
+// Enum FortniteGame.EFireModeType
+enum class EFireModeType : uint8_t
+{
+	AccountSetting                 = 0,
+	TapToShoot                     = 1,
+	FireButton                     = 2,
+	AutoFire                       = 3,
+	ForceTouch                     = 4,
+	MAX                            = 5
+};
+
+
+// Enum FortniteGame.ELayoutPropertyType
+enum class ELayoutPropertyType : uint8_t
+{
+	PropertyType_Float             = 0,
+	PropertyType_Bool              = 1,
+	PropertyType_MAX               = 2
+};
+
+
+// Enum FortniteGame.ELayoutDataType
+enum class ELayoutDataType : uint8_t
+{
+	Custom                         = 0,
+	DefaultToolLayout              = 1,
+	DefaultGameLayout              = 2,
+	MAX                            = 3
+};
+
+
 // Enum FortniteGame.EFortEncounterSpawnLimitType
 enum class EFortEncounterSpawnLimitType : uint8_t
 {
@@ -5225,16 +5750,6 @@ enum class EStatRecordingPeriod : uint8_t
 };
 
 
-// Enum FortniteGame.EStatMod
-enum class EStatMod : uint8_t
-{
-	Delta                          = 0,
-	Set                            = 1,
-	Maximum                        = 2,
-	EStatMod_MAX                   = 3
-};
-
-
 // Enum FortniteGame.EFortStrategicBuildingLevelCriteriaDisplayRepresentation
 enum class EFortStrategicBuildingLevelCriteriaDisplayRepresentation : uint8_t
 {
@@ -5294,13 +5809,20 @@ struct FAIHotSpotUseInfo : public FAIHotSpotSlotInfo
 	unsigned char                                      UnknownData00[0x8];                                       // 0x0010(0x0008) MISSED OFFSET
 };
 
-// ScriptStruct FortniteGame.FortItemQuantityPair
-// 0x0030
-struct FFortItemQuantityPair
+// ScriptStruct FortniteGame.AISpawnParams
+// 0x0020
+struct FAISpawnParams
 {
-	unsigned char                                      UnknownData00[0x28];                                      // 0x0000(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortItemQuantityPair.ItemDefinition
-	int                                                Quantity;                                                 // 0x0028(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x4];                                       // 0x002C(0x0004) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0000(0x0018) MISSED OFFSET
+	class UClass*                                      ActorClass;                                               // 0x0018(0x0008) (ZeroConstructor, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.AISpawnRequest
+// 0x0028 (0x0048 - 0x0020)
+struct FAISpawnRequest : public FAISpawnParams
+{
+	struct FScriptDelegate                             OnDoneEvent;                                              // 0x0020(0x0010) (ZeroConstructor, InstancedReference)
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0030(0x0018) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.AthenaCosmeticMaterialOverride
@@ -5311,6 +5833,15 @@ struct FAthenaCosmeticMaterialOverride
 	int                                                MaterialOverrideIndex;                                    // 0x0008(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
 	int                                                ProgressionThreshold;                                     // 0x000C(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x28];                                      // 0x0010(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.AthenaCosmeticMaterialOverride.OverrideMaterial
+};
+
+// ScriptStruct FortniteGame.McpVariantChannelInfo
+// 0x0030
+struct FMcpVariantChannelInfo
+{
+	struct FGameplayTag                                VariantChannelTag;                                        // 0x0000(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FGameplayTag                                ActiveVariantTag;                                         // 0x0008(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FGameplayTagContainer                       OwnedVariantTags;                                         // 0x0010(0x0020) (Edit, BlueprintVisible, BlueprintReadOnly)
 };
 
 // ScriptStruct FortniteGame.FortMultiSizeBrush
@@ -5331,7 +5862,36 @@ struct FFortAlterationSlotStatus
 {
 	class UFortAlterationItemDefinition*               Alteration;                                               // 0x0000(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, SaveGame, IsPlainOldData)
 	int                                                MinRequiredLevel;                                         // 0x0008(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, SaveGame, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x000C(0x0004) MISSED OFFSET
+	EFortRarity                                        MinHostItemRarity;                                        // 0x000C(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, SaveGame, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x000D(0x0003) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.FortItemQuantityPair
+// 0x0030
+struct FFortItemQuantityPair
+{
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0000(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortItemQuantityPair.ItemDefinition
+	int                                                Quantity;                                                 // 0x0028(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x002C(0x0004) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.McpVariantReader
+// 0x0030
+struct FMcpVariantReader
+{
+	struct FString                                     Channel;                                                  // 0x0000(0x0010) (Edit, ZeroConstructor)
+	struct FString                                     Active;                                                   // 0x0010(0x0010) (Edit, ZeroConstructor)
+	TArray<struct FString>                             Owned;                                                    // 0x0020(0x0010) (Edit, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.SpecialActorSingleStatData
+// 0x000C
+struct FSpecialActorSingleStatData
+{
+	ESpecialActorStatType                              StatType;                                                 // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0001(0x0003) MISSED OFFSET
+	float                                              Value;                                                    // 0x0004(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              StatLogicValue;                                           // 0x0008(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.FortAttributeInitializationKey
@@ -5362,6 +5922,27 @@ struct FGameplayTagMessage
 	struct FText                                       Text;                                                     // 0x0020(0x0018) (Edit)
 };
 
+// ScriptStruct FortniteGame.AthenaWeaponStats
+// 0x0048
+struct FAthenaWeaponStats
+{
+	struct FString                                     WeaponId;                                                 // 0x0000(0x0010) (ZeroConstructor)
+	int                                                Stats[0xD];                                               // 0x0010(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0044(0x0004) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.AthenaMatchStats
+// 0x00A0
+struct FAthenaMatchStats
+{
+	struct FString                                     StatBucket;                                               // 0x0000(0x0010) (ZeroConstructor)
+	struct FString                                     MatchID;                                                  // 0x0010(0x0010) (ZeroConstructor)
+	struct FString                                     MatchEndTime;                                             // 0x0020(0x0010) (ZeroConstructor)
+	struct FString                                     MatchPlatform;                                            // 0x0030(0x0010) (ZeroConstructor)
+	int                                                Stats[0x14];                                              // 0x0040(0x0004) (ZeroConstructor, IsPlainOldData)
+	TArray<struct FAthenaWeaponStats>                  WeaponStats;                                              // 0x0090(0x0010) (ZeroConstructor)
+};
+
 // ScriptStruct FortniteGame.AthenaLevelInfo
 // 0x0024
 struct FAthenaLevelInfo
@@ -5375,41 +5956,6 @@ struct FAthenaLevelInfo
 	int                                                BookMaxLevel;                                             // 0x0018(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	int                                                BookLevelXp;                                              // 0x001C(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	int                                                BookLevelXpForLevel;                                      // 0x0020(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-};
-
-// ScriptStruct FortniteGame.AthenaMatchStats
-// 0x0074
-struct FAthenaMatchStats
-{
-	int                                                SecondsAlive;                                             // 0x0000(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                Kills;                                                    // 0x0004(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                Downs;                                                    // 0x0008(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                Assists;                                                  // 0x000C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                Revives;                                                  // 0x0010(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                DamageDealtToHostiles;                                    // 0x0014(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                DamageDealtToFriends;                                     // 0x0018(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                DamageDealtToStructures;                                  // 0x001C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                DamageTaken;                                              // 0x0020(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                RangedShots;                                              // 0x0024(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                RangedHit;                                                // 0x0028(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              Accuracy;                                                 // 0x002C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                TravelDistanceGround;                                     // 0x0030(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                GatheredWood;                                             // 0x0034(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                GatheredStone;                                            // 0x0038(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                GatheredMetal;                                            // 0x003C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                MaterialsGathered;                                        // 0x0040(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                UsedWood;                                                 // 0x0044(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                UsedStone;                                                // 0x0048(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                UsedMetal;                                                // 0x004C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                MaterialsUsed;                                            // 0x0050(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                NormalDamageToHostiles;                                   // 0x0054(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                NormalDamageToFriends;                                    // 0x0058(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                CriticalDamageToHostiles;                                 // 0x005C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                CriticalDamageToFriends;                                  // 0x0060(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                NormalHitsToHostiles;                                     // 0x0064(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                NormalHitsToFriends;                                      // 0x0068(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                CriticalHitsToHostiles;                                   // 0x006C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                CriticalHitsToFriends;                                    // 0x0070(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.AthenaMatchTeamStats
@@ -5459,13 +6005,20 @@ struct FAthenaRewardResult
 };
 
 // ScriptStruct FortniteGame.AthenaTravelLogEntry
-// 0x0014
+// 0x0038
 struct FAthenaTravelLogEntry
 {
 	float                                              Time;                                                     // 0x0000(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	struct FVector                                     Position;                                                 // 0x0004(0x000C) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
 	EAthenaTravelEventType                             Type;                                                     // 0x0010(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0011(0x0003) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0011(0x0007) MISSED OFFSET
+	struct FName                                       InstigatorName;                                           // 0x0018(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EAthenaTravelLogPlayerType                         InstigatorPlayerType;                                     // 0x0020(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0021(0x0007) MISSED OFFSET
+	struct FName                                       ReceiverName;                                             // 0x0028(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EAthenaTravelLogPlayerType                         ReceiverPlayerType;                                       // 0x0030(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x3];                                       // 0x0031(0x0003) MISSED OFFSET
+	float                                              Value;                                                    // 0x0034(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.AthenaTravelRecord
@@ -5517,7 +6070,8 @@ struct FAthenaRewardItemReference
 	struct FString                                     TemplateId;                                               // 0x0028(0x0010) (Edit, ZeroConstructor)
 	int                                                Quantity;                                                 // 0x0038(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
 	bool                                               IsChaseReward;                                            // 0x003C(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x3];                                       // 0x003D(0x0003) MISSED OFFSET
+	EAthenaRewardItemType                              RewardType;                                               // 0x003D(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x2];                                       // 0x003E(0x0002) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.AthenaRewardScheduleLevel
@@ -5578,7 +6132,7 @@ struct FFortItemEntryStateValue
 };
 
 // ScriptStruct FortniteGame.FortItemEntry
-// 0x00BC (0x00C8 - 0x000C)
+// 0x00C4 (0x00D0 - 0x000C)
 struct FFortItemEntry : public FFastArraySerializerItem
 {
 	int                                                Count;                                                    // 0x000C(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, SaveGame, IsPlainOldData)
@@ -5602,8 +6156,7 @@ struct FFortItemEntry : public FFastArraySerializerItem
 	struct FGameplayAbilitySpecHandle                  GameplayAbilitySpecHandle;                                // 0x00A8(0x0004) (Transient)
 	unsigned char                                      UnknownData03[0x4];                                       // 0x00AC(0x0004) MISSED OFFSET
 	TArray<class UFortAlterationItemDefinition*>       AlterationInstances;                                      // 0x00B0(0x0010) (ZeroConstructor, Transient)
-	float                                              GenericAttributeValue;                                    // 0x00C0(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData04[0x4];                                       // 0x00C4(0x0004) MISSED OFFSET
+	TArray<float>                                      GenericAttributeValues;                                   // 0x00C0(0x0010) (ZeroConstructor, Transient)
 };
 
 // ScriptStruct FortniteGame.BuildingActorHotSpotDirection
@@ -5661,7 +6214,8 @@ struct FFortBounceData
 	struct FLinearColor                                DeformationVector;                                        // 0x000C(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, EditConst, IsPlainOldData)
 	struct FLinearColor                                DeformationCenter;                                        // 0x001C(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, EditConst, IsPlainOldData)
 	TEnumAsByte<EFortBounceType>                       BounceType;                                               // 0x002C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, EditConst, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x002D(0x0003) MISSED OFFSET
+	bool                                               bLocalInstigator;                                         // 0x002D(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, EditConst, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x2];                                       // 0x002E(0x0002) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.BuildingNavObstacle
@@ -5806,7 +6360,7 @@ struct FBuildingGameplayActorAbilityDeliveryBucket
 };
 
 // ScriptStruct FortniteGame.BuildingGameplayActorAbilityDeliveryInfo
-// 0x0080
+// 0x0048
 struct FBuildingGameplayActorAbilityDeliveryInfo
 {
 	TArray<struct FBuildingGameplayActorAbilityDeliveryBucket> DeliveryBuckets;                                          // 0x0000(0x0010) (Edit, ZeroConstructor, DisableEditOnInstance)
@@ -5817,7 +6371,7 @@ struct FBuildingGameplayActorAbilityDeliveryInfo
 	unsigned char                                      UnknownData00[0x3];                                       // 0x0015(0x0003) MISSED OFFSET
 	class ABuildingGameplayActor*                      OwningActor;                                              // 0x0018(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
 	TArray<class AActor*>                              DeferredTouchActorsToProcess;                             // 0x0020(0x0010) (ZeroConstructor, Transient)
-	unsigned char                                      UnknownData01[0x50];                                      // 0x0030(0x0050) MISSED OFFSET
+	unsigned char                                      UnknownData01[0x18];                                      // 0x0030(0x0018) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.TimeOfDayBlueprintDefaultVariables
@@ -5911,13 +6465,13 @@ struct FBuildingFoundationStreamingData
 };
 
 // ScriptStruct FortniteGame.BuildingFoundationLODActorData
-// 0x0028
+// 0x0030
 struct FBuildingFoundationLODActorData
 {
 	TWeakObjectPtr<class ALODActor>                    LODActor;                                                 // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0008(0x0010) MISSED OFFSET
-	class UMaterialInstanceDynamic*                    VisibilityMaterial;                                       // 0x0018(0x0008) (ZeroConstructor, IsPlainOldData)
-	class UTexture2DDynamic*                           VisibilityTexture;                                        // 0x0020(0x0008) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0008(0x0018) MISSED OFFSET
+	class UMaterialInstanceDynamic*                    VisibilityMaterial;                                       // 0x0020(0x0008) (ZeroConstructor, IsPlainOldData)
+	class UTexture2DDynamic*                           VisibilityTexture;                                        // 0x0028(0x0008) (ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.FortMapData
@@ -6037,28 +6591,34 @@ struct FBuildingGridActorFilter
 };
 
 // ScriptStruct FortniteGame.FortTargetFilter
-// 0x0020
+// 0x0028
 struct FFortTargetFilter
 {
 	TEnumAsByte<EFortTargetSelectionFilter>            ActorTypeFilter;                                          // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x7];                                       // 0x0001(0x0007) MISSED OFFSET
 	class UClass*                                      ActorClassFilter;                                         // 0x0008(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	bool                                               bExcludeInstigator;                                       // 0x0010(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExcludeRequester;                                        // 0x0011(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExcludeAllAttachedToInstigator;                          // 0x0012(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExcludeAllAttachedToRequester;                           // 0x0013(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExcludePawnFriends;                                      // 0x0014(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExcludeFriendlyAI;                                       // 0x0015(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExcludePawnEnemies;                                      // 0x0016(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExcludeNonPawnFriends;                                   // 0x0017(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExcludeNonPawnEnemies;                                   // 0x0018(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExcludeDBNOPawns;                                        // 0x0019(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExcludeWithoutNavigationCorridor;                        // 0x001A(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExcludeNonPlayerBuiltPieces;                             // 0x001B(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExcludePlayerBuiltPieces;                                // 0x001C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExcludeNonBGABuildings;                                  // 0x001D(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bExcludeNonBlockingHits;                                  // 0x001E(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bTraceComplexCollision;                                   // 0x001F(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bUseTrapsOwningPawnAsInstigator;                          // 0x0011(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludeRequester;                                        // 0x0012(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludeAllAttachedToInstigator;                          // 0x0013(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludeAthenaVehicleOfInstigator;                        // 0x0014(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludeAllAttachedToRequester;                           // 0x0015(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludePawnFriends;                                      // 0x0016(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludeFriendlyAI;                                       // 0x0017(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludePawnEnemies;                                      // 0x0018(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludeNonPawnFriends;                                   // 0x0019(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludeNonPawnEnemies;                                   // 0x001A(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bConsiderFriendlyFireWhenExcludingFriends;                // 0x001B(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludeDBNOPawns;                                        // 0x001C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludeAthenaVehicle;                                    // 0x001D(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludeWithoutNavigationCorridor;                        // 0x001E(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludeNonPlayerBuiltPieces;                             // 0x001F(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludePlayerBuiltPieces;                                // 0x0020(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludeNonBGABuildings;                                  // 0x0021(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludeNonBlockingHits;                                  // 0x0022(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bExcludeProjectiles;                                      // 0x0023(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bTraceComplexCollision;                                   // 0x0024(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x0025(0x0003) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortCosmeticModification
@@ -6254,6 +6814,15 @@ struct FAbilityToolSpawnParameters
 	class ABuildingSMActor*                            AttachedToActor;                                          // 0x0020(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
 };
 
+// ScriptStruct FortniteGame.GameplayEffectApplicationInfoHard
+// 0x0010
+struct FGameplayEffectApplicationInfoHard
+{
+	class UClass*                                      GameplayEffect;                                           // 0x0000(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              Level;                                                    // 0x0008(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x000C(0x0004) MISSED OFFSET
+};
+
 // ScriptStruct FortniteGame.AbilityKitItem
 // 0x0010
 struct FAbilityKitItem
@@ -6349,7 +6918,7 @@ struct FFortGameplayAbilityMontageInfo
 };
 
 // ScriptStruct FortniteGame.FortAbilityTargetSelection
-// 0x00F8
+// 0x0100
 struct FFortAbilityTargetSelection
 {
 	TEnumAsByte<EFortTargetSelectionShape>             Shape;                                                    // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
@@ -6365,12 +6934,12 @@ struct FFortAbilityTargetSelection
 	struct FScalableFloat                              ConeYawAngle;                                             // 0x0058(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
 	struct FScalableFloat                              ConePitchAngle;                                           // 0x0080(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
 	struct FScalableFloat                              ConeMinRadius;                                            // 0x00A8(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FFortTargetFilter                           TargetFilter;                                             // 0x00D0(0x0020) (Edit, BlueprintVisible, BlueprintReadOnly)
-	bool                                               bExcludeObstructedByWorld;                                // 0x00F0(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bCreateHitResultWhenNoTargetsFound;                       // 0x00F1(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bUseProjectileRotationForDamageZones;                     // 0x00F2(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortAbilityTargetSelectionUsage                   TargetSelectionUsage;                                     // 0x00F3(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                MaxTargets;                                               // 0x00F4(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FFortTargetFilter                           TargetFilter;                                             // 0x00D0(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
+	bool                                               bExcludeObstructedByWorld;                                // 0x00F8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bCreateHitResultWhenNoTargetsFound;                       // 0x00F9(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bUseProjectileRotationForDamageZones;                     // 0x00FA(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortAbilityTargetSelectionUsage                   TargetSelectionUsage;                                     // 0x00FB(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                MaxTargets;                                               // 0x00FC(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.FortAbilityTargetSelectionList
@@ -6606,6 +7175,23 @@ struct FEncounterEnvironmentQueryInfo
 	unsigned char                                      UnknownData01[0x7];                                       // 0x0021(0x0007) MISSED OFFSET
 };
 
+// ScriptStruct FortniteGame.FortAIEncounterRequirements
+// 0x0050
+struct FFortAIEncounterRequirements
+{
+	TEnumAsByte<EFortMissionType>                      AssociatedMissionType;                                    // 0x0000(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0001(0x0007) MISSED OFFSET
+	struct FGameplayTagQuery                           TagQuery;                                                 // 0x0008(0x0048) (Edit, DisableEditOnInstance)
+};
+
+// ScriptStruct FortniteGame.FortAILootDropModifiers
+// 0x0060
+struct FFortAILootDropModifiers
+{
+	struct FFortAIEncounterRequirements                Requirements;                                             // 0x0000(0x0050) (Edit, DisableEditOnInstance)
+	TArray<struct FDataTableRowHandle>                 LootDropModifierRows;                                     // 0x0050(0x0010) (Edit, ZeroConstructor, DisableEditOnInstance)
+};
+
 // ScriptStruct FortniteGame.FortEncounterPawnNumberCaps
 // 0x0018
 struct FFortEncounterPawnNumberCaps
@@ -6627,8 +7213,19 @@ struct FFortAISpawnGroupUpgradeUIData
 	struct FText                                       UpgradeName;                                              // 0x00A0(0x0018) (Edit, DisableEditOnInstance)
 };
 
+// ScriptStruct FortniteGame.FortAIPawnLootDropData
+// 0x0020
+struct FFortAIPawnLootDropData
+{
+	float                                              LootDropChance;                                           // 0x0000(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0004(0x0004) MISSED OFFSET
+	struct FName                                       WorldItemTierGroup;                                       // 0x0008(0x0008) (ZeroConstructor, IsPlainOldData)
+	struct FName                                       WorldItemInstancedTierGroup;                              // 0x0010(0x0008) (ZeroConstructor, IsPlainOldData)
+	struct FName                                       AccountItemTierGroup;                                     // 0x0018(0x0008) (ZeroConstructor, IsPlainOldData)
+};
+
 // ScriptStruct FortniteGame.PendingSpawnInfo
-// 0x0170
+// 0x0190
 struct FPendingSpawnInfo
 {
 	class UClass*                                      PawnClassToSpawn;                                         // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
@@ -6660,6 +7257,7 @@ struct FPendingSpawnInfo
 	TArray<class UFortAbilitySet*>                     AbilitySetsToGrantOnSpawn;                                // 0x0098(0x0010) (ZeroConstructor)
 	TArray<class UFortGameplayModifierItemDefinition*> ModifiersToApplyOnSpawn;                                  // 0x00A8(0x0010) (ZeroConstructor)
 	struct FFortAISpawnGroupUpgradeUIData              UpgradeUIData;                                            // 0x00B8(0x00B8)
+	struct FFortAIPawnLootDropData                     LootDropData;                                             // 0x0170(0x0020)
 };
 
 // ScriptStruct FortniteGame.FortPendingStoppedEncounterData
@@ -6750,6 +7348,27 @@ struct FFortIntensityCurveSequenceInstanceInfo : public FFortCurveSequenceInstan
 {
 	unsigned char                                      UnknownData00[0x4];                                       // 0x0004(0x0004) MISSED OFFSET
 	class UFortIntensityCurveSequence*                 IntensityCurveSequence;                                   // 0x0008(0x0008) (ZeroConstructor, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.FortAIBaseLootDropRow
+// 0x0040 (0x0048 - 0x0008)
+struct FFortAIBaseLootDropRow : public FTableRowBase
+{
+	int                                                Priority;                                                 // 0x0008(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              ItemDropChance;                                           // 0x000C(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FName                                       WorldItemLootTierGroup;                                   // 0x0010(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FName                                       WorldItemInstancedLootTierGroup;                          // 0x0018(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FName                                       AccountItemLootTierGroup;                                 // 0x0020(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FGameplayTagContainer                       AITagsContainer;                                          // 0x0028(0x0020) (Edit, DisableEditOnInstance)
+};
+
+// ScriptStruct FortniteGame.FortAILootDropModifierRow
+// 0x0028 (0x0030 - 0x0008)
+struct FFortAILootDropModifierRow : public FTableRowBase
+{
+	int                                                Priority;                                                 // 0x0008(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              ItemDropChanceMultiplier;                                 // 0x000C(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FGameplayTagContainer                       AITagsContainer;                                          // 0x0010(0x0020) (Edit, DisableEditOnInstance)
 };
 
 // ScriptStruct FortniteGame.AIEncounterSpawnGroupWeights
@@ -7168,19 +7787,6 @@ struct FFortAIPawnUpgradeProbability
 	struct FCurveTableRowHandle                        UpgradeProbability;                                       // 0x0048(0x0010) (Edit, DisableEditOnInstance)
 };
 
-// ScriptStruct FortniteGame.AlterationSlotInfo
-// 0x0038
-struct FAlterationSlotInfo
-{
-	int                                                UnlockLevel;                                              // 0x0000(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EFortRarity                                        UnlockRarity;                                             // 0x0004(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EFortRarity                                        SlotRarity;                                               // 0x0005(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x2];                                       // 0x0006(0x0002) MISSED OFFSET
-	unsigned char                                      UnknownData01[0x28];                                      // 0x0006(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.AlterationSlotInfo.SlotDefinition
-	bool                                               bInitiallyUnrolled;                                       // 0x0030(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x7];                                       // 0x0031(0x0007) MISSED OFFSET
-};
-
 // ScriptStruct FortniteGame.FortConditionalCosmeticModification
 // 0x0B40
 struct FFortConditionalCosmeticModification
@@ -7275,7 +7881,7 @@ struct FChoiceData
 };
 
 // ScriptStruct FortniteGame.FortDialogDescription
-// 0x0160
+// 0x0130
 struct FFortDialogDescription
 {
 	struct FSlateBrush                                 Icon;                                                     // 0x0000(0x0088) (BlueprintVisible)
@@ -7291,7 +7897,7 @@ struct FFortDialogDescription
 	bool                                               Dismissable;                                              // 0x0111(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData01[0x6];                                       // 0x0112(0x0006) MISSED OFFSET
 	class UFortNotificationHandler*                    NotificationHandler;                                      // 0x0118(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x40];                                      // 0x0120(0x0040) MISSED OFFSET
+	unsigned char                                      UnknownData02[0x10];                                      // 0x0120(0x0010) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.AircraftFlightInfo
@@ -7306,67 +7912,26 @@ struct FAircraftFlightInfo
 	float                                              TimeTillDropEnd;                                          // 0x0024(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 };
 
-// ScriptStruct FortniteGame.FortSafeZoneVolumeDefinition
-// 0x0030
-struct FFortSafeZoneVolumeDefinition
+// ScriptStruct FortniteGame.VehicleSpringInfo
+// 0x0160
+struct FVehicleSpringInfo
 {
-	class AVolume*                                     Volume;                                                   // 0x0000(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	struct FScalableFloat                              RejectionChance;                                          // 0x0008(0x0028) (Edit)
-};
-
-// ScriptStruct FortniteGame.FortSafeZoneDefinition
-// 0x0188
-struct FFortSafeZoneDefinition
-{
-	struct FScalableFloat                              Radius;                                                   // 0x0000(0x0028) (Edit)
-	struct FScalableFloat                              RejectRadius;                                             // 0x0028(0x0028) (Edit)
-	struct FScalableFloat                              RejectOuterDistance;                                      // 0x0050(0x0028) (Edit)
-	struct FScalableFloat                              WaitTime;                                                 // 0x0078(0x0028) (Edit)
-	struct FScalableFloat                              ShrinkTime;                                               // 0x00A0(0x0028) (Edit)
-	struct FScalableFloat                              FiftyFiftyWaitTimePlayerRatioScale;                       // 0x00C8(0x0028) (Edit)
-	struct FScalableFloat                              FiftyFiftyShrinkTimePlayerRatioScale;                     // 0x00F0(0x0028) (Edit)
-	struct FScalableFloat                              SupplyDropMinCount;                                       // 0x0118(0x0028) (Edit)
-	struct FScalableFloat                              SupplyDropMaxCount;                                       // 0x0140(0x0028) (Edit)
-	unsigned char                                      UnknownData00[0x20];                                      // 0x0168(0x0020) MISSED OFFSET
-};
-
-// ScriptStruct FortniteGame.AthenaVehicleShootingCone
-// 0x0008
-struct FAthenaVehicleShootingCone
-{
-	float                                              YawConstraint;                                            // 0x0000(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              PitchConstraint;                                          // 0x0004(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-};
-
-// ScriptStruct FortniteGame.AthenaCarPlayerSlot
-// 0x0030
-struct FAthenaCarPlayerSlot
-{
-	struct FName                                       SeatSocket;                                               // 0x0000(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	struct FName                                       SeatCollision;                                            // 0x0008(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	TArray<struct FName>                               ExitSockets;                                              // 0x0010(0x0010) (Edit, ZeroConstructor)
-	struct FAthenaVehicleShootingCone                  ShootingCone;                                             // 0x0020(0x0008) (Edit)
-	class AFortPlayerPawn*                             Player;                                                   // 0x0028(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-};
-
-// ScriptStruct FortniteGame.AthenaCarPlayerSlotUnreplicated
-// 0x0008
-struct FAthenaCarPlayerSlotUnreplicated
-{
-	class UInputComponent*                             Input;                                                    // 0x0000(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-};
-
-// ScriptStruct FortniteGame.InteractionType
-// 0x0030
-struct FInteractionType
-{
-	TEnumAsByte<ETInteractionType>                     InteractionType;                                          // 0x0000(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0001(0x0003) MISSED OFFSET
-	TWeakObjectPtr<class AFortPlayerPawn>              RequestingPawn;                                           // 0x0004(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x000C(0x0008) MISSED OFFSET
-	TWeakObjectPtr<class UPrimitiveComponent>          InteractComponent;                                        // 0x0014(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TWeakObjectPtr<class UObject>                      OptionalObjectData;                                       // 0x001C(0x0008) (ZeroConstructor, IsPlainOldData)
-	struct FVector                                     InteractPoint;                                            // 0x0024(0x000C) (IsPlainOldData)
+	struct FName                                       SpringStart;                                              // 0x0000(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	struct FVector                                     SpringStartLocalOffset;                                   // 0x0008(0x000C) (Edit, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0014(0x0004) MISSED OFFSET
+	struct FName                                       ForceApplicationPoint;                                    // 0x0018(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              SpringLength;                                             // 0x0020(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              SpringStiff;                                              // 0x0024(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              SpringDamp;                                               // 0x0028(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              MaxAccelChange;                                           // 0x002C(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	int8_t                                             SeatSocketIndex;                                          // 0x0030(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      bIsLookAhead : 1;                                         // 0x0031(0x0001) (Edit)
+	unsigned char                                      UnknownData01[0x2];                                       // 0x0032(0x0002) MISSED OFFSET
+	float                                              LookAheadMinSpeed;                                        // 0x0034(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              LookAheadMaxSpeed;                                        // 0x0038(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              LookAheadMinStiff;                                        // 0x003C(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              LookAheadMaxStiff;                                        // 0x0040(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x11C];                                     // 0x0044(0x011C) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.SMVehicleGear
@@ -7383,20 +7948,100 @@ struct FSMVehicleGear
 	unsigned char                                      UnknownData00[0x3];                                       // 0x0015(0x0003) MISSED OFFSET
 };
 
-// ScriptStruct FortniteGame.ReplicatedAthenaSMVehicleState
-// 0x0060
-struct FReplicatedAthenaSMVehicleState
+// ScriptStruct FortniteGame.ReplicatedAthenaVehicleInputState
+// 0x0024
+struct FReplicatedAthenaVehicleInputState
 {
 	float                                              ForwardAlpha;                                             // 0x0000(0x0004) (ZeroConstructor, IsPlainOldData)
 	float                                              RightAlpha;                                               // 0x0004(0x0004) (ZeroConstructor, IsPlainOldData)
 	float                                              SteerAlpha;                                               // 0x0008(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              JumpRate;                                                 // 0x000C(0x0004) (ZeroConstructor, IsPlainOldData)
+	bool                                               bIsSprinting;                                             // 0x0010(0x0001) (ZeroConstructor, IsPlainOldData)
+	bool                                               bIsJumping;                                               // 0x0011(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x2];                                       // 0x0012(0x0002) MISSED OFFSET
+	struct FVector                                     WorldLookDir;                                             // 0x0014(0x000C) (IsPlainOldData)
+	unsigned char                                      bIgnoreForwardInAir : 1;                                  // 0x0020(0x0001)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x0021(0x0003) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.AthenaVehicleShootingCone
+// 0x0008
+struct FAthenaVehicleShootingCone
+{
+	float                                              YawConstraint;                                            // 0x0000(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              PitchConstraint;                                          // 0x0004(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.AthenaCarPlayerSlot
+// 0x0070
+struct FAthenaCarPlayerSlot
+{
+	struct FName                                       SeatSocket;                                               // 0x0000(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	struct FName                                       SeatChoiceSocket;                                         // 0x0008(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	struct FText                                       SeatChoiceDisplayText;                                    // 0x0010(0x0018) (Edit)
+	struct FName                                       SeatCollision;                                            // 0x0028(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	TArray<struct FName>                               ExitSockets;                                              // 0x0030(0x0010) (Edit, ZeroConstructor)
+	struct FAthenaVehicleShootingCone                  ShootingCone;                                             // 0x0040(0x0008) (Edit)
+	class USoundBase*                                  SoundOnEnter;                                             // 0x0048(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class USoundBase*                                  SoundOnExit;                                              // 0x0050(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	struct FVector                                     ActorSpaceCameraOffset;                                   // 0x0058(0x000C) (Edit, IsPlainOldData)
+	float                                              SlopeCompensationCameraOffset;                            // 0x0064(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	class AFortPlayerPawn*                             Player;                                                   // 0x0068(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.AthenaCarPlayerSlotUnreplicated
+// 0x0008
+struct FAthenaCarPlayerSlotUnreplicated
+{
+	class UInputComponent*                             Input;                                                    // 0x0000(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.ReplicatedAthenaVehiclePhysicsState
+// 0x0040
+struct FReplicatedAthenaVehiclePhysicsState
+{
+	struct FVector                                     Translation;                                              // 0x0000(0x000C) (IsPlainOldData)
 	unsigned char                                      UnknownData00[0x4];                                       // 0x000C(0x0004) MISSED OFFSET
-	struct FTransform                                  TM;                                                       // 0x0010(0x0030) (IsPlainOldData)
-	struct FVector                                     LinearVelocity;                                           // 0x0040(0x000C) (IsPlainOldData)
-	struct FVector                                     AngularVelocity;                                          // 0x004C(0x000C) (IsPlainOldData)
-	bool                                               bIsSprinting;                                             // 0x0058(0x0001) (ZeroConstructor, IsPlainOldData)
-	bool                                               bIsJumping;                                               // 0x0059(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x6];                                       // 0x005A(0x0006) MISSED OFFSET
+	struct FQuat                                       Rotation;                                                 // 0x0010(0x0010) (IsPlainOldData)
+	struct FVector                                     LinearVelocity;                                           // 0x0020(0x000C) (IsPlainOldData)
+	struct FVector                                     AngularVelocity;                                          // 0x002C(0x000C) (IsPlainOldData)
+	uint16_t                                           SyncKey;                                                  // 0x0038(0x0002) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x6];                                       // 0x003A(0x0006) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.InteractionType
+// 0x0030
+struct FInteractionType
+{
+	TEnumAsByte<ETInteractionType>                     InteractionType;                                          // 0x0000(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0001(0x0003) MISSED OFFSET
+	TWeakObjectPtr<class AFortPlayerPawn>              RequestingPawn;                                           // 0x0004(0x0008) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x000C(0x0008) MISSED OFFSET
+	TWeakObjectPtr<class UPrimitiveComponent>          InteractComponent;                                        // 0x0014(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TWeakObjectPtr<class UObject>                      OptionalObjectData;                                       // 0x001C(0x0008) (ZeroConstructor, IsPlainOldData)
+	struct FVector                                     InteractPoint;                                            // 0x0024(0x000C) (IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.FortSafeZoneVolumeDefinition
+// 0x0030
+struct FFortSafeZoneVolumeDefinition
+{
+	class AVolume*                                     Volume;                                                   // 0x0000(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	struct FScalableFloat                              RejectionChance;                                          // 0x0008(0x0028) (Edit)
+};
+
+// ScriptStruct FortniteGame.FortSafeZoneDefinition
+// 0x0130
+struct FFortSafeZoneDefinition
+{
+	struct FScalableFloat                              Radius;                                                   // 0x0000(0x0028) (Edit)
+	struct FScalableFloat                              RejectRadius;                                             // 0x0028(0x0028) (Edit)
+	struct FScalableFloat                              RejectOuterDistance;                                      // 0x0050(0x0028) (Edit)
+	struct FScalableFloat                              WaitTime;                                                 // 0x0078(0x0028) (Edit)
+	struct FScalableFloat                              ShrinkTime;                                               // 0x00A0(0x0028) (Edit)
+	struct FScalableFloat                              FiftyFiftyWaitTimePlayerRatioScale;                       // 0x00C8(0x0028) (Edit)
+	struct FScalableFloat                              FiftyFiftyShrinkTimePlayerRatioScale;                     // 0x00F0(0x0028) (Edit)
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0118(0x0018) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.ReplicatedAthenaVehicleState
@@ -7404,6 +8049,20 @@ struct FReplicatedAthenaSMVehicleState
 struct FReplicatedAthenaVehicleState
 {
 	struct FVector                                     ForwardVectorTarget;                                      // 0x0000(0x000C) (IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.AttachedInfo
+// 0x00B8
+struct FAttachedInfo
+{
+	struct FHitResult                                  Hit;                                                      // 0x0000(0x0088) (IsPlainOldData)
+	class AActor*                                      AttachedToActor;                                          // 0x0088(0x0008) (ZeroConstructor, IsPlainOldData)
+	struct FVector_NetQuantize10                       AttachOffset;                                             // 0x0090(0x000C)
+	struct FVector_NetQuantizeNormal                   VelocityNormalized;                                       // 0x009C(0x000C)
+	float                                              NarrowPlacementAgainstVelocityThreshold;                  // 0x00A8(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              StickyOffsetFromPhysicsMesh;                              // 0x00AC(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              StickyOffsetFromBoneCenter;                               // 0x00B0(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x00B4(0x0004) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.MyFortCategoryData
@@ -7489,6 +8148,23 @@ struct FDistanceToTargetComparison
 	unsigned char                                      UnknownData01[0x6];                                       // 0x002A(0x0006) MISSED OFFSET
 };
 
+// ScriptStruct FortniteGame.FortBuildingSoundsPerAffiliation
+// 0x0010
+struct FFortBuildingSoundsPerAffiliation
+{
+	class USoundBase*                                  SoundFriendly;                                            // 0x0000(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class USoundBase*                                  SoundEnemy;                                               // 0x0008(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.FortBuildingSoundsPerResourceType
+// 0x0120
+struct FFortBuildingSoundsPerResourceType
+{
+	struct FFortBuildingSoundsPerAffiliation           OnConstruction[0x6];                                      // 0x0000(0x0010) (Edit, DisableEditOnInstance, IsPlainOldData)
+	struct FFortBuildingSoundsPerAffiliation           OnGenericDestruction[0x6];                                // 0x0060(0x0010) (Edit, DisableEditOnInstance, IsPlainOldData)
+	struct FFortBuildingSoundsPerAffiliation           OnPlayerBuiltDestruction[0x6];                            // 0x00C0(0x0010) (Edit, DisableEditOnInstance, IsPlainOldData)
+};
+
 // ScriptStruct FortniteGame.FortActorRecord
 // 0x0070
 struct FFortActorRecord
@@ -7509,6 +8185,16 @@ struct FFortActorRecord
 struct FFortBuildingInstruction
 {
 	struct FFortActorRecord                            ActorRecord;                                              // 0x0000(0x0070) (Edit, BlueprintVisible, BlueprintReadOnly, EditConst, SaveGame)
+};
+
+// ScriptStruct FortniteGame.FortUICameraFrameTargetSettings
+// 0x002C
+struct FFortUICameraFrameTargetSettings
+{
+	struct FVector                                     FocusPointToCenter;                                       // 0x0000(0x000C) (BlueprintVisible, IsPlainOldData)
+	EFortUICameraFrameTargetBoundingBehavior           BoundingBehavior;                                         // 0x000C(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x000D(0x0003) MISSED OFFSET
+	struct FBoxSphereBounds                            BoundsToFrame;                                            // 0x0010(0x001C) (BlueprintVisible, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.InterpOffsetData
@@ -7554,6 +8240,27 @@ struct FFortChallengeBundleScheduleEntry
 	EChallengeScheduleUnlockType                       UnlockType;                                               // 0x0028(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData01[0x3];                                       // 0x0029(0x0003) MISSED OFFSET
 	int                                                UnlockValue;                                              // 0x002C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.VehicleTrickInfo
+// 0x0038
+struct FVehicleTrickInfo
+{
+	float                                              LastOnGroundTime;                                         // 0x0000(0x0004) (ZeroConstructor, IsPlainOldData)
+	bool                                               bInAirTrick;                                              // 0x0004(0x0001) (ZeroConstructor, IsPlainOldData)
+	bool                                               bCreditTrick;                                             // 0x0005(0x0001) (ZeroConstructor, IsPlainOldData)
+	bool                                               bStuckLanding;                                            // 0x0006(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x1];                                       // 0x0007(0x0001) MISSED OFFSET
+	int                                                TrickScore;                                               // 0x0008(0x0004) (ZeroConstructor, IsPlainOldData)
+	bool                                               bDoingAirTrick;                                           // 0x000C(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x000D(0x0003) MISSED OFFSET
+	float                                              AirDistance;                                              // 0x0010(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              AirDistanceSqrd;                                          // 0x0014(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              AirTime;                                                  // 0x0018(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              AirHeight;                                                // 0x001C(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              TimeAtLaunch;                                             // 0x0020(0x0004) (ZeroConstructor, IsPlainOldData)
+	struct FVector                                     LocationAtLaunch;                                         // 0x0024(0x000C) (IsPlainOldData)
+	unsigned char                                      UnknownData02[0x8];                                       // 0x0030(0x0008) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.BuildingWeakSpotData
@@ -7720,12 +8427,12 @@ struct FFortRequirementsInfo
 };
 
 // ScriptStruct FortniteGame.AttributeModifierInfo
-// 0x0030
+// 0x0020
 struct FAttributeModifierInfo
 {
-	unsigned char                                      UnknownData00[0x18];                                      // 0x0000(0x0018) MISSED OFFSET
-	class UGameplayEffect*                             InstantGEs;                                               // 0x0018(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x10];                                      // 0x0020(0x0010) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0000(0x0008) MISSED OFFSET
+	class UGameplayEffect*                             InstantGEs;                                               // 0x0008(0x0008) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x10];                                      // 0x0010(0x0010) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FriendCode
@@ -7867,16 +8574,26 @@ struct FFortPlayerScoreReport
 };
 
 // ScriptStruct FortniteGame.FortActionKeyMapping
-// 0x0058
+// 0x0060
 struct FFortActionKeyMapping
 {
 	struct FName                                       ActionName;                                               // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
-	struct FText                                       LocalizedName;                                            // 0x0008(0x0018)
-	struct FKey                                        KeyBind1;                                                 // 0x0020(0x0018)
-	struct FKey                                        KeyBind2;                                                 // 0x0038(0x0018)
-	float                                              InputScale;                                               // 0x0050(0x0004) (ZeroConstructor, IsPlainOldData)
-	bool                                               bIsAxisMapping;                                           // 0x0054(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0055(0x0003) MISSED OFFSET
+	EFortInputActionGroup                              ActionGroup;                                              // 0x0008(0x0001) (ZeroConstructor, IsPlainOldData)
+	ESubGame                                           SubGameUsedIn;                                            // 0x0009(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x6];                                       // 0x000A(0x0006) MISSED OFFSET
+	struct FText                                       LocalizedName;                                            // 0x0010(0x0018)
+	struct FKey                                        KeyBind1;                                                 // 0x0028(0x0018)
+	struct FKey                                        KeyBind2;                                                 // 0x0040(0x0018)
+	float                                              InputScale;                                               // 0x0058(0x0004) (ZeroConstructor, IsPlainOldData)
+	bool                                               bIsAxisMapping;                                           // 0x005C(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x005D(0x0003) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.UserActionBindings
+// 0x0010
+struct FUserActionBindings
+{
+	TArray<struct FFortActionKeyMapping>               UserActionBindings;                                       // 0x0000(0x0010) (ZeroConstructor)
 };
 
 // ScriptStruct FortniteGame.FortPendingSlottedItemOperation
@@ -7935,6 +8652,22 @@ struct FFortCollectionBookSectionState
 	struct FString                                     Section;                                                  // 0x0000(0x0010) (ZeroConstructor)
 	EFortCollectionBookState                           State;                                                    // 0x0010(0x0001) (ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x7];                                       // 0x0011(0x0007) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.FortCollisionAudioTriggerData
+// 0x0040
+struct FFortCollisionAudioTriggerData
+{
+	class USoundBase*                                  Asset;                                                    // 0x0000(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FVector2D                                   ImpulseMagnitudeRange;                                    // 0x0008(0x0008) (Edit, DisableEditOnInstance, IsPlainOldData)
+	bool                                               bImpulseMagnitudeLowerBound;                              // 0x0010(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               bImpulseMagnitudeUpperBound;                              // 0x0011(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x2];                                       // 0x0012(0x0002) MISSED OFFSET
+	struct FVector2D                                   VolumeRange;                                              // 0x0014(0x0008) (Edit, DisableEditOnInstance, IsPlainOldData)
+	struct FVector2D                                   PitchRange;                                               // 0x001C(0x0008) (Edit, DisableEditOnInstance, IsPlainOldData)
+	float                                              MinRetriggerTime;                                         // 0x0024(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              MaxTriggerDistance;                                       // 0x0028(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x14];                                      // 0x002C(0x0014) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.CombatEventData
@@ -8068,7 +8801,7 @@ struct FFortBaseWeaponStats : public FTableRowBase
 	float                                              MinChargeDamageMultiplier;                                // 0x0128(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	float                                              MaxChargeDamageMultiplier;                                // 0x012C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	float                                              EquipAnimRate;                                            // 0x0130(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData07[0x4];                                       // 0x0134(0x0004) MISSED OFFSET
+	float                                              QuickBarSlotCooldownDuration;                             // 0x0134(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.ConsumeEffectData
@@ -8077,6 +8810,104 @@ struct FConsumeEffectData
 {
 	unsigned char                                      UnknownData00[0x28];                                      // 0x0000(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteGame.ConsumeEffectData.EffectClass
 	struct FScalableFloat                              Level;                                                    // 0x0028(0x0028) (Edit, DisableEditOnInstance)
+};
+
+// ScriptStruct FortniteGame.BaseVariantDef
+// 0x0058
+struct FBaseVariantDef
+{
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0000(0x0008) MISSED OFFSET
+	bool                                               bStartUnlocked;                                           // 0x0008(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	bool                                               bIsDefault;                                               // 0x0009(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x6];                                       // 0x000A(0x0006) MISSED OFFSET
+	struct FGameplayTag                                CustomizationVariantTag;                                  // 0x0010(0x0008) (Edit)
+	struct FText                                       VariantName;                                              // 0x0018(0x0018) (Edit)
+	unsigned char                                      UnknownData02[0x28];                                      // 0x0030(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.BaseVariantDef.PreviewImage
+};
+
+// ScriptStruct FortniteGame.MaterialVariants
+// 0x0060
+struct FMaterialVariants
+{
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0000(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.MaterialVariants.MaterialToSwap
+	struct FName                                       ComponentToOverride;                                      // 0x0028(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	int                                                MaterialOverrideIndex;                                    // 0x0030(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x0034(0x0004) MISSED OFFSET
+	unsigned char                                      UnknownData02[0x28];                                      // 0x0034(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.MaterialVariants.OverrideMaterial
+};
+
+// ScriptStruct FortniteGame.MaterialParamName
+// 0x0008
+struct FMaterialParamName
+{
+	struct FName                                       ParamName;                                                // 0x0000(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.MaterialVectorVariant
+// 0x0010 (0x0018 - 0x0008)
+struct FMaterialVectorVariant : public FMaterialParamName
+{
+	struct FLinearColor                                Value;                                                    // 0x0008(0x0010) (Edit, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.MaterialTextureVariant
+// 0x0028 (0x0030 - 0x0008)
+struct FMaterialTextureVariant : public FMaterialParamName
+{
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0008(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.MaterialTextureVariant.Value
+};
+
+// ScriptStruct FortniteGame.MaterialFloatVariant
+// 0x0008 (0x0010 - 0x0008)
+struct FMaterialFloatVariant : public FMaterialParamName
+{
+	float                                              Value;                                                    // 0x0008(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x000C(0x0004) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.MaterialParamterDef
+// 0x0058
+struct FMaterialParamterDef
+{
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0000(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.MaterialParamterDef.MaterialToAlter
+	TArray<struct FMaterialVectorVariant>              ColorParams;                                              // 0x0028(0x0010) (Edit, ZeroConstructor)
+	TArray<struct FMaterialTextureVariant>             TextureParams;                                            // 0x0038(0x0010) (Edit, ZeroConstructor)
+	TArray<struct FMaterialFloatVariant>               FloatParams;                                              // 0x0048(0x0010) (Edit, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.SocketTransformVariant
+// 0x0038
+struct FSocketTransformVariant
+{
+	struct FName                                       SourceSocketName;                                         // 0x0000(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	struct FName                                       OverridSocketName;                                        // 0x0008(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0010(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.SocketTransformVariant.SourceObjectToModify
+};
+
+// ScriptStruct FortniteGame.PartVariantDef
+// 0x0040 (0x0098 - 0x0058)
+struct FPartVariantDef : public FBaseVariantDef
+{
+	TArray<class UCustomCharacterPart*>                VariantParts;                                             // 0x0058(0x0010) (Edit, ZeroConstructor)
+	TArray<struct FMaterialVariants>                   VariantMaterials;                                         // 0x0068(0x0010) (Edit, ZeroConstructor)
+	TArray<struct FMaterialParamterDef>                VariantMaterialParams;                                    // 0x0078(0x0010) (Edit, ZeroConstructor)
+	TArray<struct FSocketTransformVariant>             SocketTransforms;                                         // 0x0088(0x0010) (Edit, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.MaterialVariantDef
+// 0x0020 (0x0078 - 0x0058)
+struct FMaterialVariantDef : public FBaseVariantDef
+{
+	TArray<struct FMaterialVariants>                   VariantMaterials;                                         // 0x0058(0x0010) (Edit, ZeroConstructor)
+	TArray<struct FMaterialParamterDef>                VariantMaterialParams;                                    // 0x0068(0x0010) (Edit, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.FortCustomizationAssetsToLoad
+// 0x0020
+struct FFortCustomizationAssetsToLoad
+{
+	TArray<class UFortHeroType*>                       HeroTypes;                                                // 0x0000(0x0010) (ZeroConstructor, Transient)
+	TArray<class UCustomCharacterPart*>                CharacterParts;                                           // 0x0010(0x0010) (ZeroConstructor, Transient)
 };
 
 // ScriptStruct FortniteGame.FortDailyRewardScheduleDisplayData
@@ -8245,7 +9076,7 @@ struct FPendingDeployableBaseUser
 };
 
 // ScriptStruct FortniteGame.PendingDeployableManagerAction
-// 0x0070
+// 0x0040
 struct FPendingDeployableManagerAction
 {
 	EQueueActionType                                   ActionType;                                               // 0x0000(0x0001) (ZeroConstructor, IsPlainOldData)
@@ -8253,9 +9084,9 @@ struct FPendingDeployableManagerAction
 	TArray<class ADeployableBasePlot*>                 PendingPlots;                                             // 0x0008(0x0010) (ZeroConstructor)
 	int                                                CurrentPlotRunningIndex;                                  // 0x0018(0x0004) (ZeroConstructor, IsPlainOldData)
 	EDeployableBaseBuildingState                       DesiredPlotState;                                         // 0x001C(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x43];                                      // 0x001D(0x0043) MISSED OFFSET
-	class AFortDeployableBaseManager*                  Manager;                                                  // 0x0060(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x8];                                       // 0x0068(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData01[0x13];                                      // 0x001D(0x0013) MISSED OFFSET
+	class AFortDeployableBaseManager*                  Manager;                                                  // 0x0030(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x8];                                       // 0x0038(0x0008) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.EnvironmentBuildingRestorationRecord
@@ -8466,6 +9297,21 @@ struct FFortCameraPrototype
 	TArray<struct FFortCameraModeOverride>             ModeOverrides;                                            // 0x0018(0x0010) (Edit, ZeroConstructor)
 };
 
+// ScriptStruct FortniteGame.FortItemViewSettings
+// 0x0028
+struct FFortItemViewSettings
+{
+	bool                                               UsesPlacementActor;                                       // 0x0000(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	bool                                               UsesFixedCamera;                                          // 0x0001(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	bool                                               SupportsZooming;                                          // 0x0002(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x1];                                       // 0x0003(0x0001) MISSED OFFSET
+	float                                              DefaultZoomLevel;                                         // 0x0004(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	struct FFloatRange                                 ZoomRange;                                                // 0x0008(0x0010) (Edit, BlueprintVisible)
+	EFortItemViewRotationMode                          RotationMode;                                             // 0x0018(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x0019(0x0003) MISSED OFFSET
+	struct FRotator                                    CameraRotationOffset;                                     // 0x001C(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
+};
+
 // ScriptStruct FortniteGame.FortFXAnimationInfoBase
 // 0x0018
 struct FFortFXAnimationInfoBase
@@ -8627,7 +9473,8 @@ struct FSubGameInfo
 {
 	class UFortTokenType*                              AccessToken;                                              // 0x0000(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	bool                                               RequiredFullInstall;                                      // 0x0008(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0009(0x0007) MISSED OFFSET
+	bool                                               bCanPartyWithoutFullInstall;                              // 0x0009(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x6];                                       // 0x000A(0x0006) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortPlayerSpawnPadPlacementData
@@ -8650,13 +9497,6 @@ struct FDefaultCharacterPartsForPawnClass
 	unsigned char                                      UnknownData00[0x10];                                      // 0x0008(0x0010) UNKNOWN PROPERTY: ArrayProperty FortniteGame.DefaultCharacterPartsForPawnClass.CharacterParts
 };
 
-// ScriptStruct FortniteGame.SoundPerResourceLevel
-// 0x0030
-struct FSoundPerResourceLevel
-{
-	class USoundBase*                                  Sounds[0x6];                                              // 0x0000(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-};
-
 // ScriptStruct FortniteGame.FortQuestPackInfo
 // 0x0038
 struct FFortQuestPackInfo
@@ -8670,6 +9510,14 @@ struct FFortQuestPackInfo
 	int                                                MaxUnclaimedQuests;                                       // 0x0030(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
 	bool                                               IsStreamingQuestPack;                                     // 0x0034(0x0001) (Edit, ZeroConstructor, Config, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x3];                                       // 0x0035(0x0003) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.FortSubGameLoadingScreen
+// 0x0098
+struct FFortSubGameLoadingScreen
+{
+	TArray<class UFortTips*>                           Tips;                                                     // 0x0000(0x0010) (Edit, ZeroConstructor)
+	struct FSlateBrush                                 DefaultBackground;                                        // 0x0010(0x0088) (Edit)
 };
 
 // ScriptStruct FortniteGame.ConditionalFoundationQuotaTier
@@ -8688,8 +9536,16 @@ struct FConditionalFoundationQuota
 	TArray<struct FConditionalFoundationQuotaTier>     Tiers;                                                    // 0x0000(0x0010) (Edit, ZeroConstructor)
 };
 
+// ScriptStruct FortniteGame.FortQuestMapDataEntry
+// 0x0010
+struct FFortQuestMapDataEntry
+{
+	class UDataTable*                                  QuestData;                                                // 0x0000(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UDataTable*                                  CosmeticData;                                             // 0x0008(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+};
+
 // ScriptStruct FortniteGame.SettingsHUDVisibilityAndText
-// 0x0048
+// 0x0040
 struct FSettingsHUDVisibilityAndText
 {
 	struct FGameplayTag                                HUDVisibilityGameplayTag;                                 // 0x0000(0x0008) (Edit, DisableEditOnInstance)
@@ -8697,8 +9553,6 @@ struct FSettingsHUDVisibilityAndText
 	unsigned char                                      UnknownData00[0x7];                                       // 0x0009(0x0007) MISSED OFFSET
 	struct FText                                       DisplayText;                                              // 0x0010(0x0018) (Edit, DisableEditOnInstance)
 	struct FText                                       ToolTipText;                                              // 0x0028(0x0018) (Edit, DisableEditOnInstance)
-	bool                                               bHideOnXboxOne;                                           // 0x0040(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0041(0x0007) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.ItemDefinitionAndCount
@@ -8737,7 +9591,7 @@ struct FPlaylistOverrideData
 };
 
 // ScriptStruct FortniteGame.AthenaDataTableSet
-// 0x0028
+// 0x0030
 struct FAthenaDataTableSet
 {
 	class UDataTable*                                  LootTierData;                                             // 0x0000(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
@@ -8745,6 +9599,7 @@ struct FAthenaDataTableSet
 	class UDataTable*                                  RangedWeapons;                                            // 0x0010(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
 	class UCurveTable*                                 GameData;                                                 // 0x0018(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
 	class UCurveTable*                                 ResourceRates;                                            // 0x0020(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	class UCurveTable*                                 VehicleData;                                              // 0x0028(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.CumulativeFrameTimeWithoutSleepLimits
@@ -8773,15 +9628,77 @@ struct FCachedPlayerFOBInformation
 	unsigned char                                      UnknownData00[0x7];                                       // 0x0029(0x0007) MISSED OFFSET
 };
 
+// ScriptStruct FortniteGame.TimeOfDayOverride
+// 0x0010
+struct FTimeOfDayOverride
+{
+	struct FName                                       PlaylistName;                                             // 0x0000(0x0008) (ZeroConstructor, Config, IsPlainOldData)
+	float                                              TimeOfDay;                                                // 0x0008(0x0004) (ZeroConstructor, Config, IsPlainOldData)
+	float                                              TimeOfDaySpeed;                                           // 0x000C(0x0004) (ZeroConstructor, Config, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.GCSettingsOverride
+// 0x0010
+struct FGCSettingsOverride
+{
+	struct FName                                       PlaylistName;                                             // 0x0000(0x0008) (ZeroConstructor, Config, IsPlainOldData)
+	bool                                               bEnableGCOnServerDuringMatch;                             // 0x0008(0x0001) (ZeroConstructor, Config, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0009(0x0003) MISSED OFFSET
+	float                                              GCFrequency;                                              // 0x000C(0x0004) (ZeroConstructor, Config, IsPlainOldData)
+};
+
 // ScriptStruct FortniteGame.ScorePlacementTable
-// 0x0050
+// 0x0060
 struct FScorePlacementTable
 {
 	TArray<float>                                      Solo;                                                     // 0x0000(0x0010) (ZeroConstructor)
 	TArray<float>                                      Duos;                                                     // 0x0010(0x0010) (ZeroConstructor)
 	TArray<float>                                      Squads;                                                   // 0x0020(0x0010) (ZeroConstructor)
 	TArray<float>                                      FiftyFifty;                                               // 0x0030(0x0010) (ZeroConstructor)
-	TArray<float>                                      Creative;                                                 // 0x0040(0x0010) (ZeroConstructor)
+	TArray<float>                                      LargeTeam;                                                // 0x0040(0x0010) (ZeroConstructor)
+	TArray<float>                                      Default;                                                  // 0x0050(0x0010) (ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.SupplyDropZoneBasedSpawnData
+// 0x0028
+struct FSupplyDropZoneBasedSpawnData
+{
+	TArray<class AFortAthenaSupplyDrop*>               SpawnedSupplyDrops;                                       // 0x0000(0x0010) (ZeroConstructor)
+	int                                                NumDropsRemainingInWave;                                  // 0x0010(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              NextWaveSpawnTime;                                        // 0x0014(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              NextSpawnTime;                                            // 0x0018(0x0004) (ZeroConstructor, IsPlainOldData)
+	EAthenaGamePhase                                   CurrGamePhase;                                            // 0x001C(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x001D(0x0003) MISSED OFFSET
+	int                                                CurrSubPhase;                                             // 0x0020(0x0004) (ZeroConstructor, IsPlainOldData)
+	int                                                TotalSupplyDropsSpawnedInSubPhase;                        // 0x0024(0x0004) (ZeroConstructor, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.SupplyDropItemDeliverySpawnData
+// 0x0020
+struct FSupplyDropItemDeliverySpawnData
+{
+	int                                                NumItemsToDeliver;                                        // 0x0000(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0004(0x0004) MISSED OFFSET
+	TArray<float>                                      QueuedSpawnTimes;                                         // 0x0008(0x0010) (ZeroConstructor)
+	float                                              NextSpawnTime;                                            // 0x0018(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x001C(0x0004) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.SupplyDropSpawnData
+// 0x0050
+struct FSupplyDropSpawnData
+{
+	class UFortSupplyDropInfo*                         SupplyDropInfo;                                           // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
+	struct FSupplyDropZoneBasedSpawnData               ZoneBasedData;                                            // 0x0008(0x0028)
+	struct FSupplyDropItemDeliverySpawnData            ItemDeliveryData;                                         // 0x0030(0x0020)
+};
+
+// ScriptStruct FortniteGame.FortSpawnActorData
+// 0x0018
+struct FFortSpawnActorData
+{
+	class UFortSpawnActorInfo*                         SpawnActorInfo;                                           // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
+	TArray<class AActor*>                              SpawnedFortSpawnActors;                                   // 0x0008(0x0010) (ZeroConstructor)
 };
 
 // ScriptStruct FortniteGame.FortPlacedBuilding
@@ -8801,7 +9718,7 @@ struct FFortOutpostCoreInfo
 };
 
 // ScriptStruct FortniteGame.FortAthenaGamepadAimAssistSettings
-// 0x0150
+// 0x0158
 struct FFortAthenaGamepadAimAssistSettings
 {
 	class UCurveFloat*                                 TargetWeightCurve;                                        // 0x0000(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
@@ -8819,7 +9736,7 @@ struct FFortAthenaGamepadAimAssistSettings
 	float                                              SlowDecayTime;                                            // 0x004C(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
 	float                                              InitialDownsightTime;                                     // 0x0050(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
 	float                                              InitialDownsightStrength;                                 // 0x0054(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	struct FFortAbilityTargetSelection                 TargetSelection;                                          // 0x0058(0x00F8) (Edit)
+	struct FFortAbilityTargetSelection                 TargetSelection;                                          // 0x0058(0x0100) (Edit)
 };
 
 // ScriptStruct FortniteGame.FortAthenaGamepadLookSettings
@@ -9020,9 +9937,28 @@ struct FPlayerBuildableClassContainer
 // 0x0030
 struct FVoter
 {
-	int                                                VoteDecision;                                             // 0x0000(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x0004(0x0004) MISSED OFFSET
-	struct FUniqueNetIdRepl                            NetId;                                                    // 0x0008(0x0028) (Transient)
+	int                                                VoteDecision;                                             // 0x0000(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	int                                                LastVoteDecision;                                         // 0x0004(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	struct FUniqueNetIdRepl                            NetId;                                                    // 0x0008(0x0028) (BlueprintVisible, BlueprintReadOnly, Transient)
+};
+
+// ScriptStruct FortniteGame.VoteData
+// 0x0070
+struct FVoteData
+{
+	EFortVoteType                                      VoteType;                                                 // 0x0000(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0001(0x0007) MISSED OFFSET
+	struct FUniqueNetIdRepl                            VoteInstigatorNetId;                                      // 0x0008(0x0028) (Transient)
+	struct FDateTime                                   VoteStartTime;                                            // 0x0030(0x0008) (Transient)
+	struct FDateTime                                   VoteEndTime;                                              // 0x0038(0x0008) (Transient)
+	float                                              VoteDuration;                                             // 0x0040(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	float                                              FailedVoteLockOutDuration;                                // 0x0044(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	EFortVoteArbitratorType                            VoteArbitratorType;                                       // 0x0048(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0049(0x0007) MISSED OFFSET
+	TArray<struct FVoter>                              Voters;                                                   // 0x0050(0x0010) (ZeroConstructor, Transient)
+	struct FTimerHandle                                EndVoteTimerHandle;                                       // 0x0060(0x0008) (Transient)
+	EFortVoteStatus                                    VoteStatus;                                               // 0x0068(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x7];                                       // 0x0069(0x0007) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.HordeDifficultyTierInfo
@@ -9042,6 +9978,37 @@ struct FPermaniteBoundariesInfo
 	float                                              AveragePermaniteStructureLevel;                           // 0x0008(0x0004) (ZeroConstructor, IsPlainOldData)
 	int                                                MinPermaniteStructureLevel;                               // 0x000C(0x0004) (ZeroConstructor, IsPlainOldData)
 	int                                                MaxPermaniteStructureLevel;                               // 0x0010(0x0004) (ZeroConstructor, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.HUDLayoutDataEntry
+// 0x00D0
+struct FHUDLayoutDataEntry
+{
+	struct FGameplayTag                                VisualType;                                               // 0x0000(0x0008)
+	struct FAnchorData                                 AnchroData;                                               // 0x0008(0x0028)
+	int                                                ZOrder;                                                   // 0x0030(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              Property_1;                                               // 0x0034(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              Property_2;                                               // 0x0038(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              Property_3;                                               // 0x003C(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              Property_4;                                               // 0x0040(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8C];                                      // 0x0044(0x008C) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.HUDLayoutData
+// 0x0010
+struct FHUDLayoutData
+{
+	TArray<struct FHUDLayoutDataEntry>                 LayoutEntries;                                            // 0x0000(0x0010) (ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.HUDLayoutUsageData
+// 0x0010
+struct FHUDLayoutUsageData
+{
+	int                                                NumOfTimesOpened;                                         // 0x0000(0x0004) (ZeroConstructor, IsPlainOldData)
+	int                                                NumOfTimesReset;                                          // 0x0004(0x0004) (ZeroConstructor, IsPlainOldData)
+	int                                                NumOfTimesSaved;                                          // 0x0008(0x0004) (ZeroConstructor, IsPlainOldData)
+	int                                                NumOfTimesPanning;                                        // 0x000C(0x0004) (ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.FortSimpleGameStats
@@ -9064,6 +10031,45 @@ struct FSavedCredentials
 	unsigned char                                      UnknownData00[0x7];                                       // 0x0001(0x0007) MISSED OFFSET
 	struct FString                                     ID;                                                       // 0x0008(0x0010) (ZeroConstructor)
 	struct FString                                     Token;                                                    // 0x0018(0x0010) (ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.FortAnimInput_Skydiving
+// 0x0048
+struct FFortAnimInput_Skydiving
+{
+	unsigned char                                      bIsSkydivingFromLaunchPad : 1;                            // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
+	unsigned char                                      bIsUsingUmbrella : 1;                                     // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
+	unsigned char                                      bIsActivelyStrafingInAir : 1;                             // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
+	unsigned char                                      bIsDiving : 1;                                            // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
+	unsigned char                                      bIsParachuteOpen : 1;                                     // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
+	unsigned char                                      bIsSkydiving : 1;                                         // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
+	unsigned char                                      bIsParachuteLeaning : 1;                                  // 0x0000(0x0001) (Edit, BlueprintVisible, Transient)
+	unsigned char                                      bIsSkydiveLeaning : 1;                                    // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
+	unsigned char                                      bIsLeaning : 1;                                           // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
+	unsigned char                                      bIsSkydiveDiveMode : 1;                                   // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
+	unsigned char                                      bParachuteLeanTransition : 1;                             // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
+	unsigned char                                      bPlaySkydiveDrift : 1;                                    // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
+	unsigned char                                      bSkydiveDriftDelayActive : 1;                             // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
+	unsigned char                                      bSkydiveDriftAnimAllowed : 1;                             // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
+	unsigned char                                      UnknownData00[0x2];                                       // 0x0002(0x0002) MISSED OFFSET
+	float                                              LocalAccelForward;                                        // 0x0004(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	float                                              LocalAccelRight;                                          // 0x0008(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	float                                              LocalVelocityRight;                                       // 0x000C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	float                                              SkydiveAimPitch;                                          // 0x0010(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	float                                              SkydiveAimPitchInterpSpeed;                               // 0x0014(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              SkydiveAimYaw;                                            // 0x0018(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	float                                              DeployChuteAnimRate;                                      // 0x001C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	float                                              SkydiveDriftAnimRate;                                     // 0x0020(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	float                                              SkydiveDriftAnimRateCurrent;                              // 0x0024(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	float                                              SkydiveFidgetAnimRate;                                    // 0x0028(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	float                                              SkydiveFidgetAnimRateCurrent;                             // 0x002C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	float                                              SkydiveAdditiveAlpha;                                     // 0x0030(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	float                                              SkydiveDriftDelay;                                        // 0x0034(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	int                                                SkydiveDriftAnim;                                         // 0x0038(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	int                                                SkydiveDriftAnimMax;                                      // 0x003C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	int                                                LaunchpadAnim;                                            // 0x0040(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	TEnumAsByte<ESkydivingDirection>                   LocalAccelDir;                                            // 0x0044(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x0045(0x0003) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.LoginFailureLogSubmitOptions
@@ -9532,8 +10538,16 @@ struct FFortRangedWeaponStats : public FFortBaseWeaponStats
 	float                                              AutoReloadDelayOverride;                                  // 0x0264(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 };
 
+// ScriptStruct FortniteGame.FortCollectionBookDirectPurchaseData
+// 0x0030 (0x0038 - 0x0008)
+struct FFortCollectionBookDirectPurchaseData : public FTableRowBase
+{
+	TArray<struct FFortItemQuantityPair>               PurchaseCosts;                                            // 0x0008(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	struct FGameplayTagContainer                       PurchaseCatalysts;                                        // 0x0018(0x0020) (Edit, BlueprintVisible, BlueprintReadOnly)
+};
+
 // ScriptStruct FortniteGame.FortPawnStats
-// 0x0088 (0x0090 - 0x0008)
+// 0x0090 (0x0098 - 0x0008)
 struct FFortPawnStats : public FTableRowBase
 {
 	float                                              MaximumHealth;                                            // 0x0008(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
@@ -9554,22 +10568,23 @@ struct FFortPawnStats : public FTableRowBase
 	float                                              JumpZVelocity;                                            // 0x0044(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	class UCurveTable*                                 FallingDamageTable;                                       // 0x0048(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	struct FName                                       FallingDamageTableRow;                                    // 0x0050(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              HealthRegenRate;                                          // 0x0058(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              HealthRegenDelay;                                         // 0x005C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              HealthRegenThreshold;                                     // 0x0060(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              MaxShield;                                                // 0x0064(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              ShieldRegenRate;                                          // 0x0068(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              ShieldRegenDelay;                                         // 0x006C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              ShieldRegenThreshold;                                     // 0x0070(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              MaxControlResistance;                                     // 0x0074(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              ControlResistanceRegenRate;                               // 0x0078(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              ControlResistanceRegenDelay;                              // 0x007C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              ControlResistanceRegenThreshold;                          // 0x0080(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              KnockbackMultiplier;                                      // 0x0084(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              KnockbackThreshold;                                       // 0x0088(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bAllowChainStun;                                          // 0x008C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortControlRecoveryBehavior                       ControlRecoveryBehavior;                                  // 0x008D(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x2];                                       // 0x008E(0x0002) MISSED OFFSET
+	class UCurveTable*                                 VehicleEjectDamageTable;                                  // 0x0058(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              HealthRegenRate;                                          // 0x0060(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              HealthRegenDelay;                                         // 0x0064(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              HealthRegenThreshold;                                     // 0x0068(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              MaxShield;                                                // 0x006C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              ShieldRegenRate;                                          // 0x0070(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              ShieldRegenDelay;                                         // 0x0074(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              ShieldRegenThreshold;                                     // 0x0078(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              MaxControlResistance;                                     // 0x007C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              ControlResistanceRegenRate;                               // 0x0080(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              ControlResistanceRegenDelay;                              // 0x0084(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              ControlResistanceRegenThreshold;                          // 0x0088(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              KnockbackMultiplier;                                      // 0x008C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              KnockbackThreshold;                                       // 0x0090(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bAllowChainStun;                                          // 0x0094(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortControlRecoveryBehavior                       ControlRecoveryBehavior;                                  // 0x0095(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x2];                                       // 0x0096(0x0002) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortMeleeWeaponStats
@@ -9594,7 +10609,7 @@ struct FServerLaunchInfo
 {
 	float                                              LaunchServerTime;                                         // 0x0000(0x0004) (ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x4];                                       // 0x0004(0x0004) MISSED OFFSET
-	class AFortPlayerPawnAthena*                       LaunchedPawn;                                             // 0x0008(0x0008) (ZeroConstructor, IsPlainOldData)
+	class APawn*                                       LaunchedPawn;                                             // 0x0008(0x0008) (ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.LeaderboardRowData
@@ -9607,6 +10622,69 @@ struct FLeaderboardRowData
 	int                                                Value;                                                    // 0x0018(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData01[0x4];                                       // 0x001C(0x0004) MISSED OFFSET
 	struct FUniqueNetIdRepl                            PlatformAccountId;                                        // 0x0020(0x0028) (BlueprintVisible, BlueprintReadOnly)
+};
+
+// ScriptStruct FortniteGame.SpectatorOwnedCameraComponentRecord
+// 0x0050
+struct FSpectatorOwnedCameraComponentRecord
+{
+	TMap<class AActor*, class UFortSpectatorCameraComponent*> ViewTargetToComponentMap;                                 // 0x0000(0x0050) (ExportObject, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.SavedSpectatorCameraState
+// 0x00F0
+struct FSavedSpectatorCameraState
+{
+	bool                                               bDataIsValid;                                             // 0x0000(0x0001) (ZeroConstructor, IsPlainOldData)
+	ESpectatorCameraType                               CameraType;                                               // 0x0001(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x6];                                       // 0x0002(0x0006) MISSED OFFSET
+	struct FUniqueNetIdRepl                            FollowedPlayerUniqueId;                                   // 0x0008(0x0028)
+	struct FCameraFilmbackSettings                     FilmbackSettings;                                         // 0x0030(0x000C) (IsPlainOldData)
+	struct FCameraLensSettings                         LensSettings;                                             // 0x003C(0x0014) (IsPlainOldData)
+	struct FCameraFocusSettings                        FocusSettings;                                            // 0x0050(0x0038)
+	float                                              CurrentFocalLength;                                       // 0x0088(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              CurrentAperture;                                          // 0x008C(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              CurrentFocusDistance;                                     // 0x0090(0x0004) (ZeroConstructor, IsPlainOldData)
+	bool                                               bManualExposureControl;                                   // 0x0094(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x0095(0x0003) MISSED OFFSET
+	float                                              ManualExposureBias;                                       // 0x0098(0x0004) (ZeroConstructor, IsPlainOldData)
+	int                                                ArenaCamIndex;                                            // 0x009C(0x0004) (ZeroConstructor, IsPlainOldData)
+	struct FTransform                                  Transform;                                                // 0x00A0(0x0030) (IsPlainOldData)
+	struct FRotator                                    ControlRotation;                                          // 0x00D0(0x000C) (IsPlainOldData)
+	float                                              ThirdPersonNormalizedDistance;                            // 0x00DC(0x0004) (ZeroConstructor, IsPlainOldData)
+	bool                                               bThirdPersonAutoFollow;                                   // 0x00E0(0x0001) (ZeroConstructor, IsPlainOldData)
+	bool                                               bThirdPersonLazyFollow;                                   // 0x00E1(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x2];                                       // 0x00E2(0x0002) MISSED OFFSET
+	float                                              DroneSpeedIndex;                                          // 0x00E4(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              ReplayPlaybackSpeed;                                      // 0x00E8(0x0004) (ZeroConstructor, IsPlainOldData)
+	bool                                               bNamePlatesEnabled;                                       // 0x00EC(0x0001) (ZeroConstructor, IsPlainOldData)
+	bool                                               bPlayerOutlinesEnabled;                                   // 0x00ED(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x2];                                       // 0x00EE(0x0002) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.SavedPlayerSpectatorCameraData
+// 0x0050
+struct FSavedPlayerSpectatorCameraData
+{
+	TMap<struct FUniqueNetIdRepl, struct FSavedSpectatorCameraState> PlayerToCameraStateMap;                                   // 0x0000(0x0050) (ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.SavedSpectatorCameraShot
+// 0x0100
+struct FSavedSpectatorCameraShot
+{
+	struct FSavedSpectatorCameraState                  CameraState;                                              // 0x0000(0x00F0)
+	bool                                               bIsShotStart;                                             // 0x00F0(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x00F1(0x0003) MISSED OFFSET
+	float                                              Timestamp;                                                // 0x00F4(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x00F8(0x0008) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.SavedSpectatorCameras
+// 0x0010
+struct FSavedSpectatorCameras
+{
+	TArray<struct FSavedSpectatorCameraShot>           Shots;                                                    // 0x0000(0x0010) (ZeroConstructor)
 };
 
 // ScriptStruct FortniteGame.MatchmakingParams
@@ -9697,12 +10775,34 @@ struct FFortTimeToMatchTracker
 	TArray<struct FFortTimeToMatchPhase>               Phases;                                                   // 0x0070(0x0010) (ZeroConstructor)
 };
 
+// ScriptStruct FortniteGame.McpPrivacySettings
+// 0x0002
+struct FMcpPrivacySettings
+{
+	bool                                               OptOutOfPublicLeaderboards;                               // 0x0000(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	bool                                               OptOutOfFriendsLeaderboards;                              // 0x0001(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+};
+
 // ScriptStruct FortniteGame.FriendCodeLocString
 // 0x0020
 struct FFriendCodeLocString
 {
 	struct FString                                     Lang;                                                     // 0x0000(0x0010) (Edit, ZeroConstructor, DisableEditOnInstance)
 	struct FString                                     Text;                                                     // 0x0010(0x0010) (Edit, ZeroConstructor, DisableEditOnInstance)
+};
+
+// ScriptStruct FortniteGame.McpBanInfo
+// 0x0030
+struct FMcpBanInfo
+{
+	bool                                               bRequiresUserAck;                                         // 0x0000(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0001(0x0007) MISSED OFFSET
+	TArray<EPlayerBanReasons>                          BanReasons;                                               // 0x0008(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	bool                                               bBanHasStarted;                                           // 0x0018(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0019(0x0007) MISSED OFFSET
+	struct FDateTime                                   BanStartTimeUtc;                                          // 0x0020(0x0008)
+	float                                              BanDurationDays;                                          // 0x0028(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x4];                                       // 0x002C(0x0004) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortPublicAccountInfo
@@ -9724,7 +10824,7 @@ struct FFortPrivateAccountInfo : public FFortPublicAccountInfo
 };
 
 // ScriptStruct FortniteGame.FortAthenaLoadout
-// 0x0088
+// 0x00A0
 struct FFortAthenaLoadout
 {
 	struct FString                                     BannerIconId;                                             // 0x0000(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
@@ -9733,13 +10833,16 @@ struct FFortAthenaLoadout
 	class UAthenaGliderItemDefinition*                 Glider;                                                   // 0x0028(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	class UAthenaPickaxeItemDefinition*                Pickaxe;                                                  // 0x0030(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	class UAthenaCharacterItemDefinition*              Character;                                                // 0x0038(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UAthenaHatItemDefinition*                    Hat;                                                      // 0x0040(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UAthenaBackpackItemDefinition*               Backpack;                                                 // 0x0048(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UAthenaLoadingScreenItemDefinition*          LoadingScreen;                                            // 0x0050(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UAthenaBattleBusItemDefinition*              BattleBus;                                                // 0x0058(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	TArray<class UAthenaDanceItemDefinition*>          Dances;                                                   // 0x0060(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	TArray<class UAthenaSprayItemDefinition*>          Sprays;                                                   // 0x0070(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	class UAthenaVictoryPoseItemDefinition*            VictoryPose;                                              // 0x0080(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TArray<struct FMcpVariantChannelInfo>              CharacterVariantChannels;                                 // 0x0040(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UAthenaHatItemDefinition*                    Hat;                                                      // 0x0050(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UAthenaBackpackItemDefinition*               Backpack;                                                 // 0x0058(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UAthenaLoadingScreenItemDefinition*          LoadingScreen;                                            // 0x0060(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UAthenaBattleBusItemDefinition*              BattleBus;                                                // 0x0068(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UAthenaVehicleCosmeticItemDefinition*        VehicleDecoration;                                        // 0x0070(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UAthenaCallingCardItemDefinition*            CallingCard;                                              // 0x0078(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UAthenaMapMarkerItemDefinition*              MapMarker;                                                // 0x0080(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TArray<class UAthenaDanceItemDefinition*>          Dances;                                                   // 0x0088(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UAthenaVictoryPoseItemDefinition*            VictoryPose;                                              // 0x0098(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.FortHomeBaseInfo
@@ -9829,14 +10932,14 @@ struct FAccountIdAndScore
 };
 
 // ScriptStruct FortniteGame.FortWorldProfileUpdateRequest
-// 0x0110
+// 0x00D8
 struct FFortWorldProfileUpdateRequest
 {
-	unsigned char                                      UnknownData00[0x40];                                      // 0x0000(0x0040) MISSED OFFSET
-	TArray<class UFortMcpProfileWorld*>                WorldProfilesToSave;                                      // 0x0040(0x0010) (ZeroConstructor)
-	unsigned char                                      UnknownData01[0x10];                                      // 0x0050(0x0010) MISSED OFFSET
-	int                                                NumberOfRequests;                                         // 0x0060(0x0004) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0xAC];                                      // 0x0064(0x00AC) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0000(0x0010) MISSED OFFSET
+	TArray<class UFortMcpProfileWorld*>                WorldProfilesToSave;                                      // 0x0010(0x0010) (ZeroConstructor)
+	unsigned char                                      UnknownData01[0x10];                                      // 0x0020(0x0010) MISSED OFFSET
+	int                                                NumberOfRequests;                                         // 0x0030(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0xA4];                                      // 0x0034(0x00A4) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.QuickBarSlot
@@ -10303,6 +11406,26 @@ struct FFortDifficultyOptionBudget
 	struct FCurveTableRowHandle                        DifficultyOptionPointsCurve;                              // 0x0020(0x0010) (Edit, DisableEditOnInstance)
 };
 
+// ScriptStruct FortniteGame.MissionGenerationInfo
+// 0x0058
+struct FMissionGenerationInfo
+{
+	int                                                NumMissionsRequired;                                      // 0x0000(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	int                                                MaxMissionsAllowed;                                       // 0x0004(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	int                                                NumMissionsGeneratedMatchingRequirements;                 // 0x0008(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x000C(0x0004) MISSED OFFSET
+	struct FGameplayTagQuery                           MissionTagRequirements;                                   // 0x0010(0x0048) (Edit, DisableEditOnInstance)
+};
+
+// ScriptStruct FortniteGame.PerDifficultyMissionGenerationInfo
+// 0x0030
+struct FPerDifficultyMissionGenerationInfo
+{
+	struct FDataTableRowHandle                         MinDifficulty;                                            // 0x0000(0x0010) (Edit, DisableEditOnInstance)
+	struct FDataTableRowHandle                         MaxDifficulty;                                            // 0x0010(0x0010) (Edit, DisableEditOnInstance)
+	TArray<struct FMissionGenerationInfo>              MissionGenerationInfos;                                   // 0x0020(0x0010) (Edit, ZeroConstructor, DisableEditOnInstance)
+};
+
 // ScriptStruct FortniteGame.ZoneLoadingScreenHeadingConfig
 // 0x0038
 struct FZoneLoadingScreenHeadingConfig
@@ -10341,15 +11464,6 @@ struct FFortPossibleMission
 	int                                                MinAlwaysGenerated;                                       // 0x002C(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 	bool                                               bIsPrototype;                                             // 0x0030(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 	unsigned char                                      UnknownData01[0x7];                                       // 0x0031(0x0007) MISSED OFFSET
-};
-
-// ScriptStruct FortniteGame.FortMissionInfoOption
-// 0x0030
-struct FFortMissionInfoOption
-{
-	unsigned char                                      UnknownData00[0x28];                                      // 0x0000(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortMissionInfoOption.MissionInfo
-	float                                              MinDifficultyLevel;                                       // 0x0028(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x4];                                       // 0x002C(0x0004) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortObjectiveEntry
@@ -10614,6 +11728,14 @@ struct FMissionTimerData
 	unsigned char                                      UnknownData01[0x18];                                      // 0x0010(0x0018) MISSED OFFSET
 };
 
+// ScriptStruct FortniteGame.MontageLookupData
+// 0x0048
+struct FMontageLookupData
+{
+	struct FGameplayTagContainer                       GameplayTags;                                             // 0x0000(0x0020) (Edit)
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0020(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.MontageLookupData.AnimMontage
+};
+
 // ScriptStruct FortniteGame.AirControlParams
 // 0x00C8
 struct FAirControlParams
@@ -10667,32 +11789,6 @@ struct FRestrictedCountry
 	bool                                               bAntiAddictionMessageShown;                               // 0x0001(0x0001) (ZeroConstructor, IsPlainOldData)
 	bool                                               bRealMoneyStoreRestriction;                               // 0x0002(0x0001) (ZeroConstructor, IsPlainOldData)
 	bool                                               bGameplayRestrictions;                                    // 0x0003(0x0001) (ZeroConstructor, IsPlainOldData)
-};
-
-// ScriptStruct FortniteGame.SettingData
-// 0x0078
-struct FSettingData
-{
-	struct FText                                       DisplayText;                                              // 0x0000(0x0018) (Edit, DisableEditOnInstance)
-	struct FText                                       DisplayTextPS4;                                           // 0x0018(0x0018) (Edit, DisableEditOnInstance)
-	struct FText                                       HoverText;                                                // 0x0030(0x0018) (Edit, DisableEditOnInstance)
-	struct FText                                       HoverTextPS4;                                             // 0x0048(0x0018) (Edit, DisableEditOnInstance)
-	ESettingDisplayType                                DisplayType;                                              // 0x0060(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	ESettingType                                       SettingType;                                              // 0x0061(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               SliderUseDecimal;                                         // 0x0062(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               SliderMinZero;                                            // 0x0063(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               DisplayOnPlatformPC;                                      // 0x0064(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               DisplayOnPlatformXbox;                                    // 0x0065(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               DisplayOnPlatformPS4;                                     // 0x0066(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               DisplayOnPlatformMobile;                                  // 0x0067(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	TArray<ESubGame>                                   HiddenModes;                                              // 0x0068(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-};
-
-// ScriptStruct FortniteGame.OptionsTabData
-// 0x0010
-struct FOptionsTabData
-{
-	TArray<struct FSettingData>                        SettingDatas;                                             // 0x0000(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
 };
 
 // ScriptStruct FortniteGame.OutpostBuildingData
@@ -10863,7 +11959,9 @@ struct FFortPartySuggestion
 	bool                                               bAnyInUnjoinableMatch;                                    // 0x0073(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	int                                                PartySize;                                                // 0x0074(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	EFortPartyRestriction                              PartyRestriction;                                         // 0x0078(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0079(0x0007) MISSED OFFSET
+	bool                                               bIsPlaying;                                               // 0x0079(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x2];                                       // 0x007A(0x0002) MISSED OFFSET
+	int                                                PlayersAlive;                                             // 0x007C(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.FortPartyPlatformSession
@@ -10900,8 +11998,16 @@ struct FFortPartyRepState : public FPartyState
 	TArray<struct FFortPartyPlatformSession>           PlatformSessions;                                         // 0x0098(0x0010) (ZeroConstructor)
 };
 
+// ScriptStruct FortniteGame.DisplayManagerVariantData
+// 0x0018
+struct FDisplayManagerVariantData
+{
+	class UAthenaCosmeticItemDefinition*               CosmeticItemDef;                                          // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
+	TArray<struct FMcpVariantChannelInfo>              CosmeticVariantChannels;                                  // 0x0008(0x0010) (ZeroConstructor)
+};
+
 // ScriptStruct FortniteGame.CosmeticLoadoutPartyReplState
-// 0x0050
+// 0x0068
 struct FCosmeticLoadoutPartyReplState
 {
 	struct FString                                     BackpackPersistentName;                                   // 0x0000(0x0010) (ZeroConstructor)
@@ -10912,10 +12018,11 @@ struct FCosmeticLoadoutPartyReplState
 	int                                                BattlePassSelfBoostXp;                                    // 0x0044(0x0004) (ZeroConstructor, IsPlainOldData)
 	int                                                BattlePassFriendBoostXp;                                  // 0x0048(0x0004) (ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x4];                                       // 0x004C(0x0004) MISSED OFFSET
+	struct FDisplayManagerVariantData                  AthenaCharacterVariantInfo;                               // 0x0050(0x0018)
 };
 
 // ScriptStruct FortniteGame.FortPartyMemberRepState
-// 0x00F8 (0x0100 - 0x0008)
+// 0x0138 (0x0140 - 0x0008)
 struct FFortPartyMemberRepState : public FPartyMemberRepState
 {
 	EFortPartyMemberLocation                           Location;                                                 // 0x0008(0x0001) (ZeroConstructor, IsPlainOldData)
@@ -10931,14 +12038,19 @@ struct FFortPartyMemberRepState : public FPartyMemberRepState
 	int64_t                                            HomeBaseVersion;                                          // 0x0050(0x0008) (ZeroConstructor, IsPlainOldData)
 	struct FUniqueNetIdRepl                            PlatformUniqueId;                                         // 0x0058(0x0028)
 	struct FString                                     Platform;                                                 // 0x0080(0x0010) (ZeroConstructor)
-	struct FCosmeticLoadoutPartyReplState              CosmeticLoadout;                                          // 0x0090(0x0050)
-	bool                                               bPreloadedAthena;                                         // 0x00E0(0x0001) (ZeroConstructor, IsPlainOldData)
-	bool                                               bReadyAthena;                                             // 0x00E1(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x6];                                       // 0x00E2(0x0006) MISSED OFFSET
-	struct FString                                     PlatformSessionId;                                        // 0x00E8(0x0010) (ZeroConstructor)
-	int8_t                                             EmoteSection;                                             // 0x00F8(0x0001) (ZeroConstructor, IsPlainOldData)
-	ECrossplayPreference                               CrossplayPreference;                                      // 0x00F9(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData04[0x6];                                       // 0x00FA(0x0006) MISSED OFFSET
+	struct FCosmeticLoadoutPartyReplState              CosmeticLoadout;                                          // 0x0090(0x0068)
+	bool                                               bUseLocalPreview;                                         // 0x00F8(0x0001) (ZeroConstructor, Transient, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	unsigned char                                      UnknownData03[0x7];                                       // 0x00F9(0x0007) MISSED OFFSET
+	struct FDisplayManagerVariantData                  LocalVariantPreview;                                      // 0x0100(0x0018) (Transient, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	bool                                               bPreloadedAthena;                                         // 0x0118(0x0001) (ZeroConstructor, IsPlainOldData)
+	bool                                               bReadyAthena;                                             // 0x0119(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData04[0x6];                                       // 0x011A(0x0006) MISSED OFFSET
+	struct FString                                     PlatformSessionId;                                        // 0x0120(0x0010) (ZeroConstructor)
+	int8_t                                             EmoteSection;                                             // 0x0130(0x0001) (ZeroConstructor, IsPlainOldData)
+	ECrossplayPreference                               CrossplayPreference;                                      // 0x0131(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      NumAliveAthena;                                           // 0x0132(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData05[0x5];                                       // 0x0133(0x0005) MISSED OFFSET
+	struct FDateTime                                   UtcTimeStartedMatchAthena;                                // 0x0138(0x0008)
 };
 
 // ScriptStruct FortniteGame.BuildingHitTime
@@ -11019,20 +12131,66 @@ struct FFortAnimInput_HoverBoard
 };
 
 // ScriptStruct FortniteGame.FortAnimInput_ShoppingCart
-// 0x0014
+// 0x0078
 struct FFortAnimInput_ShoppingCart
 {
 	bool                                               bIsUsingShoppingCart;                                     // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
-	bool                                               bIsCoasting;                                              // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
-	bool                                               bIsPedaling;                                              // 0x0002(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
-	bool                                               bIsStartCoasting;                                         // 0x0003(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
-	bool                                               bIsBrakingFromCoasting;                                   // 0x0004(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
-	bool                                               bIsStandingInPlace;                                       // 0x0005(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
-	bool                                               bIsSprinting;                                             // 0x0006(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x1];                                       // 0x0007(0x0001) MISSED OFFSET
-	float                                              CurrentBrakeForce;                                        // 0x0008(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
-	float                                              SteerAngle;                                               // 0x000C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
-	float                                              StandingInPlaceSteerAngle;                                // 0x0010(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	ECoastState                                        CoastState;                                               // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsCoastStatePedaling;                                    // 0x0002(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsCoastStateCoasting;                                    // 0x0003(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsCoastStateDismount;                                    // 0x0004(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsCoastStateIdle;                                        // 0x0005(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsInAir;                                                 // 0x0006(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsCoasting;                                              // 0x0007(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsPedaling;                                              // 0x0008(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsReadyToPedal;                                          // 0x0009(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x2];                                       // 0x000A(0x0002) MISSED OFFSET
+	float                                              IsReadyToPedal;                                           // 0x000C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bWantsToCoast;                                            // 0x0010(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsCoastIdling;                                           // 0x0011(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsStartCoasting;                                         // 0x0012(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsEndCoasting;                                           // 0x0013(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsDismountingFromCoast;                                  // 0x0014(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsCoastingOrDismountingFromCoast;                        // 0x0015(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsStandingInPlace;                                       // 0x0016(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsSprinting;                                             // 0x0017(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsSprintingAndMovingForward;                             // 0x0018(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsMovingForwardNotSprinting;                             // 0x0019(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsBraking;                                               // 0x001A(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsReversing;                                             // 0x001B(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsMoving;                                                // 0x001C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsMovingForward;                                         // 0x001D(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsMovingBackwards;                                       // 0x001E(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsMovingOrTurningInPlace;                                // 0x001F(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsInAirSteady;                                           // 0x0020(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsOnSlope;                                               // 0x0021(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bAimFWD;                                                  // 0x0022(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bAimBWD;                                                  // 0x0023(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bAimLFT;                                                  // 0x0024(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bAimRGT;                                                  // 0x0025(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x2];                                       // 0x0026(0x0002) MISSED OFFSET
+	float                                              ForwardVelocity;                                          // 0x0028(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	float                                              ForwardSpeedKmH;                                          // 0x002C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	float                                              CurrentBrakeForce;                                        // 0x0030(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	float                                              RunForwardAlpha;                                          // 0x0034(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsAcceleratingForward;                                   // 0x0038(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	bool                                               bIsAccelBreakingOrReversing;                              // 0x0039(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x2];                                       // 0x003A(0x0002) MISSED OFFSET
+	float                                              SteerAngle;                                               // 0x003C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	float                                              SteerAngleInterpSpeed;                                    // 0x0040(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              CoastSteerAngleInterpSpeed;                               // 0x0044(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              IsReadyToPedalInterpSpeed;                                // 0x0048(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              StandingInPlaceSteerAngle;                                // 0x004C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	float                                              SlopePitchDegreeAngle;                                    // 0x0050(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	float                                              SlopeRollDegreeAngle;                                     // 0x0054(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	float                                              PawnToVehicleDeltaYawAngleDegrees;                        // 0x0058(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	float                                              AimCardDirDeadZoneAngleDegrees;                           // 0x005C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              AimCardDirAngleOffsetDegrees;                             // 0x0060(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              AimFWDDeltaAngleDegrees;                                  // 0x0064(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              AimBWDDeltaAngleDegrees;                                  // 0x0068(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              AimLFTDeltaAngleDegrees;                                  // 0x006C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              AimRGTDeltaAngleDegrees;                                  // 0x0070(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                LastCardDirIndex;                                         // 0x0074(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.FortAnimInput_TurnInPlace
@@ -11065,56 +12223,17 @@ struct FFortAnimInput_AdjustedAimOffset
 };
 
 // ScriptStruct FortniteGame.FortAnimInput_AdjustedAim
-// 0x0160
+// 0x01B0
 struct FFortAnimInput_AdjustedAim
 {
-	struct FFortAnimInput_AdjustedAimOffset            WeaponOffsets[0x14];                                      // 0x0000(0x0010) (Edit, IsPlainOldData)
-	float                                              YawOffset;                                                // 0x0140(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              PitchOffset;                                              // 0x0144(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              YawScale;                                                 // 0x0148(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              PitchScale;                                               // 0x014C(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              ResultingYaw;                                             // 0x0150(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	float                                              ResultingPitch;                                           // 0x0154(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	struct FName                                       ZeroOutPitchWeightCurveName;                              // 0x0158(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-};
-
-// ScriptStruct FortniteGame.FortAnimInput_Skydiving
-// 0x0048
-struct FFortAnimInput_Skydiving
-{
-	unsigned char                                      bIsSkydivingFromLaunchPad : 1;                            // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
-	unsigned char                                      bIsUsingUmbrella : 1;                                     // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
-	unsigned char                                      bIsActivelyStrafingInAir : 1;                             // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
-	unsigned char                                      bIsDiving : 1;                                            // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
-	unsigned char                                      bIsParachuteOpen : 1;                                     // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
-	unsigned char                                      bIsSkydiving : 1;                                         // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
-	unsigned char                                      bIsParachuteLeaning : 1;                                  // 0x0000(0x0001) (Edit, BlueprintVisible, Transient)
-	unsigned char                                      bIsSkydiveLeaning : 1;                                    // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
-	unsigned char                                      bIsLeaning : 1;                                           // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
-	unsigned char                                      bIsSkydiveDiveMode : 1;                                   // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
-	unsigned char                                      bParachuteLeanTransition : 1;                             // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
-	unsigned char                                      bPlaySkydiveDrift : 1;                                    // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
-	unsigned char                                      bSkydiveDriftDelayActive : 1;                             // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
-	unsigned char                                      bSkydiveDriftAnimAllowed : 1;                             // 0x0001(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, Transient)
-	unsigned char                                      UnknownData00[0x2];                                       // 0x0002(0x0002) MISSED OFFSET
-	float                                              LocalAccelForward;                                        // 0x0004(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	float                                              LocalAccelRight;                                          // 0x0008(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	float                                              LocalVelocityRight;                                       // 0x000C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	float                                              SkydiveAimPitch;                                          // 0x0010(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	float                                              SkydiveAimPitchInterpSpeed;                               // 0x0014(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              SkydiveAimYaw;                                            // 0x0018(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	float                                              DeployChuteAnimRate;                                      // 0x001C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	float                                              SkydiveDriftAnimRate;                                     // 0x0020(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	float                                              SkydiveDriftAnimRateCurrent;                              // 0x0024(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	float                                              SkydiveFidgetAnimRate;                                    // 0x0028(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	float                                              SkydiveFidgetAnimRateCurrent;                             // 0x002C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	float                                              SkydiveAdditiveAlpha;                                     // 0x0030(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	float                                              SkydiveDriftDelay;                                        // 0x0034(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	int                                                SkydiveDriftAnim;                                         // 0x0038(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	int                                                SkydiveDriftAnimMax;                                      // 0x003C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	int                                                LaunchpadAnim;                                            // 0x0040(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	TEnumAsByte<ESkydivingDirection>                   LocalAccelDir;                                            // 0x0044(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x3];                                       // 0x0045(0x0003) MISSED OFFSET
+	struct FFortAnimInput_AdjustedAimOffset            WeaponOffsets[0x19];                                      // 0x0000(0x0010) (Edit, IsPlainOldData)
+	float                                              YawOffset;                                                // 0x0190(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              PitchOffset;                                              // 0x0194(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              YawScale;                                                 // 0x0198(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              PitchScale;                                               // 0x019C(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              ResultingYaw;                                             // 0x01A0(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	float                                              ResultingPitch;                                           // 0x01A4(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	struct FName                                       ZeroOutPitchWeightCurveName;                              // 0x01A8(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.FortAnimInput_PlayerAnimAsset
@@ -11144,6 +12263,27 @@ struct FFortAnimInput_PlayerAnimAsset
 	class UBlendSpaceBase*                             CrouchJogAdditiveBlendSpace;                              // 0x0088(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	class UBlendSpaceBase*                             CrouchJogAdditiveBlendSpaceRelaxed;                       // 0x0090(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	class UAnimSequence*                               CrouchSprintAnimation;                                    // 0x0098(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.FortAnimInput_VelocityImpact
+// 0x00B8
+struct FFortAnimInput_VelocityImpact
+{
+	struct FVector                                     LastVelocity;                                             // 0x0000(0x000C) (Transient, IsPlainOldData)
+	struct FVector                                     DeltaVelocityThreshold;                                   // 0x000C(0x000C) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	struct FVector                                     ImpactScale;                                              // 0x0018(0x000C) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	struct FInputRange                                 ImpactLimitX;                                             // 0x0024(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FInputRange                                 ImpactLimitY;                                             // 0x002C(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FInputRange                                 ImpactLimitZ;                                             // 0x0034(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FFloatRK4SpringInterpolator                 SpringInterpolatorX;                                      // 0x003C(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      UnknownData00[0x1C];                                      // 0x0044(0x001C) MISSED OFFSET
+	struct FFloatRK4SpringInterpolator                 SpringInterpolatorY;                                      // 0x0060(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      UnknownData01[0x1C];                                      // 0x0068(0x001C) MISSED OFFSET
+	struct FFloatRK4SpringInterpolator                 SpringInterpolatorZ;                                      // 0x0084(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      UnknownData02[0x1C];                                      // 0x008C(0x001C) MISSED OFFSET
+	bool                                               bTestVelocity;                                            // 0x00A8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x3];                                       // 0x00A9(0x0003) MISSED OFFSET
+	struct FVector                                     TestVelocity;                                             // 0x00AC(0x000C) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.FortPlayerAttributeSets
@@ -11179,6 +12319,14 @@ struct FFortPlayerDeathReport
 	struct FGameplayTagContainer                       Tags;                                                     // 0x0030(0x0020) (BlueprintVisible, BlueprintReadOnly, Transient)
 };
 
+// ScriptStruct FortniteGame.BuildingEditAnalyticEvent
+// 0x0002
+struct FBuildingEditAnalyticEvent
+{
+	TEnumAsByte<EFortBuildingType>                     BuildingType;                                             // 0x0000(0x0001) (ZeroConstructor, IsPlainOldData)
+	TEnumAsByte<EFortResourceType>                     ResourceType;                                             // 0x0001(0x0001) (ZeroConstructor, IsPlainOldData)
+};
+
 // ScriptStruct FortniteGame.AthenaQuickChatActiveEntry
 // 0x0018
 struct FAthenaQuickChatActiveEntry
@@ -11204,69 +12352,6 @@ struct FFortDepositedResources
 	struct FString                                     TemplateId;                                               // 0x0000(0x0010) (ZeroConstructor)
 	int                                                Quantity;                                                 // 0x0010(0x0004) (ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x4];                                       // 0x0014(0x0004) MISSED OFFSET
-};
-
-// ScriptStruct FortniteGame.SpectatorOwnedCameraComponentRecord
-// 0x0050
-struct FSpectatorOwnedCameraComponentRecord
-{
-	TMap<class AActor*, class UFortSpectatorCameraComponent*> ViewTargetToComponentMap;                                 // 0x0000(0x0050) (ExportObject, ZeroConstructor)
-};
-
-// ScriptStruct FortniteGame.SavedSpectatorCameraState
-// 0x00F0
-struct FSavedSpectatorCameraState
-{
-	bool                                               bDataIsValid;                                             // 0x0000(0x0001) (ZeroConstructor, IsPlainOldData)
-	ESpectatorCameraType                               CameraType;                                               // 0x0001(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x6];                                       // 0x0002(0x0006) MISSED OFFSET
-	struct FUniqueNetIdRepl                            FollowedPlayerUniqueId;                                   // 0x0008(0x0028)
-	struct FCameraFilmbackSettings                     FilmbackSettings;                                         // 0x0030(0x000C) (IsPlainOldData)
-	struct FCameraLensSettings                         LensSettings;                                             // 0x003C(0x0014) (IsPlainOldData)
-	struct FCameraFocusSettings                        FocusSettings;                                            // 0x0050(0x0038)
-	float                                              CurrentFocalLength;                                       // 0x0088(0x0004) (ZeroConstructor, IsPlainOldData)
-	float                                              CurrentAperture;                                          // 0x008C(0x0004) (ZeroConstructor, IsPlainOldData)
-	float                                              CurrentFocusDistance;                                     // 0x0090(0x0004) (ZeroConstructor, IsPlainOldData)
-	bool                                               bManualExposureControl;                                   // 0x0094(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x3];                                       // 0x0095(0x0003) MISSED OFFSET
-	float                                              ManualExposureBias;                                       // 0x0098(0x0004) (ZeroConstructor, IsPlainOldData)
-	int                                                ArenaCamIndex;                                            // 0x009C(0x0004) (ZeroConstructor, IsPlainOldData)
-	struct FTransform                                  Transform;                                                // 0x00A0(0x0030) (IsPlainOldData)
-	struct FRotator                                    ControlRotation;                                          // 0x00D0(0x000C) (IsPlainOldData)
-	float                                              ThirdPersonNormalizedDistance;                            // 0x00DC(0x0004) (ZeroConstructor, IsPlainOldData)
-	bool                                               bThirdPersonAutoFollow;                                   // 0x00E0(0x0001) (ZeroConstructor, IsPlainOldData)
-	bool                                               bThirdPersonLazyFollow;                                   // 0x00E1(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x2];                                       // 0x00E2(0x0002) MISSED OFFSET
-	float                                              DroneSpeedIndex;                                          // 0x00E4(0x0004) (ZeroConstructor, IsPlainOldData)
-	float                                              ReplayPlaybackSpeed;                                      // 0x00E8(0x0004) (ZeroConstructor, IsPlainOldData)
-	bool                                               bNamePlatesEnabled;                                       // 0x00EC(0x0001) (ZeroConstructor, IsPlainOldData)
-	bool                                               bPlayerOutlinesEnabled;                                   // 0x00ED(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x2];                                       // 0x00EE(0x0002) MISSED OFFSET
-};
-
-// ScriptStruct FortniteGame.SavedPlayerSpectatorCameraData
-// 0x0050
-struct FSavedPlayerSpectatorCameraData
-{
-	TMap<struct FUniqueNetIdRepl, struct FSavedSpectatorCameraState> PlayerToCameraStateMap;                                   // 0x0000(0x0050) (ZeroConstructor)
-};
-
-// ScriptStruct FortniteGame.SavedSpectatorCameraShot
-// 0x0100
-struct FSavedSpectatorCameraShot
-{
-	struct FSavedSpectatorCameraState                  CameraState;                                              // 0x0000(0x00F0)
-	bool                                               bIsShotStart;                                             // 0x00F0(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x00F1(0x0003) MISSED OFFSET
-	float                                              Timestamp;                                                // 0x00F4(0x0004) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x00F8(0x0008) MISSED OFFSET
-};
-
-// ScriptStruct FortniteGame.SavedSpectatorCameras
-// 0x0010
-struct FSavedSpectatorCameras
-{
-	TArray<struct FSavedSpectatorCameraShot>           Shots;                                                    // 0x0000(0x0010) (ZeroConstructor)
 };
 
 // ScriptStruct FortniteGame.FortInputActionGroupContext
@@ -11297,6 +12382,15 @@ struct FMorphValuePair
 	unsigned char                                      UnknownData00[0x4];                                       // 0x000C(0x0004) MISSED OFFSET
 };
 
+// ScriptStruct FortniteGame.PlayerMarkerData
+// 0x0020
+struct FPlayerMarkerData
+{
+	class AFortPlayerControllerAthena*                 Owner;                                                    // 0x0000(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	class AFortPlayerStateAthena*                      PlayerState;                                              // 0x0008(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	struct FLinearColor                                Color;                                                    // 0x0010(0x0010) (Edit, BlueprintVisible, IsPlainOldData)
+};
+
 // ScriptStruct FortniteGame.AthenaPawnReplayData
 // 0x0030
 struct FAthenaPawnReplayData
@@ -11322,14 +12416,21 @@ struct FAthenaBatchedDamageGameplayCues
 	bool                                               bIsShield;                                                // 0x0027(0x0001) (ZeroConstructor, IsPlainOldData)
 	bool                                               bIsShieldDestroyed;                                       // 0x0028(0x0001) (ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x7];                                       // 0x0029(0x0007) MISSED OFFSET
-	class AActor*                                      NonPlayerHitActor;                                        // 0x0030(0x0008) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	class AActor*                                      NonPlayerHitActor;                                        // 0x0030(0x0008) (ZeroConstructor, IsPlainOldData)
 	struct FVector_NetQuantize10                       NonPlayerLocation;                                        // 0x0038(0x000C) (RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
 	struct FVector_NetQuantizeNormal                   NonPlayerNormal;                                          // 0x0044(0x000C) (RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
 	float                                              NonPlayerMagnitude;                                       // 0x0050(0x0004) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
-	bool                                               NonPlayerbIsFatal;                                        // 0x0054(0x0001) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
-	bool                                               NonPlayerbIsCritical;                                     // 0x0055(0x0001) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	bool                                               NonPlayerbIsFatal;                                        // 0x0054(0x0001) (ZeroConstructor, IsPlainOldData)
+	bool                                               NonPlayerbIsCritical;                                     // 0x0055(0x0001) (ZeroConstructor, IsPlainOldData)
 	bool                                               bIsValid;                                                 // 0x0056(0x0001) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
 	unsigned char                                      UnknownData01[0x1];                                       // 0x0057(0x0001) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.SharedRepMovement
+// 0x0000 (0x0034 - 0x0034)
+struct FSharedRepMovement : public FRepMovement
+{
+
 };
 
 // ScriptStruct FortniteGame.AccumulatedItemEntry
@@ -11341,17 +12442,13 @@ struct FAccumulatedItemEntry
 	unsigned char                                      UnknownData00[0x4];                                       // 0x000C(0x0004) MISSED OFFSET
 };
 
-// ScriptStruct FortniteGame.DeathInfo
-// 0x0020
-struct FDeathInfo
+// ScriptStruct FortniteGame.SimulatedAttributeEntry
+// 0x0028
+struct FSimulatedAttributeEntry
 {
-	class AFortPlayerStateAthena*                      FinisherOrDowner;                                         // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
-	bool                                               bDBNO;                                                    // 0x0008(0x0001) (ZeroConstructor, IsPlainOldData)
-	EDeathCause                                        DeathCause;                                               // 0x0009(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x2];                                       // 0x000A(0x0002) MISSED OFFSET
-	float                                              Distance;                                                 // 0x000C(0x0004) (ZeroConstructor, IsPlainOldData)
-	struct FVector                                     DeathLocation;                                            // 0x0010(0x000C) (IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
-	unsigned char                                      UnknownData01[0x4];                                       // 0x001C(0x0004) MISSED OFFSET
+	struct FGameplayAttribute                          Attribute;                                                // 0x0000(0x0020)
+	float                                              CurrentValue;                                             // 0x0020(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0024(0x0004) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortSpectatorAthenaItem
@@ -11378,6 +12475,71 @@ struct FPlayerBannerInfo
 	struct FString                                     ColorId;                                                  // 0x0010(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
 	int                                                Level;                                                    // 0x0020(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x4];                                       // 0x0024(0x0004) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.DeathInfo
+// 0x0028
+struct FDeathInfo
+{
+	class AFortPlayerStateAthena*                      FinisherOrDowner;                                         // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
+	bool                                               bDBNO;                                                    // 0x0008(0x0001) (ZeroConstructor, IsPlainOldData)
+	EDeathCause                                        DeathCause;                                               // 0x0009(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x2];                                       // 0x000A(0x0002) MISSED OFFSET
+	float                                              Distance;                                                 // 0x000C(0x0004) (ZeroConstructor, IsPlainOldData)
+	struct FVector                                     DeathLocation;                                            // 0x0010(0x000C) (IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	bool                                               bInitialized;                                             // 0x001C(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x001D(0x0003) MISSED OFFSET
+	int                                                DeathCircumstance;                                        // 0x0020(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x4];                                       // 0x0024(0x0004) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.AthenaScoreData
+// 0x0070
+struct FAthenaScoreData
+{
+	EAthenaScoringEvent                                ScoringEvent;                                             // 0x0000(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0001(0x0007) MISSED OFFSET
+	struct FText                                       ScoreNameText;                                            // 0x0008(0x0018) (Edit, DisableEditOnInstance)
+	struct FGameplayTagContainer                       EventInclusionTags;                                       // 0x0020(0x0020) (Edit, DisableEditOnInstance)
+	int                                                NumOccurrencesForScore;                                   // 0x0040(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	int                                                NumOccurrencesPermitted;                                  // 0x0044(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FScalableFloat                              ScoreAwarded;                                             // 0x0048(0x0028) (Edit, DisableEditOnInstance)
+};
+
+// ScriptStruct FortniteGame.WinConditionScoreData
+// 0x0060
+struct FWinConditionScoreData
+{
+	struct FScalableFloat                              GoalScore;                                                // 0x0000(0x0028) (Edit, DisableEditOnInstance)
+	struct FScalableFloat                              BigScoreThreshold;                                        // 0x0028(0x0028) (Edit, DisableEditOnInstance)
+	TArray<struct FAthenaScoreData>                    ScoreDataList;                                            // 0x0050(0x0010) (Edit, ZeroConstructor, DisableEditOnInstance)
+};
+
+// ScriptStruct FortniteGame.PlaylistUIExtension
+// 0x0030
+struct FPlaylistUIExtension
+{
+	EPlaylistUIExtensionSlot                           Slot;                                                     // 0x0000(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0001(0x0007) MISSED OFFSET
+	unsigned char                                      UnknownData01[0x28];                                      // 0x0001(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteGame.PlaylistUIExtension.WidgetClass
+};
+
+// ScriptStruct FortniteGame.SupplyDropSubPhaseModifier
+// 0x000C
+struct FSupplyDropSubPhaseModifier
+{
+	EAthenaGamePhase                                   GamePhase;                                                // 0x0000(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0001(0x0003) MISSED OFFSET
+	int                                                SubPhaseIndex;                                            // 0x0004(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              SpawnInPreviousZonePercentChance;                         // 0x0008(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.SupplyDropModifierData
+// 0x0018
+struct FSupplyDropModifierData
+{
+	struct FName                                       SupplyDropID;                                             // 0x0000(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	TArray<struct FSupplyDropSubPhaseModifier>         ModifierList;                                             // 0x0008(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
 };
 
 // ScriptStruct FortniteGame.ProfileGoScenario
@@ -11546,11 +12708,11 @@ struct FFortMcpQuestObjectiveInfo
 	bool                                               bRequirePrimaryMissionCompletion;                         // 0x00D9(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	bool                                               bCanProgressInZone;                                       // 0x00DA(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
 	bool                                               bDisplayDynamicAnnouncementUpdate;                        // 0x00DB(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	bool                                               bDisplayDynamicStatusUpdate;                              // 0x00DC(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	EObjectiveStatusUpdateType                         DynamicStatusUpdateType;                                  // 0x00DC(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData04[0x3];                                       // 0x00DD(0x0003) MISSED OFFSET
-	float                                              DynamicUpdateCompletionDelay;                             // 0x00E0(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData05[0x4];                                       // 0x00E4(0x0004) MISSED OFFSET
-	unsigned char                                      UnknownData06[0x28];                                      // 0x00E4(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteGame.FortMcpQuestObjectiveInfo.ScriptedAction
+	int                                                DynamicStatusUpdatePercentInterval;                       // 0x00E0(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              DynamicUpdateCompletionDelay;                             // 0x00E4(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData05[0x28];                                      // 0x00E8(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteGame.FortMcpQuestObjectiveInfo.ScriptedAction
 };
 
 // ScriptStruct FortniteGame.FortQuestMissionCreationContext
@@ -11603,8 +12765,8 @@ struct FFortReplayPlaybackState
 	float                                              PlaybackSpeedMultiplier;                                  // 0x0010(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	bool                                               bTimelineHasInputFocus;                                   // 0x0014(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	EHudVisibilityState                                HUDVisibility;                                            // 0x0015(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bViewSettingsWidgetVisible;                               // 0x0016(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	bool                                               bLevelStreaming;                                          // 0x0017(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bLevelStreaming;                                          // 0x0016(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bHasRelevancyZone;                                        // 0x0017(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.FortReplayFXState
@@ -11644,6 +12806,15 @@ struct FRuntimeOptionReviewPromptCriteria
 	int                                                KillCount;                                                // 0x000C(0x0004) (ZeroConstructor, IsPlainOldData)
 	bool                                               RequireAll;                                               // 0x0010(0x0001) (ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x3];                                       // 0x0011(0x0003) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.RuntimeOptionTabStateInfo
+// 0x0010
+struct FRuntimeOptionTabStateInfo
+{
+	struct FName                                       TabName;                                                  // 0x0000(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortRuntimeOptionTabState                         TabState;                                                 // 0x0008(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0009(0x0007) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.Recipe
@@ -11712,16 +12883,45 @@ struct FFortSearchPassState
 	unsigned char                                      UnknownData00[0x10];                                      // 0x0008(0x0010) MISSED OFFSET
 };
 
+// ScriptStruct FortniteGame.FortRotationalContentEventsState
+// 0x0140
+struct FFortRotationalContentEventsState
+{
+	unsigned char                                      UnknownData00[0x50];                                      // 0x0000(0x0050) UNKNOWN PROPERTY: SetProperty FortniteGame.FortRotationalContentEventsState.ActiveStorefronts
+	unsigned char                                      UnknownData01[0x50];                                      // 0x0050(0x0050) UNKNOWN PROPERTY: SetProperty FortniteGame.FortRotationalContentEventsState.ActiveEventFlags
+	TMap<struct FName, double>                         EventNamedWeights;                                        // 0x00A0(0x0050) (ZeroConstructor)
+	unsigned char                                      UnknownData02[0x50];                                      // 0x00F0(0x0050) UNKNOWN PROPERTY: SetProperty FortniteGame.FortRotationalContentEventsState.ExpirationTimes
+};
+
+// ScriptStruct FortniteGame.FortClientEventsState
+// 0x0050 (0x0190 - 0x0140)
+struct FFortClientEventsState : public FFortRotationalContentEventsState
+{
+	int                                                SeasonNumber;                                             // 0x0140(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0144(0x0004) MISSED OFFSET
+	struct FString                                     SeasonTemplateId;                                         // 0x0148(0x0010) (ZeroConstructor)
+	float                                              MatchXpBonusPoints;                                       // 0x0158(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x015C(0x0004) MISSED OFFSET
+	struct FDateTime                                   SeasonBegin;                                              // 0x0160(0x0008)
+	struct FDateTime                                   SeasonEnd;                                                // 0x0168(0x0008)
+	struct FDateTime                                   SeasonDisplayedEnd;                                       // 0x0170(0x0008)
+	struct FDateTime                                   WeeklyStoreEnd;                                           // 0x0178(0x0008)
+	struct FDateTime                                   StwEventStoreEnd;                                         // 0x0180(0x0008)
+	struct FDateTime                                   StwWeeklyStoreEnd;                                        // 0x0188(0x0008)
+};
+
 // ScriptStruct FortniteGame.FortNonPrimaryMission
-// 0x0098
+// 0x00B8
 struct FFortNonPrimaryMission
 {
 	unsigned char                                      UnknownData00[0x28];                                      // 0x0000(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortNonPrimaryMission.MissionInfo
 	struct FGameplayTagQuery                           ContextTagQuery;                                          // 0x0028(0x0048) (Edit, DisableEditOnInstance)
-	bool                                               bSatisfiesCurrentRequirement;                             // 0x0070(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0071(0x0007) MISSED OFFSET
-	TArray<int>                                        RequirementIndicesSatisfied;                              // 0x0078(0x0010) (ZeroConstructor, Transient)
-	TArray<int>                                        DistributionCategoryIndicesSatisfied;                     // 0x0088(0x0010) (ZeroConstructor, Transient)
+	struct FDataTableRowHandle                         MinDifficulty;                                            // 0x0070(0x0010) (Edit, DisableEditOnInstance)
+	struct FDataTableRowHandle                         MaxDifficulty;                                            // 0x0080(0x0010) (Edit, DisableEditOnInstance)
+	bool                                               bSatisfiesCurrentRequirement;                             // 0x0090(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0091(0x0007) MISSED OFFSET
+	TArray<int>                                        RequirementIndicesSatisfied;                              // 0x0098(0x0010) (ZeroConstructor, Transient)
+	TArray<int>                                        DistributionCategoryIndicesSatisfied;                     // 0x00A8(0x0010) (ZeroConstructor, Transient)
 };
 
 // ScriptStruct FortniteGame.FortMissionDistributionCategory
@@ -11754,6 +12954,62 @@ struct FFortGlobalMission
 struct FFortQuestDrivenMission : public FFortGlobalMission
 {
 	class UFortQuestItemDefinition*                    RequiredQuest;                                            // 0x0178(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.SpecialActorRepData
+// 0x0154 (0x0160 - 0x000C)
+struct FSpecialActorRepData : public FFastArraySerializerItem
+{
+	unsigned char                                      UnknownData00[0x4];                                       // 0x000C(0x0004) MISSED OFFSET
+	struct FName                                       SpecialActorID;                                           // 0x0010(0x0008) (ZeroConstructor, IsPlainOldData)
+	struct FName                                       CategoryId;                                               // 0x0018(0x0008) (ZeroConstructor, IsPlainOldData)
+	class AActor*                                      SpecialActor;                                             // 0x0020(0x0008) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	float                                              ReplicationInterval;                                      // 0x0028(0x0004) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	float                                              ReplicationIntervalDeviation;                             // 0x002C(0x0004) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	float                                              NextReplicationTime;                                      // 0x0030(0x0004) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	float                                              LastActorNotRelevantTime;                                 // 0x0034(0x0004) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	bool                                               bActorIsRelevant;                                         // 0x0038(0x0001) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	bool                                               bWasActorRelevantLastUpdate;                              // 0x0039(0x0001) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	unsigned char                                      UnknownData01[0x2];                                       // 0x003A(0x0002) MISSED OFFSET
+	struct FVector                                     CurrentLocation;                                          // 0x003C(0x000C) (IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	float                                              CurrentYaw;                                               // 0x0048(0x0004) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	unsigned char                                      UnknownData02[0x4];                                       // 0x004C(0x0004) MISSED OFFSET
+	struct FSlateBrush                                 MainIconBrush;                                            // 0x0050(0x0088)
+	struct FVector2D                                   MinimapScale;                                             // 0x00D8(0x0008) (IsPlainOldData)
+	float                                              CurrentHealth;                                            // 0x00E0(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              MaxHealth;                                                // 0x00E4(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              CurrentShield;                                            // 0x00E8(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              MaxShield;                                                // 0x00EC(0x0004) (ZeroConstructor, IsPlainOldData)
+	struct FText                                       DisplayName;                                              // 0x00F0(0x0018)
+	TArray<struct FSpecialActorSingleStatData>         TrackedStats;                                             // 0x0108(0x0010) (ZeroConstructor, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	float                                              LastLocationReplicationTime;                              // 0x0118(0x0004) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	float                                              PrevLocationReplicatedTime;                               // 0x011C(0x0004) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	struct FVector_NetQuantize100                      LastRepLocation;                                          // 0x0120(0x000C)
+	struct FVector_NetQuantize100                      PrevRepLocation;                                          // 0x012C(0x000C) (RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	struct FVector                                     LerpStartLocation;                                        // 0x0138(0x000C) (IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	float                                              LastYawReplicationTime;                                   // 0x0144(0x0004) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	float                                              PrevYawReplicatedTime;                                    // 0x0148(0x0004) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	float                                              LastRepYaw;                                               // 0x014C(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              PrevRepYaw;                                               // 0x0150(0x0004) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	float                                              LerpStartYaw;                                             // 0x0154(0x0004) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	bool                                               bReplicateHealth;                                         // 0x0158(0x0001) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	bool                                               bReplicateShield;                                         // 0x0159(0x0001) (ZeroConstructor, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	unsigned char                                      UnknownData03[0x6];                                       // 0x015A(0x0006) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.SpecialActorRepDataArray
+// 0x0010 (0x00C0 - 0x00B0)
+struct FSpecialActorRepDataArray : public FFastArraySerializer
+{
+	TArray<struct FSpecialActorRepData>                SpecialActorList;                                         // 0x00B0(0x0010) (ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.SpecialActorStatData
+// 0x0018
+struct FSpecialActorStatData
+{
+	struct FName                                       CategoryId;                                               // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
+	TArray<struct FSpecialActorSingleStatData>         Stats;                                                    // 0x0008(0x0010) (ZeroConstructor)
 };
 
 // ScriptStruct FortniteGame.FortChaseCameraHelper
@@ -11794,6 +13050,17 @@ struct FFortSplineBase
 struct FFortCatmullRomSpline : public FFortSplineBase
 {
 	TArray<struct FVector>                             ControlPoints;                                            // 0x0010(0x0010) (ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.FortSprayDecalRepPayload
+// 0x0020
+struct FFortSprayDecalRepPayload
+{
+	class UAthenaSprayItemDefinition*                  SprayAsset;                                               // 0x0000(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FName                                       BannerName;                                               // 0x0008(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FName                                       BannerColor;                                              // 0x0010(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                SavedStatValue;                                           // 0x0018(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x001C(0x0004) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortEventConditional
@@ -11850,6 +13117,34 @@ struct FTransformableNavLinkClass
 	struct FVector                                     Translation;                                              // 0x0000(0x000C) (Edit, IsPlainOldData)
 	struct FRotator                                    Rotation;                                                 // 0x000C(0x000C) (Edit, IsPlainOldData)
 	class UClass*                                      NavigationLinksClass;                                     // 0x0018(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.FortSupplyDropSubPhaseData
+// 0x0078
+struct FFortSupplyDropSubPhaseData
+{
+	struct FScalableFloat                              SupplyDropMinCount;                                       // 0x0000(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FScalableFloat                              SupplyDropMaxCount;                                       // 0x0028(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FScalableFloat                              SupplyDropCap;                                            // 0x0050(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+};
+
+// ScriptStruct FortniteGame.FortSupplyDropGamePhaseData
+// 0x01A8
+struct FFortSupplyDropGamePhaseData
+{
+	EAthenaGamePhase                                   GamePhase;                                                // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0001(0x0007) MISSED OFFSET
+	struct FScalableFloat                              SupplyDropMinPlacementHeight;                             // 0x0008(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FScalableFloat                              SupplyDropMaxPlacementHeight;                             // 0x0030(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FScalableFloat                              SupplyDropTimeInterval;                                   // 0x0058(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FScalableFloat                              SupplyDropTimeDeviation;                                  // 0x0080(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FScalableFloat                              SupplyDropSpawnMinWaitTime;                               // 0x00A8(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FScalableFloat                              SupplyDropSpawnMaxWaitTime;                               // 0x00D0(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FScalableFloat                              SupplyDropMinSpawnHeight;                                 // 0x00F8(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FScalableFloat                              SupplyDropMaxSpawnHeight;                                 // 0x0120(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FScalableFloat                              SupplyDropMinSpeed;                                       // 0x0148(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FScalableFloat                              SupplyDropMaxSpeed;                                       // 0x0170(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
+	TArray<struct FFortSupplyDropSubPhaseData>         SubPhaseData;                                             // 0x0198(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
 };
 
 // ScriptStruct FortniteGame.FortTagUIData
@@ -12282,16 +13577,16 @@ struct FFortTouchAimAssistSettings
 	float                                              ReticleDepth;                                             // 0x0008(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
 	float                                              AutoFireReticleWidth;                                     // 0x000C(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
 	float                                              AutoFireReticleHeight;                                    // 0x0010(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              TargetRange;                                              // 0x0014(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              TargetMaxLookAheadTime;                                   // 0x0018(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x001C(0x0004) MISSED OFFSET
+	float                                              ProjectileMinSpeedForAssist;                              // 0x0014(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              ProjectileMaxLookAheadTime;                               // 0x0018(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              TargetRange;                                              // 0x001C(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
 	class UCurveFloat*                                 TargetWeightCurve;                                        // 0x0020(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
 	class UCurveFloat*                                 PullStrengthYawCurve;                                     // 0x0028(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
 	class UCurveFloat*                                 PullStrengthPitchCurve;                                   // 0x0030(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
 	float                                              PullMaxRate;                                              // 0x0038(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
 	float                                              AutoTrackDuration;                                        // 0x003C(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
 	float                                              AutoTrackPullStrength;                                    // 0x0040(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x4];                                       // 0x0044(0x0004) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0044(0x0004) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.TrackConnectorMeshConfig
@@ -12350,6 +13645,15 @@ struct FFortLevelStreamingInfo
 	TEnumAsByte<EFortLevelStreamingState>              LevelState;                                               // 0x0008(0x0001) (ZeroConstructor, IsPlainOldData)
 	bool                                               bFailedToLoad;                                            // 0x0009(0x0001) (ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x6];                                       // 0x000A(0x0006) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.FortPlacementLocationTagHandler
+// 0x0030
+struct FFortPlacementLocationTagHandler
+{
+	class ABuildingActor*                              SpawnLocationBuildingActor;                               // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
+	class AActor*                                      SpawnedActor;                                             // 0x0008(0x0008) (ZeroConstructor, IsPlainOldData)
+	struct FGameplayTagContainer                       TagsToRemove;                                             // 0x0010(0x0020)
 };
 
 // ScriptStruct FortniteGame.FortLootQuotaData
@@ -12467,6 +13771,14 @@ struct FFortDeferredNewActorData
 	int                                                ActorRecordIndex;                                         // 0x000C(0x0004) (ZeroConstructor, IsPlainOldData)
 };
 
+// ScriptStruct FortniteGame.FortPlayerEarnedItemCaches
+// 0x0038
+struct FFortPlayerEarnedItemCaches
+{
+	struct FUniqueNetIdRepl                            PlayerID;                                                 // 0x0000(0x0028)
+	TArray<class UFortItemCacheItemDefinition*>        EarnedItemCaches;                                         // 0x0028(0x0010) (ZeroConstructor)
+};
+
 // ScriptStruct FortniteGame.FortVehicleAudioOneshotGate
 // 0x0018
 struct FFortVehicleAudioOneshotGate
@@ -12483,14 +13795,14 @@ struct FFortVehicleAudioOneshotGate
 // 0x0020
 struct FFortVehicleAudioParam
 {
-	EVehicleAudioInterpolationType                     InterpType;                                               // 0x0000(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0000(0x0003) FIX WRONG TYPE SIZE OF PREVIOUS PROPERTY
-	unsigned char                                      UnknownData01[0x4];                                       // 0x0004(0x0004) MISSED OFFSET
+	float                                              Value;                                                    // 0x0000(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EVehicleAudioInterpolationType                     InterpType;                                               // 0x0004(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0004(0x0003) FIX WRONG TYPE SIZE OF PREVIOUS PROPERTY
 	class UCurveFloat*                                 Curve;                                                    // 0x0008(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 	float                                              AttackSpeed;                                              // 0x0010(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 	float                                              ReleaseSpeed;                                             // 0x0014(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 	float                                              ValueTarget;                                              // 0x0018(0x0004) (ZeroConstructor, IsPlainOldData)
-	float                                              ValueInterp;                                              // 0x001C(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x001C(0x0004) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortVehicleAudioFloatParam
@@ -12754,6 +14066,14 @@ struct FMapLocation
 	unsigned char                                      UnknownData00[0x8];                                       // 0x0078(0x0008) MISSED OFFSET
 };
 
+// ScriptStruct FortniteGame.DeimosAISettings
+// 0x0008
+struct FDeimosAISettings
+{
+	float                                              AutoDespawnDistance;                                      // 0x0000(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              AutoDespawnInterval;                                      // 0x0004(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+};
+
 // ScriptStruct FortniteGame.FortLevelRecord
 // 0x0040
 struct FFortLevelRecord
@@ -12899,6 +14219,18 @@ struct FMtxPackage
 	struct FString                                     DisplayAssetPath;                                         // 0x0090(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
 };
 
+// ScriptStruct FortniteGame.FortCollectionBookSlotData
+// 0x0048 (0x0050 - 0x0008)
+struct FFortCollectionBookSlotData : public FTableRowBase
+{
+	struct FName                                       SlotXpWeightName;                                         // 0x0008(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	struct FName                                       SlotSourceId;                                             // 0x0010(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	struct FName                                       SlotSourceId2;                                            // 0x0018(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0020(0x0010) UNKNOWN PROPERTY: ArrayProperty FortniteGame.FortCollectionBookSlotData.AllowedItems
+	TArray<struct FGameplayTag>                        AllowedWorkerPersonalities;                               // 0x0030(0x0010) (Edit, ZeroConstructor, EditConst)
+	struct FDataTableRowHandle                         PurchaseCosts;                                            // 0x0040(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+};
+
 // ScriptStruct FortniteGame.FortInputActionDetails
 // 0x0020
 struct FFortInputActionDetails
@@ -12912,7 +14244,7 @@ struct FFortInputActionDetails
 // 0x0018
 struct FGameSummaryInfo
 {
-	struct FString                                     GameSessionID;                                            // 0x0000(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	struct FString                                     GameSessionId;                                            // 0x0000(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
 	bool                                               Completed;                                                // 0x0010(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x7];                                       // 0x0011(0x0007) MISSED OFFSET
 };
@@ -12929,7 +14261,7 @@ struct FConfirmationDialogAction
 };
 
 // ScriptStruct FortniteGame.FortDialogDescription_NUI
-// 0x0180
+// 0x0118
 struct FFortDialogDescription_NUI
 {
 	struct FSlateBrush                                 Icon;                                                     // 0x0000(0x0088) (BlueprintVisible)
@@ -12946,7 +14278,7 @@ struct FFortDialogDescription_NUI
 	bool                                               bShouldWaitForLatentActionOnConfirmAction;                // 0x00ED(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData01[0x2];                                       // 0x00EE(0x0002) MISSED OFFSET
 	class UFortNotificationHandler*                    NotificationHandler;                                      // 0x00F0(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x88];                                      // 0x00F8(0x0088) MISSED OFFSET
+	unsigned char                                      UnknownData02[0x20];                                      // 0x00F8(0x0020) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.AthenaLevelUpData
@@ -13152,25 +14484,25 @@ struct FDamagerInfoAnalytics
 };
 
 // ScriptStruct FortniteGame.FortAIPawnStats
-// 0x0058 (0x00E8 - 0x0090)
+// 0x0058 (0x00F0 - 0x0098)
 struct FFortAIPawnStats : public FFortPawnStats
 {
-	int                                                ScoreValue;                                               // 0x0090(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              DormantSightRadius;                                       // 0x0094(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              DormantHearingThreshold;                                  // 0x0098(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              DormantLOSHearingThreshold;                               // 0x009C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              DormantPeripheralVisionAngle;                             // 0x00A0(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              AlertSightRadius;                                         // 0x00A4(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              AlertHearingThreshold;                                    // 0x00A8(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              AlertLOSHearingThreshold;                                 // 0x00AC(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              AlertPeripheralVisionAngle;                               // 0x00B0(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              AutoSuccessRangeFromLastSeenLocation;                     // 0x00B4(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	class UCurveTable*                                 HealthScalingTable;                                       // 0x00B8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	struct FName                                       HealthScalingTableRow;                                    // 0x00C0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	class UCurveTable*                                 ControlResistanceScalingTable;                            // 0x00C8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	struct FName                                       ControlResistanceScalingTableRow;                         // 0x00D0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	class UCurveTable*                                 DifficultyRatingTable;                                    // 0x00D8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	struct FName                                       DifficultyRatingTableRow;                                 // 0x00E0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	int                                                ScoreValue;                                               // 0x0098(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              DormantSightRadius;                                       // 0x009C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              DormantHearingThreshold;                                  // 0x00A0(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              DormantLOSHearingThreshold;                               // 0x00A4(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              DormantPeripheralVisionAngle;                             // 0x00A8(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              AlertSightRadius;                                         // 0x00AC(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              AlertHearingThreshold;                                    // 0x00B0(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              AlertLOSHearingThreshold;                                 // 0x00B4(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              AlertPeripheralVisionAngle;                               // 0x00B8(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              AutoSuccessRangeFromLastSeenLocation;                     // 0x00BC(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	class UCurveTable*                                 HealthScalingTable;                                       // 0x00C0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	struct FName                                       HealthScalingTableRow;                                    // 0x00C8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	class UCurveTable*                                 ControlResistanceScalingTable;                            // 0x00D0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	struct FName                                       ControlResistanceScalingTableRow;                         // 0x00D8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	class UCurveTable*                                 DifficultyRatingTable;                                    // 0x00E0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	struct FName                                       DifficultyRatingTableRow;                                 // 0x00E8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.RunVariationData
@@ -13187,6 +14519,132 @@ struct FFortVariantSpawnPoints : public FTableRowBase
 {
 	int                                                BudgetPoints;                                             // 0x0008(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x4];                                       // 0x000C(0x0004) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.AlterationOption
+// 0x0038
+struct FAlterationOption
+{
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0000(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.AlterationOption.AlterationDef
+	TArray<struct FFortItemQuantityPair>               Costs;                                                    // 0x0028(0x0010) (ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.AlterationSlot
+// 0x0028
+struct FAlterationSlot
+{
+	int                                                UnlockLevel;                                              // 0x0000(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortRarity                                        UnlockRarity;                                             // 0x0004(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0005(0x0003) MISSED OFFSET
+	struct FName                                       SlotDefinitionRow;                                        // 0x0008(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bRespeccable;                                             // 0x0010(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0011(0x0007) MISSED OFFSET
+	struct FName                                       SlotRarityInitRow;                                        // 0x0018(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortRarity                                        SlotInitMin;                                              // 0x0020(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortRarity                                        SlotInitMax;                                              // 0x0021(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x2];                                       // 0x0022(0x0002) MISSED OFFSET
+	int                                                SlotInitIndex;                                            // 0x0024(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.AlterationSlotsLoadout
+// 0x0010 (0x0018 - 0x0008)
+struct FAlterationSlotsLoadout : public FTableRowBase
+{
+	TArray<struct FAlterationSlot>                     AlterationSlots;                                          // 0x0008(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.AlterationSlotRarity
+// 0x0050 (0x0058 - 0x0008)
+struct FAlterationSlotRarity : public FTableRowBase
+{
+	TMap<EFortRarity, int>                             RarityWeights;                                            // 0x0008(0x0050) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.AlterationSlotDefinition
+// 0x0018 (0x0020 - 0x0008)
+struct FAlterationSlotDefinition : public FTableRowBase
+{
+	struct FName                                       InitTierGroup;                                            // 0x0008(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TArray<struct FFortItemQuantityPair>               BaseRespecCosts;                                          // 0x0010(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.AlterationWeightData
+// 0x0028
+struct FAlterationWeightData
+{
+	struct FString                                     AID;                                                      // 0x0000(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	int                                                InitialRollWeight;                                        // 0x0010(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0014(0x0004) MISSED OFFSET
+	TArray<struct FString>                             ExclusionNames;                                           // 0x0018(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.AlterationWeightSet
+// 0x0010
+struct FAlterationWeightSet
+{
+	TArray<struct FAlterationWeightData>               WeightData;                                               // 0x0000(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.AlterationGroup
+// 0x0050 (0x0058 - 0x0008)
+struct FAlterationGroup : public FTableRowBase
+{
+	TMap<EFortRarity, struct FAlterationWeightSet>     RarityMapping;                                            // 0x0008(0x0050) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.AlterationNamedExclusions
+// 0x0010 (0x0018 - 0x0008)
+struct FAlterationNamedExclusions : public FTableRowBase
+{
+	TArray<struct FString>                             ExclusionNames;                                           // 0x0008(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.AlterationIntrinsicMapping
+// 0x0010 (0x0018 - 0x0008)
+struct FAlterationIntrinsicMapping : public FTableRowBase
+{
+	struct FString                                     NewAlteration;                                            // 0x0008(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.AlterationMapping
+// 0x0020 (0x0028 - 0x0008)
+struct FAlterationMapping : public FTableRowBase
+{
+	struct FString                                     NewAlteration;                                            // 0x0008(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	struct FString                                     AdditionalAlteration;                                     // 0x0018(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.SourceDriver
+// 0x0040
+struct FSourceDriver
+{
+	struct FBoneReference                              SourceBone;                                               // 0x0000(0x0018) (Edit)
+	TEnumAsByte<EComponentType>                        SourceComponent;                                          // 0x0018(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	bool                                               UseQuaternion;                                            // 0x0019(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x6];                                       // 0x001A(0x0006) MISSED OFFSET
+	class UCurveFloat*                                 DrivingCurve;                                             // 0x0020(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              Multiplier;                                               // 0x0028(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	bool                                               bUseRange;                                                // 0x002C(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x002D(0x0003) MISSED OFFSET
+	float                                              RangeMin;                                                 // 0x0030(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              RangeMax;                                                 // 0x0034(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              RemappedMin;                                              // 0x0038(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              RemappedMax;                                              // 0x003C(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.FortAnimNode_Flap
+// 0x0038 (0x0150 - 0x0118)
+struct FFortAnimNode_Flap : public FAnimNode_SkeletalControlBase
+{
+	TArray<struct FSourceDriver>                       SourceDrives;                                             // 0x0118(0x0010) (Edit, ZeroConstructor)
+	struct FBoneReference                              TargetBone;                                               // 0x0128(0x0018) (Edit)
+	TEnumAsByte<EComponentType>                        TargetComponent;                                          // 0x0140(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	ESourceSelectionMode                               SelectionMode;                                            // 0x0141(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	bool                                               bUseClamp;                                                // 0x0142(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x1];                                       // 0x0143(0x0001) MISSED OFFSET
+	float                                              TargetClampMin;                                           // 0x0144(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              TargetClampMax;                                           // 0x0148(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x014C(0x0004) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortAnimNode_ScaleHuskBones
@@ -13219,33 +14677,33 @@ struct FSlopeWarpingFootData
 };
 
 // ScriptStruct FortniteGame.FortAnimNode_SlopeWarping
-// 0x0168 (0x0258 - 0x00F0)
+// 0x0168 (0x0280 - 0x0118)
 struct FFortAnimNode_SlopeWarping : public FAnimNode_SkeletalControlBase
 {
-	unsigned char                                      UnknownData00[0x18];                                      // 0x00F0(0x0018) MISSED OFFSET
-	struct FBoneReference                              IKFootRootBone;                                           // 0x0108(0x0018) (Edit)
-	struct FBoneReference                              PelvisBone;                                               // 0x0120(0x0018) (Edit)
-	TArray<struct FSlopeWarpingFootDefinition>         FeetDefinitions;                                          // 0x0138(0x0010) (Edit, ZeroConstructor)
-	TArray<struct FSlopeWarpingFootData>               FeetData;                                                 // 0x0148(0x0010) (ZeroConstructor, Transient)
-	struct FVectorRK4SpringInterpolator                PelvisOffsetInterpolator;                                 // 0x0158(0x0008) (Edit)
-	unsigned char                                      UnknownData01[0x34];                                      // 0x0160(0x0034) MISSED OFFSET
-	struct FVector                                     GravityDir;                                               // 0x0194(0x000C) (Edit, IsPlainOldData)
-	float                                              CachedDeltaTime;                                          // 0x01A0(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	struct FVector                                     TargetFloorNormalWorldSpace;                              // 0x01A4(0x000C) (Transient, IsPlainOldData)
-	struct FVectorRK4SpringInterpolator                FloorNormalInterpolator;                                  // 0x01B0(0x0008) (Edit)
-	unsigned char                                      UnknownData02[0x34];                                      // 0x01B8(0x0034) MISSED OFFSET
-	struct FVector                                     TargetFloorOffsetLocalSpace;                              // 0x01EC(0x000C) (Transient, IsPlainOldData)
-	struct FVectorRK4SpringInterpolator                FloorOffsetInterpolator;                                  // 0x01F8(0x0008) (Edit)
-	unsigned char                                      UnknownData03[0x34];                                      // 0x0200(0x0034) MISSED OFFSET
-	float                                              MaxStepHeight;                                            // 0x0234(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      bUseCapsuleInfoInsteadOfFootTraces : 1;                   // 0x0238(0x0001) (Edit)
-	unsigned char                                      bWasOnGround : 1;                                         // 0x0238(0x0001) (Transient)
-	unsigned char                                      bShowDebug : 1;                                           // 0x0238(0x0001) (Transient)
-	unsigned char                                      bFloorSmoothingInitialized : 1;                           // 0x0238(0x0001) (Transient)
-	unsigned char                                      UnknownData04[0x3];                                       // 0x0239(0x0003) MISSED OFFSET
-	struct FVector                                     ActorLocation;                                            // 0x023C(0x000C) (Transient, IsPlainOldData)
-	struct FVector                                     GravityDirCompSpace;                                      // 0x0248(0x000C) (Transient, IsPlainOldData)
-	unsigned char                                      UnknownData05[0x4];                                       // 0x0254(0x0004) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0118(0x0018) MISSED OFFSET
+	struct FBoneReference                              IKFootRootBone;                                           // 0x0130(0x0018) (Edit)
+	struct FBoneReference                              PelvisBone;                                               // 0x0148(0x0018) (Edit)
+	TArray<struct FSlopeWarpingFootDefinition>         FeetDefinitions;                                          // 0x0160(0x0010) (Edit, ZeroConstructor)
+	TArray<struct FSlopeWarpingFootData>               FeetData;                                                 // 0x0170(0x0010) (ZeroConstructor, Transient)
+	struct FVectorRK4SpringInterpolator                PelvisOffsetInterpolator;                                 // 0x0180(0x0008) (Edit)
+	unsigned char                                      UnknownData01[0x34];                                      // 0x0188(0x0034) MISSED OFFSET
+	struct FVector                                     GravityDir;                                               // 0x01BC(0x000C) (Edit, IsPlainOldData)
+	float                                              CachedDeltaTime;                                          // 0x01C8(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	struct FVector                                     TargetFloorNormalWorldSpace;                              // 0x01CC(0x000C) (Transient, IsPlainOldData)
+	struct FVectorRK4SpringInterpolator                FloorNormalInterpolator;                                  // 0x01D8(0x0008) (Edit)
+	unsigned char                                      UnknownData02[0x34];                                      // 0x01E0(0x0034) MISSED OFFSET
+	struct FVector                                     TargetFloorOffsetLocalSpace;                              // 0x0214(0x000C) (Transient, IsPlainOldData)
+	struct FVectorRK4SpringInterpolator                FloorOffsetInterpolator;                                  // 0x0220(0x0008) (Edit)
+	unsigned char                                      UnknownData03[0x34];                                      // 0x0228(0x0034) MISSED OFFSET
+	float                                              MaxStepHeight;                                            // 0x025C(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      bUseCapsuleInfoInsteadOfFootTraces : 1;                   // 0x0260(0x0001) (Edit)
+	unsigned char                                      bWasOnGround : 1;                                         // 0x0260(0x0001) (Transient)
+	unsigned char                                      bShowDebug : 1;                                           // 0x0260(0x0001) (Transient)
+	unsigned char                                      bFloorSmoothingInitialized : 1;                           // 0x0260(0x0001) (Transient)
+	unsigned char                                      UnknownData04[0x3];                                       // 0x0261(0x0003) MISSED OFFSET
+	struct FVector                                     ActorLocation;                                            // 0x0264(0x000C) (Transient, IsPlainOldData)
+	struct FVector                                     GravityDirCompSpace;                                      // 0x0270(0x000C) (Transient, IsPlainOldData)
+	unsigned char                                      UnknownData05[0x4];                                       // 0x027C(0x0004) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.SpeedWarpingFootDefinition
@@ -13266,33 +14724,33 @@ struct FSpeedWarpingFootData
 };
 
 // ScriptStruct FortniteGame.FortAnimNode_SpeedWarping
-// 0x00E8 (0x01D8 - 0x00F0)
+// 0x0110 (0x0228 - 0x0118)
 struct FFortAnimNode_SpeedWarping : public FAnimNode_SkeletalControlBase
 {
-	unsigned char                                      UnknownData00[0x8];                                       // 0x00F0(0x0008) MISSED OFFSET
-	struct FBoneReference                              IKFootRootBone;                                           // 0x00F8(0x0018) (Edit)
-	TArray<struct FSpeedWarpingFootDefinition>         FeetDefinitions;                                          // 0x0110(0x0010) (Edit, ZeroConstructor)
-	TArray<struct FSpeedWarpingFootData>               FeetData;                                                 // 0x0120(0x0010) (ZeroConstructor, Transient)
-	struct FBoneReference                              PelvisBone;                                               // 0x0130(0x0018) (Edit)
-	ESpeedWarpingAxisMode                              SpeedWarpingAxisMode;                                     // 0x0148(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	ESpeedWarpingAxisMode                              FloorNormalAxisMode;                                      // 0x0149(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	ESpeedWarpingAxisMode                              GravityDirAxisMode;                                       // 0x014A(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x1];                                       // 0x014B(0x0001) MISSED OFFSET
-	float                                              SpeedScaling;                                             // 0x014C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	struct FInputScaleBiasClamp                        SpeedScalingScaleBiasClamp;                               // 0x0150(0x0014) (Edit, BlueprintVisible)
-	struct FVector                                     ManualSpeedWarpingDir;                                    // 0x0164(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
-	struct FVector                                     ManualFloorNormalInput;                                   // 0x0170(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
-	struct FVector                                     ManualGravityDirInput;                                    // 0x017C(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
-	float                                              PelvisPostAdjustmentAlpha;                                // 0x0188(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	int                                                PelvisAdjustmentMaxIter;                                  // 0x018C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	struct FVectorRK4SpringInterpolator                PelvisAdjustmentInterp;                                   // 0x0190(0x0008) (Edit)
-	unsigned char                                      UnknownData02[0x34];                                      // 0x0198(0x0034) MISSED OFFSET
-	unsigned char                                      bAdjustThighBonesRotation : 1;                            // 0x01CC(0x0001) (Edit)
-	unsigned char                                      bClampIKUsingFKLeg : 1;                                   // 0x01CC(0x0001) (Edit)
-	unsigned char                                      bOrientSpeedWarpingAxisBasedOnFloorNormal : 1;            // 0x01CC(0x0001) (Edit)
-	unsigned char                                      UnknownData03[0x3];                                       // 0x01CD(0x0003) MISSED OFFSET
-	float                                              CachedDeltaTime;                                          // 0x01D0(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData04[0x4];                                       // 0x01D4(0x0004) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0118(0x0008) MISSED OFFSET
+	struct FBoneReference                              IKFootRootBone;                                           // 0x0120(0x0018) (Edit)
+	TArray<struct FSpeedWarpingFootDefinition>         FeetDefinitions;                                          // 0x0138(0x0010) (Edit, ZeroConstructor)
+	TArray<struct FSpeedWarpingFootData>               FeetData;                                                 // 0x0148(0x0010) (ZeroConstructor, Transient)
+	struct FBoneReference                              PelvisBone;                                               // 0x0158(0x0018) (Edit)
+	ESpeedWarpingAxisMode                              SpeedWarpingAxisMode;                                     // 0x0170(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	ESpeedWarpingAxisMode                              FloorNormalAxisMode;                                      // 0x0171(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	ESpeedWarpingAxisMode                              GravityDirAxisMode;                                       // 0x0172(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x1];                                       // 0x0173(0x0001) MISSED OFFSET
+	float                                              SpeedScaling;                                             // 0x0174(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	struct FInputScaleBiasClamp                        SpeedScalingScaleBiasClamp;                               // 0x0178(0x003C) (Edit, BlueprintVisible)
+	struct FVector                                     ManualSpeedWarpingDir;                                    // 0x01B4(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
+	struct FVector                                     ManualFloorNormalInput;                                   // 0x01C0(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
+	struct FVector                                     ManualGravityDirInput;                                    // 0x01CC(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
+	float                                              PelvisPostAdjustmentAlpha;                                // 0x01D8(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	int                                                PelvisAdjustmentMaxIter;                                  // 0x01DC(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	struct FVectorRK4SpringInterpolator                PelvisAdjustmentInterp;                                   // 0x01E0(0x0008) (Edit)
+	unsigned char                                      UnknownData02[0x34];                                      // 0x01E8(0x0034) MISSED OFFSET
+	unsigned char                                      bAdjustThighBonesRotation : 1;                            // 0x021C(0x0001) (Edit)
+	unsigned char                                      bClampIKUsingFKLeg : 1;                                   // 0x021C(0x0001) (Edit)
+	unsigned char                                      bOrientSpeedWarpingAxisBasedOnFloorNormal : 1;            // 0x021C(0x0001) (Edit)
+	unsigned char                                      UnknownData03[0x3];                                       // 0x021D(0x0003) MISSED OFFSET
+	float                                              CachedDeltaTime;                                          // 0x0220(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData04[0x4];                                       // 0x0224(0x0004) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortAthenaAimAssist
@@ -13353,17 +14811,18 @@ struct FFortBadgeScoringData : public FTableRowBase
 	int                                                ScoreThreshold;                                           // 0x0014(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 };
 
-// ScriptStruct FortniteGame.DataTableRowHandleQuantityPair
+// ScriptStruct FortniteGame.RecipeDataTableRowHandleQuantityData
 // 0x0018
-struct FDataTableRowHandleQuantityPair
+struct FRecipeDataTableRowHandleQuantityData
 {
 	struct FDataTableRowHandle                         DataTableRowHandle;                                       // 0x0000(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
 	int                                                Quantity;                                                 // 0x0010(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x0014(0x0004) MISSED OFFSET
+	bool                                               ConvertRemainderUp;                                       // 0x0014(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0015(0x0003) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortCalendarEventInventoryTransformData
-// 0x0108 (0x0110 - 0x0008)
+// 0x0138 (0x0140 - 0x0008)
 struct FFortCalendarEventInventoryTransformData : public FTableRowBase
 {
 	struct FName                                       CalendarChannelName;                                      // 0x0008(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
@@ -13377,15 +14836,18 @@ struct FFortCalendarEventInventoryTransformData : public FTableRowBase
 	unsigned char                                      UnknownData03[0x10];                                      // 0x00A0(0x0010) UNKNOWN PROPERTY: ArrayProperty FortniteGame.FortCalendarEventInventoryTransformData.QuestsOnlyActiveDuringEvent
 	TArray<struct FFortItemQuantityPair>               ItemsToGrant;                                             // 0x00B0(0x0010) (Edit, ZeroConstructor, EditConst)
 	TArray<struct FFortHiddenRewardQuantityPair>       ItemsToGrantByTemplate;                                   // 0x00C0(0x0010) (Edit, ZeroConstructor)
-	TArray<struct FDataTableRowHandleQuantityPair>     ConversionRecipesToRunOnEventStart;                       // 0x00D0(0x0010) (Edit, ZeroConstructor)
-	TArray<struct FDataTableRowHandleQuantityPair>     ConversionRecipesToRunAfterEvent;                         // 0x00E0(0x0010) (Edit, ZeroConstructor)
+	TArray<struct FRecipeDataTableRowHandleQuantityData> ConversionRecipesToRunOnEventStart;                       // 0x00D0(0x0010) (Edit, ZeroConstructor)
+	TArray<struct FRecipeDataTableRowHandleQuantityData> ConversionRecipesToRunAfterEvent;                         // 0x00E0(0x0010) (Edit, ZeroConstructor)
 	TArray<struct FFortItemQuantityPair>               ItemsToRemoveAfterEvent;                                  // 0x00F0(0x0010) (Edit, ZeroConstructor, EditConst)
 	TArray<struct FFortHiddenRewardQuantityPair>       ItemsToRemoveAfterEventByTemplate;                        // 0x0100(0x0010) (Edit, ZeroConstructor)
+	unsigned char                                      UnknownData04[0x28];                                      // 0x0110(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortCalendarEventInventoryTransformData.EventCurrency
+	float                                              EventCurrencyConversionFactor;                            // 0x0138(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData05[0x4];                                       // 0x013C(0x0004) MISSED OFFSET
 };
 
-// ScriptStruct FortniteGame.RecipeQuantityPair
+// ScriptStruct FortniteGame.RecipeData
 // 0x0010
-struct FRecipeQuantityPair
+struct FRecipeData
 {
 	unsigned char                                      UnknownData00[0x10];                                      // 0x0000(0x0010) MISSED OFFSET
 };
@@ -13482,17 +14944,6 @@ struct FFortCollectionBookSectionData : public FTableRowBase
 	struct FFortRewardInfo                             Rewards;                                                  // 0x0030(0x0030) (Edit, EditConst)
 };
 
-// ScriptStruct FortniteGame.FortCollectionBookSlotData
-// 0x0038 (0x0040 - 0x0008)
-struct FFortCollectionBookSlotData : public FTableRowBase
-{
-	struct FName                                       SlotXpWeightName;                                         // 0x0008(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	struct FName                                       SlotSourceId;                                             // 0x0010(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	struct FName                                       SlotSourceId2;                                            // 0x0018(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0020(0x0010) UNKNOWN PROPERTY: ArrayProperty FortniteGame.FortCollectionBookSlotData.AllowedItems
-	TArray<struct FGameplayTag>                        AllowedWorkerPersonalities;                               // 0x0030(0x0010) (Edit, ZeroConstructor, EditConst)
-};
-
 // ScriptStruct FortniteGame.FortCollectionBookSlotSourceData
 // 0x0018 (0x0020 - 0x0008)
 struct FFortCollectionBookSlotSourceData : public FTableRowBase
@@ -13584,6 +15035,42 @@ struct FFortConversionControlKeyCosts : public FTableRowBase
 	struct FGameplayTagContainer                       RequiredCatalysts;                                        // 0x0080(0x0020) (Edit, BlueprintVisible, BlueprintReadOnly)
 };
 
+// ScriptStruct FortniteGame.CosmeticMarkupTagDataRow
+// 0x0038 (0x0040 - 0x0008)
+struct FCosmeticMarkupTagDataRow : public FTableRowBase
+{
+	struct FGameplayTag                                Tag;                                                      // 0x0008(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       DisplayName;                                              // 0x0010(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       HelpText;                                                 // 0x0028(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+};
+
+// ScriptStruct FortniteGame.CosmeticSetDataRow
+// 0x0038 (0x0040 - 0x0008)
+struct FCosmeticSetDataRow : public FTableRowBase
+{
+	struct FGameplayTag                                Tag;                                                      // 0x0008(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       DisplayName;                                              // 0x0010(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       Description;                                              // 0x0028(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+};
+
+// ScriptStruct FortniteGame.McpVariantWriter
+// 0x0050
+struct FMcpVariantWriter
+{
+	struct FGameplayTag                                VariantChannel;                                           // 0x0000(0x0008) (Edit)
+	struct FGameplayTag                                ActiveVariant;                                            // 0x0008(0x0008) (Edit)
+	struct FString                                     CustomActiveVariant;                                      // 0x0010(0x0010) (Edit, ZeroConstructor)
+	struct FGameplayTagContainer                       UnlockedVariants;                                         // 0x0020(0x0020) (Edit)
+	struct FString                                     CustomUnlockedVariants;                                   // 0x0040(0x0010) (Edit, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.SocketVariantDef
+// 0x0010 (0x0068 - 0x0058)
+struct FSocketVariantDef : public FBaseVariantDef
+{
+	TArray<struct FSocketTransformVariant>             SocketTransforms;                                         // 0x0058(0x0010) (Edit, ZeroConstructor)
+};
+
 // ScriptStruct FortniteGame.FortDailyLoginRewardStat_ScheduleClaimed
 // 0x0008
 struct FFortDailyLoginRewardStat_ScheduleClaimed
@@ -13610,6 +15097,15 @@ struct FFortDailyRewardsNotification
 	int                                                DaysLoggedIn;                                             // 0x0000(0x0004) (ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x4];                                       // 0x0004(0x0004) MISSED OFFSET
 	TArray<struct FMcpLootEntry>                       Items;                                                    // 0x0008(0x0010) (ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.DevHeroClassInfo
+// 0x0018
+struct FDevHeroClassInfo
+{
+	struct FString                                     Name;                                                     // 0x0000(0x0010) (Edit, ZeroConstructor)
+	int                                                Level;                                                    // 0x0010(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0014(0x0004) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortMissionGenerationElementCostAndAvailabilityRow
@@ -13767,6 +15263,15 @@ struct FFortBanHammerStrike
 	struct FString                                     Offense;                                                  // 0x0050(0x0010) (ZeroConstructor)
 };
 
+// ScriptStruct FortniteGame.PlaylistStreamedLevelData
+// 0x0018
+struct FPlaylistStreamedLevelData
+{
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0000(0x0010) MISSED OFFSET
+	bool                                               bIsFinishedStreaming;                                     // 0x0010(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0011(0x0007) MISSED OFFSET
+};
+
 // ScriptStruct FortniteGame.PlayerBuildableClassFilter
 // 0x0010
 struct FPlayerBuildableClassFilter
@@ -13776,6 +15281,13 @@ struct FPlayerBuildableClassFilter
 	unsigned char                                      UnknownData00[0x2];                                       // 0x0002(0x0002) MISSED OFFSET
 	int                                                Level;                                                    // 0x0004(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
 	class UBuildingEditModeMetadata*                   EditModeMetadata;                                         // 0x0008(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.FortScalabilityModeSettings
+// 0x0050
+struct FFortScalabilityModeSettings
+{
+	unsigned char                                      UnknownData00[0x50];                                      // 0x0000(0x0050) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortHealthBarComponentData
@@ -13849,7 +15361,7 @@ struct FHomebaseBannerColorData : public FTableRowBase
 };
 
 // ScriptStruct FortniteGame.HomebaseBannerIconData
-// 0x0088 (0x0090 - 0x0008)
+// 0x0090 (0x0098 - 0x0008)
 struct FHomebaseBannerIconData : public FTableRowBase
 {
 	unsigned char                                      UnknownData00[0x28];                                      // 0x0008(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.HomebaseBannerIconData.SmallImage
@@ -13857,6 +15369,8 @@ struct FHomebaseBannerIconData : public FTableRowBase
 	struct FName                                       CategoryRowName;                                          // 0x0058(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 	struct FText                                       DisplayName;                                              // 0x0060(0x0018) (Edit, DisableEditOnInstance)
 	struct FText                                       DisplayDescription;                                       // 0x0078(0x0018) (Edit, DisableEditOnInstance)
+	unsigned char                                      bFullUsageRights : 1;                                     // 0x0090(0x0001) (Edit, DisableEditOnInstance)
+	unsigned char                                      UnknownData02[0x7];                                       // 0x0091(0x0007) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.HomebaseBannerCategoryData
@@ -13888,7 +15402,7 @@ struct FFortLootLevelData : public FTableRowBase
 };
 
 // ScriptStruct FortniteGame.FortLootPackageData
-// 0x0088 (0x0090 - 0x0008)
+// 0x00A8 (0x00B0 - 0x0008)
 struct FFortLootPackageData : public FTableRowBase
 {
 	struct FName                                       LootPackageID;                                            // 0x0008(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
@@ -13896,19 +15410,20 @@ struct FFortLootPackageData : public FTableRowBase
 	int                                                Count;                                                    // 0x0014(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	int                                                LootPackageCategory;                                      // 0x0018(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x4];                                       // 0x001C(0x0004) MISSED OFFSET
-	struct FName                                       RequiredTag;                                              // 0x0020(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FString                                     LootPackageCall;                                          // 0x0028(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	unsigned char                                      UnknownData01[0x28];                                      // 0x0038(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortLootPackageData.ItemDefinition
-	struct FString                                     PersistentLevel;                                          // 0x0060(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	int                                                MinWorldLevel;                                            // 0x0070(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                MaxWorldLevel;                                            // 0x0074(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bAllowBonusDrops;                                         // 0x0078(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x7];                                       // 0x0079(0x0007) MISSED OFFSET
-	struct FString                                     Annotation;                                               // 0x0080(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	struct FGameplayTagContainer                       GameplayTags;                                             // 0x0020(0x0020) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FName                                       RequiredTag;                                              // 0x0040(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FString                                     LootPackageCall;                                          // 0x0048(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	unsigned char                                      UnknownData01[0x28];                                      // 0x0058(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortLootPackageData.ItemDefinition
+	struct FString                                     PersistentLevel;                                          // 0x0080(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	int                                                MinWorldLevel;                                            // 0x0090(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                MaxWorldLevel;                                            // 0x0094(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bAllowBonusDrops;                                         // 0x0098(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x7];                                       // 0x0099(0x0007) MISSED OFFSET
+	struct FString                                     Annotation;                                               // 0x00A0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
 };
 
 // ScriptStruct FortniteGame.FortLootTierData
-// 0x00A8 (0x00B0 - 0x0008)
+// 0x00E0 (0x00E8 - 0x0008)
 struct FFortLootTierData : public FTableRowBase
 {
 	struct FName                                       TierGroup;                                                // 0x0008(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
@@ -13931,10 +15446,11 @@ struct FFortLootTierData : public FTableRowBase
 	TArray<int>                                        LootPackageCategoryWeightArray;                           // 0x0060(0x0010) (Edit, EditFixedSize, ZeroConstructor)
 	TArray<int>                                        LootPackageCategoryMinArray;                              // 0x0070(0x0010) (Edit, EditFixedSize, ZeroConstructor)
 	TArray<int>                                        LootPackageCategoryMaxArray;                              // 0x0080(0x0010) (Edit, EditFixedSize, ZeroConstructor)
-	struct FGameplayTag                                RequiredGameplayTag;                                      // 0x0090(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly)
-	bool                                               bAllowBonusLootDrops;                                     // 0x0098(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData04[0x7];                                       // 0x0099(0x0007) MISSED OFFSET
-	struct FString                                     Annotation;                                               // 0x00A0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	struct FGameplayTagContainer                       GameplayTags;                                             // 0x0090(0x0020) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FGameplayTagContainer                       RequiredGameplayTags;                                     // 0x00B0(0x0020) (Edit, BlueprintVisible, BlueprintReadOnly)
+	bool                                               bAllowBonusLootDrops;                                     // 0x00D0(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData04[0x7];                                       // 0x00D1(0x0007) MISSED OFFSET
+	struct FString                                     Annotation;                                               // 0x00D8(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
 };
 
 // ScriptStruct FortniteGame.FortMatchmakingErrorInfo
@@ -14006,6 +15522,21 @@ struct FFortMissionAlertRecord
 {
 	TMap<struct FString, struct FFortMissionAlertClaimData> ClaimDataMap;                                             // 0x0000(0x0050) (ZeroConstructor)
 	struct FMcpLootResult                              PendingMissionAlertRewards;                               // 0x0050(0x0020)
+};
+
+// ScriptStruct FortniteGame.FortCollectionBookResearchItemNotification
+// 0x0020
+struct FFortCollectionBookResearchItemNotification
+{
+	struct FString                                     ResearchedItemId;                                         // 0x0000(0x0010) (ZeroConstructor)
+	struct FString                                     ResearchedTemplateId;                                     // 0x0010(0x0010) (ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.FortCollectionBookUnslotItemNotification
+// 0x0010
+struct FFortCollectionBookUnslotItemNotification
+{
+	struct FString                                     UnslottedItemId;                                          // 0x0000(0x0010) (ZeroConstructor)
 };
 
 // ScriptStruct FortniteGame.FortCollectionBookClaimRewardNotification
@@ -14180,6 +15711,14 @@ struct FFortAthenaSeasonStats
 	int                                                NumLowBracket;                                            // 0x0008(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 };
 
+// ScriptStruct FortniteGame.FortAthenaEmoteCacheRecord
+// 0x0010
+struct FFortAthenaEmoteCacheRecord
+{
+	class UFortItemDefinition*                         ItemDef;                                                  // 0x0000(0x0008) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0008(0x0008) MISSED OFFSET
+};
+
 // ScriptStruct FortniteGame.FortAthenaConsumableRecord
 // 0x0010
 struct FFortAthenaConsumableRecord
@@ -14187,6 +15726,29 @@ struct FFortAthenaConsumableRecord
 	class UFortAccountItemDefinition*                  ItemType;                                                 // 0x0000(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	int                                                TotalQuantity;                                            // 0x0008(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x4];                                       // 0x000C(0x0004) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.MtxPurchaseHistoryEntry
+// 0x0040
+struct FMtxPurchaseHistoryEntry
+{
+	struct FString                                     PurchaseId;                                               // 0x0000(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	struct FDateTime                                   PurchaseDate;                                             // 0x0010(0x0008) (BlueprintVisible, BlueprintReadOnly)
+	struct FDateTime                                   RefundDate;                                               // 0x0018(0x0008) (BlueprintVisible, BlueprintReadOnly)
+	bool                                               bHasBeenRefunded;                                         // 0x0020(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0021(0x0007) MISSED OFFSET
+	TArray<struct FMcpLootEntry>                       LootResult;                                               // 0x0028(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	int                                                TotalMtxPaid;                                             // 0x0038(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x003C(0x0004) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.MtxPurchaseHistory
+// 0x0018
+struct FMtxPurchaseHistory
+{
+	TArray<struct FMtxPurchaseHistoryEntry>            Purchases;                                                // 0x0000(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	int                                                RefundCredits;                                            // 0x0010(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                RefundsUsed;                                              // 0x0014(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.GiftHistory
@@ -14243,10 +15805,12 @@ struct FFortTwitchViewerGrantedQuestNotification
 };
 
 // ScriptStruct FortniteGame.McpMatchResults
-// 0x0004
+// 0x000C
 struct FMcpMatchResults
 {
 	int                                                Placement;                                                // 0x0000(0x0004) (ZeroConstructor, IsPlainOldData)
+	int                                                Kills;                                                    // 0x0004(0x0004) (ZeroConstructor, IsPlainOldData)
+	int                                                Deaths;                                                   // 0x0008(0x0004) (ZeroConstructor, IsPlainOldData)
 };
 
 // ScriptStruct FortniteGame.McpLeaderboardResultRow
@@ -14350,6 +15914,15 @@ struct FFortMissionAlertCategoryData : public FTableRowBase
 	unsigned char                                      UnknownData00[0x7];                                       // 0x0019(0x0007) MISSED OFFSET
 	struct FGameplayTagContainer                       CategoryTagsContainer;                                    // 0x0020(0x0020) (Edit, DisableEditOnInstance)
 	struct FGameplayTagContainer                       VisualizationTagsContainer;                               // 0x0040(0x0020) (Edit, DisableEditOnInstance)
+};
+
+// ScriptStruct FortniteGame.FortMissionInfoOption
+// 0x0030
+struct FFortMissionInfoOption
+{
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0000(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteGame.FortMissionInfoOption.MissionInfo
+	float                                              MinDifficultyLevel;                                       // 0x0028(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x002C(0x0004) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.QueuedMusic
@@ -14460,16 +16033,23 @@ struct FFortAxisSmoothing
 };
 
 // ScriptStruct FortniteGame.FortPlayerPawnStats
-// 0x0020 (0x00B0 - 0x0090)
+// 0x0020 (0x00B8 - 0x0098)
 struct FFortPlayerPawnStats : public FFortPawnStats
 {
-	float                                              MaxJumpTime;                                              // 0x0090(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              MaxStamina;                                               // 0x0094(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              StaminaRegenRate;                                         // 0x0098(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              StaminaRegenDelay;                                        // 0x009C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              SprintingStaminaExpenditureRate;                          // 0x00A0(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x00A4(0x0004) MISSED OFFSET
-	struct FName                                       PersonalVehicleFallingDamageTableRow;                     // 0x00A8(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              MaxJumpTime;                                              // 0x0098(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              MaxStamina;                                               // 0x009C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              StaminaRegenRate;                                         // 0x00A0(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              StaminaRegenDelay;                                        // 0x00A4(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              SprintingStaminaExpenditureRate;                          // 0x00A8(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x00AC(0x0004) MISSED OFFSET
+	struct FName                                       PersonalVehicleFallingDamageTableRow;                     // 0x00B0(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.FortVehicleUseTelemetryInfo
+// 0x0018
+struct FFortVehicleUseTelemetryInfo
+{
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0000(0x0018) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortQuestAchievementTableRow
@@ -14481,6 +16061,64 @@ struct FFortQuestAchievementTableRow : public FTableRowBase
 	int                                                XboxAchievementID;                                        // 0x000C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	int                                                PS4TrophyID;                                              // 0x0010(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData01[0x4];                                       // 0x0014(0x0004) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.FortQuestRewardTableRow
+// 0x0020 (0x0028 - 0x0008)
+struct FFortQuestRewardTableRow : public FTableRowBase
+{
+	struct FString                                     QuestTemplateId;                                          // 0x0008(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	struct FName                                       TemplateId;                                               // 0x0018(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                Quantity;                                                 // 0x0020(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               Hidden;                                                   // 0x0024(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               Selectable;                                               // 0x0025(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x2];                                       // 0x0026(0x0002) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.FortQuestMapCosmetic
+// 0x00C0
+struct FFortQuestMapCosmetic
+{
+	ECosmeticType                                      CosmeticType;                                             // 0x0000(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0001(0x0007) MISSED OFFSET
+	struct FSlateBrush                                 CosmeticBrush;                                            // 0x0008(0x0088) (Edit, BlueprintVisible, BlueprintReadOnly)
+	class UClass*                                      WidgetClass;                                              // 0x0090(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FVector2D                                   CosmeticPosition;                                         // 0x0098(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	struct FWidgetTransform                            CosmeticTransform;                                        // 0x00A0(0x001C) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x00BC(0x0004) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.FortQuestMapPageCosmetics
+// 0x0040 (0x0048 - 0x0008)
+struct FFortQuestMapPageCosmetics : public FTableRowBase
+{
+	bool                                               bUseNodeArrowColorOverride;                               // 0x0008(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0009(0x0007) MISSED OFFSET
+	struct FSlateColor                                 NodeArrowColorOverride;                                   // 0x0010(0x0028) (Edit, BlueprintVisible, BlueprintReadOnly)
+	TArray<struct FFortQuestMapCosmetic>               CosmeticList;                                             // 0x0038(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+};
+
+// ScriptStruct FortniteGame.FortQuestMapNode
+// 0x0010
+struct FFortQuestMapNode
+{
+	class UFortQuestItemDefinition*                    QuestItemDefinition;                                      // 0x0000(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortQuestMapNodeType                              NodeType;                                                 // 0x0008(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortQuestMapNodeLabelPosition                     LabelPosition;                                            // 0x0009(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               UseHighContrastMode;                                      // 0x000A(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x5];                                       // 0x000B(0x0005) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.FortQuestMapPage
+// 0x0048 (0x0050 - 0x0008)
+struct FFortQuestMapPage : public FTableRowBase
+{
+	struct FText                                       PageTitle;                                                // 0x0008(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	int                                                PageIndex;                                                // 0x0020(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                ChapterPageCount;                                         // 0x0024(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FString                                     QuestEventFlag;                                           // 0x0028(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UClass*                                      QuestNodeLayout;                                          // 0x0038(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TArray<struct FFortQuestMapNode>                   QuestList;                                                // 0x0040(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
 };
 
 // ScriptStruct FortniteGame.FortQuestObjectiveStatTableRow
@@ -14540,6 +16178,29 @@ struct FFortRecordVersion
 	unsigned char                                      UnknownData00[0x18];                                      // 0x0028(0x0018) MISSED OFFSET
 };
 
+// ScriptStruct FortniteGame.FortReplayEvent
+// 0x0050
+struct FFortReplayEvent
+{
+	unsigned char                                      UnknownData00[0x50];                                      // 0x0000(0x0050) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.ReplayEventInfo
+// 0x0070
+struct FReplayEventInfo
+{
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0000(0x0010) MISSED OFFSET
+	struct FTransform                                  EventLocation;                                            // 0x0010(0x0030) (IsPlainOldData)
+	struct FString                                     Victim;                                                   // 0x0040(0x0010) (ZeroConstructor)
+	struct FString                                     Instigator;                                               // 0x0050(0x0010) (ZeroConstructor)
+	EDeathCause                                        DeathCause;                                               // 0x0060(0x0001) (ZeroConstructor, IsPlainOldData)
+	bool                                               bDBNO;                                                    // 0x0061(0x0001) (ZeroConstructor, IsPlainOldData)
+	EFortReplayEventType                               EventType;                                                // 0x0062(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x1];                                       // 0x0063(0x0001) MISSED OFFSET
+	int                                                VersionNumber;                                            // 0x0064(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x8];                                       // 0x0068(0x0008) MISSED OFFSET
+};
+
 // ScriptStruct FortniteGame.FortDestroyedActorRecord
 // 0x0050
 struct FFortDestroyedActorRecord
@@ -14583,30 +16244,6 @@ struct FFortMatchmakingEventsState
 	TMap<struct FString, struct FFortMatchmakingRegionState> Region;                                                   // 0x0000(0x0050) (ZeroConstructor)
 };
 
-// ScriptStruct FortniteGame.FortRotationalContentEventsState
-// 0x0140
-struct FFortRotationalContentEventsState
-{
-	unsigned char                                      UnknownData00[0x50];                                      // 0x0000(0x0050) UNKNOWN PROPERTY: SetProperty FortniteGame.FortRotationalContentEventsState.ActiveStorefronts
-	unsigned char                                      UnknownData01[0x50];                                      // 0x0050(0x0050) UNKNOWN PROPERTY: SetProperty FortniteGame.FortRotationalContentEventsState.ActiveEventFlags
-	TMap<struct FName, double>                         EventNamedWeights;                                        // 0x00A0(0x0050) (ZeroConstructor)
-	unsigned char                                      UnknownData02[0x50];                                      // 0x00F0(0x0050) UNKNOWN PROPERTY: SetProperty FortniteGame.FortRotationalContentEventsState.ExpirationTimes
-};
-
-// ScriptStruct FortniteGame.FortClientEventsState
-// 0x0040 (0x0180 - 0x0140)
-struct FFortClientEventsState : public FFortRotationalContentEventsState
-{
-	int                                                SeasonNumber;                                             // 0x0140(0x0004) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x0144(0x0004) MISSED OFFSET
-	struct FString                                     SeasonTemplateId;                                         // 0x0148(0x0010) (ZeroConstructor)
-	struct FDateTime                                   SeasonBegin;                                              // 0x0158(0x0008)
-	struct FDateTime                                   SeasonEnd;                                                // 0x0160(0x0008)
-	struct FDateTime                                   WeeklyStoreEnd;                                           // 0x0168(0x0008)
-	struct FDateTime                                   StwEventStoreEnd;                                         // 0x0170(0x0008)
-	struct FDateTime                                   StwWeeklyStoreEnd;                                        // 0x0178(0x0008)
-};
-
 // ScriptStruct FortniteGame.FortSocialItemBasicData
 // 0x0004
 struct FFortSocialItemBasicData
@@ -14639,6 +16276,18 @@ struct FFortTaggedActorOctreeFilter
 	struct FGameplayTagContainer                       TagsToLookFor;                                            // 0x0040(0x0020)
 	bool                                               bHasAllTags;                                              // 0x0060(0x0001) (ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x7];                                       // 0x0061(0x0007) MISSED OFFSET
+};
+
+// ScriptStruct FortniteGame.ReplaySmokeTestResult
+// 0x0028
+struct FReplaySmokeTestResult
+{
+	struct FString                                     TestSummary;                                              // 0x0000(0x0010) (ZeroConstructor)
+	EReplaySmokeTestStep                               TestStep;                                                 // 0x0010(0x0001) (ZeroConstructor, IsPlainOldData)
+	bool                                               bPassed;                                                  // 0x0011(0x0001) (ZeroConstructor, IsPlainOldData)
+	bool                                               bWasExecuted;                                             // 0x0012(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x5];                                       // 0x0013(0x0005) MISSED OFFSET
+	struct FString                                     ResultMessage;                                            // 0x0018(0x0010) (ZeroConstructor)
 };
 
 // ScriptStruct FortniteGame.FortFoundQuestMissions
@@ -14763,6 +16412,15 @@ struct FAthenaPickResult
 	class AFortPlayerPawnAthena*                       FoundPlayer;                                              // 0x0010(0x0008) (ZeroConstructor, IsPlainOldData)
 };
 
+// ScriptStruct FortniteGame.DataTableRowHandleQuantityPair
+// 0x0018
+struct FDataTableRowHandleQuantityPair
+{
+	struct FDataTableRowHandle                         DataTableRowHandle;                                       // 0x0000(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	int                                                Quantity;                                                 // 0x0010(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0014(0x0004) MISSED OFFSET
+};
+
 // ScriptStruct FortniteGame.FortCatalogMetaPreload
 // 0x0038
 struct FFortCatalogMetaPreload
@@ -14850,13 +16508,13 @@ struct FFortUserCloudRequestPayload
 };
 
 // ScriptStruct FortniteGame.FortUserCloudRequest
-// 0x00A0
+// 0x0070
 struct FFortUserCloudRequest
 {
 	struct FFortUserCloudRequestPayload                RequestPayload;                                           // 0x0000(0x0058)
 	unsigned char                                      bNeedsFileEnumeration : 1;                                // 0x0058(0x0001)
 	unsigned char                                      bStartedProcessing : 1;                                   // 0x0058(0x0001)
-	unsigned char                                      UnknownData00[0x47];                                      // 0x0059(0x0047) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x17];                                      // 0x0059(0x0017) MISSED OFFSET
 };
 
 // ScriptStruct FortniteGame.FortUserCloudRequestQueue
@@ -14941,6 +16599,15 @@ struct FFortPlacementDistanceRequirements
 {
 	float                                              DistanceRangeMin;                                         // 0x0000(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 	float                                              DistanceRangeMax;                                         // 0x0004(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+};
+
+// ScriptStruct FortniteGame.StatNamesToTrack
+// 0x0010 (0x0018 - 0x0008)
+struct FStatNamesToTrack : public FTableRowBase
+{
+	struct FName                                       StatName;                                                 // 0x0008(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EStatRecordingPeriod                               Period;                                                   // 0x0010(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0011(0x0007) MISSED OFFSET
 };
 
 }

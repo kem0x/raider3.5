@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -14,14 +14,25 @@ namespace SDK
 //Parameters
 //---------------------------------------------------------------------------
 
-// Function TabAudioOptions.TabAudioOptions_C.FindVoiceChatDeviceIndex
-struct UTabAudioOptions_C_FindVoiceChatDeviceIndex_Params
+// Function TabAudioOptions.TabAudioOptions_C.FindVoiceChatOutputDeviceIndex
+struct UTabAudioOptions_C_FindVoiceChatOutputDeviceIndex_Params
 {
 	int                                                FoundDeviceIndex;                                         // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function TabAudioOptions.TabAudioOptions_C.GatherVoiceChatDevices
-struct UTabAudioOptions_C_GatherVoiceChatDevices_Params
+// Function TabAudioOptions.TabAudioOptions_C.GatherVoiceChatOutputDevices
+struct UTabAudioOptions_C_GatherVoiceChatOutputDevices_Params
+{
+};
+
+// Function TabAudioOptions.TabAudioOptions_C.FindVoiceChatInputDeviceIndex
+struct UTabAudioOptions_C_FindVoiceChatInputDeviceIndex_Params
+{
+	int                                                FoundDeviceIndex;                                         // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function TabAudioOptions.TabAudioOptions_C.GatherVoiceChatInputDevices
+struct UTabAudioOptions_C_GatherVoiceChatInputDevices_Params
 {
 };
 
@@ -123,6 +134,12 @@ struct UTabAudioOptions_C_BndEvt__CinematicsVolume_K2Node_ComponentBoundEvent_42
 
 // Function TabAudioOptions.TabAudioOptions_C.BndEvt__AllowGameVolumeWhenMinimized_K2Node_ComponentBoundEvent_30_Selection Changed__DelegateSignature
 struct UTabAudioOptions_C_BndEvt__AllowGameVolumeWhenMinimized_K2Node_ComponentBoundEvent_30_Selection_Changed__DelegateSignature_Params
+{
+	int                                                Selected_Index;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function TabAudioOptions.TabAudioOptions_C.BndEvt__VoiceChatOutputDevice_K2Node_ComponentBoundEvent_5_Selection Changed__DelegateSignature
+struct UTabAudioOptions_C_BndEvt__VoiceChatOutputDevice_K2Node_ComponentBoundEvent_5_Selection_Changed__DelegateSignature_Params
 {
 	int                                                Selected_Index;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -29,34 +29,19 @@ void AB_DualPistol_Athena_C::UserConstructionScript()
 }
 
 
-// Function B_DualPistol_Athena.B_DualPistol_Athena_C.ReceiveBeginPlay
-// (Event, Protected, BlueprintEvent)
-
-void AB_DualPistol_Athena_C::ReceiveBeginPlay()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function B_DualPistol_Athena.B_DualPistol_Athena_C.ReceiveBeginPlay");
-
-	AB_DualPistol_Athena_C_ReceiveBeginPlay_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function B_DualPistol_Athena.B_DualPistol_Athena_C.OnSetTargeting
-// (Event, Public, BlueprintEvent)
+// Function B_DualPistol_Athena.B_DualPistol_Athena_C.OnPlayWeaponFireFX
+// (BlueprintCosmetic, Event, Protected, BlueprintEvent)
 // Parameters:
-// bool*                          bNewIsTargeting                (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool*                          bPersistentFire                (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool*                          bSecondaryFire                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void AB_DualPistol_Athena_C::OnSetTargeting(bool* bNewIsTargeting)
+void AB_DualPistol_Athena_C::OnPlayWeaponFireFX(bool* bPersistentFire, bool* bSecondaryFire)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function B_DualPistol_Athena.B_DualPistol_Athena_C.OnSetTargeting");
+	static auto fn = UObject::FindObject<UFunction>("Function B_DualPistol_Athena.B_DualPistol_Athena_C.OnPlayWeaponFireFX");
 
-	AB_DualPistol_Athena_C_OnSetTargeting_Params params;
-	params.bNewIsTargeting = bNewIsTargeting;
+	AB_DualPistol_Athena_C_OnPlayWeaponFireFX_Params params;
+	params.bPersistentFire = bPersistentFire;
+	params.bSecondaryFire = bSecondaryFire;
 
 	auto flags = fn->FunctionFlags;
 

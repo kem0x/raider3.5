@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,11 +13,12 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // WidgetBlueprintGeneratedClass LobbyPlayerPadTop.LobbyPlayerPadTop_C
-// 0x0400 (0x0618 - 0x0218)
+// 0x0410 (0x0620 - 0x0210)
 class ULobbyPlayerPadTop_C : public UCommonUserWidget
 {
 public:
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0218(0x0008) (Transient, DuplicateTransient)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0210(0x0008) (Transient, DuplicateTransient)
+	class UWidgetAnimation*                            On_Ready_Change_Text;                                     // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
 	class UPlayerBanner_C*                             Banner;                                                   // 0x0220(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
 	class UImage*                                      Image_Platform;                                           // 0x0228(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
 	class UImage*                                      LeaderImage;                                              // 0x0230(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
@@ -39,7 +38,8 @@ public:
 	struct FSlateBrush                                 TalkingBrush;                                             // 0x0470(0x0088) (Edit, BlueprintVisible, DisableEditOnInstance)
 	struct FSlateBrush                                 MutedBrush;                                               // 0x04F8(0x0088) (Edit, BlueprintVisible, DisableEditOnInstance)
 	struct FSlateBrush                                 MicBrush;                                                 // 0x0580(0x0088) (Edit, BlueprintVisible, DisableEditOnInstance)
-	TArray<EFortPartyMemberLocation>                   NewVar_0_1;                                               // 0x0608(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
+	TArray<EFortPartyMemberLocation>                   NewVar_1;                                                 // 0x0608(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
+	class UClass*                                      NewVar_2;                                                 // 0x0618(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -48,13 +48,15 @@ public:
 	}
 
 
-	void OnAthenaMemberLocationStateChanged(EFortPartyMemberLocation Location, struct FUniqueNetIdRepl* Member_Id);
+	void RefreshChatDisabled();
+	void OnAthenaReadyTypeChanged(EAthenaPartyMemberReadyType ReadyType, struct FUniqueNetIdRepl* MemberId);
+	void OnAthenaTimeSpentInMatchChanged(struct FUniqueNetIdRepl* MemberId, struct FText* Minutes, struct FText* Seconds);
+	void OnAthenaNumAliveChanged(int NumAlive, struct FUniqueNetIdRepl* MemberId);
 	void UpdateMicIcon();
 	void HandlePlayerStoppedTalking();
 	void HandlePlayerMutingChanged(const struct FUniqueNetIdRepl& UniqueId, bool IsTalking);
 	void HandlePlayerTalkingChanged(const struct FUniqueNetIdRepl& UniqueId, bool IsTalking);
-	void RefreshAthenaReadyState(bool Ready, EFortPartyMemberLocation Location, bool LocationValid);
-	void OnAthenaReadyStateChanged(bool Ready, struct FUniqueNetIdRepl* Member_Id);
+	void RefreshAthenaReadyState(const struct FUniqueNetIdRepl& MemberId);
 	void OnLobbyPlayerUnhovered(int PlayerIndex);
 	void Initialize(int PlayerIndex);
 	void InitializeContextEvents();

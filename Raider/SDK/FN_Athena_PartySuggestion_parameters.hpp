@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -43,8 +43,8 @@ struct UAthena_PartySuggestion_C_InitNewPartySuggestion_Params
 	struct FFortPartySuggestion                        NewPartySuggestion;                                       // (BlueprintVisible, BlueprintReadOnly, Parm)
 };
 
-// Function Athena_PartySuggestion.Athena_PartySuggestion_C.OnMouseButtonDown_0_1
-struct UAthena_PartySuggestion_C_OnMouseButtonDown_0_1_Params
+// Function Athena_PartySuggestion.Athena_PartySuggestion_C.OnMouseButtonDown_1
+struct UAthena_PartySuggestion_C_OnMouseButtonDown_1_Params
 {
 	struct FGeometry                                   MyGeometry;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
 	struct FPointerEvent                               MouseEvent;                                               // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)

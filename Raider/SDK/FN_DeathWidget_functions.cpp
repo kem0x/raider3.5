@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,23 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function DeathWidget.DeathWidget_C.OnWatchdogTimerUpdate
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UDeathWidget_C::OnWatchdogTimerUpdate()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function DeathWidget.DeathWidget_C.OnWatchdogTimerUpdate");
+
+	UDeathWidget_C_OnWatchdogTimerUpdate_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function DeathWidget.DeathWidget_C.Show Resurrect & Respawn Anim
 // (Public, BlueprintCallable, BlueprintEvent)

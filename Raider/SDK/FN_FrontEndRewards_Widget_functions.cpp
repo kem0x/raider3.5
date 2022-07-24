@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,62 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function FrontEndRewards_Widget.FrontEndRewards_Widget_C.HandleOnItemCacheRewardsClaimFailed
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UFrontEndRewards_Widget_C::HandleOnItemCacheRewardsClaimFailed()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function FrontEndRewards_Widget.FrontEndRewards_Widget_C.HandleOnItemCacheRewardsClaimFailed");
+
+	UFrontEndRewards_Widget_C_HandleOnItemCacheRewardsClaimFailed_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function FrontEndRewards_Widget.FrontEndRewards_Widget_C.HandleOnItemCacheRewardsClaimed
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// TArray<struct FFortItemInstanceQuantityPair> Rewards                        (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
+
+void UFrontEndRewards_Widget_C::HandleOnItemCacheRewardsClaimed(TArray<struct FFortItemInstanceQuantityPair>* Rewards)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function FrontEndRewards_Widget.FrontEndRewards_Widget_C.HandleOnItemCacheRewardsClaimed");
+
+	UFrontEndRewards_Widget_C_HandleOnItemCacheRewardsClaimed_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (Rewards != nullptr)
+		*Rewards = params.Rewards;
+}
+
+
+// Function FrontEndRewards_Widget.FrontEndRewards_Widget_C.PopulateItemCacheReward
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UFrontEndRewards_Widget_C::PopulateItemCacheReward()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function FrontEndRewards_Widget.FrontEndRewards_Widget_C.PopulateItemCacheReward");
+
+	UFrontEndRewards_Widget_C_PopulateItemCacheReward_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function FrontEndRewards_Widget.FrontEndRewards_Widget_C.HandleOnGiftBoxRemoved
 // (Public, BlueprintCallable, BlueprintEvent)

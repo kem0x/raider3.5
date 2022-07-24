@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,126 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Handle Jetpack Equipped
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+
+void UGA_BoostJumpPack_C::Handle_Jetpack_Equipped()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GA_BoostJumpPack.GA_BoostJumpPack_C.Handle Jetpack Equipped");
+
+	UGA_BoostJumpPack_C_Handle_Jetpack_Equipped_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Reasons To Reset on Transition
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure, Const)
+// Parameters:
+// struct FGameplayTag            Tag                            (BlueprintVisible, BlueprintReadOnly, Parm)
+// bool                           ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+bool UGA_BoostJumpPack_C::Reasons_To_Reset_on_Transition(const struct FGameplayTag& Tag)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GA_BoostJumpPack.GA_BoostJumpPack_C.Reasons To Reset on Transition");
+
+	UGA_BoostJumpPack_C_Reasons_To_Reset_on_Transition_Params params;
+	params.Tag = Tag;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Get Player Pawn
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent, Const)
+// Parameters:
+// class UObject*                 Object                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class AFortPlayerPawn*         ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+class AFortPlayerPawn* UGA_BoostJumpPack_C::Get_Player_Pawn(class UObject* Object)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GA_BoostJumpPack.GA_BoostJumpPack_C.Get Player Pawn");
+
+	UGA_BoostJumpPack_C_Get_Player_Pawn_Params params;
+	params.Object = Object;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function GA_BoostJumpPack.GA_BoostJumpPack_C.IsCurrentlyDead
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure, Const)
+// Parameters:
+// struct FGameplayTag            TagOne                         (BlueprintVisible, BlueprintReadOnly, Parm)
+// bool                           ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+bool UGA_BoostJumpPack_C::IsCurrentlyDead(const struct FGameplayTag& TagOne)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GA_BoostJumpPack.GA_BoostJumpPack_C.IsCurrentlyDead");
+
+	UGA_BoostJumpPack_C_IsCurrentlyDead_Params params;
+	params.TagOne = TagOne;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Reengage Falling Movement
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UGA_BoostJumpPack_C::Reengage_Falling_Movement()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GA_BoostJumpPack.GA_BoostJumpPack_C.Reengage Falling Movement");
+
+	UGA_BoostJumpPack_C_Reengage_Falling_Movement_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Reengage Hovering Movement
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UGA_BoostJumpPack_C::Reengage_Hovering_Movement()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GA_BoostJumpPack.GA_BoostJumpPack_C.Reengage Hovering Movement");
+
+	UGA_BoostJumpPack_C_Reengage_Hovering_Movement_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function GA_BoostJumpPack.GA_BoostJumpPack_C.SavePlayerPawn
 // (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
@@ -37,23 +157,6 @@ void UGA_BoostJumpPack_C::OnAbilityCanceled()
 	static auto fn = UObject::FindObject<UFunction>("Function GA_BoostJumpPack.GA_BoostJumpPack_C.OnAbilityCanceled");
 
 	UGA_BoostJumpPack_C_OnAbilityCanceled_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Cheat DBNO When Player Hits Exectute on Controller
-// (Public, BlueprintCallable, BlueprintEvent)
-
-void UGA_BoostJumpPack_C::Cheat_DBNO_When_Player_Hits_Exectute_on_Controller()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function GA_BoostJumpPack.GA_BoostJumpPack_C.Cheat DBNO When Player Hits Exectute on Controller");
-
-	UGA_BoostJumpPack_C_Cheat_DBNO_When_Player_Hits_Exectute_on_Controller_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -125,40 +228,6 @@ void UGA_BoostJumpPack_C::ProcessTriggerData(const struct FGameplayTag& TagOne)
 
 	UGA_BoostJumpPack_C_ProcessTriggerData_Params params;
 	params.TagOne = TagOne;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Push Jetpack Input Component
-// (Public, BlueprintCallable, BlueprintEvent)
-
-void UGA_BoostJumpPack_C::Push_Jetpack_Input_Component()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function GA_BoostJumpPack.GA_BoostJumpPack_C.Push Jetpack Input Component");
-
-	UGA_BoostJumpPack_C_Push_Jetpack_Input_Component_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Pop Jetpack Input Component
-// (Public, BlueprintCallable, BlueprintEvent)
-
-void UGA_BoostJumpPack_C::Pop_Jetpack_Input_Component()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function GA_BoostJumpPack.GA_BoostJumpPack_C.Pop Jetpack Input Component");
-
-	UGA_BoostJumpPack_C_Pop_Jetpack_Input_Component_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -278,7 +347,7 @@ void UGA_BoostJumpPack_C::K2_OnEndAbility(bool* bWasCancelled)
 
 
 // Function GA_BoostJumpPack.GA_BoostJumpPack_C.K2_ShouldAbilityRespondToEvent
-// (Event, Protected, HasOutParms, BlueprintCallable, BlueprintEvent, Const)
+// (Event, Protected, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, Const)
 // Parameters:
 // struct FGameplayAbilityActorInfo* ActorInfo                      (BlueprintVisible, BlueprintReadOnly, Parm)
 // struct FGameplayEventData*     Payload                        (BlueprintVisible, BlueprintReadOnly, Parm)

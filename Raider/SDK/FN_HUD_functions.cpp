@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,26 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function HUD.HUD_C.HandleGameViewportActivationChanged
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           IsActive                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UHUD_C::HandleGameViewportActivationChanged(bool IsActive)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HUD.HUD_C.HandleGameViewportActivationChanged");
+
+	UHUD_C_HandleGameViewportActivationChanged_Params params;
+	params.IsActive = IsActive;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function HUD.HUD_C.InitializeTagVisibilityWidgets
 // (Public, BlueprintCallable, BlueprintEvent)
@@ -887,6 +907,26 @@ void UHUD_C::ShowPersonalVehicleMounting()
 	static auto fn = UObject::FindObject<UFunction>("Function HUD.HUD_C.ShowPersonalVehicleMounting");
 
 	UHUD_C_ShowPersonalVehicleMounting_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function HUD.HUD_C.OnHUDScaleChanged
+// (Event, Protected, BlueprintEvent)
+// Parameters:
+// float*                         HUDScale                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UHUD_C::OnHUDScaleChanged(float* HUDScale)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HUD.HUD_C.OnHUDScaleChanged");
+
+	UHUD_C_OnHUDScaleChanged_Params params;
+	params.HUDScale = HUDScale;
 
 	auto flags = fn->FunctionFlags;
 

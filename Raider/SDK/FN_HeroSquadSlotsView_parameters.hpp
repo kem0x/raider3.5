@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,21 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function HeroSquadSlotsView.HeroSquadSlotsView_C.Bonus
+struct UHeroSquadSlotsView_C_Bonus_Params
+{
+};
+
+// Function HeroSquadSlotsView.HeroSquadSlotsView_C.Defenders
+struct UHeroSquadSlotsView_C_Defenders_Params
+{
+};
+
+// Function HeroSquadSlotsView.HeroSquadSlotsView_C.Primary
+struct UHeroSquadSlotsView_C_Primary_Params
+{
+};
 
 // Function HeroSquadSlotsView.HeroSquadSlotsView_C.UndarkenAllSlots
 struct UHeroSquadSlotsView_C_UndarkenAllSlots_Params

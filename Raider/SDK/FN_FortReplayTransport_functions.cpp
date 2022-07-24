@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -531,6 +531,26 @@ void UFortReplayTransport_C::Construct()
 	static auto fn = UObject::FindObject<UFunction>("Function FortReplayTransport.FortReplayTransport_C.Construct");
 
 	UFortReplayTransport_C_Construct_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function FortReplayTransport.FortReplayTransport_C.BndEvt__PlayerList_K2Node_ComponentBoundEvent_0_CommonButtonClicked__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// class UCommonButton*           Button                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void UFortReplayTransport_C::BndEvt__PlayerList_K2Node_ComponentBoundEvent_0_CommonButtonClicked__DelegateSignature(class UCommonButton* Button)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function FortReplayTransport.FortReplayTransport_C.BndEvt__PlayerList_K2Node_ComponentBoundEvent_0_CommonButtonClicked__DelegateSignature");
+
+	UFortReplayTransport_C_BndEvt__PlayerList_K2Node_ComponentBoundEvent_0_CommonButtonClicked__DelegateSignature_Params params;
+	params.Button = Button;
 
 	auto flags = fn->FunctionFlags;
 

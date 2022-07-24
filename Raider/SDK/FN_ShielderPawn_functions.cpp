@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -251,23 +251,6 @@ void AShielderPawn_C::AttachSpringArmToAttachPawn()
 	static auto fn = UObject::FindObject<UFunction>("Function ShielderPawn.ShielderPawn_C.AttachSpringArmToAttachPawn");
 
 	AShielderPawn_C_AttachSpringArmToAttachPawn_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function ShielderPawn.ShielderPawn_C.OnRep_SpringArmTargetRotation
-// (HasDefaults, BlueprintCallable, BlueprintEvent)
-
-void AShielderPawn_C::OnRep_SpringArmTargetRotation()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function ShielderPawn.ShielderPawn_C.OnRep_SpringArmTargetRotation");
-
-	AShielderPawn_C_OnRep_SpringArmTargetRotation_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -829,7 +812,7 @@ void AShielderPawn_C::InterpShielderToSpringArm()
 
 
 // Function ShielderPawn.ShielderPawn_C.RotateShielderForward
-// (BlueprintCallable, BlueprintEvent)
+// (Net, NetMulticast, BlueprintCallable, BlueprintEvent)
 
 void AShielderPawn_C::RotateShielderForward()
 {

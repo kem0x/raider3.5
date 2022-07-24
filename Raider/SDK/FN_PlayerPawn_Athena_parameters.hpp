@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,22 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function PlayerPawn_Athena.PlayerPawn_Athena_C.QueueTeleportOut
+struct APlayerPawn_Athena_C_QueueTeleportOut_Params
+{
+};
+
+// Function PlayerPawn_Athena.PlayerPawn_Athena_C.QueueTeleportIn
+struct APlayerPawn_Athena_C_QueueTeleportIn_Params
+{
+};
+
+// Function PlayerPawn_Athena.PlayerPawn_Athena_C.OnOpenParachute
+struct APlayerPawn_Athena_C_OnOpenParachute_Params
+{
+	bool                                               bConsumeEvent;                                            // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function PlayerPawn_Athena.PlayerPawn_Athena_C.OnStartLongInteract
 struct APlayerPawn_Athena_C_OnStartLongInteract_Params
@@ -273,6 +289,22 @@ struct APlayerPawn_Athena_C_OnLeftReplayRelevancy_Params
 
 // Function PlayerPawn_Athena.PlayerPawn_Athena_C.OnEnteredReplayRelevancy
 struct APlayerPawn_Athena_C_OnEnteredReplayRelevancy_Params
+{
+};
+
+// Function PlayerPawn_Athena.PlayerPawn_Athena_C.OnCharacterCustomizationCompleted
+struct APlayerPawn_Athena_C_OnCharacterCustomizationCompleted_Params
+{
+	class AFortPlayerPawn*                             Pawn;                                                     // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function PlayerPawn_Athena.PlayerPawn_Athena_C.PlayResOut
+struct APlayerPawn_Athena_C_PlayResOut_Params
+{
+};
+
+// Function PlayerPawn_Athena.PlayerPawn_Athena_C.OnResInDuringWarmup
+struct APlayerPawn_Athena_C_OnResInDuringWarmup_Params
 {
 };
 

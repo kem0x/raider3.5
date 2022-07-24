@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,16 +12,16 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function TabAudioOptions.TabAudioOptions_C.FindVoiceChatDeviceIndex
+// Function TabAudioOptions.TabAudioOptions_C.FindVoiceChatOutputDeviceIndex
 // (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // int                            FoundDeviceIndex               (Parm, OutParm, ZeroConstructor, IsPlainOldData)
 
-void UTabAudioOptions_C::FindVoiceChatDeviceIndex(int* FoundDeviceIndex)
+void UTabAudioOptions_C::FindVoiceChatOutputDeviceIndex(int* FoundDeviceIndex)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TabAudioOptions.TabAudioOptions_C.FindVoiceChatDeviceIndex");
+	static auto fn = UObject::FindObject<UFunction>("Function TabAudioOptions.TabAudioOptions_C.FindVoiceChatOutputDeviceIndex");
 
-	UTabAudioOptions_C_FindVoiceChatDeviceIndex_Params params;
+	UTabAudioOptions_C_FindVoiceChatOutputDeviceIndex_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -34,14 +34,53 @@ void UTabAudioOptions_C::FindVoiceChatDeviceIndex(int* FoundDeviceIndex)
 }
 
 
-// Function TabAudioOptions.TabAudioOptions_C.GatherVoiceChatDevices
+// Function TabAudioOptions.TabAudioOptions_C.GatherVoiceChatOutputDevices
 // (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
 
-void UTabAudioOptions_C::GatherVoiceChatDevices()
+void UTabAudioOptions_C::GatherVoiceChatOutputDevices()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TabAudioOptions.TabAudioOptions_C.GatherVoiceChatDevices");
+	static auto fn = UObject::FindObject<UFunction>("Function TabAudioOptions.TabAudioOptions_C.GatherVoiceChatOutputDevices");
 
-	UTabAudioOptions_C_GatherVoiceChatDevices_Params params;
+	UTabAudioOptions_C_GatherVoiceChatOutputDevices_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TabAudioOptions.TabAudioOptions_C.FindVoiceChatInputDeviceIndex
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// int                            FoundDeviceIndex               (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+
+void UTabAudioOptions_C::FindVoiceChatInputDeviceIndex(int* FoundDeviceIndex)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAudioOptions.TabAudioOptions_C.FindVoiceChatInputDeviceIndex");
+
+	UTabAudioOptions_C_FindVoiceChatInputDeviceIndex_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (FoundDeviceIndex != nullptr)
+		*FoundDeviceIndex = params.FoundDeviceIndex;
+}
+
+
+// Function TabAudioOptions.TabAudioOptions_C.GatherVoiceChatInputDevices
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+
+void UTabAudioOptions_C::GatherVoiceChatInputDevices()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAudioOptions.TabAudioOptions_C.GatherVoiceChatInputDevices");
+
+	UTabAudioOptions_C_GatherVoiceChatInputDevices_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -383,6 +422,26 @@ void UTabAudioOptions_C::BndEvt__AllowGameVolumeWhenMinimized_K2Node_ComponentBo
 	static auto fn = UObject::FindObject<UFunction>("Function TabAudioOptions.TabAudioOptions_C.BndEvt__AllowGameVolumeWhenMinimized_K2Node_ComponentBoundEvent_30_Selection Changed__DelegateSignature");
 
 	UTabAudioOptions_C_BndEvt__AllowGameVolumeWhenMinimized_K2Node_ComponentBoundEvent_30_Selection_Changed__DelegateSignature_Params params;
+	params.Selected_Index = Selected_Index;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TabAudioOptions.TabAudioOptions_C.BndEvt__VoiceChatOutputDevice_K2Node_ComponentBoundEvent_5_Selection Changed__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// int                            Selected_Index                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UTabAudioOptions_C::BndEvt__VoiceChatOutputDevice_K2Node_ComponentBoundEvent_5_Selection_Changed__DelegateSignature(int Selected_Index)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabAudioOptions.TabAudioOptions_C.BndEvt__VoiceChatOutputDevice_K2Node_ComponentBoundEvent_5_Selection Changed__DelegateSignature");
+
+	UTabAudioOptions_C_BndEvt__VoiceChatOutputDevice_K2Node_ComponentBoundEvent_5_Selection_Changed__DelegateSignature_Params params;
 	params.Selected_Index = Selected_Index;
 
 	auto flags = fn->FunctionFlags;

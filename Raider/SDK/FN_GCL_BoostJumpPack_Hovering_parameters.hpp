@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,21 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function GCL_BoostJumpPack_Hovering.GCL_BoostJumpPack_Hovering_C.CacheRenderingDetailMode
+struct AGCL_BoostJumpPack_Hovering_C_CacheRenderingDetailMode_Params
+{
+};
+
+// Function GCL_BoostJumpPack_Hovering.GCL_BoostJumpPack_Hovering_C.CalculateFuelPercentage
+struct AGCL_BoostJumpPack_Hovering_C_CalculateFuelPercentage_Params
+{
+};
+
+// Function GCL_BoostJumpPack_Hovering.GCL_BoostJumpPack_Hovering_C.CalculateUpwardVelocity
+struct AGCL_BoostJumpPack_Hovering_C_CalculateUpwardVelocity_Params
+{
+};
 
 // Function GCL_BoostJumpPack_Hovering.GCL_BoostJumpPack_Hovering_C.GetLateralThrust
 struct AGCL_BoostJumpPack_Hovering_C_GetLateralThrust_Params

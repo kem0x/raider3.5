@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -20,18 +20,8 @@ struct UAthenaQuickbarSecondary_C_UpdateQuickBarCaching_Params
 	bool                                               Desire_Caching;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function AthenaQuickbarSecondary.AthenaQuickbarSecondary_C.HandleMaximizeShowing
-struct UAthenaQuickbarSecondary_C_HandleMaximizeShowing_Params
-{
-};
-
 // Function AthenaQuickbarSecondary.AthenaQuickbarSecondary_C.HandleShowHideRail
 struct UAthenaQuickbarSecondary_C_HandleShowHideRail_Params
-{
-};
-
-// Function AthenaQuickbarSecondary.AthenaQuickbarSecondary_C.HandleMinimizeHiding
-struct UAthenaQuickbarSecondary_C_HandleMinimizeHiding_Params
 {
 };
 

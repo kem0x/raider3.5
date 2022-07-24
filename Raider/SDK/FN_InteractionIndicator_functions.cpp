@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -40,26 +40,6 @@ void UInteractionIndicator_C::ShowDefenderBeaconWidget(class ABuildingTrapDefend
 
 	UInteractionIndicator_C_ShowDefenderBeaconWidget_Params params;
 	params.BuildingTrap = BuildingTrap;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function InteractionIndicator.InteractionIndicator_C.HandleInteractionUpdated
-// (Public, BlueprintCallable, BlueprintEvent)
-// Parameters:
-// class UFortInteractContextInfo* Interaction                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void UInteractionIndicator_C::HandleInteractionUpdated(class UFortInteractContextInfo* Interaction)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function InteractionIndicator.InteractionIndicator_C.HandleInteractionUpdated");
-
-	UInteractionIndicator_C_HandleInteractionUpdated_Params params;
-	params.Interaction = Interaction;
 
 	auto flags = fn->FunctionFlags;
 

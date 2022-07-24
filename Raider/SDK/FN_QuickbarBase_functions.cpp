@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -285,17 +285,17 @@ void UQuickbarBase_C::OnQuickbarForceFullUpdate(EFortQuickBars QuickbarIndex)
 }
 
 
-// Function QuickbarBase.QuickbarBase_C.OnQuickbarSecondarySlotFocusChanged_Event_0_1
+// Function QuickbarBase.QuickbarBase_C.OnQuickbarSecondarySlotFocusChanged_Event_1
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // EFortQuickBars                 QuickbarIndex                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // int                            Slot                           (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UQuickbarBase_C::OnQuickbarSecondarySlotFocusChanged_Event_0_1(EFortQuickBars QuickbarIndex, int Slot)
+void UQuickbarBase_C::OnQuickbarSecondarySlotFocusChanged_Event_1(EFortQuickBars QuickbarIndex, int Slot)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function QuickbarBase.QuickbarBase_C.OnQuickbarSecondarySlotFocusChanged_Event_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function QuickbarBase.QuickbarBase_C.OnQuickbarSecondarySlotFocusChanged_Event_1");
 
-	UQuickbarBase_C_OnQuickbarSecondarySlotFocusChanged_Event_0_1_Params params;
+	UQuickbarBase_C_OnQuickbarSecondarySlotFocusChanged_Event_1_Params params;
 	params.QuickbarIndex = QuickbarIndex;
 	params.Slot = Slot;
 

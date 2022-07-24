@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -66,24 +66,6 @@ struct UPartyFinderListItem_New_C_InitializeItem_Params
 {
 };
 
-// Function PartyFinderListItem_New.PartyFinderListItem_New_C.DialogResult_58DE7379408F85443A0936A25405A46F
-struct UPartyFinderListItem_New_C_DialogResult_58DE7379408F85443A0936A25405A46F_Params
-{
-	EFortDialogResult                                  Result;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	struct FName                                       ResultName;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function PartyFinderListItem_New.PartyFinderListItem_New_C.OnSocialItemSet
-struct UPartyFinderListItem_New_C_OnSocialItemSet_Params
-{
-};
-
-// Function PartyFinderListItem_New.PartyFinderListItem_New_C.ExpansionChanged
-struct UPartyFinderListItem_New_C_ExpansionChanged_Params
-{
-	bool*                                              bExpanded;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
 // Function PartyFinderListItem_New.PartyFinderListItem_New_C.Construct
 struct UPartyFinderListItem_New_C_Construct_Params
 {
@@ -123,19 +105,19 @@ struct UPartyFinderListItem_New_C_ReEnableInviteButtonAfterDelay_Params
 {
 };
 
-// Function PartyFinderListItem_New.PartyFinderListItem_New_C.SetSelected
-struct UPartyFinderListItem_New_C_SetSelected_Params
+// Function PartyFinderListItem_New.PartyFinderListItem_New_C.BP_OnItemSelectionChanged
+struct UPartyFinderListItem_New_C_BP_OnItemSelectionChanged_Params
 {
-	bool*                                              bSelected;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	bool*                                              bIsSelected;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function PartyFinderListItem_New.PartyFinderListItem_New_C.OnHovered
-struct UPartyFinderListItem_New_C_OnHovered_Params
+// Function PartyFinderListItem_New.PartyFinderListItem_New_C.BP_OnHovered
+struct UPartyFinderListItem_New_C_BP_OnHovered_Params
 {
 };
 
-// Function PartyFinderListItem_New.PartyFinderListItem_New_C.OnUnhovered
-struct UPartyFinderListItem_New_C_OnUnhovered_Params
+// Function PartyFinderListItem_New.PartyFinderListItem_New_C.BP_OnUnhovered
+struct UPartyFinderListItem_New_C_BP_OnUnhovered_Params
 {
 };
 
@@ -160,6 +142,18 @@ struct UPartyFinderListItem_New_C_ReEnableSTWInvite_Params
 struct UPartyFinderListItem_New_C_BndEvt__DisplayFriendsButton_K2Node_ComponentBoundEvent_51_CommonButtonClicked__DelegateSignature_Params
 {
 	class UCommonButton*                               Button;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+};
+
+// Function PartyFinderListItem_New.PartyFinderListItem_New_C.BP_OnItemExpansionChanged
+struct UPartyFinderListItem_New_C_BP_OnItemExpansionChanged_Params
+{
+	bool*                                              bIsExpanded;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function PartyFinderListItem_New.PartyFinderListItem_New_C.OnListItemObjectSet
+struct UPartyFinderListItem_New_C_OnListItemObjectSet_Params
+{
+	class UObject**                                    ListItemObject;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function PartyFinderListItem_New.PartyFinderListItem_New_C.ExecuteUbergraph_PartyFinderListItem_New

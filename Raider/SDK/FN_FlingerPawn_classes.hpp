@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,54 +13,54 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass FlingerPawn.FlingerPawn_C
-// 0x0144 (0x1D24 - 0x1BE0)
+// 0x0144 (0x1C04 - 0x1AC0)
 class AFlingerPawn_C : public AFortPawn_Flinger
 {
 public:
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x1BE0(0x0008) (Transient, DuplicateTransient)
-	TEnumAsByte<ETimelineDirection>                    UpdateMaterialParamsTL__Direction_6C35BAD84D71F4DBDE216893257CE551;// 0x1BE8(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x1BE9(0x0007) MISSED OFFSET
-	class UTimelineComponent*                          UpdateMaterialParamsTL;                                   // 0x1BF0(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	float                                              Timeline_0_ColorFadeOutTrack_FF5DFFCA47FEE11FBE8FFF9B5CFA3D28;// 0x1BF8(0x0004) (ZeroConstructor, IsPlainOldData)
-	float                                              Timeline_0_FadeInTrack_FF5DFFCA47FEE11FBE8FFF9B5CFA3D28;  // 0x1BFC(0x0004) (ZeroConstructor, IsPlainOldData)
-	TEnumAsByte<ETimelineDirection>                    Timeline_0__Direction_FF5DFFCA47FEE11FBE8FFF9B5CFA3D28;   // 0x1C00(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x1C01(0x0007) MISSED OFFSET
-	class UTimelineComponent*                          Timeline_0_1;                                             // 0x1C08(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	float                                              MontagePlayTime;                                          // 0x1C10(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x4];                                       // 0x1C14(0x0004) MISSED OFFSET
-	class AFortAIPawn*                                 PawnHeldByFlinger;                                        // 0x1C18(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
-	struct FGameplayTagContainer                       TC_WasThisAMeleeStrike;                                   // 0x1C20(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	TEnumAsByte<ElementalEnum>                         ElementalType;                                            // 0x1C40(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x7];                                       // 0x1C41(0x0007) MISSED OFFSET
-	class UParticleSystemComponent*                    AmbientParticleEffect;                                    // 0x1C48(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
-	struct FName                                       ImpactMeleeSocket;                                        // 0x1C50(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	class UParticleSystem*                             ImpactParticles_Default;                                  // 0x1C58(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UParticleSystem*                             ImpactParticles_Wood;                                     // 0x1C60(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UParticleSystem*                             ImpactParticles_Stone;                                    // 0x1C68(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UParticleSystem*                             ImpactParticles_Metal;                                    // 0x1C70(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UParticleSystem*                             ImpactParticles_HumanFlesh;                               // 0x1C78(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               MeleeImpact_UseSocketTransforms;                          // 0x1C80(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData04[0x7];                                       // 0x1C81(0x0007) MISSED OFFSET
-	struct FName                                       Impact_MeleeSocket;                                       // 0x1C88(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	struct FGameplayTagContainer                       TC_NPCAbilityNonAttackRoar;                               // 0x1C90(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
-	class UParticleSystemComponent*                    FlingerRangedFX;                                          // 0x1CB0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
-	class UParticleSystem*                             FlingerRangedSkullFXTemplate;                             // 0x1CB8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UParticleSystem*                             FlingerRangedHuskFXTemplate;                              // 0x1CC0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UMaterialInstanceDynamic*                    Dynamic_Material_Instance;                                // 0x1CC8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UParticleSystemComponent*                    Death_Effects;                                            // 0x1CD0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
-	class UParticleSystem*                             HQ_Death_Particle_System;                                 // 0x1CD8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UParticleSystem*                             LQ_Death_Particle_System;                                 // 0x1CE0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UMaterialInstanceDynamic*                    MID1;                                                     // 0x1CE8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class AFortPawn*                                   PawnBumpedByFlinger;                                      // 0x1CF0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
-	float                                              PushDuration;                                             // 0x1CF8(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              PushYawAngle;                                             // 0x1CFC(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              PushVelocity;                                             // 0x1D00(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               isEnraged;                                                // 0x1D04(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData05[0x3];                                       // 0x1D05(0x0003) MISSED OFFSET
-	class UMaterialInstanceDynamic*                    Dynamic_Material_Instance_Accessory_1;                    // 0x1D08(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class AShielderSpringArm_C*                        ShieldArm;                                                // 0x1D10(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
-	class USkeletalMeshComponent*                      ShieldSkeletalMesh;                                       // 0x1D18(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
-	float                                              Slow_Shackle_Scale;                                       // 0x1D20(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x1AC0(0x0008) (Transient, DuplicateTransient)
+	TEnumAsByte<ETimelineDirection>                    UpdateMaterialParamsTL__Direction_6C35BAD84D71F4DBDE216893257CE551;// 0x1AC8(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x1AC9(0x0007) MISSED OFFSET
+	class UTimelineComponent*                          UpdateMaterialParamsTL;                                   // 0x1AD0(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	float                                              Timeline_0_ColorFadeOutTrack_FF5DFFCA47FEE11FBE8FFF9B5CFA3D28;// 0x1AD8(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              Timeline_0_FadeInTrack_FF5DFFCA47FEE11FBE8FFF9B5CFA3D28;  // 0x1ADC(0x0004) (ZeroConstructor, IsPlainOldData)
+	TEnumAsByte<ETimelineDirection>                    Timeline_0__Direction_FF5DFFCA47FEE11FBE8FFF9B5CFA3D28;   // 0x1AE0(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x1AE1(0x0007) MISSED OFFSET
+	class UTimelineComponent*                          Timeline_1;                                               // 0x1AE8(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	float                                              MontagePlayTime;                                          // 0x1AF0(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x4];                                       // 0x1AF4(0x0004) MISSED OFFSET
+	class AFortAIPawn*                                 PawnHeldByFlinger;                                        // 0x1AF8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
+	struct FGameplayTagContainer                       TC_WasThisAMeleeStrike;                                   // 0x1B00(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	TEnumAsByte<ElementalEnum>                         ElementalType;                                            // 0x1B20(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x7];                                       // 0x1B21(0x0007) MISSED OFFSET
+	class UParticleSystemComponent*                    AmbientParticleEffect;                                    // 0x1B28(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
+	struct FName                                       ImpactMeleeSocket;                                        // 0x1B30(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	class UParticleSystem*                             ImpactParticles_Default;                                  // 0x1B38(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UParticleSystem*                             ImpactParticles_Wood;                                     // 0x1B40(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UParticleSystem*                             ImpactParticles_Stone;                                    // 0x1B48(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UParticleSystem*                             ImpactParticles_Metal;                                    // 0x1B50(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UParticleSystem*                             ImpactParticles_HumanFlesh;                               // 0x1B58(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               MeleeImpact_UseSocketTransforms;                          // 0x1B60(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData04[0x7];                                       // 0x1B61(0x0007) MISSED OFFSET
+	struct FName                                       Impact_MeleeSocket;                                       // 0x1B68(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FGameplayTagContainer                       TC_NPCAbilityNonAttackRoar;                               // 0x1B70(0x0020) (Edit, BlueprintVisible, DisableEditOnInstance)
+	class UParticleSystemComponent*                    FlingerRangedFX;                                          // 0x1B90(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
+	class UParticleSystem*                             FlingerRangedSkullFXTemplate;                             // 0x1B98(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UParticleSystem*                             FlingerRangedHuskFXTemplate;                              // 0x1BA0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UMaterialInstanceDynamic*                    Dynamic_Material_Instance;                                // 0x1BA8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UParticleSystemComponent*                    Death_Effects;                                            // 0x1BB0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
+	class UParticleSystem*                             HQ_Death_Particle_System;                                 // 0x1BB8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UParticleSystem*                             LQ_Death_Particle_System;                                 // 0x1BC0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UMaterialInstanceDynamic*                    MID1;                                                     // 0x1BC8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class AFortPawn*                                   PawnBumpedByFlinger;                                      // 0x1BD0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
+	float                                              PushDuration;                                             // 0x1BD8(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              PushYawAngle;                                             // 0x1BDC(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              PushVelocity;                                             // 0x1BE0(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               isEnraged;                                                // 0x1BE4(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData05[0x3];                                       // 0x1BE5(0x0003) MISSED OFFSET
+	class UMaterialInstanceDynamic*                    Dynamic_Material_Instance_Accessory_1;                    // 0x1BE8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class AShielderSpringArm_C*                        ShieldArm;                                                // 0x1BF0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance, IsPlainOldData)
+	class USkeletalMeshComponent*                      ShieldSkeletalMesh;                                       // 0x1BF8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
+	float                                              Slow_Shackle_Scale;                                       // 0x1C00(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{

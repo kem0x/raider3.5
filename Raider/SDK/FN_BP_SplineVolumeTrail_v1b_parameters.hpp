@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -23,7 +23,7 @@ struct ABP_SplineVolumeTrail_v1b_C_UpdateCheapSplinesWPOVectors_Params
 struct ABP_SplineVolumeTrail_v1b_C_GetSocketLocationWS_Params
 {
 	struct FName                                       Socket_Name;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	struct FVector                                     LocationWS;                                               // (Parm, OutParm, IsPlainOldData)
+	struct FVector                                     Location_WS;                                              // (Parm, OutParm, IsPlainOldData)
 };
 
 // Function BP_SplineVolumeTrail_v1b.BP_SplineVolumeTrail_v1b_C.SetStartAndEndAllSplineMeshes

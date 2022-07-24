@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -14,17 +14,9 @@ namespace SDK
 //Parameters
 //---------------------------------------------------------------------------
 
-// Function AthenaMapPanel.AthenaMapPanel_C.SetTriggerImages
-struct UAthenaMapPanel_C_SetTriggerImages_Params
+// Function AthenaMapPanel.AthenaMapPanel_C.Clear Touches
+struct UAthenaMapPanel_C_Clear_Touches_Params
 {
-};
-
-// Function AthenaMapPanel.AthenaMapPanel_C.OnTouchEnded
-struct UAthenaMapPanel_C_OnTouchEnded_Params
-{
-	struct FGeometry*                                  MyGeometry;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
-	struct FPointerEvent*                              InTouchEvent;                                             // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
-	struct FEventReply                                 ReturnValue;                                              // (Parm, OutParm, ReturnParm)
 };
 
 // Function AthenaMapPanel.AthenaMapPanel_C.OnTouchStarted

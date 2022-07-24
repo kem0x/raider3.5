@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,27 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function Results_Widget.Results_Widget_C.ShouldDisplayEndOfZoneCinematic
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure)
+// Parameters:
+// bool                           ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+bool UResults_Widget_C::ShouldDisplayEndOfZoneCinematic()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function Results_Widget.Results_Widget_C.ShouldDisplayEndOfZoneCinematic");
+
+	UResults_Widget_C_ShouldDisplayEndOfZoneCinematic_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
 
 // Function Results_Widget.Results_Widget_C.UseVideos
 // (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, BlueprintPure)

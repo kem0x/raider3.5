@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,40 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function StatsListItemWIdget.StatsListItemWIdget_C.Initial Reset
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UStatsListItemWIdget_C::Initial_Reset()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function StatsListItemWIdget.StatsListItemWIdget_C.Initial Reset");
+
+	UStatsListItemWIdget_C_Initial_Reset_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function StatsListItemWIdget.StatsListItemWIdget_C.Populate-Update
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UStatsListItemWIdget_C::Populate_Update()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function StatsListItemWIdget.StatsListItemWIdget_C.Populate-Update");
+
+	UStatsListItemWIdget_C_Populate_Update_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function StatsListItemWIdget.StatsListItemWIdget_C.SetTextAndBorderHighlight
 // (Public, BlueprintCallable, BlueprintEvent)

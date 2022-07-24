@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,45 +12,20 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function AthenaMapPanel.AthenaMapPanel_C.SetTriggerImages
-// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+// Function AthenaMapPanel.AthenaMapPanel_C.Clear Touches
+// (Public, BlueprintCallable, BlueprintEvent)
 
-void UAthenaMapPanel_C::SetTriggerImages()
+void UAthenaMapPanel_C::Clear_Touches()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaMapPanel.AthenaMapPanel_C.SetTriggerImages");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaMapPanel.AthenaMapPanel_C.Clear Touches");
 
-	UAthenaMapPanel_C_SetTriggerImages_Params params;
+	UAthenaMapPanel_C_Clear_Touches_Params params;
 
 	auto flags = fn->FunctionFlags;
 
 	UObject::ProcessEvent(fn, &params);
 
 	fn->FunctionFlags = flags;
-}
-
-
-// Function AthenaMapPanel.AthenaMapPanel_C.OnTouchEnded
-// (BlueprintCosmetic, Event, Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
-// Parameters:
-// struct FGeometry*              MyGeometry                     (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
-// struct FPointerEvent*          InTouchEvent                   (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
-// struct FEventReply             ReturnValue                    (Parm, OutParm, ReturnParm)
-
-struct FEventReply UAthenaMapPanel_C::OnTouchEnded(struct FGeometry* MyGeometry, struct FPointerEvent* InTouchEvent)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaMapPanel.AthenaMapPanel_C.OnTouchEnded");
-
-	UAthenaMapPanel_C_OnTouchEnded_Params params;
-	params.MyGeometry = MyGeometry;
-	params.InTouchEvent = InTouchEvent;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-
-	return params.ReturnValue;
 }
 
 

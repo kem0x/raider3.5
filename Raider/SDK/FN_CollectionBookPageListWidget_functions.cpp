@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -111,26 +111,6 @@ void UCollectionBookPageListWidget_C::SetupAsPage(class UFortCollectionBookPage*
 }
 
 
-// Function CollectionBookPageListWidget.CollectionBookPageListWidget_C.OnExpansionChanged
-// (Event, Protected, BlueprintEvent)
-// Parameters:
-// bool*                          bExpanded                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void UCollectionBookPageListWidget_C::OnExpansionChanged(bool* bExpanded)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function CollectionBookPageListWidget.CollectionBookPageListWidget_C.OnExpansionChanged");
-
-	UCollectionBookPageListWidget_C_OnExpansionChanged_Params params;
-	params.bExpanded = bExpanded;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function CollectionBookPageListWidget.CollectionBookPageListWidget_C.PreConstruct
 // (BlueprintCosmetic, Event, Public, BlueprintEvent)
 // Parameters:
@@ -214,6 +194,26 @@ void UCollectionBookPageListWidget_C::OnCategoryDetailsUpdated(int* AvailableSlo
 	params.AvailableSlots = AvailableSlots;
 	params.FilledSlots = FilledSlots;
 	params.TotalSlots = TotalSlots;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function CollectionBookPageListWidget.CollectionBookPageListWidget_C.BP_OnItemExpansionChanged
+// (Event, Protected, BlueprintEvent)
+// Parameters:
+// bool*                          bIsExpanded                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UCollectionBookPageListWidget_C::BP_OnItemExpansionChanged(bool* bIsExpanded)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function CollectionBookPageListWidget.CollectionBookPageListWidget_C.BP_OnItemExpansionChanged");
+
+	UCollectionBookPageListWidget_C_BP_OnItemExpansionChanged_Params params;
+	params.bIsExpanded = bIsExpanded;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -55,15 +55,15 @@ struct UAthenaChallengeTreeEntry_C_SetupAsChallengeBundle_Params
 	class UFortChallengeBundleInfo**                   Bundle;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function AthenaChallengeTreeEntry.AthenaChallengeTreeEntry_C.ExpansionChanged
-struct UAthenaChallengeTreeEntry_C_ExpansionChanged_Params
+// Function AthenaChallengeTreeEntry.AthenaChallengeTreeEntry_C.BP_OnHovered
+struct UAthenaChallengeTreeEntry_C_BP_OnHovered_Params
 {
-	bool*                                              bExpanded;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function AthenaChallengeTreeEntry.AthenaChallengeTreeEntry_C.OnHovered
-struct UAthenaChallengeTreeEntry_C_OnHovered_Params
+// Function AthenaChallengeTreeEntry.AthenaChallengeTreeEntry_C.BP_OnItemExpansionChanged
+struct UAthenaChallengeTreeEntry_C_BP_OnItemExpansionChanged_Params
 {
+	bool*                                              bIsExpanded;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function AthenaChallengeTreeEntry.AthenaChallengeTreeEntry_C.ExecuteUbergraph_AthenaChallengeTreeEntry

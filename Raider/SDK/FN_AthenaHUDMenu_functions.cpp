@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -277,6 +277,26 @@ void UAthenaHUDMenu_C::PostBind_CheckConditions()
 	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUDMenu.AthenaHUDMenu_C.PostBind_CheckConditions");
 
 	UAthenaHUDMenu_C_PostBind_CheckConditions_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaHUDMenu.AthenaHUDMenu_C.OnPlayerLost
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EEndOfMatchReason              LostReason                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaHUDMenu_C::OnPlayerLost(EEndOfMatchReason LostReason)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaHUDMenu.AthenaHUDMenu_C.OnPlayerLost");
+
+	UAthenaHUDMenu_C_OnPlayerLost_Params params;
+	params.LostReason = LostReason;
 
 	auto flags = fn->FunctionFlags;
 

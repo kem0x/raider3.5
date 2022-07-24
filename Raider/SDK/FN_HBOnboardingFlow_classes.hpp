@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,27 +13,27 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass HBOnboardingFlow.HBOnboardingFlow_C
-// 0x00A0 (0x03B8 - 0x0318)
+// 0x00A0 (0x03C8 - 0x0328)
 class AHBOnboardingFlow_C : public AActor
 {
 public:
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0318(0x0008) (Transient, DuplicateTransient)
-	class USceneComponent*                             DefaultSceneRoot;                                         // 0x0320(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortQuestItemDefinition*                    OnboardingQuest;                                          // 0x0328(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UFortQuestItemDefinition*                    PlayPeriodicEventMovieQuest;                              // 0x0330(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               bPlayedPeriodicEventMovie;                                // 0x0338(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               bHasRecheckedNeedToPlayPeriodicEventMovie;                // 0x0339(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x6];                                       // 0x033A(0x0006) MISSED OFFSET
-	struct FDataTableRowHandle                         CompleteZoneObjective;                                    // 0x0340(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FDataTableRowHandle                         NameHomebaseObjective;                                    // 0x0350(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FMargin                                     NotificationPadding;                                      // 0x0360(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
-	struct FDataTableRowHandle                         PlaySatelliteCineObjective;                               // 0x0370(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
-	class UFortAccountItemDefinition*                  ShowNewsToken;                                            // 0x0380(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	int                                                ClientQuestLoginRetryCount;                               // 0x0388(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	int                                                ClientQuestLoginNumRetries;                               // 0x038C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	struct FDataTableRowHandle                         PlayPeriodicEventCineObjective;                           // 0x0390(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
-	struct FDataTableRowHandle                         StormShieldDefenseObjective;                              // 0x03A0(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
-	class UClass*                                      PeriodicEventMovieAnnouncementClass;                      // 0x03B0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0328(0x0008) (Transient, DuplicateTransient)
+	class USceneComponent*                             DefaultSceneRoot;                                         // 0x0330(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortQuestItemDefinition*                    OnboardingQuest;                                          // 0x0338(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UFortQuestItemDefinition*                    PlayPeriodicEventMovieQuest;                              // 0x0340(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               bPlayedPeriodicEventMovie;                                // 0x0348(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               bHasRecheckedNeedToPlayPeriodicEventMovie;                // 0x0349(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x6];                                       // 0x034A(0x0006) MISSED OFFSET
+	struct FDataTableRowHandle                         CompleteZoneObjective;                                    // 0x0350(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FDataTableRowHandle                         NameHomebaseObjective;                                    // 0x0360(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FMargin                                     NotificationPadding;                                      // 0x0370(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
+	struct FDataTableRowHandle                         PlaySatelliteCineObjective;                               // 0x0380(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
+	class UFortAccountItemDefinition*                  ShowNewsToken;                                            // 0x0390(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	int                                                ClientQuestLoginRetryCount;                               // 0x0398(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	int                                                ClientQuestLoginNumRetries;                               // 0x039C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FDataTableRowHandle                         PlayPeriodicEventCineObjective;                           // 0x03A0(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FDataTableRowHandle                         StormShieldDefenseObjective;                              // 0x03B0(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance)
+	class UClass*                                      PeriodicEventMovieAnnouncementClass;                      // 0x03C0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{

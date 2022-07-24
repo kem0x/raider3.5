@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -71,15 +71,15 @@ struct UGAB_Hunting_C_K2_OnEndAbility_Params
 	bool*                                              bWasCancelled;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function GAB_Hunting.GAB_Hunting_C.OnQueryFinishedEvent_Event_0_1
-struct UGAB_Hunting_C_OnQueryFinishedEvent_Event_0_1_Params
+// Function GAB_Hunting.GAB_Hunting_C.OnQueryFinishedEvent_Event_1
+struct UGAB_Hunting_C_OnQueryFinishedEvent_Event_1_Params
 {
 	class UEnvQueryInstanceBlueprintWrapper*           QueryInstance;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	TEnumAsByte<EEnvQueryStatus>                       QueryStatus;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function GAB_Hunting.GAB_Hunting_C.OnTargetPerceptionUpdated_Event_0_1
-struct UGAB_Hunting_C_OnTargetPerceptionUpdated_Event_0_1_Params
+// Function GAB_Hunting.GAB_Hunting_C.OnTargetPerceptionUpdated_Event_1
+struct UGAB_Hunting_C_OnTargetPerceptionUpdated_Event_1_Params
 {
 	class AActor*                                      Actor;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	struct FAIStimulus                                 Stimulus;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm)

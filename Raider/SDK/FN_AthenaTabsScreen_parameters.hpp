@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -33,6 +33,11 @@ struct UAthenaTabsScreen_C_HandleTabCreated_Params
 	class UCommonButton*                               TabButton;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 
+// Function AthenaTabsScreen.AthenaTabsScreen_C.Construct
+struct UAthenaTabsScreen_C_Construct_Params
+{
+};
+
 // Function AthenaTabsScreen.AthenaTabsScreen_C.OnActivated
 struct UAthenaTabsScreen_C_OnActivated_Params
 {
@@ -63,17 +68,6 @@ struct UAthenaTabsScreen_C_HandleTabContentCreated_Params
 	class UCommonUserWidget*                           TabWidget;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 
-// Function AthenaTabsScreen.AthenaTabsScreen_C.BndEvt__MainMenuButton_K2Node_ComponentBoundEvent_416_CommonButtonClicked__DelegateSignature
-struct UAthenaTabsScreen_C_BndEvt__MainMenuButton_K2Node_ComponentBoundEvent_416_CommonButtonClicked__DelegateSignature_Params
-{
-	class UCommonButton*                               Button;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-};
-
-// Function AthenaTabsScreen.AthenaTabsScreen_C.Construct
-struct UAthenaTabsScreen_C_Construct_Params
-{
-};
-
 // Function AthenaTabsScreen.AthenaTabsScreen_C.BndEvt__Social_K2Node_ComponentBoundEvent_89_CommonButtonClicked__DelegateSignature
 struct UAthenaTabsScreen_C_BndEvt__Social_K2Node_ComponentBoundEvent_89_CommonButtonClicked__DelegateSignature_Params
 {
@@ -97,6 +91,16 @@ struct UAthenaTabsScreen_C_DisableTabsHotfixedOffTabs_Params
 {
 	struct FName                                       TabId;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	class UCommonButton*                               NewParam;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+};
+
+// Function AthenaTabsScreen.AthenaTabsScreen_C.ShowReplayBrowser
+struct UAthenaTabsScreen_C_ShowReplayBrowser_Params
+{
+};
+
+// Function AthenaTabsScreen.AthenaTabsScreen_C.BndEvt__LargeMenuButton_K2Node_ComponentBoundEvent_0_OnButtonClickedEvent__DelegateSignature
+struct UAthenaTabsScreen_C_BndEvt__LargeMenuButton_K2Node_ComponentBoundEvent_0_OnButtonClickedEvent__DelegateSignature_Params
+{
 };
 
 // Function AthenaTabsScreen.AthenaTabsScreen_C.ExecuteUbergraph_AthenaTabsScreen

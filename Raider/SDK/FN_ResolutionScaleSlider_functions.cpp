@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -71,14 +71,14 @@ struct FEventReply UResolutionScaleSlider_C::OnFocusReceived(struct FGeometry* M
 }
 
 
-// Function ResolutionScaleSlider.ResolutionScaleSlider_C.Center on Widget
+// Function ResolutionScaleSlider.ResolutionScaleSlider_C.Center On Widget
 // (Public, BlueprintCallable, BlueprintEvent)
 
-void UResolutionScaleSlider_C::Center_on_Widget()
+void UResolutionScaleSlider_C::Center_On_Widget()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ResolutionScaleSlider.ResolutionScaleSlider_C.Center on Widget");
+	static auto fn = UObject::FindObject<UFunction>("Function ResolutionScaleSlider.ResolutionScaleSlider_C.Center On Widget");
 
-	UResolutionScaleSlider_C_Center_on_Widget_Params params;
+	UResolutionScaleSlider_C_Center_On_Widget_Params params;
 
 	auto flags = fn->FunctionFlags;
 

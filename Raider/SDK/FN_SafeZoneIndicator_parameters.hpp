@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -72,20 +72,15 @@ struct ASafeZoneIndicator_C_Apply_Lowpass_to_Audio_Params
 {
 };
 
-// Function SafeZoneIndicator.SafeZoneIndicator_C.ReceiveTick
-struct ASafeZoneIndicator_C_ReceiveTick_Params
-{
-	float*                                             DeltaSeconds;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
 // Function SafeZoneIndicator.SafeZoneIndicator_C.ResetSafeZoneScale
 struct ASafeZoneIndicator_C_ResetSafeZoneScale_Params
 {
 };
 
-// Function SafeZoneIndicator.SafeZoneIndicator_C.ReceiveBeginPlay
-struct ASafeZoneIndicator_C_ReceiveBeginPlay_Params
+// Function SafeZoneIndicator.SafeZoneIndicator_C.ReceiveTick
+struct ASafeZoneIndicator_C_ReceiveTick_Params
 {
+	float*                                             DeltaSeconds;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function SafeZoneIndicator.SafeZoneIndicator_C.stormy
@@ -96,6 +91,16 @@ struct ASafeZoneIndicator_C_stormy_Params
 
 // Function SafeZoneIndicator.SafeZoneIndicator_C.ReceiveDestroyed
 struct ASafeZoneIndicator_C_ReceiveDestroyed_Params
+{
+};
+
+// Function SafeZoneIndicator.SafeZoneIndicator_C.OnBeginStartingStateEffectsEvent
+struct ASafeZoneIndicator_C_OnBeginStartingStateEffectsEvent_Params
+{
+};
+
+// Function SafeZoneIndicator.SafeZoneIndicator_C.ReceiveBeginPlay
+struct ASafeZoneIndicator_C_ReceiveBeginPlay_Params
 {
 };
 

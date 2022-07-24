@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -84,23 +84,23 @@ struct UBP_FortExpeditionIconTabButton_C_Construct_Params
 {
 };
 
-// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.OnSelected
-struct UBP_FortExpeditionIconTabButton_C_OnSelected_Params
+// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.BP_OnSelected
+struct UBP_FortExpeditionIconTabButton_C_BP_OnSelected_Params
 {
 };
 
-// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.OnDeselected
-struct UBP_FortExpeditionIconTabButton_C_OnDeselected_Params
+// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.BP_OnDeselected
+struct UBP_FortExpeditionIconTabButton_C_BP_OnDeselected_Params
 {
 };
 
-// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.OnHovered
-struct UBP_FortExpeditionIconTabButton_C_OnHovered_Params
+// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.BP_OnHovered
+struct UBP_FortExpeditionIconTabButton_C_BP_OnHovered_Params
 {
 };
 
-// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.OnUnhovered
-struct UBP_FortExpeditionIconTabButton_C_OnUnhovered_Params
+// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.BP_OnUnhovered
+struct UBP_FortExpeditionIconTabButton_C_BP_OnUnhovered_Params
 {
 };
 

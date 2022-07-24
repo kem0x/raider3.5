@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,16 +12,16 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function ErrorEntry.ErrorEntry_C.Center on Widget
+// Function ErrorEntry.ErrorEntry_C.Center On Widget
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // bool                           Did_Center                     (Parm, OutParm, ZeroConstructor, IsPlainOldData)
 
-void UErrorEntry_C::Center_on_Widget(bool* Did_Center)
+void UErrorEntry_C::Center_On_Widget(bool* Did_Center)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ErrorEntry.ErrorEntry_C.Center on Widget");
+	static auto fn = UObject::FindObject<UFunction>("Function ErrorEntry.ErrorEntry_C.Center On Widget");
 
-	UErrorEntry_C_Center_on_Widget_Params params;
+	UErrorEntry_C_Center_On_Widget_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -76,23 +76,6 @@ void UErrorEntry_C::GetButtonVisibility(ESlateVisibility* NewParam)
 }
 
 
-// Function ErrorEntry.ErrorEntry_C.Construct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
-
-void UErrorEntry_C::Construct()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function ErrorEntry.ErrorEntry_C.Construct");
-
-	UErrorEntry_C_Construct_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function ErrorEntry.ErrorEntry_C.BndEvt__IconTextButton_K2Node_ComponentBoundEvent_65_CommonButtonClicked__DelegateSignature
 // (BlueprintEvent)
 // Parameters:
@@ -104,6 +87,23 @@ void UErrorEntry_C::BndEvt__IconTextButton_K2Node_ComponentBoundEvent_65_CommonB
 
 	UErrorEntry_C_BndEvt__IconTextButton_K2Node_ComponentBoundEvent_65_CommonButtonClicked__DelegateSignature_Params params;
 	params.Button = Button;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function ErrorEntry.ErrorEntry_C.Construct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UErrorEntry_C::Construct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function ErrorEntry.ErrorEntry_C.Construct");
+
+	UErrorEntry_C_Construct_Params params;
 
 	auto flags = fn->FunctionFlags;
 

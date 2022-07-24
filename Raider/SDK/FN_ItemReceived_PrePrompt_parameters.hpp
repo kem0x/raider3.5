@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -41,8 +41,8 @@ struct UItemReceived_PrePrompt_C_OnGiftBoxItemSet_Params
 {
 };
 
-// Function ItemReceived_PrePrompt.ItemReceived_PrePrompt_C.CustomEvent_0_1
-struct UItemReceived_PrePrompt_C_CustomEvent_0_1_Params
+// Function ItemReceived_PrePrompt.ItemReceived_PrePrompt_C.CustomEvent_1
+struct UItemReceived_PrePrompt_C_CustomEvent_1_Params
 {
 };
 
@@ -50,11 +50,6 @@ struct UItemReceived_PrePrompt_C_CustomEvent_0_1_Params
 struct UItemReceived_PrePrompt_C_ExecuteUbergraph_ItemReceived_PrePrompt_Params
 {
 	int                                                EntryPoint;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function ItemReceived_PrePrompt.ItemReceived_PrePrompt_C.PreTest__DelegateSignature
-struct UItemReceived_PrePrompt_C_PreTest__DelegateSignature_Params
-{
 };
 
 }

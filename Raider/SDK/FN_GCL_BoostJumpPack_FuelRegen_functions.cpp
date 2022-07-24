@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,8 +12,51 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function GCL_BoostJumpPack_FuelRegen.GCL_BoostJumpPack_FuelRegen_C.GetFuel
+// Function GCL_BoostJumpPack_FuelRegen.GCL_BoostJumpPack_FuelRegen_C.GetReserveFuel
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, BlueprintPure)
+// Parameters:
+// float                          ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+float AGCL_BoostJumpPack_FuelRegen_C::GetReserveFuel()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GCL_BoostJumpPack_FuelRegen.GCL_BoostJumpPack_FuelRegen_C.GetReserveFuel");
+
+	AGCL_BoostJumpPack_FuelRegen_C_GetReserveFuel_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function GCL_BoostJumpPack_FuelRegen.GCL_BoostJumpPack_FuelRegen_C.GetReserveFuelPercent
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure)
+// Parameters:
+// float                          FuelPercent                    (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+
+void AGCL_BoostJumpPack_FuelRegen_C::GetReserveFuelPercent(float* FuelPercent)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GCL_BoostJumpPack_FuelRegen.GCL_BoostJumpPack_FuelRegen_C.GetReserveFuelPercent");
+
+	AGCL_BoostJumpPack_FuelRegen_C_GetReserveFuelPercent_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (FuelPercent != nullptr)
+		*FuelPercent = params.FuelPercent;
+}
+
+
+// Function GCL_BoostJumpPack_FuelRegen.GCL_BoostJumpPack_FuelRegen_C.GetFuel
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, BlueprintPure)
 // Parameters:
 // float                          ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 
@@ -76,7 +119,7 @@ void AGCL_BoostJumpPack_FuelRegen_C::GetFuelPercent(float* FuelPercent)
 
 
 // Function GCL_BoostJumpPack_FuelRegen.GCL_BoostJumpPack_FuelRegen_C.CacheAttributes
-// (Public, BlueprintCallable, BlueprintEvent)
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
 
 void AGCL_BoostJumpPack_FuelRegen_C::CacheAttributes()
 {

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -621,6 +621,23 @@ void UAthenaInventoryPanel_C::RequestEquip(class UFortItem** Item)
 
 	UAthenaInventoryPanel_C_RequestEquip_Params params;
 	params.Item = Item;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaInventoryPanel.AthenaInventoryPanel_C.PostActivate
+// (BlueprintCallable, BlueprintEvent)
+
+void UAthenaInventoryPanel_C::PostActivate()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaInventoryPanel.AthenaInventoryPanel_C.PostActivate");
+
+	UAthenaInventoryPanel_C_PostActivate_Params params;
 
 	auto flags = fn->FunctionFlags;
 

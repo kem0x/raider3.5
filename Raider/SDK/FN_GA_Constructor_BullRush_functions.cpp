@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,23 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function GA_Constructor_BullRush.GA_Constructor_BullRush_C.ForceDamageWallClose
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+
+void UGA_Constructor_BullRush_C::ForceDamageWallClose()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GA_Constructor_BullRush.GA_Constructor_BullRush_C.ForceDamageWallClose");
+
+	UGA_Constructor_BullRush_C_ForceDamageWallClose_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function GA_Constructor_BullRush.GA_Constructor_BullRush_C.HighOffGround
 // (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, BlueprintPure)
@@ -1190,16 +1207,16 @@ void UGA_Constructor_BullRush_C::BeginFallingTimer()
 }
 
 
-// Function GA_Constructor_BullRush.GA_Constructor_BullRush_C.OnPawnLanded_Event_0_1
+// Function GA_Constructor_BullRush.GA_Constructor_BullRush_C.OnPawnLanded_Event_1
 // (HasOutParms, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // struct FHitResult              Hit                            (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
 
-void UGA_Constructor_BullRush_C::OnPawnLanded_Event_0_1(const struct FHitResult& Hit)
+void UGA_Constructor_BullRush_C::OnPawnLanded_Event_1(const struct FHitResult& Hit)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function GA_Constructor_BullRush.GA_Constructor_BullRush_C.OnPawnLanded_Event_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function GA_Constructor_BullRush.GA_Constructor_BullRush_C.OnPawnLanded_Event_1");
 
-	UGA_Constructor_BullRush_C_OnPawnLanded_Event_0_1_Params params;
+	UGA_Constructor_BullRush_C_OnPawnLanded_Event_1_Params params;
 	params.Hit = Hit;
 
 	auto flags = fn->FunctionFlags;

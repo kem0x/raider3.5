@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -223,14 +223,14 @@ void UAthenaQuickbarPrimary_C::OnQuickbarContentsChanged(EFortQuickBars* Quickba
 }
 
 
-// Function AthenaQuickbarPrimary.AthenaQuickbarPrimary_C.Construct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+// Function AthenaQuickbarPrimary.AthenaQuickbarPrimary_C.AnimationFinished
+// (BlueprintCallable, BlueprintEvent)
 
-void UAthenaQuickbarPrimary_C::Construct()
+void UAthenaQuickbarPrimary_C::AnimationFinished()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaQuickbarPrimary.AthenaQuickbarPrimary_C.Construct");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaQuickbarPrimary.AthenaQuickbarPrimary_C.AnimationFinished");
 
-	UAthenaQuickbarPrimary_C_Construct_Params params;
+	UAthenaQuickbarPrimary_C_AnimationFinished_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -240,14 +240,14 @@ void UAthenaQuickbarPrimary_C::Construct()
 }
 
 
-// Function AthenaQuickbarPrimary.AthenaQuickbarPrimary_C.AnimationFinished
-// (BlueprintCallable, BlueprintEvent)
+// Function AthenaQuickbarPrimary.AthenaQuickbarPrimary_C.Construct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
 
-void UAthenaQuickbarPrimary_C::AnimationFinished()
+void UAthenaQuickbarPrimary_C::Construct()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaQuickbarPrimary.AthenaQuickbarPrimary_C.AnimationFinished");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaQuickbarPrimary.AthenaQuickbarPrimary_C.Construct");
 
-	UAthenaQuickbarPrimary_C_AnimationFinished_Params params;
+	UAthenaQuickbarPrimary_C_Construct_Params params;
 
 	auto flags = fn->FunctionFlags;
 

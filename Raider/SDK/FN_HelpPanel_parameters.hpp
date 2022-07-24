@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,17 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function HelpPanel.HelpPanel_C.Setup Header
+struct UHelpPanel_C_Setup_Header_Params
+{
+};
+
+// Function HelpPanel.HelpPanel_C.SetSelectedItemByID
+struct UHelpPanel_C_SetSelectedItemByID_Params
+{
+	struct FName                                       SelectedItemID;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function HelpPanel.HelpPanel_C.UnbindDelegates
 struct UHelpPanel_C_UnbindDelegates_Params

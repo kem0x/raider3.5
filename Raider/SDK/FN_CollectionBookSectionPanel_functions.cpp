@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,48 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function CollectionBookSectionPanel.CollectionBookSectionPanel_C.OnUnslotItemConfirm
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UFortItem*               Item                           (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UCollectionBookSectionPanel_C::OnUnslotItemConfirm(class UFortItem* Item)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function CollectionBookSectionPanel.CollectionBookSectionPanel_C.OnUnslotItemConfirm");
+
+	UCollectionBookSectionPanel_C_OnUnslotItemConfirm_Params params;
+	params.Item = Item;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function CollectionBookSectionPanel.CollectionBookSectionPanel_C.OnResearchItemConfirm
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UFortItem*               ResearchItem                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FFortCollectionBookSlotData SlotData                       (BlueprintVisible, BlueprintReadOnly, Parm)
+
+void UCollectionBookSectionPanel_C::OnResearchItemConfirm(class UFortItem* ResearchItem, const struct FFortCollectionBookSlotData& SlotData)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function CollectionBookSectionPanel.CollectionBookSectionPanel_C.OnResearchItemConfirm");
+
+	UCollectionBookSectionPanel_C_OnResearchItemConfirm_Params params;
+	params.ResearchItem = ResearchItem;
+	params.SlotData = SlotData;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function CollectionBookSectionPanel.CollectionBookSectionPanel_C.OnInspectItem
 // (Public, BlueprintCallable, BlueprintEvent)
@@ -121,6 +163,23 @@ void UCollectionBookSectionPanel_C::OnActivated()
 	static auto fn = UObject::FindObject<UFunction>("Function CollectionBookSectionPanel.CollectionBookSectionPanel_C.OnActivated");
 
 	UCollectionBookSectionPanel_C_OnActivated_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function CollectionBookSectionPanel.CollectionBookSectionPanel_C.Destruct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UCollectionBookSectionPanel_C::Destruct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function CollectionBookSectionPanel.CollectionBookSectionPanel_C.Destruct");
+
+	UCollectionBookSectionPanel_C_Destruct_Params params;
 
 	auto flags = fn->FunctionFlags;
 

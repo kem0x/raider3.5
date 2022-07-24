@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -50,13 +50,13 @@ struct UStoreMain_MTXOffer_C_OnClick_Params
 	class UCommonButton*                               Button;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 
-// Function StoreMain_MTXOffer.StoreMain_MTXOffer_C.OnHovered
-struct UStoreMain_MTXOffer_C_OnHovered_Params
+// Function StoreMain_MTXOffer.StoreMain_MTXOffer_C.BP_OnHovered
+struct UStoreMain_MTXOffer_C_BP_OnHovered_Params
 {
 };
 
-// Function StoreMain_MTXOffer.StoreMain_MTXOffer_C.OnUnhovered
-struct UStoreMain_MTXOffer_C_OnUnhovered_Params
+// Function StoreMain_MTXOffer.StoreMain_MTXOffer_C.BP_OnUnhovered
+struct UStoreMain_MTXOffer_C_BP_OnUnhovered_Params
 {
 };
 

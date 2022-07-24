@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,28 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function GamepadMappingInfo.GamepadMappingInfo_C.SetButtonTextLabelsFromTextArray
+struct UGamepadMappingInfo_C_SetButtonTextLabelsFromTextArray_Params
+{
+	TArray<struct FText>                               Array;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
+};
+
+// Function GamepadMappingInfo.GamepadMappingInfo_C.InitializeListOfButtonTextForSTW_BuilderProBuild
+struct UGamepadMappingInfo_C_InitializeListOfButtonTextForSTW_BuilderProBuild_Params
+{
+	TArray<struct FText>                               ButtonTextLabels;                                         // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
+};
+
+// Function GamepadMappingInfo.GamepadMappingInfo_C.GetLineImage
+struct UGamepadMappingInfo_C_GetLineImage_Params
+{
+};
+
+// Function GamepadMappingInfo.GamepadMappingInfo_C.GetControllerImage
+struct UGamepadMappingInfo_C_GetControllerImage_Params
+{
+};
 
 // Function GamepadMappingInfo.GamepadMappingInfo_C.ClearAllComboTextLines
 struct UGamepadMappingInfo_C_ClearAllComboTextLines_Params
@@ -95,8 +117,25 @@ struct UGamepadMappingInfo_C_Update_Displayed_Mapping_Params
 	int                                                Configuration;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
+// Function GamepadMappingInfo.GamepadMappingInfo_C.OnLoaded_67B412844D12E60AF9677EAF507D3D57
+struct UGamepadMappingInfo_C_OnLoaded_67B412844D12E60AF9677EAF507D3D57_Params
+{
+	class UObject*                                     Loaded;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function GamepadMappingInfo.GamepadMappingInfo_C.OnLoaded_A196D7E54164016324DF5A9755C679BD
+struct UGamepadMappingInfo_C_OnLoaded_A196D7E54164016324DF5A9755C679BD_Params
+{
+	class UObject*                                     Loaded;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
 // Function GamepadMappingInfo.GamepadMappingInfo_C.Construct
 struct UGamepadMappingInfo_C_Construct_Params
+{
+};
+
+// Function GamepadMappingInfo.GamepadMappingInfo_C.Update Controller Images
+struct UGamepadMappingInfo_C_Update_Controller_Images_Params
 {
 };
 

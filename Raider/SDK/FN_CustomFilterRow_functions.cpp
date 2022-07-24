@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -69,14 +69,14 @@ void UCustomFilterRow_C::PreConstruct(bool* IsDesignTime)
 }
 
 
-// Function CustomFilterRow.CustomFilterRow_C.OnClicked
+// Function CustomFilterRow.CustomFilterRow_C.BP_OnClicked
 // (Event, Protected, BlueprintEvent)
 
-void UCustomFilterRow_C::OnClicked()
+void UCustomFilterRow_C::BP_OnClicked()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function CustomFilterRow.CustomFilterRow_C.OnClicked");
+	static auto fn = UObject::FindObject<UFunction>("Function CustomFilterRow.CustomFilterRow_C.BP_OnClicked");
 
-	UCustomFilterRow_C_OnClicked_Params params;
+	UCustomFilterRow_C_BP_OnClicked_Params params;
 
 	auto flags = fn->FunctionFlags;
 

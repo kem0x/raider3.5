@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -46,19 +46,17 @@ void UAthenaCustomizationPickerTileButton_C::UpdateBangState()
 }
 
 
-// Function AthenaCustomizationPickerTileButton.AthenaCustomizationPickerTileButton_C.SetData
-// (Event, Public, BlueprintCallable, BlueprintEvent)
+// Function AthenaCustomizationPickerTileButton.AthenaCustomizationPickerTileButton_C.OnListItemObjectSet
+// (Event, Protected, BlueprintEvent)
 // Parameters:
-// class UObject**                InData                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class UCommonListView**        OwningList                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// class UObject**                ListItemObject                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UAthenaCustomizationPickerTileButton_C::SetData(class UObject** InData, class UCommonListView** OwningList)
+void UAthenaCustomizationPickerTileButton_C::OnListItemObjectSet(class UObject** ListItemObject)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaCustomizationPickerTileButton.AthenaCustomizationPickerTileButton_C.SetData");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaCustomizationPickerTileButton.AthenaCustomizationPickerTileButton_C.OnListItemObjectSet");
 
-	UAthenaCustomizationPickerTileButton_C_SetData_Params params;
-	params.InData = InData;
-	params.OwningList = OwningList;
+	UAthenaCustomizationPickerTileButton_C_OnListItemObjectSet_Params params;
+	params.ListItemObject = ListItemObject;
 
 	auto flags = fn->FunctionFlags;
 
@@ -68,31 +66,14 @@ void UAthenaCustomizationPickerTileButton_C::SetData(class UObject** InData, cla
 }
 
 
-// Function AthenaCustomizationPickerTileButton.AthenaCustomizationPickerTileButton_C.OnSelected
+// Function AthenaCustomizationPickerTileButton.AthenaCustomizationPickerTileButton_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void UAthenaCustomizationPickerTileButton_C::OnSelected()
+void UAthenaCustomizationPickerTileButton_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaCustomizationPickerTileButton.AthenaCustomizationPickerTileButton_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaCustomizationPickerTileButton.AthenaCustomizationPickerTileButton_C.BP_OnSelected");
 
-	UAthenaCustomizationPickerTileButton_C_OnSelected_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function AthenaCustomizationPickerTileButton.AthenaCustomizationPickerTileButton_C.Construct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
-
-void UAthenaCustomizationPickerTileButton_C::Construct()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaCustomizationPickerTileButton.AthenaCustomizationPickerTileButton_C.Construct");
-
-	UAthenaCustomizationPickerTileButton_C_Construct_Params params;
+	UAthenaCustomizationPickerTileButton_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,7 +13,7 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // Function AthenaChallengeTreeEntry.AthenaChallengeTreeEntry_C.GetRewardToShow
-// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // class UFortItem*               ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 
@@ -150,17 +150,14 @@ void UAthenaChallengeTreeEntry_C::SetupAsChallengeBundle(class UFortChallengeBun
 }
 
 
-// Function AthenaChallengeTreeEntry.AthenaChallengeTreeEntry_C.ExpansionChanged
+// Function AthenaChallengeTreeEntry.AthenaChallengeTreeEntry_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
-// Parameters:
-// bool*                          bExpanded                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UAthenaChallengeTreeEntry_C::ExpansionChanged(bool* bExpanded)
+void UAthenaChallengeTreeEntry_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaChallengeTreeEntry.AthenaChallengeTreeEntry_C.ExpansionChanged");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaChallengeTreeEntry.AthenaChallengeTreeEntry_C.BP_OnHovered");
 
-	UAthenaChallengeTreeEntry_C_ExpansionChanged_Params params;
-	params.bExpanded = bExpanded;
+	UAthenaChallengeTreeEntry_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -170,14 +167,17 @@ void UAthenaChallengeTreeEntry_C::ExpansionChanged(bool* bExpanded)
 }
 
 
-// Function AthenaChallengeTreeEntry.AthenaChallengeTreeEntry_C.OnHovered
+// Function AthenaChallengeTreeEntry.AthenaChallengeTreeEntry_C.BP_OnItemExpansionChanged
 // (Event, Protected, BlueprintEvent)
+// Parameters:
+// bool*                          bIsExpanded                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UAthenaChallengeTreeEntry_C::OnHovered()
+void UAthenaChallengeTreeEntry_C::BP_OnItemExpansionChanged(bool* bIsExpanded)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AthenaChallengeTreeEntry.AthenaChallengeTreeEntry_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaChallengeTreeEntry.AthenaChallengeTreeEntry_C.BP_OnItemExpansionChanged");
 
-	UAthenaChallengeTreeEntry_C_OnHovered_Params params;
+	UAthenaChallengeTreeEntry_C_BP_OnItemExpansionChanged_Params params;
+	params.bIsExpanded = bIsExpanded;
 
 	auto flags = fn->FunctionFlags;
 

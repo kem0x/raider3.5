@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -388,14 +388,14 @@ void UIconTextButtonReplay_C::Construct()
 }
 
 
-// Function IconTextButtonReplay.IconTextButtonReplay_C.OnHovered
+// Function IconTextButtonReplay.IconTextButtonReplay_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UIconTextButtonReplay_C::OnHovered()
+void UIconTextButtonReplay_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function IconTextButtonReplay.IconTextButtonReplay_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function IconTextButtonReplay.IconTextButtonReplay_C.BP_OnHovered");
 
-	UIconTextButtonReplay_C_OnHovered_Params params;
+	UIconTextButtonReplay_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -405,14 +405,14 @@ void UIconTextButtonReplay_C::OnHovered()
 }
 
 
-// Function IconTextButtonReplay.IconTextButtonReplay_C.OnUnhovered
+// Function IconTextButtonReplay.IconTextButtonReplay_C.BP_OnUnhovered
 // (Event, Protected, BlueprintEvent)
 
-void UIconTextButtonReplay_C::OnUnhovered()
+void UIconTextButtonReplay_C::BP_OnUnhovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function IconTextButtonReplay.IconTextButtonReplay_C.OnUnhovered");
+	static auto fn = UObject::FindObject<UFunction>("Function IconTextButtonReplay.IconTextButtonReplay_C.BP_OnUnhovered");
 
-	UIconTextButtonReplay_C_OnUnhovered_Params params;
+	UIconTextButtonReplay_C_BP_OnUnhovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -422,14 +422,14 @@ void UIconTextButtonReplay_C::OnUnhovered()
 }
 
 
-// Function IconTextButtonReplay.IconTextButtonReplay_C.OnSelected
+// Function IconTextButtonReplay.IconTextButtonReplay_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void UIconTextButtonReplay_C::OnSelected()
+void UIconTextButtonReplay_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function IconTextButtonReplay.IconTextButtonReplay_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function IconTextButtonReplay.IconTextButtonReplay_C.BP_OnSelected");
 
-	UIconTextButtonReplay_C_OnSelected_Params params;
+	UIconTextButtonReplay_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -439,14 +439,14 @@ void UIconTextButtonReplay_C::OnSelected()
 }
 
 
-// Function IconTextButtonReplay.IconTextButtonReplay_C.OnDeselected
+// Function IconTextButtonReplay.IconTextButtonReplay_C.BP_OnDeselected
 // (Event, Protected, BlueprintEvent)
 
-void UIconTextButtonReplay_C::OnDeselected()
+void UIconTextButtonReplay_C::BP_OnDeselected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function IconTextButtonReplay.IconTextButtonReplay_C.OnDeselected");
+	static auto fn = UObject::FindObject<UFunction>("Function IconTextButtonReplay.IconTextButtonReplay_C.BP_OnDeselected");
 
-	UIconTextButtonReplay_C_OnDeselected_Params params;
+	UIconTextButtonReplay_C_BP_OnDeselected_Params params;
 
 	auto flags = fn->FunctionFlags;
 

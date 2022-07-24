@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,28 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function AthenaSeasonTab.AthenaSeasonTab_C.GetWidgetForFramingViewedItem
+struct UAthenaSeasonTab_C_GetWidgetForFramingViewedItem_Params
+{
+	class UWidget*                                     ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+};
+
+// Function AthenaSeasonTab.AthenaSeasonTab_C.OnMovieFinished
+struct UAthenaSeasonTab_C_OnMovieFinished_Params
+{
+};
+
+// Function AthenaSeasonTab.AthenaSeasonTab_C.PlaySeasonCinematic
+struct UAthenaSeasonTab_C_PlaySeasonCinematic_Params
+{
+};
+
+// Function AthenaSeasonTab.AthenaSeasonTab_C.Handle_ReplayCinematic
+struct UAthenaSeasonTab_C_Handle_ReplayCinematic_Params
+{
+	bool                                               Passthrough;                                              // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function AthenaSeasonTab.AthenaSeasonTab_C.UpdateLevelPageWidgetSwitcherTranslation
 struct UAthenaSeasonTab_C_UpdateLevelPageWidgetSwitcherTranslation_Params
@@ -98,22 +120,6 @@ struct UAthenaSeasonTab_C_OnNavigateToLevel_Params
 	int*                                               Level;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function AthenaSeasonTab.AthenaSeasonTab_C.OnStartReadingOffers
-struct UAthenaSeasonTab_C_OnStartReadingOffers_Params
-{
-};
-
-// Function AthenaSeasonTab.AthenaSeasonTab_C.OnOffersGenerated
-struct UAthenaSeasonTab_C_OnOffersGenerated_Params
-{
-};
-
-// Function AthenaSeasonTab.AthenaSeasonTab_C.GenerateOfferWidget
-struct UAthenaSeasonTab_C_GenerateOfferWidget_Params
-{
-	class UFortDirectAcquisitionOfferInfo**            OfferData;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
 // Function AthenaSeasonTab.AthenaSeasonTab_C.OnSeasonPassChanged
 struct UAthenaSeasonTab_C_OnSeasonPassChanged_Params
 {
@@ -165,11 +171,6 @@ struct UAthenaSeasonTab_C_BndEvt__PurchaseLevelBtn_K2Node_ComponentBoundEvent_40
 	class UCommonButton*                               Button;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 
-// Function AthenaSeasonTab.AthenaSeasonTab_C.NoOffersAvailable
-struct UAthenaSeasonTab_C_NoOffersAvailable_Params
-{
-};
-
 // Function AthenaSeasonTab.AthenaSeasonTab_C.ScrollPositive
 struct UAthenaSeasonTab_C_ScrollPositive_Params
 {
@@ -219,6 +220,12 @@ struct UAthenaSeasonTab_C_BndEvt__SwipePanel_K2Node_ComponentBoundEvent_118_OnFo
 // Function AthenaSeasonTab.AthenaSeasonTab_C.OnNoCurrentSeason
 struct UAthenaSeasonTab_C_OnNoCurrentSeason_Params
 {
+};
+
+// Function AthenaSeasonTab.AthenaSeasonTab_C.OnSetGiftability
+struct UAthenaSeasonTab_C_OnSetGiftability_Params
+{
+	bool*                                              bIsGiftable;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function AthenaSeasonTab.AthenaSeasonTab_C.ExecuteUbergraph_AthenaSeasonTab

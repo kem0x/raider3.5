@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,11 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function DailyRewardsCurrent.DailyRewardsCurrent_C.InitializeRewardView
+struct UDailyRewardsCurrent_C_InitializeRewardView_Params
+{
+};
 
 // Function DailyRewardsCurrent.DailyRewardsCurrent_C.Set Item Flare
 struct UDailyRewardsCurrent_C_Set_Item_Flare_Params

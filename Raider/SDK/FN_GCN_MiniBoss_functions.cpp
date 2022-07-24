@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -33,7 +33,7 @@ void AGCN_MiniBoss_C::OverwriteElementalParticles(class AEnemyPawn_Parent_C* Ene
 
 
 // Function GCN_MiniBoss.GCN_MiniBoss_C.OnActive
-// (Event, Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
+// (Event, Public, HasOutParms, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // class AActor**                 MyTarget                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // struct FGameplayCueParameters* Parameters                     (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,141 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function TabGamePadConfig.TabGamePadConfig_C.InputCommonListViewNav
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EUINavigation                  Navigation                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UWidget*                 ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+
+class UWidget* UTabGamePadConfig_C::InputCommonListViewNav(EUINavigation Navigation)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabGamePadConfig.TabGamePadConfig_C.InputCommonListViewNav");
+
+	UTabGamePadConfig_C_InputCommonListViewNav_Params params;
+	params.Navigation = Navigation;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function TabGamePadConfig.TabGamePadConfig_C.CustomInputTemplateConfigsNav
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EUINavigation                  Navigation                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UWidget*                 ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+
+class UWidget* UTabGamePadConfig_C::CustomInputTemplateConfigsNav(EUINavigation Navigation)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabGamePadConfig.TabGamePadConfig_C.CustomInputTemplateConfigsNav");
+
+	UTabGamePadConfig_C_CustomInputTemplateConfigsNav_Params params;
+	params.Navigation = Navigation;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function TabGamePadConfig.TabGamePadConfig_C.GamepadPlatformConfigNav
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EUINavigation                  Navigation                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UWidget*                 ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+
+class UWidget* UTabGamePadConfig_C::GamepadPlatformConfigNav(EUINavigation Navigation)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabGamePadConfig.TabGamePadConfig_C.GamepadPlatformConfigNav");
+
+	UTabGamePadConfig_C_GamepadPlatformConfigNav_Params params;
+	params.Navigation = Navigation;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function TabGamePadConfig.TabGamePadConfig_C.IsConsole
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+bool UTabGamePadConfig_C::IsConsole()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabGamePadConfig.TabGamePadConfig_C.IsConsole");
+
+	UTabGamePadConfig_C_IsConsole_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function TabGamePadConfig.TabGamePadConfig_C.GamepadConfigNav
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EUINavigation                  Navigation                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UWidget*                 ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+
+class UWidget* UTabGamePadConfig_C::GamepadConfigNav(EUINavigation Navigation)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabGamePadConfig.TabGamePadConfig_C.GamepadConfigNav");
+
+	UTabGamePadConfig_C_GamepadConfigNav_Params params;
+	params.Navigation = Navigation;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function TabGamePadConfig.TabGamePadConfig_C.GetCurrentPlatformIndex
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure, Const)
+// Parameters:
+// int                            Platform_Index                 (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+
+void UTabGamePadConfig_C::GetCurrentPlatformIndex(int* Platform_Index)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabGamePadConfig.TabGamePadConfig_C.GetCurrentPlatformIndex");
+
+	UTabGamePadConfig_C_GetCurrentPlatformIndex_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (Platform_Index != nullptr)
+		*Platform_Index = params.Platform_Index;
+}
+
 
 // Function TabGamePadConfig.TabGamePadConfig_C.IsCustomConfig
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
@@ -76,7 +211,7 @@ void UTabGamePadConfig_C::OverlayKeyPressed(const struct FKey& NewKey)
 
 
 // Function TabGamePadConfig.TabGamePadConfig_C.HandleGamepadMappingInfoChange
-// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+// (Public, BlueprintCallable, BlueprintEvent)
 
 void UTabGamePadConfig_C::HandleGamepadMappingInfoChange()
 {
@@ -257,15 +392,15 @@ void UTabGamePadConfig_C::BndEvt__InputCommonListView_K2Node_ComponentBoundEvent
 // Function TabGamePadConfig.TabGamePadConfig_C.InputClicked_Bind
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
-// int                            Number_In_List                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// int                            Number_in_List                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // bool                           Is_Primary_Button              (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UTabGamePadConfig_C::InputClicked_Bind(int Number_In_List, bool Is_Primary_Button)
+void UTabGamePadConfig_C::InputClicked_Bind(int Number_in_List, bool Is_Primary_Button)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function TabGamePadConfig.TabGamePadConfig_C.InputClicked_Bind");
 
 	UTabGamePadConfig_C_InputClicked_Bind_Params params;
-	params.Number_In_List = Number_In_List;
+	params.Number_in_List = Number_in_List;
 	params.Is_Primary_Button = Is_Primary_Button;
 
 	auto flags = fn->FunctionFlags;
@@ -313,18 +448,18 @@ void UTabGamePadConfig_C::HandleGamePadToggleMode()
 }
 
 
-// Function TabGamePadConfig.TabGamePadConfig_C.Unclicked_Bind
+// Function TabGamePadConfig.TabGamePadConfig_C.UnbindClicked_Bind
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
-// int                            Number_In_List                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// int                            Number_in_List                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // class UOptionsMenuInputOneKey_C* Widget                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 
-void UTabGamePadConfig_C::Unclicked_Bind(int Number_In_List, class UOptionsMenuInputOneKey_C* Widget)
+void UTabGamePadConfig_C::UnbindClicked_Bind(int Number_in_List, class UOptionsMenuInputOneKey_C* Widget)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TabGamePadConfig.TabGamePadConfig_C.Unclicked_Bind");
+	static auto fn = UObject::FindObject<UFunction>("Function TabGamePadConfig.TabGamePadConfig_C.UnbindClicked_Bind");
 
-	UTabGamePadConfig_C_Unclicked_Bind_Params params;
-	params.Number_In_List = Number_In_List;
+	UTabGamePadConfig_C_UnbindClicked_Bind_Params params;
+	params.Number_in_List = Number_in_List;
 	params.Widget = Widget;
 
 	auto flags = fn->FunctionFlags;

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -52,14 +52,21 @@ void AAthena_PlayerController_C::UserConstructionScript()
 }
 
 
-// Function Athena_PlayerController.Athena_PlayerController_C.ReceiveBeginPlay
-// (Event, Protected, BlueprintEvent)
+// Function Athena_PlayerController.Athena_PlayerController_C.PlayWinEffects
+// (Event, Public, BlueprintEvent)
+// Parameters:
+// class APawn**                  FinisherPawn                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UFortWeaponItemDefinition** FinishingWeapon                (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// EDeathCause*                   DeathCause                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void AAthena_PlayerController_C::ReceiveBeginPlay()
+void AAthena_PlayerController_C::PlayWinEffects(class APawn** FinisherPawn, class UFortWeaponItemDefinition** FinishingWeapon, EDeathCause* DeathCause)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function Athena_PlayerController.Athena_PlayerController_C.ReceiveBeginPlay");
+	static auto fn = UObject::FindObject<UFunction>("Function Athena_PlayerController.Athena_PlayerController_C.PlayWinEffects");
 
-	AAthena_PlayerController_C_ReceiveBeginPlay_Params params;
+	AAthena_PlayerController_C_PlayWinEffects_Params params;
+	params.FinisherPawn = FinisherPawn;
+	params.FinishingWeapon = FinishingWeapon;
+	params.DeathCause = DeathCause;
 
 	auto flags = fn->FunctionFlags;
 
@@ -69,14 +76,14 @@ void AAthena_PlayerController_C::ReceiveBeginPlay()
 }
 
 
-// Function Athena_PlayerController.Athena_PlayerController_C.PlayWinEffects
-// (Event, Public, BlueprintEvent)
+// Function Athena_PlayerController.Athena_PlayerController_C.ReceiveBeginPlay
+// (Event, Protected, BlueprintEvent)
 
-void AAthena_PlayerController_C::PlayWinEffects()
+void AAthena_PlayerController_C::ReceiveBeginPlay()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function Athena_PlayerController.Athena_PlayerController_C.PlayWinEffects");
+	static auto fn = UObject::FindObject<UFunction>("Function Athena_PlayerController.Athena_PlayerController_C.ReceiveBeginPlay");
 
-	AAthena_PlayerController_C_PlayWinEffects_Params params;
+	AAthena_PlayerController_C_ReceiveBeginPlay_Params params;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -38,12 +38,9 @@ struct UTopMenu_HelpButton_C_Construct_Params
 {
 };
 
-// Function TopMenu_HelpButton.TopMenu_HelpButton_C.OnFeatureStateChanged
-struct UTopMenu_HelpButton_C_OnFeatureStateChanged_Params
+// Function TopMenu_HelpButton.TopMenu_HelpButton_C.Destruct
+struct UTopMenu_HelpButton_C_Destruct_Params
 {
-	EFortUIFeature                                     ChangedFeature;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	EFortUIFeatureState                                NewState;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	EFortUIFeatureStateReason                          StateReason;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function TopMenu_HelpButton.TopMenu_HelpButton_C.ExecuteUbergraph_TopMenu_HelpButton

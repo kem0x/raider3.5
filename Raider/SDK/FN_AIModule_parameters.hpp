@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -253,6 +253,47 @@ struct UCrowdFollowingComponent_SuspendCrowdSteering_Params
 	bool                                               bSuspend;                                                 // (Parm, ZeroConstructor, IsPlainOldData)
 };
 
+// Function AIModule.AISystem.AILoggingVerbose
+struct UAISystem_AILoggingVerbose_Params
+{
+};
+
+// Function AIModule.AISystem.AIIgnorePlayers
+struct UAISystem_AIIgnorePlayers_Params
+{
+};
+
+// Function AIModule.NavLinkProxy.SetSmartLinkEnabled
+struct ANavLinkProxy_SetSmartLinkEnabled_Params
+{
+	bool                                               bEnabled;                                                 // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AIModule.NavLinkProxy.ResumePathFollowing
+struct ANavLinkProxy_ResumePathFollowing_Params
+{
+	class AActor*                                      Agent;                                                    // (Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AIModule.NavLinkProxy.ReceiveSmartLinkReached
+struct ANavLinkProxy_ReceiveSmartLinkReached_Params
+{
+	class AActor*                                      Agent;                                                    // (Parm, ZeroConstructor, IsPlainOldData)
+	struct FVector                                     Destination;                                              // (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
+};
+
+// Function AIModule.NavLinkProxy.IsSmartLinkEnabled
+struct ANavLinkProxy_IsSmartLinkEnabled_Params
+{
+	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function AIModule.NavLinkProxy.HasMovingAgents
+struct ANavLinkProxy_HasMovingAgents_Params
+{
+	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
 // Function AIModule.AITask_MoveTo.AIMoveTo
 struct UAITask_MoveTo_AIMoveTo_Params
 {
@@ -305,16 +346,6 @@ struct UAIPerceptionSystem_GetSenseClassForStimulus_Params
 	class UClass*                                      ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 };
 
-// Function AIModule.AISystem.AILoggingVerbose
-struct UAISystem_AILoggingVerbose_Params
-{
-};
-
-// Function AIModule.AISystem.AIIgnorePlayers
-struct UAISystem_AIIgnorePlayers_Params
-{
-};
-
 // Function AIModule.BrainComponent.StopLogic
 struct UBrainComponent_StopLogic_Params
 {
@@ -363,7 +394,7 @@ struct UBehaviorTreeComponent_AddCooldownTagDuration_Params
 // Function AIModule.AIAsyncTaskBlueprintProxy.OnMoveCompleted
 struct UAIAsyncTaskBlueprintProxy_OnMoveCompleted_Params
 {
-	struct FAIRequestID                                RequestID;                                                // (Parm)
+	struct FAIRequestID                                RequestId;                                                // (Parm)
 	TEnumAsByte<EPathFollowingResult>                  MovementResult;                                           // (Parm, ZeroConstructor, IsPlainOldData)
 };
 
@@ -385,6 +416,20 @@ struct UAIBlueprintHelperLibrary_SpawnAIFromClass_Params
 	struct FRotator                                    Rotation;                                                 // (Parm, IsPlainOldData)
 	bool                                               bNoCollisionFail;                                         // (Parm, ZeroConstructor, IsPlainOldData)
 	class APawn*                                       ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function AIModule.AIBlueprintHelperLibrary.SimpleMoveToLocation
+struct UAIBlueprintHelperLibrary_SimpleMoveToLocation_Params
+{
+	class AController*                                 Controller;                                               // (Parm, ZeroConstructor, IsPlainOldData)
+	struct FVector                                     Goal;                                                     // (ConstParm, Parm, OutParm, ReferenceParm, IsPlainOldData)
+};
+
+// Function AIModule.AIBlueprintHelperLibrary.SimpleMoveToActor
+struct UAIBlueprintHelperLibrary_SimpleMoveToActor_Params
+{
+	class AController*                                 Controller;                                               // (Parm, ZeroConstructor, IsPlainOldData)
+	class AActor*                                      Goal;                                                     // (ConstParm, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function AIModule.AIBlueprintHelperLibrary.SendAIMessage
@@ -1110,7 +1155,7 @@ struct UBTService_BlueprintBase_IsServiceActive_Params
 struct UBTTask_BlueprintBase_SetFinishOnMessageWithId_Params
 {
 	struct FName                                       MessageName;                                              // (Parm, ZeroConstructor, IsPlainOldData)
-	int                                                RequestID;                                                // (Parm, ZeroConstructor, IsPlainOldData)
+	int                                                RequestId;                                                // (Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function AIModule.BTTask_BlueprintBase.SetFinishOnMessage

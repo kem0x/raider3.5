@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,72 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.HandleHits
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UObject*                 Object                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UPrimitiveComponent*     Comp                           (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void AB_BGA_Athena_C4_C::HandleHits(class UObject* Object, class UPrimitiveComponent* Comp)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.HandleHits");
+
+	AB_BGA_Athena_C4_C_HandleHits_Params params;
+	params.Object = Object;
+	params.Comp = Comp;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.HandleHitSupplyDrop
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UObject*                 Object                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UPrimitiveComponent*     Component                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void AB_BGA_Athena_C4_C::HandleHitSupplyDrop(class UObject* Object, class UPrimitiveComponent* Component)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.HandleHitSupplyDrop");
+
+	AB_BGA_Athena_C4_C_HandleHitSupplyDrop_Params params;
+	params.Object = Object;
+	params.Component = Component;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.HandleHitVehicle
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UObject*                 Object                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class USceneComponent*         Component                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+void AB_BGA_Athena_C4_C::HandleHitVehicle(class UObject* Object, class USceneComponent* Component)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.HandleHitVehicle");
+
+	AB_BGA_Athena_C4_C_HandleHitVehicle_Params params;
+	params.Object = Object;
+	params.Component = Component;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.OnRep_bTriggeredExplosion
 // (BlueprintCallable, BlueprintEvent)
@@ -436,6 +502,23 @@ void AB_BGA_Athena_C4_C::OnDeathServer(float* Damage, struct FGameplayTagContain
 	params.InstigatedBy = InstigatedBy;
 	params.DamageCauser = DamageCauser;
 	params.EffectContext = EffectContext;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.Delete another actor
+// (BlueprintCallable, BlueprintEvent)
+
+void AB_BGA_Athena_C4_C::Delete_another_actor()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_BGA_Athena_C4.B_BGA_Athena_C4_C.Delete another actor");
+
+	AB_BGA_Athena_C4_C_Delete_another_actor_Params params;
 
 	auto flags = fn->FunctionFlags;
 

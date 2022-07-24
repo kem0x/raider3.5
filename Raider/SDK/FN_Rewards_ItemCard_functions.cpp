@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,26 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function Rewards_ItemCard.Rewards_ItemCard_C.SetItemLimitReachedNotification
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           ShouldShow                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void URewards_ItemCard_C::SetItemLimitReachedNotification(bool ShouldShow)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function Rewards_ItemCard.Rewards_ItemCard_C.SetItemLimitReachedNotification");
+
+	URewards_ItemCard_C_SetItemLimitReachedNotification_Params params;
+	params.ShouldShow = ShouldShow;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function Rewards_ItemCard.Rewards_ItemCard_C.SetQuantityOverride
 // (Public, BlueprintCallable, BlueprintEvent)

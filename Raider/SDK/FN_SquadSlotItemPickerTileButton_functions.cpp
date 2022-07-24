@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -29,19 +29,17 @@ void USquadSlotItemPickerTileButton_C::UpdateOverlays()
 }
 
 
-// Function SquadSlotItemPickerTileButton.SquadSlotItemPickerTileButton_C.SetData
-// (Event, Public, BlueprintCallable, BlueprintEvent)
+// Function SquadSlotItemPickerTileButton.SquadSlotItemPickerTileButton_C.OnListItemObjectSet
+// (Event, Protected, BlueprintEvent)
 // Parameters:
-// class UObject**                InData                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class UCommonListView**        OwningList                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+// class UObject**                ListItemObject                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void USquadSlotItemPickerTileButton_C::SetData(class UObject** InData, class UCommonListView** OwningList)
+void USquadSlotItemPickerTileButton_C::OnListItemObjectSet(class UObject** ListItemObject)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function SquadSlotItemPickerTileButton.SquadSlotItemPickerTileButton_C.SetData");
+	static auto fn = UObject::FindObject<UFunction>("Function SquadSlotItemPickerTileButton.SquadSlotItemPickerTileButton_C.OnListItemObjectSet");
 
-	USquadSlotItemPickerTileButton_C_SetData_Params params;
-	params.InData = InData;
-	params.OwningList = OwningList;
+	USquadSlotItemPickerTileButton_C_OnListItemObjectSet_Params params;
+	params.ListItemObject = ListItemObject;
 
 	auto flags = fn->FunctionFlags;
 

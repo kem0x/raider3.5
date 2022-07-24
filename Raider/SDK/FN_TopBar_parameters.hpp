@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -14,8 +14,8 @@ namespace SDK
 //Parameters
 //---------------------------------------------------------------------------
 
-// Function TopBar.TopBar_C.On_TouchZone_MouseButtonDown_0_1
-struct UTopBar_C_On_TouchZone_MouseButtonDown_0_1_Params
+// Function TopBar.TopBar_C.On_TouchZone_MouseButtonDown_1
+struct UTopBar_C_On_TouchZone_MouseButtonDown_1_Params
 {
 	struct FGeometry                                   MyGeometry;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
 	struct FPointerEvent                               MouseEvent;                                               // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
@@ -58,8 +58,8 @@ struct UTopBar_C_FireOpenAnalyticsEvent_Params
 {
 };
 
-// Function TopBar.TopBar_C.HideMTXPlusButton
-struct UTopBar_C_HideMTXPlusButton_Params
+// Function TopBar.TopBar_C.UpdateMTXButton
+struct UTopBar_C_UpdateMTXButton_Params
 {
 };
 
@@ -205,12 +205,6 @@ struct UTopBar_C_BndEvt__Social_K2Node_ComponentBoundEvent_64_CommonButtonClicke
 	class UCommonButton*                               Button;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 
-// Function TopBar.TopBar_C.BndEvt__MainMenuButton_K2Node_ComponentBoundEvent_70_CommonButtonClicked__DelegateSignature
-struct UTopBar_C_BndEvt__MainMenuButton_K2Node_ComponentBoundEvent_70_CommonButtonClicked__DelegateSignature_Params
-{
-	class UCommonButton*                               Button;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-};
-
 // Function TopBar.TopBar_C.PreConstruct
 struct UTopBar_C_PreConstruct_Params
 {
@@ -249,9 +243,10 @@ struct UTopBar_C_On_Power_Increased_Params
 {
 };
 
-// Function TopBar.TopBar_C.Construct
-struct UTopBar_C_Construct_Params
+// Function TopBar.TopBar_C.BndEvt__MainMenuButton_K2Node_ComponentBoundEvent_70_CommonButtonClicked__DelegateSignature
+struct UTopBar_C_BndEvt__MainMenuButton_K2Node_ComponentBoundEvent_70_CommonButtonClicked__DelegateSignature_Params
 {
+	class UCommonButton*                               Button;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 
 // Function TopBar.TopBar_C.AddIconToScreen
@@ -265,6 +260,11 @@ struct UTopBar_C_ManualToggleMainMenu_Params
 {
 };
 
+// Function TopBar.TopBar_C.Construct
+struct UTopBar_C_Construct_Params
+{
+};
+
 // Function TopBar.TopBar_C.BndEvt__MainMenu_K2Node_ComponentBoundEvent_0_OnRequestShowSocialWidget__DelegateSignature
 struct UTopBar_C_BndEvt__MainMenu_K2Node_ComponentBoundEvent_0_OnRequestShowSocialWidget__DelegateSignature_Params
 {
@@ -272,6 +272,11 @@ struct UTopBar_C_BndEvt__MainMenu_K2Node_ComponentBoundEvent_0_OnRequestShowSoci
 
 // Function TopBar.TopBar_C.On Social Panel Closed
 struct UTopBar_C_On_Social_Panel_Closed_Params
+{
+};
+
+// Function TopBar.TopBar_C.BndEvt__MainMenu_K2Node_ComponentBoundEvent_5_OnRequestShowPlayerReportWidget__DelegateSignature
+struct UTopBar_C_BndEvt__MainMenu_K2Node_ComponentBoundEvent_5_OnRequestShowPlayerReportWidget__DelegateSignature_Params
 {
 };
 

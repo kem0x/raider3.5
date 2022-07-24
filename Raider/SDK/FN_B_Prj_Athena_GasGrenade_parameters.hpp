@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -19,20 +19,20 @@ struct AB_Prj_Athena_GasGrenade_C_UserConstructionScript_Params
 {
 };
 
-// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.BndEvt__OverlapCapsule_K2Node_ComponentBoundEvent_1_ComponentBeginOverlapSignature__DelegateSignature
-struct AB_Prj_Athena_GasGrenade_C_BndEvt__OverlapCapsule_K2Node_ComponentBoundEvent_1_ComponentBeginOverlapSignature__DelegateSignature_Params
+// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.FadeSmokeTL__FinishedFunc
+struct AB_Prj_Athena_GasGrenade_C_FadeSmokeTL__FinishedFunc_Params
 {
-	class UPrimitiveComponent*                         OverlappedComponent;                                      // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class AActor*                                      OtherActor;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	class UPrimitiveComponent*                         OtherComp;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-	int                                                OtherBodyIndex;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	bool                                               bFromSweep;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	struct FHitResult                                  SweepResult;                                              // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
 };
 
-// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.DamageTick
-struct AB_Prj_Athena_GasGrenade_C_DamageTick_Params
+// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.FadeSmokeTL__UpdateFunc
+struct AB_Prj_Athena_GasGrenade_C_FadeSmokeTL__UpdateFunc_Params
 {
+};
+
+// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.OnStop
+struct AB_Prj_Athena_GasGrenade_C_OnStop_Params
+{
+	struct FHitResult*                                 Hit;                                                      // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
 };
 
 // Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.Stop_Rotation
@@ -40,16 +40,24 @@ struct AB_Prj_Athena_GasGrenade_C_Stop_Rotation_Params
 {
 };
 
-// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.OnBounce
-struct AB_Prj_Athena_GasGrenade_C_OnBounce_Params
+// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.DamageTick
+struct AB_Prj_Athena_GasGrenade_C_DamageTick_Params
 {
-	struct FHitResult*                                 Hit;                                                      // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
 };
 
-// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.OnStop
-struct AB_Prj_Athena_GasGrenade_C_OnStop_Params
+// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.FadeIn
+struct AB_Prj_Athena_GasGrenade_C_FadeIn_Params
 {
-	struct FHitResult*                                 Hit;                                                      // (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm, IsPlainOldData)
+};
+
+// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.FadeOut
+struct AB_Prj_Athena_GasGrenade_C_FadeOut_Params
+{
+};
+
+// Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.SyncedTimer
+struct AB_Prj_Athena_GasGrenade_C_SyncedTimer_Params
+{
 };
 
 // Function B_Prj_Athena_GasGrenade.B_Prj_Athena_GasGrenade_C.ExecuteUbergraph_B_Prj_Athena_GasGrenade

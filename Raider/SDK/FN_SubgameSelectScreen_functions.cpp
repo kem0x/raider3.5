@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -278,6 +278,28 @@ void USubgameSelectScreen_C::DialogResult_9B87D67040B12081C9B651A92AD99EA4(EFort
 }
 
 
+// Function SubgameSelectScreen.SubgameSelectScreen_C.DialogResult_0A856DFB4C254288F2910E9EF8AC5903
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EFortDialogResult              Result                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FName                   ResultName                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void USubgameSelectScreen_C::DialogResult_0A856DFB4C254288F2910E9EF8AC5903(EFortDialogResult Result, const struct FName& ResultName)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function SubgameSelectScreen.SubgameSelectScreen_C.DialogResult_0A856DFB4C254288F2910E9EF8AC5903");
+
+	USubgameSelectScreen_C_DialogResult_0A856DFB4C254288F2910E9EF8AC5903_Params params;
+	params.Result = Result;
+	params.ResultName = ResultName;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function SubgameSelectScreen.SubgameSelectScreen_C.BndEvt__CampaignBtn_K2Node_ComponentBoundEvent_282_CommonButtonClicked__DelegateSignature
 // (BlueprintEvent)
 // Parameters:
@@ -352,16 +374,16 @@ void USubgameSelectScreen_C::Clear_Party_and_Matchmaking_Delegates()
 }
 
 
-// Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_0_1
+// Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_1
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // EMatchmakingCompleteResult     Result                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void USubgameSelectScreen_C::CustomEvent_0_1(EMatchmakingCompleteResult Result)
+void USubgameSelectScreen_C::CustomEvent_1(EMatchmakingCompleteResult Result)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_1");
 
-	USubgameSelectScreen_C_CustomEvent_0_1_Params params;
+	USubgameSelectScreen_C_CustomEvent_1_Params params;
 	params.Result = Result;
 
 	auto flags = fn->FunctionFlags;
@@ -372,14 +394,14 @@ void USubgameSelectScreen_C::CustomEvent_0_1(EMatchmakingCompleteResult Result)
 }
 
 
-// Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_1_2
+// Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_2
 // (BlueprintCallable, BlueprintEvent)
 
-void USubgameSelectScreen_C::CustomEvent_1_2()
+void USubgameSelectScreen_C::CustomEvent_2()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_1_2");
+	static auto fn = UObject::FindObject<UFunction>("Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_2");
 
-	USubgameSelectScreen_C_CustomEvent_1_2_Params params;
+	USubgameSelectScreen_C_CustomEvent_2_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -503,14 +525,14 @@ void USubgameSelectScreen_C::BndEvt__CampaignBtn_K2Node_ComponentBoundEvent_107_
 }
 
 
-// Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_2_3
+// Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_3
 // (BlueprintCallable, BlueprintEvent)
 
-void USubgameSelectScreen_C::CustomEvent_2_3()
+void USubgameSelectScreen_C::CustomEvent_3()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_2_3");
+	static auto fn = UObject::FindObject<UFunction>("Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_3");
 
-	USubgameSelectScreen_C_CustomEvent_2_3_Params params;
+	USubgameSelectScreen_C_CustomEvent_3_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -696,6 +718,26 @@ void USubgameSelectScreen_C::OnRedeemCodeComplete()
 	static auto fn = UObject::FindObject<UFunction>("Function SubgameSelectScreen.SubgameSelectScreen_C.OnRedeemCodeComplete");
 
 	USubgameSelectScreen_C_OnRedeemCodeComplete_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function SubgameSelectScreen.SubgameSelectScreen_C.OnInputModeChanged
+// (Event, Protected, BlueprintEvent)
+// Parameters:
+// bool*                          bUsingGamepad                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void USubgameSelectScreen_C::OnInputModeChanged(bool* bUsingGamepad)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function SubgameSelectScreen.SubgameSelectScreen_C.OnInputModeChanged");
+
+	USubgameSelectScreen_C_OnInputModeChanged_Params params;
+	params.bUsingGamepad = bUsingGamepad;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,18 +12,18 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function TopBar.TopBar_C.On_TouchZone_MouseButtonDown_0_1
+// Function TopBar.TopBar_C.On_TouchZone_MouseButtonDown_1
 // (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // struct FGeometry               MyGeometry                     (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
 // struct FPointerEvent           MouseEvent                     (ConstParm, BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)
 // struct FEventReply             ReturnValue                    (Parm, OutParm, ReturnParm)
 
-struct FEventReply UTopBar_C::On_TouchZone_MouseButtonDown_0_1(const struct FGeometry& MyGeometry, const struct FPointerEvent& MouseEvent)
+struct FEventReply UTopBar_C::On_TouchZone_MouseButtonDown_1(const struct FGeometry& MyGeometry, const struct FPointerEvent& MouseEvent)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TopBar.TopBar_C.On_TouchZone_MouseButtonDown_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function TopBar.TopBar_C.On_TouchZone_MouseButtonDown_1");
 
-	UTopBar_C_On_TouchZone_MouseButtonDown_0_1_Params params;
+	UTopBar_C_On_TouchZone_MouseButtonDown_1_Params params;
 	params.MyGeometry = MyGeometry;
 	params.MouseEvent = MouseEvent;
 
@@ -159,14 +159,14 @@ void UTopBar_C::FireOpenAnalyticsEvent()
 }
 
 
-// Function TopBar.TopBar_C.HideMTXPlusButton
-// (Public, BlueprintCallable, BlueprintEvent)
+// Function TopBar.TopBar_C.UpdateMTXButton
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
 
-void UTopBar_C::HideMTXPlusButton()
+void UTopBar_C::UpdateMTXButton()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TopBar.TopBar_C.HideMTXPlusButton");
+	static auto fn = UObject::FindObject<UFunction>("Function TopBar.TopBar_C.UpdateMTXButton");
 
-	UTopBar_C_HideMTXPlusButton_Params params;
+	UTopBar_C_UpdateMTXButton_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -658,26 +658,6 @@ void UTopBar_C::BndEvt__Social_K2Node_ComponentBoundEvent_64_CommonButtonClicked
 }
 
 
-// Function TopBar.TopBar_C.BndEvt__MainMenuButton_K2Node_ComponentBoundEvent_70_CommonButtonClicked__DelegateSignature
-// (BlueprintEvent)
-// Parameters:
-// class UCommonButton*           Button                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
-
-void UTopBar_C::BndEvt__MainMenuButton_K2Node_ComponentBoundEvent_70_CommonButtonClicked__DelegateSignature(class UCommonButton* Button)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function TopBar.TopBar_C.BndEvt__MainMenuButton_K2Node_ComponentBoundEvent_70_CommonButtonClicked__DelegateSignature");
-
-	UTopBar_C_BndEvt__MainMenuButton_K2Node_ComponentBoundEvent_70_CommonButtonClicked__DelegateSignature_Params params;
-	params.Button = Button;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function TopBar.TopBar_C.PreConstruct
 // (BlueprintCosmetic, Event, Public, BlueprintEvent)
 // Parameters:
@@ -806,14 +786,17 @@ void UTopBar_C::On_Power_Increased()
 }
 
 
-// Function TopBar.TopBar_C.Construct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+// Function TopBar.TopBar_C.BndEvt__MainMenuButton_K2Node_ComponentBoundEvent_70_CommonButtonClicked__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// class UCommonButton*           Button                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 
-void UTopBar_C::Construct()
+void UTopBar_C::BndEvt__MainMenuButton_K2Node_ComponentBoundEvent_70_CommonButtonClicked__DelegateSignature(class UCommonButton* Button)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TopBar.TopBar_C.Construct");
+	static auto fn = UObject::FindObject<UFunction>("Function TopBar.TopBar_C.BndEvt__MainMenuButton_K2Node_ComponentBoundEvent_70_CommonButtonClicked__DelegateSignature");
 
-	UTopBar_C_Construct_Params params;
+	UTopBar_C_BndEvt__MainMenuButton_K2Node_ComponentBoundEvent_70_CommonButtonClicked__DelegateSignature_Params params;
+	params.Button = Button;
 
 	auto flags = fn->FunctionFlags;
 
@@ -860,6 +843,23 @@ void UTopBar_C::ManualToggleMainMenu()
 }
 
 
+// Function TopBar.TopBar_C.Construct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UTopBar_C::Construct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TopBar.TopBar_C.Construct");
+
+	UTopBar_C_Construct_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function TopBar.TopBar_C.BndEvt__MainMenu_K2Node_ComponentBoundEvent_0_OnRequestShowSocialWidget__DelegateSignature
 // (BlueprintEvent)
 
@@ -885,6 +885,23 @@ void UTopBar_C::On_Social_Panel_Closed()
 	static auto fn = UObject::FindObject<UFunction>("Function TopBar.TopBar_C.On Social Panel Closed");
 
 	UTopBar_C_On_Social_Panel_Closed_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TopBar.TopBar_C.BndEvt__MainMenu_K2Node_ComponentBoundEvent_5_OnRequestShowPlayerReportWidget__DelegateSignature
+// (BlueprintEvent)
+
+void UTopBar_C::BndEvt__MainMenu_K2Node_ComponentBoundEvent_5_OnRequestShowPlayerReportWidget__DelegateSignature()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TopBar.TopBar_C.BndEvt__MainMenu_K2Node_ComponentBoundEvent_5_OnRequestShowPlayerReportWidget__DelegateSignature");
+
+	UTopBar_C_BndEvt__MainMenu_K2Node_ComponentBoundEvent_5_OnRequestShowPlayerReportWidget__DelegateSignature_Params params;
 
 	auto flags = fn->FunctionFlags;
 

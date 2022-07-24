@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,12 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function Results_Widget.Results_Widget_C.ShouldDisplayEndOfZoneCinematic
+struct UResults_Widget_C_ShouldDisplayEndOfZoneCinematic_Params
+{
+	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
 
 // Function Results_Widget.Results_Widget_C.UseVideos
 struct UResults_Widget_C_UseVideos_Params

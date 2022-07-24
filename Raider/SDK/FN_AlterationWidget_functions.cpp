@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,137 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function AlterationWidget.AlterationWidget_C.GetValidBrush
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, BlueprintPure)
+// Parameters:
+// struct FSlateBrush             ReturnValue                    (Parm, OutParm, ReturnParm)
+
+struct FSlateBrush UAlterationWidget_C::GetValidBrush()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AlterationWidget.AlterationWidget_C.GetValidBrush");
+
+	UAlterationWidget_C_GetValidBrush_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function AlterationWidget.AlterationWidget_C.HasValidBrush
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, BlueprintPure)
+// Parameters:
+// bool                           ValidBrush                     (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+
+void UAlterationWidget_C::HasValidBrush(bool* ValidBrush)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AlterationWidget.AlterationWidget_C.HasValidBrush");
+
+	UAlterationWidget_C_HasValidBrush_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (ValidBrush != nullptr)
+		*ValidBrush = params.ValidBrush;
+}
+
+
+// Function AlterationWidget.AlterationWidget_C.IsGamplaySlot
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure)
+// Parameters:
+// class UFortAlterationItemDefinition* Alteration                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           Result                         (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+
+void UAlterationWidget_C::IsGamplaySlot(class UFortAlterationItemDefinition* Alteration, bool* Result)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AlterationWidget.AlterationWidget_C.IsGamplaySlot");
+
+	UAlterationWidget_C_IsGamplaySlot_Params params;
+	params.Alteration = Alteration;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (Result != nullptr)
+		*Result = params.Result;
+}
+
+
+// Function AlterationWidget.AlterationWidget_C.TriggerTextAnimation
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UAlterationWidget_C::TriggerTextAnimation()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AlterationWidget.AlterationWidget_C.TriggerTextAnimation");
+
+	UAlterationWidget_C_TriggerTextAnimation_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AlterationWidget.AlterationWidget_C.SetWidgetSettings
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           bInIncludeName                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           bInIncludeShortDescription     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           bInIncludeDescription          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// TEnumAsByte<EFortBrushSize>    InIconSize                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           bInUseLargeFormatName          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// bool                           InShouldShowRarity             (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UAlterationWidget_C::SetWidgetSettings(bool bInIncludeName, bool bInIncludeShortDescription, bool bInIncludeDescription, TEnumAsByte<EFortBrushSize> InIconSize, bool bInUseLargeFormatName, bool InShouldShowRarity)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AlterationWidget.AlterationWidget_C.SetWidgetSettings");
+
+	UAlterationWidget_C_SetWidgetSettings_Params params;
+	params.bInIncludeName = bInIncludeName;
+	params.bInIncludeShortDescription = bInIncludeShortDescription;
+	params.bInIncludeDescription = bInIncludeDescription;
+	params.InIconSize = InIconSize;
+	params.bInUseLargeFormatName = bInUseLargeFormatName;
+	params.InShouldShowRarity = InShouldShowRarity;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AlterationWidget.AlterationWidget_C.InitLockedLayout
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+
+void UAlterationWidget_C::InitLockedLayout()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AlterationWidget.AlterationWidget_C.InitLockedLayout");
+
+	UAlterationWidget_C_InitLockedLayout_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function AlterationWidget.AlterationWidget_C.SetEvolutionDetails
 // (Public, BlueprintCallable, BlueprintEvent)
@@ -29,14 +160,14 @@ void UAlterationWidget_C::SetEvolutionDetails()
 }
 
 
-// Function AlterationWidget.AlterationWidget_C.UpdateRaritySwitcherVisiblity
-// (Public, BlueprintCallable, BlueprintEvent)
+// Function AlterationWidget.AlterationWidget_C.UpdatePips
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
 
-void UAlterationWidget_C::UpdateRaritySwitcherVisiblity()
+void UAlterationWidget_C::UpdatePips()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AlterationWidget.AlterationWidget_C.UpdateRaritySwitcherVisiblity");
+	static auto fn = UObject::FindObject<UFunction>("Function AlterationWidget.AlterationWidget_C.UpdatePips");
 
-	UAlterationWidget_C_UpdateRaritySwitcherVisiblity_Params params;
+	UAlterationWidget_C_UpdatePips_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -46,31 +177,14 @@ void UAlterationWidget_C::UpdateRaritySwitcherVisiblity()
 }
 
 
-// Function AlterationWidget.AlterationWidget_C.SetLevelText
+// Function AlterationWidget.AlterationWidget_C.InitDescriptiveText
 // (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
 
-void UAlterationWidget_C::SetLevelText()
+void UAlterationWidget_C::InitDescriptiveText()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AlterationWidget.AlterationWidget_C.SetLevelText");
+	static auto fn = UObject::FindObject<UFunction>("Function AlterationWidget.AlterationWidget_C.InitDescriptiveText");
 
-	UAlterationWidget_C_SetLevelText_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function AlterationWidget.AlterationWidget_C.InitText
-// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
-
-void UAlterationWidget_C::InitText()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function AlterationWidget.AlterationWidget_C.InitText");
-
-	UAlterationWidget_C_InitText_Params params;
+	UAlterationWidget_C_InitDescriptiveText_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -139,14 +253,14 @@ struct FLinearColor UAlterationWidget_C::GetHighlightColor()
 }
 
 
-// Function AlterationWidget.AlterationWidget_C.Construct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+// Function AlterationWidget.AlterationWidget_C.OnSetup
+// (Event, Public, BlueprintEvent)
 
-void UAlterationWidget_C::Construct()
+void UAlterationWidget_C::OnSetup()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function AlterationWidget.AlterationWidget_C.Construct");
+	static auto fn = UObject::FindObject<UFunction>("Function AlterationWidget.AlterationWidget_C.OnSetup");
 
-	UAlterationWidget_C_Construct_Params params;
+	UAlterationWidget_C_OnSetup_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -157,7 +271,7 @@ void UAlterationWidget_C::Construct()
 
 
 // Function AlterationWidget.AlterationWidget_C.ExecuteUbergraph_AlterationWidget
-// (HasDefaults)
+// ()
 // Parameters:
 // int                            EntryPoint                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 

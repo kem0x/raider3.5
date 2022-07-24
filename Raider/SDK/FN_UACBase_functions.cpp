@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -60,12 +60,15 @@ void UUACNetworkComponent::SendPacketToClient(unsigned char Type, TArray<unsigne
 
 // Function UACBase.UACNetworkComponent.SendClientHello
 // (Net, NetReliable, Native, Event, Public, NetClient)
+// Parameters:
+// uint32_t                       SessionKey                     (Parm, ZeroConstructor, IsPlainOldData)
 
-void UUACNetworkComponent::SendClientHello()
+void UUACNetworkComponent::SendClientHello(uint32_t SessionKey)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function UACBase.UACNetworkComponent.SendClientHello");
 
 	UUACNetworkComponent_SendClientHello_Params params;
+	params.SessionKey = SessionKey;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,23 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.ZoomCameraWithHeldGamepadInput
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void ATheaterCamera_Blueprint_C::ZoomCameraWithHeldGamepadInput()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.ZoomCameraWithHeldGamepadInput");
+
+	ATheaterCamera_Blueprint_C_ZoomCameraWithHeldGamepadInput_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.SetSuspendInput
 // (Public, BlueprintCallable, BlueprintEvent)
@@ -53,17 +70,17 @@ bool ATheaterCamera_Blueprint_C::IsInputSuspended()
 }
 
 
-// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.NewFunction_0_1
+// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.NewFunction_1
 // (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // class AActor*                  self2                          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // struct FVector2D               ReturnValue                    (Parm, OutParm, ReturnParm, IsPlainOldData)
 
-struct FVector2D ATheaterCamera_Blueprint_C::NewFunction_0_1(class AActor* self2)
+struct FVector2D ATheaterCamera_Blueprint_C::NewFunction_1(class AActor* self2)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.NewFunction_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.NewFunction_1");
 
-	ATheaterCamera_Blueprint_C_NewFunction_0_1_Params params;
+	ATheaterCamera_Blueprint_C_NewFunction_1_Params params;
 	params.self2 = self2;
 
 	auto flags = fn->FunctionFlags;
@@ -291,16 +308,16 @@ void ATheaterCamera_Blueprint_C::DEBUGFOVA__UpdateFunc()
 }
 
 
-// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_MouseScrollUp_K2Node_InputKeyEvent_3_4
+// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_MouseScrollUp_K2Node_InputKeyEvent_2
 // (BlueprintEvent)
 // Parameters:
 // struct FKey                    Key                            (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void ATheaterCamera_Blueprint_C::InpActEvt_MouseScrollUp_K2Node_InputKeyEvent_3_4(const struct FKey& Key)
+void ATheaterCamera_Blueprint_C::InpActEvt_MouseScrollUp_K2Node_InputKeyEvent_2(const struct FKey& Key)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_MouseScrollUp_K2Node_InputKeyEvent_3_4");
+	static auto fn = UObject::FindObject<UFunction>("Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_MouseScrollUp_K2Node_InputKeyEvent_2");
 
-	ATheaterCamera_Blueprint_C_InpActEvt_MouseScrollUp_K2Node_InputKeyEvent_3_4_Params params;
+	ATheaterCamera_Blueprint_C_InpActEvt_MouseScrollUp_K2Node_InputKeyEvent_2_Params params;
 	params.Key = Key;
 
 	auto flags = fn->FunctionFlags;
@@ -311,56 +328,16 @@ void ATheaterCamera_Blueprint_C::InpActEvt_MouseScrollUp_K2Node_InputKeyEvent_3_
 }
 
 
-// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_MouseScrollDown_K2Node_InputKeyEvent_2_3
+// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_MouseScrollDown_K2Node_InputKeyEvent_1
 // (BlueprintEvent)
 // Parameters:
 // struct FKey                    Key                            (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void ATheaterCamera_Blueprint_C::InpActEvt_MouseScrollDown_K2Node_InputKeyEvent_2_3(const struct FKey& Key)
+void ATheaterCamera_Blueprint_C::InpActEvt_MouseScrollDown_K2Node_InputKeyEvent_1(const struct FKey& Key)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_MouseScrollDown_K2Node_InputKeyEvent_2_3");
+	static auto fn = UObject::FindObject<UFunction>("Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_MouseScrollDown_K2Node_InputKeyEvent_1");
 
-	ATheaterCamera_Blueprint_C_InpActEvt_MouseScrollDown_K2Node_InputKeyEvent_2_3_Params params;
-	params.Key = Key;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_Gamepad_LeftTrigger_K2Node_InputKeyEvent_1_2
-// (BlueprintEvent)
-// Parameters:
-// struct FKey                    Key                            (BlueprintVisible, BlueprintReadOnly, Parm)
-
-void ATheaterCamera_Blueprint_C::InpActEvt_Gamepad_LeftTrigger_K2Node_InputKeyEvent_1_2(const struct FKey& Key)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_Gamepad_LeftTrigger_K2Node_InputKeyEvent_1_2");
-
-	ATheaterCamera_Blueprint_C_InpActEvt_Gamepad_LeftTrigger_K2Node_InputKeyEvent_1_2_Params params;
-	params.Key = Key;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_0_1
-// (BlueprintEvent)
-// Parameters:
-// struct FKey                    Key                            (BlueprintVisible, BlueprintReadOnly, Parm)
-
-void ATheaterCamera_Blueprint_C::InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_0_1(const struct FKey& Key)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function TheaterCamera_Blueprint.TheaterCamera_Blueprint_C.InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_0_1");
-
-	ATheaterCamera_Blueprint_C_InpActEvt_Gamepad_RightTrigger_K2Node_InputKeyEvent_0_1_Params params;
+	ATheaterCamera_Blueprint_C_InpActEvt_MouseScrollDown_K2Node_InputKeyEvent_1_Params params;
 	params.Key = Key;
 
 	auto flags = fn->FunctionFlags;

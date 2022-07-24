@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,30 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function GAB_Emote_Generic.GAB_Emote_Generic_C.GetMontageToPlay
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UFortMontageItemDefinitionBase* EmoteAsset                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// TEnumAsByte<EFortCustomBodyType> BodyType                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// TEnumAsByte<EFortCustomGender> Gender                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UGAB_Emote_Generic_C::GetMontageToPlay(class UFortMontageItemDefinitionBase* EmoteAsset, TEnumAsByte<EFortCustomBodyType> BodyType, TEnumAsByte<EFortCustomGender> Gender)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GAB_Emote_Generic.GAB_Emote_Generic_C.GetMontageToPlay");
+
+	UGAB_Emote_Generic_C_GetMontageToPlay_Params params;
+	params.EmoteAsset = EmoteAsset;
+	params.BodyType = BodyType;
+	params.Gender = Gender;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function GAB_Emote_Generic.GAB_Emote_Generic_C.GetBodyTypeAndGender
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
@@ -143,6 +167,23 @@ void UGAB_Emote_Generic_C::OnLoaded_D5C2B0D14DEB9277D15965B97800FD1D(class UObje
 }
 
 
+// Function GAB_Emote_Generic.GAB_Emote_Generic_C.OnFinish_98AA3C42453EEDB1D4A56BB2002955E1
+// (BlueprintCallable, BlueprintEvent)
+
+void UGAB_Emote_Generic_C::OnFinish_98AA3C42453EEDB1D4A56BB2002955E1()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GAB_Emote_Generic.GAB_Emote_Generic_C.OnFinish_98AA3C42453EEDB1D4A56BB2002955E1");
+
+	UGAB_Emote_Generic_C_OnFinish_98AA3C42453EEDB1D4A56BB2002955E1_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function GAB_Emote_Generic.GAB_Emote_Generic_C.K2_ActivateAbility
 // (Event, Protected, BlueprintEvent)
 
@@ -151,6 +192,57 @@ void UGAB_Emote_Generic_C::K2_ActivateAbility()
 	static auto fn = UObject::FindObject<UFunction>("Function GAB_Emote_Generic.GAB_Emote_Generic_C.K2_ActivateAbility");
 
 	UGAB_Emote_Generic_C_K2_ActivateAbility_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function GAB_Emote_Generic.GAB_Emote_Generic_C.OnMontageStartedPlaying
+// (BlueprintCallable, BlueprintEvent)
+
+void UGAB_Emote_Generic_C::OnMontageStartedPlaying()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GAB_Emote_Generic.GAB_Emote_Generic_C.OnMontageStartedPlaying");
+
+	UGAB_Emote_Generic_C_OnMontageStartedPlaying_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function GAB_Emote_Generic.GAB_Emote_Generic_C.PlayInitialEmoteMontage
+// (BlueprintCallable, BlueprintEvent)
+
+void UGAB_Emote_Generic_C::PlayInitialEmoteMontage()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GAB_Emote_Generic.GAB_Emote_Generic_C.PlayInitialEmoteMontage");
+
+	UGAB_Emote_Generic_C_PlayInitialEmoteMontage_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function GAB_Emote_Generic.GAB_Emote_Generic_C.OnAbilityTriggered
+// (BlueprintCallable, BlueprintEvent)
+
+void UGAB_Emote_Generic_C::OnAbilityTriggered()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GAB_Emote_Generic.GAB_Emote_Generic_C.OnAbilityTriggered");
+
+	UGAB_Emote_Generic_C_OnAbilityTriggered_Params params;
 
 	auto flags = fn->FunctionFlags;
 

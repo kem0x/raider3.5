@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -29,8 +29,8 @@ struct UOptionsMenuSliderReplay_C_OnFocusReceived_Params
 	struct FEventReply                                 ReturnValue;                                              // (Parm, OutParm, ReturnParm)
 };
 
-// Function OptionsMenuSliderReplay.OptionsMenuSliderReplay_C.Center on Widget
-struct UOptionsMenuSliderReplay_C_Center_on_Widget_Params
+// Function OptionsMenuSliderReplay.OptionsMenuSliderReplay_C.Center On Widget
+struct UOptionsMenuSliderReplay_C_Center_On_Widget_Params
 {
 };
 

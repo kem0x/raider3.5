@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,23 +11,6 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
-
-// Function Fortnite_Base_Head_Export_Skeleton_AnimBP.Fortnite_Base_Head_Export_Skeleton_AnimBP_C.EvaluateGraphExposedInputs_ExecuteUbergraph_Fortnite_Base_Head_Export_Skeleton_AnimBP_AnimGraphNode_CopyPoseFromMesh_9AC0772D481A4B85CE045AA17CE0F79E
-// (BlueprintEvent)
-
-void UFortnite_Base_Head_Export_Skeleton_AnimBP_C::EvaluateGraphExposedInputs_ExecuteUbergraph_Fortnite_Base_Head_Export_Skeleton_AnimBP_AnimGraphNode_CopyPoseFromMesh_9AC0772D481A4B85CE045AA17CE0F79E()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function Fortnite_Base_Head_Export_Skeleton_AnimBP.Fortnite_Base_Head_Export_Skeleton_AnimBP_C.EvaluateGraphExposedInputs_ExecuteUbergraph_Fortnite_Base_Head_Export_Skeleton_AnimBP_AnimGraphNode_CopyPoseFromMesh_9AC0772D481A4B85CE045AA17CE0F79E");
-
-	UFortnite_Base_Head_Export_Skeleton_AnimBP_C_EvaluateGraphExposedInputs_ExecuteUbergraph_Fortnite_Base_Head_Export_Skeleton_AnimBP_AnimGraphNode_CopyPoseFromMesh_9AC0772D481A4B85CE045AA17CE0F79E_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
 
 // Function Fortnite_Base_Head_Export_Skeleton_AnimBP.Fortnite_Base_Head_Export_Skeleton_AnimBP_C.BlueprintInitializeAnimation
 // (Event, Public, BlueprintEvent)

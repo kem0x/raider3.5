@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,74 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function GA_Athena_ProjWithTrajectory.GA_Athena_ProjWithTrajectory_C.GetProjectileTrajectoryActor
+// (Event, Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure, Const)
+// Parameters:
+// class UClass*                  ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+class UClass* UGA_Athena_ProjWithTrajectory_C::GetProjectileTrajectoryActor()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GA_Athena_ProjWithTrajectory.GA_Athena_ProjWithTrajectory_C.GetProjectileTrajectoryActor");
+
+	UGA_Athena_ProjWithTrajectory_C_GetProjectileTrajectoryActor_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function GA_Athena_ProjWithTrajectory.GA_Athena_ProjWithTrajectory_C.GetProjectileTrajectoryPoints
+// (Event, Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, BlueprintPure, Const)
+// Parameters:
+// TArray<struct FVector>         OutSplinePoints                (Parm, OutParm, ZeroConstructor)
+// TArray<struct FVector>         OutSplineTangents              (Parm, OutParm, ZeroConstructor)
+
+void UGA_Athena_ProjWithTrajectory_C::GetProjectileTrajectoryPoints(TArray<struct FVector>* OutSplinePoints, TArray<struct FVector>* OutSplineTangents)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GA_Athena_ProjWithTrajectory.GA_Athena_ProjWithTrajectory_C.GetProjectileTrajectoryPoints");
+
+	UGA_Athena_ProjWithTrajectory_C_GetProjectileTrajectoryPoints_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (OutSplinePoints != nullptr)
+		*OutSplinePoints = params.OutSplinePoints;
+	if (OutSplineTangents != nullptr)
+		*OutSplineTangents = params.OutSplineTangents;
+}
+
+
+// Function GA_Athena_ProjWithTrajectory.GA_Athena_ProjWithTrajectory_C.GetOwningPlayer
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, BlueprintPure, Const)
+// Parameters:
+// class AFortPlayerPawn*         Player_Pawn                    (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+
+void UGA_Athena_ProjWithTrajectory_C::GetOwningPlayer(class AFortPlayerPawn** Player_Pawn)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GA_Athena_ProjWithTrajectory.GA_Athena_ProjWithTrajectory_C.GetOwningPlayer");
+
+	UGA_Athena_ProjWithTrajectory_C_GetOwningPlayer_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (Player_Pawn != nullptr)
+		*Player_Pawn = params.Player_Pawn;
+}
+
 
 // Function GA_Athena_ProjWithTrajectory.GA_Athena_ProjWithTrajectory_C.CalcGrenadeSpeedFromPitch
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent, BlueprintPure, Const)
@@ -37,7 +105,7 @@ void UGA_Athena_ProjWithTrajectory_C::CalcGrenadeSpeedFromPitch(float AimPitch, 
 
 
 // Function GA_Athena_ProjWithTrajectory.GA_Athena_ProjWithTrajectory_C.UpdateTrajectorySpline
-// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+// (Public, BlueprintCallable, BlueprintEvent)
 
 void UGA_Athena_ProjWithTrajectory_C::UpdateTrajectorySpline()
 {
@@ -571,6 +639,23 @@ void UGA_Athena_ProjWithTrajectory_C::AthenaGrenadeSpawned(class AFortProjectile
 
 	UGA_Athena_ProjWithTrajectory_C_AthenaGrenadeSpawned_Params params;
 	params.GrenadeReference = GrenadeReference;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function GA_Athena_ProjWithTrajectory.GA_Athena_ProjWithTrajectory_C.InitTrajectoryVariables
+// (Event, Public, BlueprintCallable, BlueprintEvent)
+
+void UGA_Athena_ProjWithTrajectory_C::InitTrajectoryVariables()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GA_Athena_ProjWithTrajectory.GA_Athena_ProjWithTrajectory_C.InitTrajectoryVariables");
+
+	UGA_Athena_ProjWithTrajectory_C_InitTrajectoryVariables_Params params;
 
 	auto flags = fn->FunctionFlags;
 

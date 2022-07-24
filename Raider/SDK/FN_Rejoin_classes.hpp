@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,14 +13,14 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // Class Rejoin.RejoinCheck
-// 0x0188 (0x01B0 - 0x0028)
+// 0x00F8 (0x0120 - 0x0028)
 class URejoinCheck : public UObject
 {
 public:
 	ERejoinStatus                                      LastKnownStatus;                                          // 0x0028(0x0001) (ZeroConstructor, IsPlainOldData)
 	bool                                               bRejoinAfterCheck;                                        // 0x0029(0x0001) (ZeroConstructor, IsPlainOldData)
 	bool                                               bAttemptingRejoin;                                        // 0x002A(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x185];                                     // 0x002B(0x0185) MISSED OFFSET
+	unsigned char                                      UnknownData00[0xF5];                                      // 0x002B(0x00F5) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{

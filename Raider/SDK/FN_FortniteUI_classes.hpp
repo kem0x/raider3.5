@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -28,6 +26,8 @@ public:
 
 
 	void SimulateBattleBookPurchase(int NumLevelsToPurchase, int* BonusLevelsGranted, bool* bOverLimit);
+	bool ShouldReplaceBattleStarsWithAlternateReward();
+	bool IsAtMaxBattlePassTier();
 	int GetCurrentSeasonNumber();
 	struct FText GetCurrentSeasonName();
 	class UAthenaSeasonItemDefinition* GetCurrentSeasonDefinition();
@@ -36,11 +36,11 @@ public:
 
 
 // Class FortniteUI.AthenaAwardAlertBase
-// 0x0008 (0x0218 - 0x0210)
+// 0x0008 (0x0210 - 0x0208)
 class UAthenaAwardAlertBase : public UUserWidget
 {
 public:
-	class UAthenaPlayerViewModel*                      PlayerVM;                                                 // 0x0210(0x0008) (ZeroConstructor, IsPlainOldData)
+	class UAthenaPlayerViewModel*                      PlayerVM;                                                 // 0x0208(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -103,6 +103,7 @@ public:
 	bool IsCompleted();
 	bool HasQuestReward(class UFortItemDefinition* ItemDef, int* OutRecievedCount, int* OutTotalCount);
 	class UFortItem* GetRewardItem();
+	void GetQuests(class UFortQuestManager* QuestManager, TArray<class UFortQuestItem*>* OwnedQuests, TArray<class UFortQuestItemDefinition*>* UnownedQuests);
 	class UFortChallengeBundleCategoryInfo* GetOwningBundleCategoryInfo();
 	class UFortChallengeBundleItemDefinition* GetBundleDefinition();
 	void GetAchievedCount(int* OutTotalAchievedCount, int* OutTotalRequiredCount, float* OutAchievedPercent, float* OutThresholdPercent);
@@ -110,13 +111,12 @@ public:
 
 
 // Class FortniteUI.FortChallengeBundleTreeItemWidget
-// 0x0018 (0x0820 - 0x0808)
+// 0x0010 (0x0898 - 0x0888)
 class UFortChallengeBundleTreeItemWidget : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	TWeakObjectPtr<class UObject>                      ScheduleOrBundle;                                         // 0x0810(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0818(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	TWeakObjectPtr<class UObject>                      ScheduleOrBundle;                                         // 0x0890(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -130,17 +130,15 @@ public:
 	void OnBundleUpdated();
 	void HandleBundleUpdated();
 	class UFortChallengeBundleInfo* GetChallengeBundleInfo();
-	void ExpansionChanged(bool bExpanded);
 };
 
 
 // Class FortniteUI.FortChallengeBundleWidget
-// 0x0010 (0x03D0 - 0x03C0)
+// 0x0008 (0x0300 - 0x02F8)
 class UFortChallengeBundleWidget : public UCommonActivatablePanel
 {
 public:
-	class UFortChallengeBundleInfo*                    ChallengeBundleInfo;                                      // 0x03C0(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x03C8(0x0008) MISSED OFFSET
+	class UFortChallengeBundleInfo*                    ChallengeBundleInfo;                                      // 0x02F8(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -161,16 +159,16 @@ public:
 
 
 // Class FortniteUI.FortActivatablePanel
-// 0x0030 (0x03F0 - 0x03C0)
+// 0x0030 (0x0328 - 0x02F8)
 class UFortActivatablePanel : public UCommonActivatablePanel
 {
 public:
-	bool                                               bIsPushedOnToContentPanelStack;                           // 0x03C0(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bIsAlreadyOnContentPanelStack;                            // 0x03C1(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EInputPriority                                     InputPriority;                                            // 0x03C2(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x5];                                       // 0x03C3(0x0005) MISSED OFFSET
-	class UClass*                                      MoreInfoPopupMenuClass;                                   // 0x03C8(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x20];                                      // 0x03D0(0x0020) MISSED OFFSET
+	bool                                               bIsPushedOnToContentPanelStack;                           // 0x02F8(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bIsAlreadyOnContentPanelStack;                            // 0x02F9(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EInputPriority                                     InputPriority;                                            // 0x02FA(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x5];                                       // 0x02FB(0x0005) MISSED OFFSET
+	class UClass*                                      MoreInfoPopupMenuClass;                                   // 0x0300(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x20];                                      // 0x0308(0x0020) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -185,13 +183,13 @@ public:
 
 
 // Class FortniteUI.AthenaChallengeBundleScheduleScreenBase
-// 0x0070 (0x0460 - 0x03F0)
+// 0x0068 (0x0390 - 0x0328)
 class UAthenaChallengeBundleScheduleScreenBase : public UFortActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x03F0(0x0010) MISSED OFFSET
-	TMap<struct FName, class UFortChallengeBundleCategoryInfo*> ScheduleCategoryCache;                                    // 0x0400(0x0050) (ZeroConstructor, Transient)
-	unsigned char                                      UnknownData01[0x10];                                      // 0x0450(0x0010) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0328(0x0010) MISSED OFFSET
+	TMap<struct FName, class UFortChallengeBundleCategoryInfo*> ScheduleCategoryCache;                                    // 0x0338(0x0050) (ZeroConstructor, Transient)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x0388(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -206,12 +204,12 @@ public:
 
 
 // Class FortniteUI.FortHUDElementWidget
-// 0x0028 (0x0240 - 0x0218)
+// 0x0028 (0x0238 - 0x0210)
 class UFortHUDElementWidget : public UCommonUserWidget
 {
 public:
-	struct FGameplayTagContainer                       HUDElementTag;                                            // 0x0218(0x0020) (Edit)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0238(0x0008) MISSED OFFSET
+	struct FGameplayTagContainer                       HUDElementTag;                                            // 0x0210(0x0020) (Edit)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0230(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -227,18 +225,19 @@ public:
 
 
 // Class FortniteUI.AthenaCompassBase
-// 0x0128 (0x0368 - 0x0240)
+// 0x01B0 (0x03E8 - 0x0238)
 class UAthenaCompassBase : public UFortHUDElementWidget
 {
 public:
-	class UMaterialInstanceDynamic*                    CompassMaterial;                                          // 0x0240(0x0008) (BlueprintVisible, ZeroConstructor, Transient, IsPlainOldData)
-	TArray<struct FSlateBrush>                         MarkerBrushes;                                            // 0x0248(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
-	struct FSlateBrush                                 HeadingIndicatorBrush;                                    // 0x0258(0x0088) (Edit, BlueprintVisible, DisableEditOnInstance)
-	float                                              MarkerVerticalOffset;                                     // 0x02E0(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x02E4(0x0004) MISSED OFFSET
-	class UAthenaPlayerViewModel*                      VM;                                                       // 0x02E8(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	struct FSlateFontInfo                              HeadingFont;                                              // 0x02F0(0x0058) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	unsigned char                                      UnknownData01[0x20];                                      // 0x0348(0x0020) MISSED OFFSET
+	class UMaterialInstanceDynamic*                    CompassMaterial;                                          // 0x0238(0x0008) (BlueprintVisible, ZeroConstructor, Transient, IsPlainOldData)
+	TArray<struct FSlateBrush>                         MarkerBrushes;                                            // 0x0240(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
+	struct FSlateBrush                                 HeadingIndicatorBrush;                                    // 0x0250(0x0088) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FSlateBrush                                 StormIndicatorBrush;                                      // 0x02D8(0x0088) (Edit, BlueprintVisible, DisableEditOnInstance)
+	float                                              MarkerVerticalOffset;                                     // 0x0360(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0364(0x0004) MISSED OFFSET
+	class UAthenaPlayerViewModel*                      VM;                                                       // 0x0368(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	struct FSlateFontInfo                              HeadingFont;                                              // 0x0370(0x0058) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	unsigned char                                      UnknownData01[0x20];                                      // 0x03C8(0x0020) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -251,20 +250,45 @@ public:
 };
 
 
+// Class FortniteUI.AthenaCountdownWidgetBase
+// 0x0000 (0x0238 - 0x0238)
+class UAthenaCountdownWidgetBase : public UFortHUDElementWidget
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaCountdownWidgetBase");
+		return ptr;
+	}
+
+
+	void OnDisplayWarningMessage(const struct FText& FirstLineText, const struct FText& SecondLineText);
+	void OnCountdownUpdate(int TimeRemaining, const struct FText& CountdownUpdateText);
+	void OnCountdownStarted(int TimeRemaining, const struct FText& CountdownIntroText);
+	void OnCountdownFinished();
+	void HandleGamePhaseStepChanged(EAthenaGamePhaseStep Step);
+	void HandleCountdownUpdate(int TimeRemaining);
+	void HandleCountdownStarted(int TimeRemaining);
+	void HandleCountdownFinished();
+};
+
+
 // Class FortniteUI.FortItemPickerBase
-// 0x0068 (0x0280 - 0x0218)
+// 0x0098 (0x02A8 - 0x0210)
 class UFortItemPickerBase : public UCommonUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnSelectionChangedEvent;                                  // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnSelectionCommittedEvent;                                // 0x0228(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnItemHoveredEvent;                                       // 0x0238(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnItemUnhovered;                                          // 0x0248(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UFortItemTileView*                           PickerTileView;                                           // 0x0258(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	bool                                               bConfirmSelectionIfAlreadySelectedAfterOneClick;          // 0x0260(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0261(0x0007) MISSED OFFSET
-	class UObject*                                     NewlySelectedItem;                                        // 0x0268(0x0008) (ZeroConstructor, IsPlainOldData)
-	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x0270(0x0010) (ZeroConstructor, IsPlainOldData)
+	struct FScriptMulticastDelegate                    OnSelectionChangedEvent;                                  // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnSelectionCommittedEvent;                                // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnItemHoveredEvent;                                       // 0x0230(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnItemUnhovered;                                          // 0x0240(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	class UFortItemTileView*                           PickerTileView;                                           // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	bool                                               bConfirmSelectionIfAlreadySelectedAfterOneClick;          // 0x0258(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0259(0x0007) MISSED OFFSET
+	class UObject*                                     NewlySelectedItem;                                        // 0x0260(0x0008) (ZeroConstructor, IsPlainOldData)
+	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x0268(0x0010) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x30];                                      // 0x0278(0x0030) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -277,14 +301,8 @@ public:
 	void SetSelectedItem(class UFortItem* ItemToSelect);
 	bool SetSelectedIndex(int Index);
 	void OnItemSelectionEvent__DelegateSignature(class UFortItem* SelectedItem);
-	void HandlePickerTileDestroyed(class UUserWidget* Widget);
-	void HandlePickerTileCreated(class UUserWidget* Widget);
-	void HandlePickerItemSelected(class UObject* ObjectWhoseSelectionChanged, bool bIsSelected);
-	void HandlePickerItemHovered(class UObject* ObjectOfHoveredTile);
-	void HandlePickerItemDoubleClicked(class UObject* ObjectOfClickedTile);
-	void HandlePickerItemClicked(class UObject* ObjectOfClickedTile);
 	class UFortItem* GetSelectedItem();
-	int GetIndexForItem(class UObject* Item);
+	int GetIndexForItem(class UFortItem* Item);
 	void ClearSelection();
 	void CenterSelectedItemTileWidget();
 	bool CanItemBeComitted(class UFortItem* ItemToCommit);
@@ -292,18 +310,18 @@ public:
 
 
 // Class FortniteUI.AthenaCustomizationPicker
-// 0x0050 (0x02D0 - 0x0280)
+// 0x0048 (0x02F0 - 0x02A8)
 class UAthenaCustomizationPicker : public UFortItemPickerBase
 {
 public:
-	struct FScriptMulticastDelegate                    OnCosmeticSelectionSaving;                                // 0x0280(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnCosmeticSelectionSaved;                                 // 0x0290(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData00[0x10];                                      // 0x02A0(0x0010) MISSED OFFSET
-	EAthenaCustomizationCategory                       CustomizeCategory;                                        // 0x02B0(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x3];                                       // 0x02B1(0x0003) MISSED OFFSET
-	int                                                SubslotIndex;                                             // 0x02B4(0x0004) (ZeroConstructor, IsPlainOldData)
-	bool                                               bCommitingSelection;                                      // 0x02B8(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x17];                                      // 0x02B9(0x0017) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnCosmeticSelectionSaving;                                // 0x02A8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnCosmeticSelectionSaved;                                 // 0x02B8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	EAthenaCustomizationCategory                       CustomizeCategory;                                        // 0x02C8(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x02C9(0x0003) MISSED OFFSET
+	int                                                SubslotIndex;                                             // 0x02CC(0x0004) (ZeroConstructor, IsPlainOldData)
+	bool                                               bCommitingSelection;                                      // 0x02D0(0x0001) (ZeroConstructor, IsPlainOldData)
+	bool                                               bAllowCommits;                                            // 0x02D1(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x1E];                                      // 0x02D2(0x001E) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -313,23 +331,24 @@ public:
 
 
 	void OnCosmeticChangeSaveEvent__DelegateSignature();
+	void HandleSelectedItemHasChanged(bool ItemChanged, bool AmmoChanged, bool IngredientsChanged);
 	void EndCustomizationCategory();
 	void BeginCustomizationCategory(EAthenaCustomizationCategory Category, int SubslotToEdit);
 };
 
 
 // Class FortniteUI.FortItemTileButton
-// 0x0030 (0x0838 - 0x0808)
+// 0x0030 (0x08B8 - 0x0888)
 class UFortItemTileButton : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	class UFortMultiSizeItemCard*                      ItemWidget;                                               // 0x0810(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TWeakObjectPtr<class UFortItem>                    Item;                                                     // 0x0818(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortItemCardSize                                  ItemCardSize;                                             // 0x0820(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               IsRewardCard;                                             // 0x0821(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x6];                                       // 0x0822(0x0006) MISSED OFFSET
-	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x0828(0x0010) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UFortMultiSizeItemCard*                      ItemWidget;                                               // 0x0890(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TWeakObjectPtr<class UFortItem>                    Item;                                                     // 0x0898(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortItemCardSize                                  ItemCardSize;                                             // 0x08A0(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               IsRewardCard;                                             // 0x08A1(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x6];                                       // 0x08A2(0x0006) MISSED OFFSET
+	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x08A8(0x0010) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -341,7 +360,7 @@ public:
 
 
 // Class FortniteUI.FortItemPickerButton
-// 0x0000 (0x0838 - 0x0838)
+// 0x0000 (0x08B8 - 0x08B8)
 class UFortItemPickerButton : public UFortItemTileButton
 {
 public:
@@ -356,11 +375,11 @@ public:
 
 
 // Class FortniteUI.AthenaCustomizationPickerTileButton
-// 0x0008 (0x0840 - 0x0838)
+// 0x0008 (0x08C0 - 0x08B8)
 class UAthenaCustomizationPickerTileButton : public UFortItemPickerButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0838(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x08B8(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -371,13 +390,46 @@ public:
 };
 
 
-// Class FortniteUI.AthenaCustomizationScreenBase
-// 0x0010 (0x0400 - 0x03F0)
-class UAthenaCustomizationScreenBase : public UFortActivatablePanel
+// Class FortniteUI.FortActivatablePanelWithItemPreview
+// 0x0098 (0x03C0 - 0x0328)
+class UFortActivatablePanelWithItemPreview : public UFortActivatablePanel
 {
 public:
-	class UAthenaCustomizationPicker*                  SelectionPicker;                                          // 0x03F0(0x0008) (Edit, BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x03F8(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0328(0x0008) MISSED OFFSET
+	class UFortItemView*                               ItemViewObject;                                           // 0x0330(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	struct FDataTableRowHandle                         ItemViewUnifiedZoomInputAction;                           // 0x0338(0x0010) (Edit, DisableEditOnInstance)
+	struct FDataTableRowHandle                         ItemViewZoomOutInputAction;                               // 0x0348(0x0010) (Edit, DisableEditOnInstance)
+	struct FDataTableRowHandle                         ItemViewZoomInInputAction;                                // 0x0358(0x0010) (Edit, DisableEditOnInstance)
+	struct FDataTableRowHandle                         ItemViewRotateInputAction;                                // 0x0368(0x0010) (Edit, DisableEditOnInstance)
+	TArray<struct FName>                               ActiveCosmeticPreviewActions;                             // 0x0378(0x0010) (ZeroConstructor)
+	unsigned char                                      UnknownData01[0x28];                                      // 0x0388(0x0028) MISSED OFFSET
+	bool                                               AllowItemRotation;                                        // 0x03B0(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               AllowItemZooming;                                         // 0x03B1(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x6];                                       // 0x03B2(0x0006) MISSED OFFSET
+	class UDataTable*                                  ActionDataTable;                                          // 0x03B8(0x0008) (ZeroConstructor, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortActivatablePanelWithItemPreview");
+		return ptr;
+	}
+
+
+	void OnVaultItemsViewed(TArray<class UFortItem*> Items);
+	void OnItemPreviewChanged(class AActor* NewPrefab, class UFortItem* NewItem);
+	void OnCosmeticSpecialActionPressed(bool* bPassThrough);
+	class UWidget* GetWidgetForFramingViewedItem();
+};
+
+
+// Class FortniteUI.AthenaCustomizationScreenBase
+// 0x0020 (0x03E0 - 0x03C0)
+class UAthenaCustomizationScreenBase : public UFortActivatablePanelWithItemPreview
+{
+public:
+	class UAthenaCustomizationPicker*                  SelectionPicker;                                          // 0x03C0(0x0008) (Edit, BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x03C8(0x0010) MISSED OFFSET
+	int64_t                                            LastProfileRev;                                           // 0x03D8(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -386,20 +438,24 @@ public:
 	}
 
 
+	void ShiftItemsVariantOption(class UAthenaCosmeticAccountItem* Item, int VariantChannelIndex);
+	void ProcessLoadoutChanged();
+	void HandleLoadoutChanged();
+	void HandleInventoryUpdated(int64_t ProfileRevision);
 	class UFortItem* GetFavoriteItemForCategory(EAthenaCustomizationCategory CustomizationType, int SubslotIndex);
 };
 
 
 // Class FortniteUI.AthenaCustomizationSlotSelectorButton
-// 0x0018 (0x0820 - 0x0808)
+// 0x0020 (0x08A8 - 0x0888)
 class UAthenaCustomizationSlotSelectorButton : public UCommonButton
 {
 public:
-	EAthenaCustomizationCategory                       CustomizationType;                                        // 0x0808(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0809(0x0003) MISSED OFFSET
-	int                                                SubslotIndex;                                             // 0x080C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UFortMultiSizeItemCard*                      ItemWidget;                                               // 0x0810(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0818(0x0008) MISSED OFFSET
+	EAthenaCustomizationCategory                       CustomizationType;                                        // 0x0888(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0889(0x0003) MISSED OFFSET
+	int                                                SubslotIndex;                                             // 0x088C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UFortMultiSizeItemCard*                      ItemWidget;                                               // 0x0890(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x10];                                      // 0x0898(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -412,29 +468,52 @@ public:
 };
 
 
+// Class FortniteUI.AthenaEliminationOverlayBase
+// 0x0000 (0x0208 - 0x0208)
+class UAthenaEliminationOverlayBase : public UUserWidget
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaEliminationOverlayBase");
+		return ptr;
+	}
+
+};
+
+
 // Class FortniteUI.BacchusHUDElement
-// 0x0018 (0x0258 - 0x0240)
+// 0x0118 (0x0350 - 0x0238)
 class UBacchusHUDElement : public UFortHUDElementWidget
 {
 public:
-	bool                                               bAlwaysShow;                                              // 0x0240(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               OnInBuildMode;                                            // 0x0241(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               OnInCombatMode;                                           // 0x0242(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               OnInEditMode;                                             // 0x0243(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               IsFreeFalling;                                            // 0x0244(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               IsGliding;                                                // 0x0245(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               CanOpenChute;                                             // 0x0246(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               InLockedBus;                                              // 0x0247(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               InUnlockedBus;                                            // 0x0248(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               OnTargeting;                                              // 0x0249(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               OnUsingScopeTargeting;                                    // 0x024A(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               OnCanTarget;                                              // 0x024B(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               OnCanUseScopeTargeting;                                   // 0x024C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               OnCrouching;                                              // 0x024D(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               OnCanUseSecondaryAbility;                                 // 0x024E(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               OnDBNO;                                                   // 0x024F(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	EBacchusHUDStateType                               OnControllingRCPawn;                                      // 0x0250(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0251(0x0007) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0238(0x0008) MISSED OFFSET
+	bool                                               bIsInLayoutMode;                                          // 0x0240(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0241(0x0007) MISSED OFFSET
+	struct FGameplayTag                                VisualType;                                               // 0x0248(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FText                                       WidgetName;                                               // 0x0250(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	bool                                               bAlwaysShow;                                              // 0x0268(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               OnInBuildMode;                                            // 0x0269(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               OnInCombatMode;                                           // 0x026A(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               OnInEditMode;                                             // 0x026B(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               IsFreeFalling;                                            // 0x026C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               IsGliding;                                                // 0x026D(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               CanOpenChute;                                             // 0x026E(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               InLockedBus;                                              // 0x026F(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               InUnlockedBus;                                            // 0x0270(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               OnTargeting;                                              // 0x0271(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               OnUsingScopeTargeting;                                    // 0x0272(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               OnCanTarget;                                              // 0x0273(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               OnCanUseScopeTargeting;                                   // 0x0274(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               OnCrouching;                                              // 0x0275(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               OnCanUseSecondaryAbility;                                 // 0x0276(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               OnDBNO;                                                   // 0x0277(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               OnControllingRCPawn;                                      // 0x0278(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               OnInVehicle;                                              // 0x0279(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	EBacchusHUDStateType                               OnDrivingVehicle;                                         // 0x027A(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x5];                                       // 0x027B(0x0005) MISSED OFFSET
+	struct FHUDLayoutDataEntry                         DefaultEntry;                                             // 0x0280(0x00D0) (Transient)
 
 	static UClass* StaticClass()
 	{
@@ -444,18 +523,19 @@ public:
 
 
 	void OnHUDStateUpdate(const struct FFortHUDState& NewState);
+	struct FGameplayTag BP_GetMobileVisualType();
 };
 
 
 // Class FortniteUI.AthenaEquippedItemBase
-// 0x0018 (0x0270 - 0x0258)
+// 0x0018 (0x0368 - 0x0350)
 class UAthenaEquippedItemBase : public UBacchusHUDElement
 {
 public:
-	EEquippedWeaponDisplay                             CurrentMode;                                              // 0x0258(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0259(0x0007) MISSED OFFSET
-	class UAthenaPlayerViewModel*                      VM;                                                       // 0x0260(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0268(0x0008) MISSED OFFSET
+	EEquippedWeaponDisplay                             CurrentMode;                                              // 0x0350(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0351(0x0007) MISSED OFFSET
+	class UAthenaPlayerViewModel*                      VM;                                                       // 0x0358(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x0360(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -472,7 +552,7 @@ public:
 	void ResourceCountChanged(int ResourceCount);
 	void OnWorldItemsChanged();
 	void OnWeaponChanged(class AFortWeapon* NewWeapon, class AFortWeapon* PrevWeapon);
-	void OnPawnChanged();
+	void OnViewTargetChanged();
 	void OnLocalAmmoChanged(int LocalCount, int LocalRemaining);
 	void OnBuildingMaterialChanged();
 	void HasAmmoChanged(bool bHasAmmo);
@@ -482,7 +562,7 @@ public:
 
 
 // Class FortniteUI.AthenaEventGamesBase
-// 0x0000 (0x03F0 - 0x03F0)
+// 0x0000 (0x0328 - 0x0328)
 class UAthenaEventGamesBase : public UFortActivatablePanel
 {
 public:
@@ -496,16 +576,56 @@ public:
 };
 
 
+// Class FortniteUI.AthenaGadgetFuelWidget
+// 0x0018 (0x0228 - 0x0210)
+class UAthenaGadgetFuelWidget : public UCommonUserWidget
+{
+public:
+	TWeakObjectPtr<class UAthenaGadgetItemDefinition>  AthenaGadgetItemDefinition;                               // 0x0210(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UImage*                                      FuelGaugeProgressImage;                                   // 0x0218(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0220(0x0008) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaGadgetFuelWidget");
+		return ptr;
+	}
+
+
+	void SetItem(class UFortWorldItem* Item);
+};
+
+
+// Class FortniteUI.AthenaGameOverScreenBase
+// 0x0008 (0x0330 - 0x0328)
+class UAthenaGameOverScreenBase : public UFortActivatablePanel
+{
+public:
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0328(0x0008) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaGameOverScreenBase");
+		return ptr;
+	}
+
+
+	void RequestRefreshInput();
+	void GoToBoss();
+	bool CanShowGoToBoss();
+};
+
+
 // Class FortniteUI.AthenaGamePhaseWidgetBase
-// 0x0020 (0x0260 - 0x0240)
+// 0x0020 (0x0258 - 0x0238)
 class UAthenaGamePhaseWidgetBase : public UFortHUDElementWidget
 {
 public:
-	class UMaterialInterface*                          StormComingFontMaterial;                                  // 0x0240(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	float                                              StormComingWarningTime;                                   // 0x0248(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x024C(0x0004) MISSED OFFSET
-	class UTextBlock*                                  TimeText;                                                 // 0x0250(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0258(0x0008) MISSED OFFSET
+	class UMaterialInterface*                          StormComingFontMaterial;                                  // 0x0238(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              StormComingWarningTime;                                   // 0x0240(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0244(0x0004) MISSED OFFSET
+	class UTextBlock*                                  TimeText;                                                 // 0x0248(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x0250(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -516,17 +636,17 @@ public:
 
 	void OnGamePhaseStepChanged(EAthenaGamePhaseStep GamePhaseStep);
 	void HandleGamePhaseStepChanged(EAthenaGamePhaseStep GamePhaseStep);
+	void HandleCountdownUpdate(int TimeRemaining);
 };
 
 
 // Class FortniteUI.FortUIStateWidget_NUI
-// 0x0020 (0x03E0 - 0x03C0)
+// 0x0018 (0x0310 - 0x02F8)
 class UFortUIStateWidget_NUI : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x03C0(0x0008) MISSED OFFSET
-	TArray<struct FContentPushState>                   StackStates;                                              // 0x03C8(0x0010) (ZeroConstructor, Transient)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x03D8(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x02F8(0x0008) MISSED OFFSET
+	TArray<struct FContentPushState>                   StackStates;                                              // 0x0300(0x0010) (ZeroConstructor, Transient)
 
 	static UClass* StaticClass()
 	{
@@ -543,6 +663,7 @@ public:
 	class UWidget* PopContentWidgetInternal(const struct FContentPushState& State);
 	class UWidget* PopContentWidget();
 	void PopAllContentWidgets();
+	void OnHUDScaleChanged(float HUDScale);
 	void OnFrontEndVisibilityUpdated(bool bHideHeader, bool bHideFooter, bool bHideChatWidget);
 	void OnExitState(EFortUIState NextUIState);
 	void OnEnterState(EFortUIState PreviousUIState);
@@ -550,10 +671,12 @@ public:
 
 
 // Class FortniteUI.AthenaHUDBase
-// 0x0000 (0x03E0 - 0x03E0)
+// 0x0018 (0x0328 - 0x0310)
 class UAthenaHUDBase : public UFortUIStateWidget_NUI
 {
 public:
+	class UAthenaPlayerViewModel*                      PlayerViewModel;                                          // 0x0310(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0318(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -564,44 +687,45 @@ public:
 
 	void ViewModelChanged(class UAthenaPlayerViewModel* ViewModel);
 	void SetFullScreenMapVisibility(bool bIsVisible);
-	void OnHUDScaleChanged(float HUDScale);
+	void OnPlaylistExtensionWidgetCreated(EPlaylistUIExtensionSlot ExtensionSlot, class UUserWidget* Widget);
 };
 
 
 // Class FortniteUI.AthenaHUDContext
-// 0x0190 (0x01B8 - 0x0028)
+// 0x01A0 (0x01C8 - 0x0028)
 class UAthenaHUDContext : public UBlueprintContextBase
 {
 public:
 	unsigned char                                      UnknownData00[0x8];                                       // 0x0028(0x0008) MISSED OFFSET
 	struct FScriptMulticastDelegate                    OnLocalPlayerWon;                                         // 0x0030(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	struct FScriptMulticastDelegate                    OnLocalTeamWon;                                           // 0x0040(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerKilledPlayer;                                // 0x0050(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerDBNOStateChanged;                            // 0x0060(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnUIGameplayCue;                                          // 0x0070(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnViewTargetHealthChanged;                                // 0x0080(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnViewTargetShieldChanged;                                // 0x0090(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnViewTargetDBNOChanged;                                  // 0x00A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerBeginSkydiving;                              // 0x00B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnSquadMembersChanged;                                    // 0x00C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnSquadMemberKillsChanged;                                // 0x00D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnAthenaAutoFireChanged;                                  // 0x00E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnClientSettingsShowViewersChanged;                       // 0x00F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnAthenaGamePhaseChanged;                                 // 0x0100(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnPlayerFiredWeapon;                                      // 0x0110(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLowPerformanceMode;                                     // 0x0120(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnPTTStateChange;                                         // 0x0130(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnCanPTTChange;                                           // 0x0140(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    ShowMobilePickerDelegate;                                 // 0x0150(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerLost;                                        // 0x0050(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerKilledPlayer;                                // 0x0060(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerDBNOStateChanged;                            // 0x0070(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnUIGameplayCue;                                          // 0x0080(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerBeginSkydiving;                              // 0x0090(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnSquadMembersChanged;                                    // 0x00A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnSquadMemberKillsChanged;                                // 0x00B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnAthenaAutoFireChanged;                                  // 0x00C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnClientSettingsShowViewersChanged;                       // 0x00D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnAthenaGamePhaseChanged;                                 // 0x00E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnPlayerFiredWeapon;                                      // 0x00F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLowPerformanceMode;                                     // 0x0100(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnPTTStateChange;                                         // 0x0110(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnCanPTTChange;                                           // 0x0120(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    ShowMobilePickerDelegate;                                 // 0x0130(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnPlaylistUIExtensionChanged;                             // 0x0140(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnPlayerNameChangeDelegate;                               // 0x0150(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	struct FScriptMulticastDelegate                    OnInventoryItemSelected;                                  // 0x0160(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	struct FScriptMulticastDelegate                    OnInventorySwapStarted;                                   // 0x0170(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	struct FScriptMulticastDelegate                    OnInventorySwapComplete;                                  // 0x0180(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UWidget*                                     MoveButtonWidget;                                         // 0x0190(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	TWeakObjectPtr<class UWidget>                      MoveButtonWidgetPtr;                                      // 0x0190(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
 	bool                                               bMoveButtonMode;                                          // 0x0198(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
 	bool                                               bPendingAttachToHUD;                                      // 0x0199(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x2];                                       // 0x019A(0x0002) MISSED OFFSET
-	TWeakObjectPtr<class UFortItem>                    LastSelectedInventoryItem;                                // 0x019C(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x14];                                      // 0x01A4(0x0014) MISSED OFFSET
+	unsigned char                                      UnknownData01[0x6];                                       // 0x019A(0x0006) MISSED OFFSET
+	class UFortGameUIExtenderAthena*                   PlaylistUIExtender;                                       // 0x01A0(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	TWeakObjectPtr<class UFortItem>                    LastSelectedInventoryItem;                                // 0x01A8(0x0008) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x18];                                      // 0x01B0(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -610,6 +734,7 @@ public:
 	}
 
 
+	bool UseTapToShoot();
 	void UseOrRleoadFromHUDStop();
 	void UseOrRleoadFromHUDStart();
 	void UpdateSelectedWidgetMoveOffsetVector(const struct FVector2D& VectorOffset, float fMoveScale);
@@ -619,6 +744,7 @@ public:
 	void StopTargettingFromHUD();
 	void StartOrFinishSwap(int SlotIndex);
 	void ShowMobilePicker();
+	bool ShouldDisplayScoreUI();
 	void SetTargetingToggleable(bool bNewValue);
 	void SetSelectWidgetToMoveMode(bool bSet);
 	void SetSelectedInventoryItem(class UFortItem* Item);
@@ -628,9 +754,10 @@ public:
 	bool SetAutoFireFromReticleMode(bool bAutoFireOn);
 	void SelectWidgetToMove(class UWidget* Widget);
 	void ReloadFromHUD();
-	void OnHitMapLocation(const struct FVector2D& MapCoords);
+	void PrintToMessageFeed(const struct FText& MESSAGE);
 	void OnClientSettingUpdatedShowViewers();
-	void MapMoveFromHUD(const struct FVector2D& Delta);
+	void JumpFromHudStart(int TouchIndex);
+	void JumpFromHudEnd();
 	bool IsUsingScope();
 	bool IsUsingAutoFire();
 	bool IsTargeting();
@@ -652,7 +779,10 @@ public:
 	void HandleGamePhaseChange(EAthenaGamePhaseStep NewGamePhase);
 	class UFortItem* GetSelectedInventoryItem();
 	EPTTState GetPTTState();
+	class UFortGameUIExtenderAthena* GetPlaylistUIExtender();
+	struct FString GetPlayerName();
 	void GetLocalTime(int* Hours, int* Minutes);
+	int GetJumpPressedTouchIndex();
 	bool GetInLowPerformanceMode();
 	bool GetCanPTT();
 	float GetBatteryLevel();
@@ -663,6 +793,7 @@ public:
 	void EndUseFromHUD();
 	void EnableAutoRunFromHUD(bool bEnable);
 	void CycleQuickbar();
+	bool CanDisplayMessageFeedNotification(class AFortPlayerController* Instigator, const struct FVector& MessageLocation, EMessageFeedRelationshipRequirement RelationshipFilter);
 	bool CanCurrentWeaponAutoFireFromReticle();
 	void CancelSwap();
 	bool CanAutoRun();
@@ -671,11 +802,11 @@ public:
 
 
 // Class FortniteUI.AthenaHUDGamePhaseChangingBase
-// 0x0008 (0x0248 - 0x0240)
+// 0x0008 (0x0240 - 0x0238)
 class UAthenaHUDGamePhaseChangingBase : public UFortHUDElementWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0240(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0238(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -691,7 +822,7 @@ public:
 
 
 // Class FortniteUI.AthenaHUDInputWidget
-// 0x0000 (0x0218 - 0x0218)
+// 0x0000 (0x0210 - 0x0210)
 class UAthenaHUDInputWidget : public UCommonUserWidget
 {
 public:
@@ -706,13 +837,13 @@ public:
 
 
 // Class FortniteUI.AthenaHUDPlayerActionAlertBase
-// 0x0020 (0x0260 - 0x0240)
+// 0x0020 (0x0258 - 0x0238)
 class UAthenaHUDPlayerActionAlertBase : public UFortHUDElementWidget
 {
 public:
-	class AFortPlayerPawnAthena*                       LastPlayerPawn;                                           // 0x0240(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	bool                                               bReadyForNextAlert;                                       // 0x0248(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x17];                                      // 0x0249(0x0017) MISSED OFFSET
+	class AFortPlayerPawnAthena*                       LastPlayerPawn;                                           // 0x0238(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bReadyForNextAlert;                                       // 0x0240(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x17];                                      // 0x0241(0x0017) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -727,13 +858,13 @@ public:
 
 
 // Class FortniteUI.AthenaIndicatorLayerBase
-// 0x0020 (0x0230 - 0x0210)
-class UAthenaIndicatorLayerBase : public UUserWidget
+// 0x0020 (0x0258 - 0x0238)
+class UAthenaIndicatorLayerBase : public UFortHUDElementWidget
 {
 public:
-	class UAthenaPlayerViewModel*                      PlayerVM;                                                 // 0x0210(0x0008) (ZeroConstructor, IsPlainOldData)
-	class USlateVectorArtData*                         TeamIndicatorMesh;                                        // 0x0218(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0220(0x0010) MISSED OFFSET
+	class UAthenaPlayerViewModel*                      PlayerVM;                                                 // 0x0238(0x0008) (ZeroConstructor, IsPlainOldData)
+	class USlateVectorArtData*                         TeamIndicatorMesh;                                        // 0x0240(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0248(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -750,14 +881,14 @@ public:
 
 
 // Class FortniteUI.AthenaInventoryEquipButtonBase
-// 0x0018 (0x0820 - 0x0808)
+// 0x0018 (0x08A0 - 0x0888)
 class UAthenaInventoryEquipButtonBase : public UCommonButton
 {
 public:
-	class UFortMultiSizeItemCard*                      ItemWidget;                                               // 0x0808(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UWidget*                                     EmptyImage;                                               // 0x0810(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	int                                                SlotIndex;                                                // 0x0818(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x081C(0x0004) MISSED OFFSET
+	class UFortMultiSizeItemCard*                      ItemWidget;                                               // 0x0888(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UWidget*                                     EmptyImage;                                               // 0x0890(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	int                                                SlotIndex;                                                // 0x0898(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x089C(0x0004) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -769,7 +900,7 @@ public:
 
 
 // Class FortniteUI.AthenaInventoryFortItemTileButtonBase
-// 0x0000 (0x0838 - 0x0838)
+// 0x0000 (0x08B8 - 0x08B8)
 class UAthenaInventoryFortItemTileButtonBase : public UFortItemTileButton
 {
 public:
@@ -784,14 +915,14 @@ public:
 
 
 // Class FortniteUI.AthenaInventoryPanelBase
-// 0x0050 (0x0440 - 0x03F0)
+// 0x0050 (0x0378 - 0x0328)
 class UAthenaInventoryPanelBase : public UFortActivatablePanel
 {
 public:
-	class UFortItemTileView*                           ResourceView;                                             // 0x03F0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortItemTileView*                           AmmoView;                                                 // 0x03F8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButtonGroup*                          EquipButtonGroup;                                         // 0x0400(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x38];                                      // 0x0408(0x0038) MISSED OFFSET
+	class UFortItemTileView*                           ResourceView;                                             // 0x0328(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemTileView*                           AmmoView;                                                 // 0x0330(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButtonGroup*                          EquipButtonGroup;                                         // 0x0338(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x38];                                      // 0x0340(0x0038) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -801,12 +932,8 @@ public:
 
 
 	void RequestEquip(class UFortItem* Item);
-	void HandleTileViewItemSelected(class UObject* Item, bool bIsSelected);
 	void HandleQuickBarChangedBP(EFortQuickBars QuickBarType);
 	void HandleInventoryItemSelected(class UFortItem* Item);
-	void HandleInventoryItemHovered(class UObject* Item);
-	void HandleInventoryItemDoubleClicked(class UObject* Item);
-	void HandleInventoryItemClicked(class UObject* Item);
 	void HandleCursorModeChangedBP(bool bCursorModeEnabled, const struct FName& ActionName, class UUserWidget* CursorModeContentWidget);
 	void HandleCursorModeChanged(bool bCursorModeEnabled, const struct FName& ActionName, class UUserWidget* CursorModeContentWidget);
 	class UFortItemTileView* GetTileViewForItem(class UFortItem* Item);
@@ -816,24 +943,61 @@ public:
 };
 
 
+// Class FortniteUI.AthenaItemSelectorScreenBase
+// 0x01F0 (0x05B0 - 0x03C0)
+class UAthenaItemSelectorScreenBase : public UFortActivatablePanelWithItemPreview
+{
+public:
+	class UClass*                                      TabButtonType;                                            // 0x03C0(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FFortTabButtonLabelInfo                     DefaultButtonItemLabel;                                   // 0x03C8(0x00A0) (Edit, BlueprintVisible, BlueprintReadOnly)
+	TMap<EAthenaCustomizationCategory, struct FFortTabButtonLabelInfo> ItemCatagoryButtonLabelInfo;                              // 0x0468(0x0050) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	struct FFortTabButtonLabelInfo                     VariantButtonLabelInfo;                                   // 0x04B8(0x00A0) (Edit, BlueprintVisible, BlueprintReadOnly)
+	class UFortItem*                                   CurrentPreviewItem;                                       // 0x0558(0x0008) (ZeroConstructor, IsPlainOldData)
+	class UAthenaCosmeticItemDefinition*               CurrentPreviewItemDef;                                    // 0x0560(0x0008) (ZeroConstructor, IsPlainOldData)
+	TArray<struct FMcpVariantChannelInfo>              CurrentPreviewVariantChannels;                            // 0x0568(0x0010) (ZeroConstructor)
+	class UFortTabListWidgetBase*                      TabList_EditSelector;                                     // 0x0578(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonWidgetSwitcher*                       WidgetSwitcher_ItemEditor;                                // 0x0580(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UAthenaCustomizationPicker*                  Picker_ItemSelector;                                      // 0x0588(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_ConfirmSelection;                                  // 0x0590(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemBaseWidget*                         Item_HeaderInfo;                                          // 0x0598(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortVariantPicker*                          Picker_VariantSelector;                                   // 0x05A0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x05A8(0x0008) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaItemSelectorScreenBase");
+		return ptr;
+	}
+
+
+	void StartItemCustomization(EAthenaCustomizationCategory Catagory, int SubslotIndex);
+	void SaveAndExit();
+	void OnVariantSelectionChanged(const struct FGameplayTag& VariantChannel, const struct FGameplayTag& NewActiveVariant);
+	void OnItemSelectedChanged(class UFortItem* SelectedItem);
+	void OnFinsihedItemSetup();
+	void HandleSelectedTabChanged(const struct FName& SelectedTabID);
+	class UFortItem* GetCurrentItem();
+};
+
+
 // Class FortniteUI.AthenaLeaderboardScreenBase
-// 0x0100 (0x04F0 - 0x03F0)
+// 0x0100 (0x0428 - 0x0328)
 class UAthenaLeaderboardScreenBase : public UFortActivatablePanel
 {
 public:
-	class UFortTabListWidgetBase*                      LeaderboardTabList;                                       // 0x03F0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonRotator*                              MatchRotator;                                             // 0x03F8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonRotator*                              LeaderboardTypeRotator;                                   // 0x0400(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            ResetTimeText;                                            // 0x0408(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            RefreshTimeText;                                          // 0x0410(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonBorder*                               BorderLocalUserFocus;                                     // 0x0418(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UDataTable*                                  LeaderboardDisplayData;                                   // 0x0420(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	TMap<struct FName, class UCommonButton*>           ActiveTabButtons;                                         // 0x0428(0x0050) (BlueprintVisible, ExportObject, ZeroConstructor, Transient)
-	TArray<class UFortLeaderboardRowProxyInstance*>    RowProxies;                                               // 0x0478(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient)
-	TArray<class UFortLeaderboardRowProxyInstance*>    RowProxiesFreeList;                                       // 0x0488(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient)
-	class UFortLeaderboardRowProxyInstance*            LocalUserRowProxy;                                        // 0x0498(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	struct FLeaderboardFilter                          CurrentLeaderboardFilter;                                 // 0x04A0(0x0018) (Transient)
-	unsigned char                                      UnknownData00[0x38];                                      // 0x04B8(0x0038) MISSED OFFSET
+	class UFortTabListWidgetBase*                      LeaderboardTabList;                                       // 0x0328(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonRotator*                              MatchRotator;                                             // 0x0330(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonRotator*                              LeaderboardTypeRotator;                                   // 0x0338(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            ResetTimeText;                                            // 0x0340(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            RefreshTimeText;                                          // 0x0348(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonBorder*                               BorderLocalUserFocus;                                     // 0x0350(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UDataTable*                                  LeaderboardDisplayData;                                   // 0x0358(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	TMap<struct FName, class UCommonButton*>           ActiveTabButtons;                                         // 0x0360(0x0050) (BlueprintVisible, ExportObject, ZeroConstructor, Transient)
+	TArray<class UFortLeaderboardRowProxyInstance*>    RowProxies;                                               // 0x03B0(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient)
+	TArray<class UFortLeaderboardRowProxyInstance*>    RowProxiesFreeList;                                       // 0x03C0(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient)
+	class UFortLeaderboardRowProxyInstance*            LocalUserRowProxy;                                        // 0x03D0(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	struct FLeaderboardFilter                          CurrentLeaderboardFilter;                                 // 0x03D8(0x0018) (Transient)
+	unsigned char                                      UnknownData00[0x38];                                      // 0x03F0(0x0038) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -855,21 +1019,21 @@ public:
 
 
 // Class FortniteUI.FortActorIndicatorWidget
-// 0x0038 (0x0278 - 0x0240)
+// 0x0038 (0x0270 - 0x0238)
 class UFortActorIndicatorWidget : public UFortHUDElementWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0240(0x0008) MISSED OFFSET
-	class AActor*                                      IndicatedActor;                                           // 0x0248(0x0008) (BlueprintVisible, ZeroConstructor, Transient, IsPlainOldData)
-	class UPrimitiveComponent*                         IndicatedActorComponent;                                  // 0x0250(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	struct FVector                                     RelativeLocation;                                         // 0x0258(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
-	float                                              MaxDistance;                                              // 0x0264(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	bool                                               bClampOnScreen;                                           // 0x0268(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	bool                                               bShowClampToScreenArrow;                                  // 0x0269(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	bool                                               bUseScreenSpacePosition;                                  // 0x026A(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x1];                                       // 0x026B(0x0001) MISSED OFFSET
-	struct FVector2D                                   ScreenSpaceRelativeOffset;                                // 0x026C(0x0008) (Edit, BlueprintVisible, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x4];                                       // 0x0274(0x0004) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0238(0x0008) MISSED OFFSET
+	class AActor*                                      IndicatedActor;                                           // 0x0240(0x0008) (BlueprintVisible, ZeroConstructor, Transient, IsPlainOldData)
+	class UPrimitiveComponent*                         IndicatedActorComponent;                                  // 0x0248(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	struct FVector                                     RelativeLocation;                                         // 0x0250(0x000C) (Edit, BlueprintVisible, IsPlainOldData)
+	float                                              MaxDistance;                                              // 0x025C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	bool                                               bClampOnScreen;                                           // 0x0260(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	bool                                               bShowClampToScreenArrow;                                  // 0x0261(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	bool                                               bUseScreenSpacePosition;                                  // 0x0262(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x1];                                       // 0x0263(0x0001) MISSED OFFSET
+	struct FVector2D                                   ScreenSpaceRelativeOffset;                                // 0x0264(0x0008) (Edit, BlueprintVisible, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x4];                                       // 0x026C(0x0004) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -881,7 +1045,7 @@ public:
 
 
 // Class FortniteUI.AthenaLevelBarBase
-// 0x0000 (0x0278 - 0x0278)
+// 0x0000 (0x0270 - 0x0270)
 class UAthenaLevelBarBase : public UFortActorIndicatorWidget
 {
 public:
@@ -896,14 +1060,14 @@ public:
 
 
 // Class FortniteUI.AthenaLobbyBase
-// 0x0070 (0x0460 - 0x03F0)
+// 0x0040 (0x0368 - 0x0328)
 class UAthenaLobbyBase : public UFortActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x40];                                      // 0x03F0(0x0040) MISSED OFFSET
-	class UOverlay*                                    OverlayMain;                                              // 0x0430(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x20];                                      // 0x0438(0x0020) MISSED OFFSET
-	class UFriendCodeShareButtonBase*                  FriendCodeFrontEndShareButton;                            // 0x0458(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0328(0x0010) MISSED OFFSET
+	class UOverlay*                                    OverlayMain;                                              // 0x0338(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x20];                                      // 0x0340(0x0020) MISSED OFFSET
+	class UFriendCodeShareButtonBase*                  FriendCodeFrontEndShareButton;                            // 0x0360(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -942,11 +1106,11 @@ public:
 
 
 // Class FortniteUI.FortPlayerViewModel
-// 0x02C8 (0x02F0 - 0x0028)
+// 0x00B0 (0x00D8 - 0x0028)
 class UFortPlayerViewModel : public UFortViewModel
 {
 public:
-	unsigned char                                      UnknownData00[0x2C8];                                     // 0x0028(0x02C8) MISSED OFFSET
+	unsigned char                                      UnknownData00[0xB0];                                      // 0x0028(0x00B0) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -958,11 +1122,11 @@ public:
 
 
 // Class FortniteUI.AthenaPlayerViewModel
-// 0x0160 (0x0450 - 0x02F0)
+// 0x0050 (0x0128 - 0x00D8)
 class UAthenaPlayerViewModel : public UFortPlayerViewModel
 {
 public:
-	unsigned char                                      UnknownData00[0x160];                                     // 0x02F0(0x0160) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x50];                                      // 0x00D8(0x0050) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -974,10 +1138,11 @@ public:
 
 
 // Class FortniteUI.AthenaLocalPlayerViewModel
-// 0x0000 (0x0450 - 0x0450)
+// 0x0008 (0x0130 - 0x0128)
 class UAthenaLocalPlayerViewModel : public UAthenaPlayerViewModel
 {
 public:
+	class AFortPlayerControllerAthena*                 PlayerController;                                         // 0x0128(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -989,7 +1154,7 @@ public:
 
 
 // Class FortniteUI.AthenaLootStoreScreenBase
-// 0x0000 (0x03F0 - 0x03F0)
+// 0x0000 (0x0328 - 0x0328)
 class UAthenaLootStoreScreenBase : public UFortActivatablePanel
 {
 public:
@@ -1020,15 +1185,16 @@ public:
 
 	void SetLocalPlayer(class ULocalPlayer* LocalPlayer);
 	void FlashPlayerIcon();
+	void ClearTouches();
 };
 
 
 // Class FortniteUI.AthenaMatchReadyDesktopPopup
-// 0x0070 (0x0280 - 0x0210)
+// 0x0018 (0x0220 - 0x0208)
 class UAthenaMatchReadyDesktopPopup : public UUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x70];                                      // 0x0210(0x0070) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0208(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1042,12 +1208,12 @@ public:
 
 
 // Class FortniteUI.AthenaPartyBar
-// 0x0018 (0x0230 - 0x0218)
+// 0x0018 (0x0228 - 0x0210)
 class UAthenaPartyBar : public UCommonUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnHelperTextChanged;                                      // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UCommonDynamicEntryBox*                      EntryBox_PartyMembers;                                    // 0x0228(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FScriptMulticastDelegate                    OnHelperTextChanged;                                      // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	class UDynamicEntryBox*                            EntryBox_PartyMembers;                                    // 0x0220(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -1059,30 +1225,32 @@ public:
 
 
 // Class FortniteUI.AthenaPartyMemberBase
-// 0x0168 (0x0970 - 0x0808)
+// 0x0110 (0x0998 - 0x0888)
 class UAthenaPartyMemberBase : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	class UTexture2D*                                  MutedBrush;                                               // 0x0810(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UTexture2D*                                  TalkingBrush;                                             // 0x0818(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UTexture2D*                                  NotTalkingBrush;                                          // 0x0820(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class AFortPlayerStateAthena*                      AthenaPS;                                                 // 0x0828(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0830(0x0008) MISSED OFFSET
-	struct FUniqueNetIdRepl                            MemberUniqueId;                                           // 0x0838(0x0028) (Transient)
-	struct FUniqueNetIdRepl                            ConsoleUniqueId;                                          // 0x0860(0x0028) (Transient)
-	struct FString                                     Platform;                                                 // 0x0888(0x0010) (ZeroConstructor, Transient)
-	unsigned char                                      UnknownData02[0x88];                                      // 0x0898(0x0088) MISSED OFFSET
-	class UImage*                                      Image_LeaderIcon;                                         // 0x0920(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      Image_Speaker;                                            // 0x0928(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_PlayerName;                                          // 0x0930(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_KillCount;                                           // 0x0938(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UVerticalBox*                                VBox_PartyManagement;                                     // 0x0940(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_PromoteToLeader;                                   // 0x0948(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_RemoveFromParty;                                   // 0x0950(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UHorizontalBox*                              HBox_KillCount;                                           // 0x0958(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UWidgetSwitcher*                             Switcher_MemberState;                                     // 0x0960(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      Image_Platform;                                           // 0x0968(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UTexture2D*                                  MutedBrush;                                               // 0x0890(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UTexture2D*                                  TalkingBrush;                                             // 0x0898(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UTexture2D*                                  NotTalkingBrush;                                          // 0x08A0(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class AFortPlayerStateAthena*                      AthenaPS;                                                 // 0x08A8(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x08B0(0x0008) MISSED OFFSET
+	struct FUniqueNetIdRepl                            MemberUniqueId;                                           // 0x08B8(0x0028) (Transient)
+	struct FUniqueNetIdRepl                            ConsoleUniqueId;                                          // 0x08E0(0x0028) (Transient)
+	struct FString                                     Platform;                                                 // 0x0908(0x0010) (ZeroConstructor, Transient)
+	unsigned char                                      UnknownData02[0x20];                                      // 0x0918(0x0020) MISSED OFFSET
+	class UImage*                                      Image_LeaderIcon;                                         // 0x0938(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      Image_Speaker;                                            // 0x0940(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_PlayerName;                                          // 0x0948(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_KillCount;                                           // 0x0950(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UVerticalBox*                                VBox_PartyManagement;                                     // 0x0958(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_PromoteToLeader;                                   // 0x0960(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_RemoveFromParty;                                   // 0x0968(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_AddFriend;                                         // 0x0970(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class USizeBox*                                    Box_ButtonsContainer;                                     // 0x0978(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UHorizontalBox*                              HBox_KillCount;                                           // 0x0980(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UWidgetSwitcher*                             Switcher_MemberState;                                     // 0x0988(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      Image_Platform;                                           // 0x0990(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -1093,13 +1261,14 @@ public:
 
 	void SetBannerIconAndColor(const struct FString& IconId, const struct FString& ColorId);
 	void OpenPartyFinder();
-	void HandleRemoveFromPartyClicked(class UCommonButton* ClickedButton);
-	void HandlePromoteClicked(class UCommonButton* ClickedButton);
+	void OnFriendshipStatusDetermined(EFortFriendRequestStatus RequestStatus);
+	void OnFriendRequestSent();
+	void OnFriendRequestAccepted();
 };
 
 
 // Class FortniteUI.AthenaPickingLayer
-// 0x0000 (0x0218 - 0x0218)
+// 0x0000 (0x0210 - 0x0210)
 class UAthenaPickingLayer : public UCommonUserWidget
 {
 public:
@@ -1114,18 +1283,18 @@ public:
 
 
 // Class FortniteUI.AthenaPlayerHitPointBarBase
-// 0x0020 (0x0230 - 0x0210)
+// 0x0020 (0x0228 - 0x0208)
 class UAthenaPlayerHitPointBarBase : public UUserWidget
 {
 public:
-	class UAthenaPlayerViewModel*                      PlayerVM;                                                 // 0x0210(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	EHealthBarType                                     BarType;                                                  // 0x0218(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0219(0x0003) MISSED OFFSET
-	float                                              ValueCurrent;                                             // 0x021C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              ValueLast;                                                // 0x0220(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              ValueMax;                                                 // 0x0224(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              LastToCurrentUpdateRate;                                  // 0x0228(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x4];                                       // 0x022C(0x0004) MISSED OFFSET
+	class UAthenaPlayerViewModel*                      PlayerVM;                                                 // 0x0208(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	EHealthBarType                                     BarType;                                                  // 0x0210(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0211(0x0003) MISSED OFFSET
+	float                                              ValueCurrent;                                             // 0x0214(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              ValueLast;                                                // 0x0218(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              ValueMax;                                                 // 0x021C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              LastToCurrentUpdateRate;                                  // 0x0220(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x0224(0x0004) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1145,11 +1314,11 @@ public:
 
 
 // Class FortniteUI.AthenaPlayerIndicatorBase
-// 0x0008 (0x0280 - 0x0278)
+// 0x0008 (0x0278 - 0x0270)
 class UAthenaPlayerIndicatorBase : public UFortActorIndicatorWidget
 {
 public:
-	class AFortPlayerStateAthena*                      PlayerState;                                              // 0x0278(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	class AFortPlayerStateAthena*                      PlayerState;                                              // 0x0270(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -1169,13 +1338,13 @@ public:
 
 
 // Class FortniteUI.AthenaPlayerInfoBase
-// 0x0010 (0x0250 - 0x0240)
+// 0x0010 (0x0248 - 0x0238)
 class UAthenaPlayerInfoBase : public UFortHUDElementWidget
 {
 public:
-	class AFortPlayerStateAthena*                      PlayerState;                                              // 0x0240(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	int                                                SquadMemberIndex;                                         // 0x0248(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x024C(0x0004) MISSED OFFSET
+	class AFortPlayerStateAthena*                      PlayerState;                                              // 0x0238(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	int                                                SquadMemberIndex;                                         // 0x0240(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0244(0x0004) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1200,11 +1369,14 @@ public:
 
 
 // Class FortniteUI.AthenaPlayerKillsBase
-// 0x0008 (0x0248 - 0x0240)
+// 0x0018 (0x0250 - 0x0238)
 class UAthenaPlayerKillsBase : public UFortHUDElementWidget
 {
 public:
-	class UTextBlock*                                  KillsText;                                                // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UTextBlock*                                  KillsText;                                                // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UObject*                                     KillsSource;                                              // 0x0240(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bCustomKillSource;                                        // 0x0248(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0249(0x0007) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1212,15 +1384,18 @@ public:
 		return ptr;
 	}
 
+
+	void SetKillsSourcePlayerState(class AFortPlayerStateAthena* InPlayerState);
+	void SetKillsSourcePlayerController(class AFortPlayerControllerAthena* InPlayerController);
 };
 
 
 // Class FortniteUI.AthenaPlayersLeftBase
-// 0x0018 (0x0258 - 0x0240)
+// 0x0018 (0x0250 - 0x0238)
 class UAthenaPlayersLeftBase : public UFortHUDElementWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x18];                                      // 0x0240(0x0018) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0238(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1234,11 +1409,11 @@ public:
 
 
 // Class FortniteUI.AthenaPlayerVitalityBarBase
-// 0x0008 (0x0218 - 0x0210)
+// 0x0008 (0x0210 - 0x0208)
 class UAthenaPlayerVitalityBarBase : public UUserWidget
 {
 public:
-	class UAthenaPlayerViewModel*                      PlayerVM;                                                 // 0x0210(0x0008) (ZeroConstructor, IsPlainOldData)
+	class UAthenaPlayerViewModel*                      PlayerVM;                                                 // 0x0208(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -1252,7 +1427,7 @@ public:
 
 
 // Class FortniteUI.AthenaPostMatchScreenBase
-// 0x0000 (0x0278 - 0x0278)
+// 0x0000 (0x0270 - 0x0270)
 class UAthenaPostMatchScreenBase : public UFortActorIndicatorWidget
 {
 public:
@@ -1266,11 +1441,242 @@ public:
 };
 
 
+// Class FortniteUI.AthenaProfileStatBox
+// 0x0028 (0x0170 - 0x0148)
+class UAthenaProfileStatBox : public USizeBox
+{
+public:
+	struct FScriptMulticastDelegate                    OnStatViewChanged;                                        // 0x0148(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	bool                                               bRespectParentStatView;                                   // 0x0158(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0159(0x0007) MISSED OFFSET
+	class UAthenaBaseStatView*                         StatView;                                                 // 0x0160(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x0168(0x0008) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaProfileStatBox");
+		return ptr;
+	}
+
+
+	void SetStatView(class UAthenaBaseStatView* InStatView, bool RespectParentStatView);
+	void OnStatViewChanged__DelegateSignature(class UAthenaBaseStatView* StatView);
+	struct FFortUIStatStyle GetStatStyle(const struct FGameplayTag& InStat);
+	class UAthenaBaseStatView* GetBaseStatView();
+};
+
+
+// Class FortniteUI.AthenaBaseStatView
+// 0x0000 (0x0028 - 0x0028)
+class UAthenaBaseStatView : public UObject
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaBaseStatView");
+		return ptr;
+	}
+
+
+	float GetStat(const struct FGameplayTag& InStat);
+};
+
+
+// Class FortniteUI.AthenaWeaponStatView
+// 0x0010 (0x0038 - 0x0028)
+class UAthenaWeaponStatView : public UAthenaBaseStatView
+{
+public:
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0028(0x0010) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaWeaponStatView");
+		return ptr;
+	}
+
+
+	class UFortWeaponItemDefinition* GetWeaponDefinition();
+};
+
+
+// Class FortniteUI.AthenaMatchStatView
+// 0x00B0 (0x00D8 - 0x0028)
+class UAthenaMatchStatView : public UAthenaBaseStatView
+{
+public:
+	unsigned char                                      UnknownData00[0xA0];                                      // 0x0028(0x00A0) MISSED OFFSET
+	TArray<class UAthenaWeaponStatView*>               WeaponStatViews;                                          // 0x00C8(0x0010) (ZeroConstructor)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaMatchStatView");
+		return ptr;
+	}
+
+
+	TArray<class UAthenaWeaponStatView*> GetWeaponViews();
+	class UAthenaWeaponStatView* GetWeaponViewHighestStat(const struct FGameplayTag& InStat);
+	TArray<class UAthenaWeaponStatView*> GetSortedWeaponViews(const struct FGameplayTag& InStat);
+	struct FString GetMatchID();
+	struct FDateTime GetMatchEndTime();
+};
+
+
+// Class FortniteUI.AthenaMatchSetStatView
+// 0x0020 (0x00F8 - 0x00D8)
+class UAthenaMatchSetStatView : public UAthenaMatchStatView
+{
+public:
+	class UAthenaSeasonStats*                          OwningSeason;                                             // 0x00D8(0x0008) (ZeroConstructor, IsPlainOldData)
+	struct FName                                       PlaylistId;                                               // 0x00E0(0x0008) (ZeroConstructor, IsPlainOldData)
+	TArray<class UAthenaMatchStatView*>                BestMatches;                                              // 0x00E8(0x0010) (ZeroConstructor)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaMatchSetStatView");
+		return ptr;
+	}
+
+
+	class UAthenaSeasonStats* GetOwningSeason();
+	TArray<class UAthenaMatchStatView*> GetBestMatchViews();
+};
+
+
+// Class FortniteUI.AthenaProfileStatContext
+// 0x0018 (0x0040 - 0x0028)
+class UAthenaProfileStatContext : public UBlueprintContextBase
+{
+public:
+	struct FScriptMulticastDelegate                    OnStatsProfileLoaded;                                     // 0x0028(0x0010) (ZeroConstructor, InstancedReference)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0038(0x0008) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaProfileStatContext");
+		return ptr;
+	}
+
+
+	void OnAthenaStatsProfileLoaded__DelegateSignature(class UFortMcpProfileAthenaStats* StatProfile);
+	TArray<class UAthenaMatchStatView*> CreateMatchViews(TArray<struct FAthenaMatchStats> InRecentMatches);
+	class UAthenaMatchSetStatView* CreateMatchStatView(class UAthenaSeasonStats* StatSet, const struct FName& Bucket);
+	class UAthenaMatchStatView* CreateCurrentMatchStatView();
+};
+
+
+// Class FortniteUI.AthenaProfileStatListWidgetBase
+// 0x0010 (0x0898 - 0x0888)
+class UAthenaProfileStatListWidgetBase : public UCommonButton
+{
+public:
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UAthenaProfileStatBox*                       ProfileStatBox;                                           // 0x0890(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaProfileStatListWidgetBase");
+		return ptr;
+	}
+
+
+	void OnStatChanged();
+	void HandleStatViewChanged(class UAthenaBaseStatView* StatView);
+};
+
+
+// Class FortniteUI.AthenaProfileStatsBase
+// 0x0058 (0x0350 - 0x02F8)
+class UAthenaProfileStatsBase : public UCommonActivatablePanel
+{
+public:
+	class UAthenaProfileStatBox*                       ProfileStatBox;                                           // 0x02F8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TArray<class UAthenaSeasonStats*>                  StatSets;                                                 // 0x0300(0x0010) (ZeroConstructor, Transient)
+	class UAthenaSeasonStats*                          CurrentViewedStatSet;                                     // 0x0310(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UAthenaMatchStatView*                        CurrentStatView;                                          // 0x0318(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	struct FName                                       CurrentPlaylist;                                          // 0x0320(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0328(0x0028) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaProfileStatsBase");
+		return ptr;
+	}
+
+
+	void Setup(const struct FUniqueNetIdRepl& InUniqueId);
+	void PrevStatSet();
+	void OnStatSetChanged();
+	void OnStartFetchingData();
+	void OnProfileLoaded(class UFortMcpProfileAthenaStats* ProfileAthenaStats);
+	void OnNoData();
+	void OnDataRecieved();
+	int NumStatSets();
+	void NextStatSet();
+	void NextPlaylist();
+	struct FUniqueNetIdRepl GetUniqueID();
+	class UAthenaSeasonStats* GetCurrentStatSet();
+	struct FText GetCurrentPlaylistName();
+};
+
+
+// Class FortniteUI.AthenaProfileStatsRecentMatchesBase
+// 0x0038 (0x0330 - 0x02F8)
+class UAthenaProfileStatsRecentMatchesBase : public UCommonActivatablePanel
+{
+public:
+	TArray<class UAthenaMatchStatView*>                RecentMatches;                                            // 0x02F8(0x0010) (ZeroConstructor, Transient)
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0308(0x0028) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaProfileStatsRecentMatchesBase");
+		return ptr;
+	}
+
+
+	void Setup(const struct FUniqueNetIdRepl& InUniqueId);
+	void OnStartFetchingData();
+	void OnRecentMatcheChanged();
+	void OnProfileLoaded(class UFortMcpProfileAthenaStats* ProfileAthenaStats);
+	void OnNoData();
+	void OnDataRecieved();
+	struct FUniqueNetIdRepl GetUniqueID();
+	TArray<class UAthenaMatchStatView*> GetRecentMatches();
+};
+
+
+// Class FortniteUI.AthenaProfileStatWidgetBase
+// 0x0010 (0x0220 - 0x0210)
+class UAthenaProfileStatWidgetBase : public UCommonUserWidget
+{
+public:
+	struct FGameplayTag                                Stat;                                                     // 0x0210(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly)
+	class UAthenaProfileStatBox*                       ProfileStatBox;                                           // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaProfileStatWidgetBase");
+		return ptr;
+	}
+
+
+	void SetStatView(class UAthenaBaseStatView* InStatView, bool RespectParentStatView);
+	void SetAsStat(const struct FGameplayTag& InStat);
+	void OnStatChanged();
+	void HandleStatViewChanged(class UAthenaBaseStatView* StatView);
+	TArray<struct FStatGroupData> CreateWeaponGroupData(int MaxToReturn, bool bIncludeOtherCategory, bool bPercentages);
+};
+
+
 // Class FortniteUI.AthenaRemotePlayerViewModel
-// 0x0000 (0x0450 - 0x0450)
+// 0x0008 (0x0130 - 0x0128)
 class UAthenaRemotePlayerViewModel : public UAthenaPlayerViewModel
 {
 public:
+	class AFortPlayerControllerSpectating*             PlayerController;                                         // 0x0128(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -1282,12 +1688,12 @@ public:
 
 
 // Class FortniteUI.AthenaReplayBrowserEntryWidget
-// 0x0010 (0x0818 - 0x0808)
+// 0x0010 (0x0898 - 0x0888)
 class UAthenaReplayBrowserEntryWidget : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	class UObject*                                     ReplayBrowserEntryObject;                                 // 0x0810(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UObject*                                     ReplayBrowserEntryObject;                                 // 0x0890(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -1318,12 +1724,12 @@ public:
 
 
 // Class FortniteUI.AthenaReplayBrowserScreenBase
-// 0x0030 (0x0420 - 0x03F0)
+// 0x0028 (0x0350 - 0x0328)
 class UAthenaReplayBrowserScreenBase : public UFortActivatablePanel
 {
 public:
-	TArray<class UAthenaReplayBrowserRowProxyInstance*> RowProxies;                                               // 0x03F0(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient)
-	unsigned char                                      UnknownData00[0x20];                                      // 0x0400(0x0020) MISSED OFFSET
+	TArray<class UAthenaReplayBrowserRowProxyInstance*> RowProxies;                                               // 0x0328(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient)
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0338(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1332,25 +1738,29 @@ public:
 	}
 
 
+	void ShowDeleteInvalidDialog(const struct FText& Title, const struct FText& MESSAGE);
 	void SaveAndRenameReplay(class UAthenaReplayBrowserRowProxyInstance* RowProxy, const struct FString& NewReplayName);
 	void RenameReplay(class UAthenaReplayBrowserRowProxyInstance* RowProxy, const struct FString& NewReplayName);
 	void PlayReplay(class UAthenaReplayBrowserRowProxyInstance* RowProxy);
 	void OnSaveFailed(const struct FText& Reason);
 	void OnRowsUpdated();
-	void OnReplayEnumerationStart();
-	void OnReplayEnumerationFinish();
 	void OnRenameFailed(const struct FText& Reason);
 	void OnPlayFailed(const struct FText& Reason);
 	void OnDeleteFailed(const struct FText& Reason);
-	void OnCorruptReplayFound(const struct FText& Info);
+	void OnActionStarted();
+	void OnActionFinished();
+	bool IsHandlingAction();
 	bool DoesReplayFolderExist();
 	void DeleteReplay(class UAthenaReplayBrowserRowProxyInstance* RowProxy);
+	void DeleteInvalidReplays();
 	void BrowseToReplayFolder();
+	bool AreExternalActionsOutstanding();
+	bool AreAnyActionsOutstanding();
 };
 
 
 // Class FortniteUI.AthenaResourcesBase
-// 0x0000 (0x0240 - 0x0240)
+// 0x0000 (0x0238 - 0x0238)
 class UAthenaResourcesBase : public UFortHUDElementWidget
 {
 public:
@@ -1364,8 +1774,26 @@ public:
 };
 
 
+// Class FortniteUI.AthenaScorePopWidgetBase
+// 0x0000 (0x0238 - 0x0238)
+class UAthenaScorePopWidgetBase : public UFortHUDElementWidget
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaScorePopWidgetBase");
+		return ptr;
+	}
+
+
+	void OnNewScoreEarned(int NewScoreValue, const struct FText& NewScoreTypeText, int BigScoreThreshold);
+	void HandleNewScoreEarned(int NewPoints, EAthenaScoringEvent ScoreType);
+};
+
+
 // Class FortniteUI.AthenaSeasonStatusWidget
-// 0x0000 (0x0218 - 0x0218)
+// 0x0000 (0x0210 - 0x0210)
 class UAthenaSeasonStatusWidget : public UCommonUserWidget
 {
 public:
@@ -1379,13 +1807,83 @@ public:
 };
 
 
+// Class FortniteUI.AthenaSpectatorHitPointBarBase
+// 0x0020 (0x0230 - 0x0210)
+class UAthenaSpectatorHitPointBarBase : public UCommonUserWidget
+{
+public:
+	ESpectatorHealthBarType                            BarType;                                                  // 0x0210(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0211(0x0003) MISSED OFFSET
+	float                                              ValueCurrent;                                             // 0x0214(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              ValueLast;                                                // 0x0218(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              LastToCurrentUpdateRate;                                  // 0x021C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bIsDBNO;                                                  // 0x0220(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
+	class AFortPlayerStateAthena*                      PlayerState;                                              // 0x0228(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaSpectatorHitPointBarBase");
+		return ptr;
+	}
+
+
+	void SetPlayerState(class AFortPlayerStateAthena* InPlayerState);
+	void OnValueLastChanged();
+	void OnValueCurrentChanged();
+	void OnDBNOChanged();
+};
+
+
+// Class FortniteUI.AthenaSpectatorPlayerListEntryWidget
+// 0x0010 (0x0898 - 0x0888)
+class UAthenaSpectatorPlayerListEntryWidget : public UCommonButton
+{
+public:
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UAthenaSpectatorPlayerListRowData*           PlayerListRowData;                                        // 0x0890(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaSpectatorPlayerListEntryWidget");
+		return ptr;
+	}
+
+
+	void OnEntryDataSet();
+};
+
+
+// Class FortniteUI.AthenaSpectatorPlayerListScreenBase
+// 0x0010 (0x0220 - 0x0210)
+class UAthenaSpectatorPlayerListScreenBase : public UCommonUserWidget
+{
+public:
+	TArray<class UAthenaSpectatorPlayerListRowData*>   RowDataArray;                                             // 0x0210(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaSpectatorPlayerListScreenBase");
+		return ptr;
+	}
+
+
+	void UpdateListUI();
+	void OnPlayerDied(class AFortPlayerState* NewlyDeadPlayer);
+	void OnPlayerBecameRelevant(class AFortPlayerState* NewlyRelevantPlayer);
+	void OnPlayerBecameIrrelevant(class AFortPlayerState* NewlyIrrelevantPlayer);
+	void OnFollowedPlayerChanged(class AFortPlayerControllerSpectating* SpectatorPC, class AFortPlayerState* NewFollowedPlayer);
+	void ClearPlayers();
+};
+
+
 // Class FortniteUI.AthenaSpectatorScoreboardEntryWidget
-// 0x0010 (0x0818 - 0x0808)
+// 0x0010 (0x0898 - 0x0888)
 class UAthenaSpectatorScoreboardEntryWidget : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	class UAthenaSpectatorScoreboardRowData*           ScoreboardEntryObject;                                    // 0x0810(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UAthenaSpectatorScoreboardRowData*           ScoreboardRowData;                                        // 0x0890(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -1399,12 +1897,15 @@ public:
 
 
 // Class FortniteUI.AthenaSpectatorScoreboardScreenBase
-// 0x0068 (0x0280 - 0x0218)
+// 0x0078 (0x0288 - 0x0210)
 class UAthenaSpectatorScoreboardScreenBase : public UCommonUserWidget
 {
 public:
-	TArray<class UAthenaSpectatorScoreboardRowData*>   RowDataArray;                                             // 0x0218(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient)
-	unsigned char                                      UnknownData00[0x58];                                      // 0x0228(0x0058) MISSED OFFSET
+	TArray<class UAthenaSpectatorScoreboardRowData*>   RowDataArray;                                             // 0x0210(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient)
+	bool                                               bUseBroadcastScoreboard;                                  // 0x0220(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0221(0x0003) MISSED OFFSET
+	float                                              TimeBetweenTicks;                                         // 0x0224(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x60];                                      // 0x0228(0x0060) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1413,20 +1914,23 @@ public:
 	}
 
 
-	void UpdateListUI();
-	void ForceUpdate();
+	void UpdateRows();
+	void UpdateRowFromPlayerState(class AFortPlayerState* PlayerState);
+	void UpdateListUI(bool bResetFocus);
+	void SetSortBy(EScoreboardSortBy InSortBy);
+	bool IsMapWidgetLocationVisible(const struct FVector2D& MapWidgetLocation);
 };
 
 
 // Class FortniteUI.AthenaStatsScreenBase
-// 0x00A0 (0x0490 - 0x03F0)
+// 0x00A0 (0x03C8 - 0x0328)
 class UAthenaStatsScreenBase : public UFortActivatablePanel
 {
 public:
-	class UCommonTabListWidget*                        StatsTabList;                                             // 0x03F0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	int                                                CurrentPlaylistId;                                        // 0x03F8(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	bool                                               bWasLastQuerySuccessful;                                  // 0x03FC(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x93];                                      // 0x03FD(0x0093) MISSED OFFSET
+	class UCommonTabListWidget*                        StatsTabList;                                             // 0x0328(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	int                                                CurrentPlaylistId;                                        // 0x0330(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bWasLastQuerySuccessful;                                  // 0x0334(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x93];                                      // 0x0335(0x0093) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1449,11 +1953,11 @@ public:
 
 
 // Class FortniteUI.AthenaTeamAliveCountBase
-// 0x0018 (0x0258 - 0x0240)
+// 0x0018 (0x0250 - 0x0238)
 class UAthenaTeamAliveCountBase : public UFortHUDElementWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x18];                                      // 0x0240(0x0018) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0238(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1466,19 +1970,101 @@ public:
 };
 
 
+// Class FortniteUI.AthenaTeamScoreWidgetBase
+// 0x0010 (0x0248 - 0x0238)
+class UAthenaTeamScoreWidgetBase : public UFortHUDElementWidget
+{
+public:
+	class AFortPlayerStateAthena*                      CurrPlayerState;                                          // 0x0238(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	int                                                GoalScore;                                                // 0x0240(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	int                                                PreviousScore;                                            // 0x0244(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaTeamScoreWidgetBase");
+		return ptr;
+	}
+
+
+	void OnScoreChanged(int Score);
+	void OnPlacementChanged(int Placement);
+	void HandleSpectatingChanged(class AFortPlayerStateAthena* SpectatingTarget);
+	void HandleScoreChanged(int Score);
+	void HandlePlacementChanged(int Placement);
+};
+
+
+// Class FortniteUI.AthenaTravelLogFormatting
+// 0x0000 (0x0028 - 0x0028)
+class UAthenaTravelLogFormatting : public UBlueprintFunctionLibrary
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaTravelLogFormatting");
+		return ptr;
+	}
+
+
+	bool STATIC_ShouldDisplayText(const struct FAthenaTravelLogEntry& Entry);
+	bool STATIC_IsTravelLogTextDisplayEnabled();
+	struct FText STATIC_FormatTravelLogEntry(class UObject* WorldContextObject, const struct FAthenaTravelLogEntry& Entry);
+};
+
+
+// Class FortniteUI.AthenaTrickFeedBase
+// 0x0008 (0x0240 - 0x0238)
+class UAthenaTrickFeedBase : public UFortHUDElementWidget
+{
+public:
+	class UAthenaPlayerViewModel*                      VM;                                                       // 0x0238(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaTrickFeedBase");
+		return ptr;
+	}
+
+
+	void BindToModel(class UAthenaPlayerViewModel* ViewModel);
+};
+
+
+// Class FortniteUI.AthenaWinConditionMsgBase
+// 0x0020 (0x0258 - 0x0238)
+class UAthenaWinConditionMsgBase : public UFortHUDElementWidget
+{
+public:
+	unsigned char                                      UnknownData00[0x20];                                      // 0x0238(0x0020) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.AthenaWinConditionMsgBase");
+		return ptr;
+	}
+
+
+	void OnWinConditionMsgEvent(const struct FText& MESSAGE, EAthenaWinConditionMsgType MsgType);
+	void HandleWinConditionMsgDisplay(EAthenaWinConditionMsgType MsgType);
+};
+
+
 // Class FortniteUI.BacchusButton
-// 0x0020 (0x0278 - 0x0258)
+// 0x0050 (0x03A0 - 0x0350)
 class UBacchusButton : public UBacchusHUDElement
 {
 public:
-	TEnumAsByte<EButtonClickMethod>                    ClickMethod;                                              // 0x0258(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	TEnumAsByte<EButtonTouchMethod>                    TouchMethod;                                              // 0x0259(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x2];                                       // 0x025A(0x0002) MISSED OFFSET
-	float                                              ButtonSize;                                               // 0x025C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              ButtonDisplayScale;                                       // 0x0260(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x4];                                       // 0x0264(0x0004) MISSED OFFSET
-	class UButton*                                     InternalButton;                                           // 0x0268(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x8];                                       // 0x0270(0x0008) MISSED OFFSET
+	TEnumAsByte<EButtonClickMethod>                    ClickMethod;                                              // 0x0350(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TEnumAsByte<EButtonTouchMethod>                    TouchMethod;                                              // 0x0351(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x2];                                       // 0x0352(0x0002) MISSED OFFSET
+	float                                              ButtonSize;                                               // 0x0354(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              ButtonDisplayScale;                                       // 0x0358(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x035C(0x0004) MISSED OFFSET
+	struct FText                                       ButtonSizeName;                                           // 0x0360(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       ButtonDisplayScaleName;                                   // 0x0378(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	class UButton*                                     InternalButton;                                           // 0x0390(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x8];                                       // 0x0398(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1488,6 +2074,8 @@ public:
 
 
 	void SetButtonSprite(class UPaperSprite* NewSprite);
+	void SetButtonSize(float NewButtonSize);
+	void SetButtonDisplayScale(float NewDisplayScale);
 	void OnClicked();
 };
 
@@ -1508,10 +2096,17 @@ public:
 
 
 // Class FortniteUI.BacchusHUDLayoutToolPanel
-// 0x0000 (0x03C0 - 0x03C0)
+// 0x0088 (0x0380 - 0x02F8)
 class UBacchusHUDLayoutToolPanel : public UCommonActivatablePanel
 {
 public:
+	class UHUDLayoutToolButtonLayer*                   ButtonLayer;                                              // 0x02F8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UHUDLayoutToolPanZoomWidget*                 ZoomWidget;                                               // 0x0300(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      Background;                                               // 0x0308(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FBackgroundColors                           CombatColors;                                             // 0x0310(0x0030) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FBackgroundColors                           BuildColors;                                              // 0x0340(0x0030) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FVector2D                                   OpenPanelOffset;                                          // 0x0370(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	class UMaterialInstanceDynamic*                    BackgroundMID;                                            // 0x0378(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -1519,19 +2114,67 @@ public:
 		return ptr;
 	}
 
+
+	void OnBuildMode(bool bNewlyInBuildMode);
+};
+
+
+// Class FortniteUI.BacchusQuickbar
+// 0x0000 (0x0350 - 0x0350)
+class UBacchusQuickbar : public UBacchusHUDElement
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.BacchusQuickbar");
+		return ptr;
+	}
+
+};
+
+
+// Class FortniteUI.CarmineHUDBase
+// 0x0030 (0x0238 - 0x0208)
+class UCarmineHUDBase : public UUserWidget
+{
+public:
+	unsigned char                                      UnknownData00[0x30];                                      // 0x0208(0x0030) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.CarmineHUDBase");
+		return ptr;
+	}
+
+
+	void OnBossHealthBarChanged(const struct FAthenaBossHealthData& BossData);
+};
+
+
+// Class FortniteUI.CarmineUIExtenderBase
+// 0x0008 (0x0038 - 0x0030)
+class UCarmineUIExtenderBase : public UFortGameUIExtenderAthena
+{
+public:
+	bool                                               bShowGoToBossCommand;                                     // 0x0030(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0031(0x0007) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.CarmineUIExtenderBase");
+		return ptr;
+	}
+
 };
 
 
 // Class FortniteUI.CMSContext
-// 0x0108 (0x0130 - 0x0028)
+// 0x0068 (0x0090 - 0x0028)
 class UCMSContext : public UBlueprintContextBase
 {
 public:
-	unsigned char                                      UnknownData00[0xE8];                                      // 0x0028(0x00E8) MISSED OFFSET
-	bool                                               bNewNewsAvailable;                                        // 0x0110(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0111(0x0007) MISSED OFFSET
-	struct FString                                     SessionNewsLastModifedDate;                               // 0x0118(0x0010) (ZeroConstructor, Transient)
-	unsigned char                                      UnknownData02[0x8];                                       // 0x0128(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x68];                                      // 0x0028(0x0068) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1570,7 +2213,7 @@ public:
 
 
 // Class FortniteUI.EmergencyNoticeBase
-// 0x0000 (0x0218 - 0x0218)
+// 0x0000 (0x0210 - 0x0210)
 class UEmergencyNoticeBase : public UCommonUserWidget
 {
 public:
@@ -1584,6 +2227,121 @@ public:
 
 	void ShowNotice(const struct FText& Title, const struct FText& Body);
 	void HideNotice();
+};
+
+
+// Class FortniteUI.ReportablePlayerInfo
+// 0x0038 (0x0060 - 0x0028)
+class UReportablePlayerInfo : public UObject
+{
+public:
+	unsigned char                                      UnknownData00[0x38];                                      // 0x0028(0x0038) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.ReportablePlayerInfo");
+		return ptr;
+	}
+
+};
+
+
+// Class FortniteUI.FeedbackReportablePlayerBase
+// 0x0038 (0x08C0 - 0x0888)
+class UFeedbackReportablePlayerBase : public UCommonButton
+{
+public:
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	struct FString                                     DebugName;                                                // 0x0890(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UReportablePlayerInfo*                       PlayerInfo;                                               // 0x08A0(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UCommonTextBlock*                            TextBlock_Header;                                         // 0x08A8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            TextBlock_SecondaryInfoText;                              // 0x08B0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UHorizontalBox*                              HorizontalBox_SecondayInfoArea;                           // 0x08B8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FeedbackReportablePlayerBase");
+		return ptr;
+	}
+
+
+	void SetSelectionState(bool bIsSelected, bool bAnimateOnSelect);
+};
+
+
+// Class FortniteUI.FeedbackReportPlayerBase
+// 0x0080 (0x03A8 - 0x0328)
+class UFeedbackReportPlayerBase : public UFortActivatablePanel
+{
+public:
+	TArray<class UReportablePlayerInfo*>               ReportablePlayers;                                        // 0x0328(0x0010) (ZeroConstructor, Transient)
+	TArray<class UPlayerReportReasonInfo*>             ReportReasons;                                            // 0x0338(0x0010) (ZeroConstructor, Transient)
+	class UReportablePlayerInfo*                       SelectedPlayer;                                           // 0x0348(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UPlayerReportReasonInfo*                     SelectedReportReason;                                     // 0x0350(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	int                                                OptionalReportReasonLength;                               // 0x0358(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	int                                                NumPlayerEntries;                                         // 0x035C(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UCommonButton*                               Button_Cancel;                                            // 0x0360(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Send;                                              // 0x0368(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButtonGroup*                          TabButtonGroup;                                           // 0x0370(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0378(0x0008) MISSED OFFSET
+	class UCommonListView*                             ListView_ReportablePlayers;                               // 0x0380(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonListView*                             ListView_ReportReasons;                                   // 0x0388(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UEditableText*                               EditableText_ReasonField;                                 // 0x0390(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UMultiLineEditableText*                      MultiLineEditableText_ReasonField;                        // 0x0398(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_CharCount;                                           // 0x03A0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FeedbackReportPlayerBase");
+		return ptr;
+	}
+
+
+	void OnPopulateView(EPlayerReportingStep CurrentStep);
+	void OnListViewSelectionMade(EPlayerReportingStep ReportingStep, const struct FText& SelectedText);
+	void OnFeedbackSentCallback(bool Succeeded);
+	void HandleTabClicked(EPlayerReportingStep ClickedStep);
+	void HandleMessageChanged(const struct FText& Text);
+	void HandleBackAction();
+	void DynamicHandleReportReasonSelected(class UObject* SelectedItem);
+	void DynamicHandlePlayerSelected(class UObject* SelectedItem);
+	void CloseDialog();
+};
+
+
+// Class FortniteUI.PlayerReportReasonInfo
+// 0x0020 (0x0048 - 0x0028)
+class UPlayerReportReasonInfo : public UObject
+{
+public:
+	unsigned char                                      UnknownData00[0x20];                                      // 0x0028(0x0020) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.PlayerReportReasonInfo");
+		return ptr;
+	}
+
+};
+
+
+// Class FortniteUI.FeedbackReportPlayerReasonBase
+// 0x0018 (0x08A0 - 0x0888)
+class UFeedbackReportPlayerReasonBase : public UCommonButton
+{
+public:
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UPlayerReportReasonInfo*                     ReportReason;                                             // 0x0890(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UCommonTextBlock*                            TextBlock_Header;                                         // 0x0898(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FeedbackReportPlayerReasonBase");
+		return ptr;
+	}
+
+
+	void SetSelectionState(bool bIsSelected, bool bAnimateOnSelect);
 };
 
 
@@ -1603,18 +2361,27 @@ public:
 
 	void RemoveDelegatesFromWidget(class UWidget* Widget);
 	void RegisterForAttributeChanged(class UWidget* Widget, class UAbilitySystemComponent* ASC, const struct FGameplayAttribute& Attribute, const struct FScriptDelegate& Callback);
+	bool HasMatchingGameplayTag(const struct FGameplayTag& TagToCheck);
 };
 
 
 // Class FortniteUI.FortAccountLinkingWindow
-// 0x0030 (0x0420 - 0x03F0)
+// 0x00C8 (0x03F0 - 0x0328)
 class UFortAccountLinkingWindow : public UFortActivatablePanel
 {
 public:
-	struct FScriptMulticastDelegate                    OnNewPurchaseReceipt;                                     // 0x03F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FString                                     FoundersPackStoreCategory;                                // 0x0400(0x0010) (ZeroConstructor, Config)
-	bool                                               bPSPlusHasFreeAccess;                                     // 0x0410(0x0001) (ZeroConstructor, Config, IsPlainOldData)
-	unsigned char                                      UnknownData00[0xF];                                       // 0x0411(0x000F) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x70];                                      // 0x0328(0x0070) MISSED OFFSET
+	class UCommonWidgetSwitcher*                       Switcher_Main;                                            // 0x0398(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UBackgroundBlur*                             HaveEpicAccountBlur;                                      // 0x03A0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UBackgroundBlur*                             SkipSignInBlur;                                           // 0x03A8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonWidgetSwitcher*                       Switcher_NoThanks;                                        // 0x03B0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCircularThrobber*                           Throbber_LoginDelay;                                      // 0x03B8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Signup;                                            // 0x03C0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Login;                                             // 0x03C8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_NoThanks;                                          // 0x03D0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_SkipSignInSignup;                                  // 0x03D8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_SkipSignInLogin;                                   // 0x03E0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_SkipSignInNoThanks;                                // 0x03E8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -1623,63 +2390,25 @@ public:
 	}
 
 
-	bool IsPurchaseFree();
-};
-
-
-// Class FortniteUI.FortAsyncAction_WebCreateEpicAccountAndLink
-// 0x0040 (0x0068 - 0x0028)
-class UFortAsyncAction_WebCreateEpicAccountAndLink : public UBlueprintAsyncActionBase
-{
-public:
-	struct FScriptMulticastDelegate                    OnAccountCreatedAndLinked;                                // 0x0028(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnAccountCreatedButNotLinked;                             // 0x0038(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnAccountNotCreated;                                      // 0x0048(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UObject*                                     WorldContextObject;                                       // 0x0058(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	bool                                               bAccountLinked;                                           // 0x0060(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0061(0x0007) MISSED OFFSET
-
-	static UClass* StaticClass()
-	{
-		static auto ptr = UObject::FindClass("Class FortniteUI.FortAsyncAction_WebCreateEpicAccountAndLink");
-		return ptr;
-	}
-
-
-	class UFortAsyncAction_WebCreateEpicAccountAndLink* STATIC_WebCreateEpicAccountAndLink(class UObject* InWorldContextObject);
-};
-
-
-// Class FortniteUI.FortAsyncAction_CreateHeadlessAccount
-// 0x0028 (0x0050 - 0x0028)
-class UFortAsyncAction_CreateHeadlessAccount : public UBlueprintAsyncActionBase
-{
-public:
-	struct FScriptMulticastDelegate                    OnAccountCreated;                                         // 0x0028(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnAccountNotCreated;                                      // 0x0038(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UObject*                                     WorldContextObject;                                       // 0x0048(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-
-	static UClass* StaticClass()
-	{
-		static auto ptr = UObject::FindClass("Class FortniteUI.FortAsyncAction_CreateHeadlessAccount");
-		return ptr;
-	}
-
-
-	class UFortAsyncAction_CreateHeadlessAccount* STATIC_CreateHeadlessAccount(class UObject* InWorldContextObject);
+	void HandleSkipSignUpClicked();
+	void HandleSkipNoThanksClicked();
+	void HandleSkipLoginClicked();
+	void HandleSignupClicked();
+	void HandleNoThanksClicked();
+	void HandleLoginClicked();
+	void FortNewPlatformReceipt__DelegateSignature();
 };
 
 
 // Class FortniteUI.FortAccountNotFound
-// 0x0068 (0x0280 - 0x0218)
+// 0x0028 (0x0238 - 0x0210)
 class UFortAccountNotFound : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x48];                                      // 0x0218(0x0048) MISSED OFFSET
-	class URichTextBlock*                              Text_Desc;                                                // 0x0260(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Back;                                              // 0x0268(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Web;                                               // 0x0270(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0278(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0210(0x0010) MISSED OFFSET
+	class URichTextBlock*                              Text_Desc;                                                // 0x0220(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Back;                                              // 0x0228(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Web;                                               // 0x0230(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -1687,18 +2416,15 @@ public:
 		return ptr;
 	}
 
-
-	void HandleWebButtonClicked(class UCommonButton* Button);
-	void HandleBackButtonClicked(class UCommonButton* Button);
 };
 
 
 // Class FortniteUI.FortOptionsTab
-// 0x0010 (0x0228 - 0x0218)
+// 0x0010 (0x0220 - 0x0210)
 class UFortOptionsTab : public UCommonUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnTabSettingChanged;                                      // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnTabSettingChanged;                                      // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 
 	static UClass* StaticClass()
 	{
@@ -1709,6 +2435,7 @@ public:
 
 	void UpdateOptionsTab();
 	bool IsXboxPlatform();
+	bool IsSwitchPlatform();
 	bool IsPS4Platform();
 	bool IsAthena();
 	void CenterOnTab();
@@ -1716,7 +2443,7 @@ public:
 
 
 // Class FortniteUI.FortAccountOptions
-// 0x0000 (0x0228 - 0x0228)
+// 0x0000 (0x0220 - 0x0220)
 class UFortAccountOptions : public UFortOptionsTab
 {
 public:
@@ -1727,6 +2454,10 @@ public:
 		return ptr;
 	}
 
+
+	void SetRefundRequestText(int RefundsRemaining, int TotalRefunds, int DaysToRefund);
+	void SetCanReceiveGifts(bool bCanReceiveGifts);
+	bool CanLocalPlayerReceiveGifts();
 };
 
 
@@ -1748,11 +2479,11 @@ public:
 
 
 // Class FortniteUI.FortAccountWidgetBase
-// 0x0038 (0x0250 - 0x0218)
+// 0x0038 (0x0248 - 0x0210)
 class UFortAccountWidgetBase : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x38];                                      // 0x0218(0x0038) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x38];                                      // 0x0210(0x0038) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1764,19 +2495,19 @@ public:
 	void OnAccountInfoChanged(const struct FFortPublicAccountInfo& Result);
 	void HandleCurrentlyViewedAccountInfoChanged(const struct FFortPublicAccountInfo& NewInfo);
 	struct FAthenaSeasonBannerLevel GetSeasonBannerInfo(int Level);
-	bool GetNextSeasonReward(struct FFortItemInstanceQuantityPair* Reward, int* RewardLevel);
-	bool GetNextSeasonChaseReward(int StartingLevel, struct FFortItemInstanceQuantityPair* Reward, int* RewardLevel);
+	bool GetNextSeasonReward(struct FFortItemQuantityPair* Reward, int* RewardLevel);
+	bool GetNextSeasonChaseReward(int StartingLevel, struct FFortItemQuantityPair* Reward, int* RewardLevel);
 };
 
 
 // Class FortniteUI.FortUserWidget
-// 0x0010 (0x0220 - 0x0210)
+// 0x0010 (0x0218 - 0x0208)
 class UFortUserWidget : public UUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
-	bool                                               bConsumePointerInput;                                     // 0x0218(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0219(0x0007) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0208(0x0008) MISSED OFFSET
+	bool                                               bConsumePointerInput;                                     // 0x0210(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0211(0x0007) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1791,16 +2522,16 @@ public:
 
 
 // Class FortniteUI.FortActionHandlerPanel
-// 0x0028 (0x0248 - 0x0220)
+// 0x0028 (0x0240 - 0x0218)
 class UFortActionHandlerPanel : public UFortUserWidget
 {
 public:
-	bool                                               bAutoActivate;                                            // 0x0220(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	EFortPlayerControllerProcessing                    PlayerControllerProcessing;                               // 0x0221(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	bool                                               bIsActive;                                                // 0x0222(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x5];                                       // 0x0223(0x0005) MISSED OFFSET
-	struct FScriptDelegate                             OnPanelActivated;                                         // 0x0228(0x0010) (ZeroConstructor, InstancedReference)
-	struct FScriptDelegate                             OnPanelDeactivated;                                       // 0x0238(0x0010) (ZeroConstructor, InstancedReference)
+	bool                                               bAutoActivate;                                            // 0x0218(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	EFortPlayerControllerProcessing                    PlayerControllerProcessing;                               // 0x0219(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	bool                                               bIsActive;                                                // 0x021A(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x5];                                       // 0x021B(0x0005) MISSED OFFSET
+	struct FScriptDelegate                             OnPanelActivated;                                         // 0x0220(0x0010) (ZeroConstructor, InstancedReference)
+	struct FScriptDelegate                             OnPanelDeactivated;                                       // 0x0230(0x0010) (ZeroConstructor, InstancedReference)
 
 	static UClass* StaticClass()
 	{
@@ -1861,17 +2592,196 @@ public:
 };
 
 
+// Class FortniteUI.FortAlterationButtonWidget
+// 0x0008 (0x0890 - 0x0888)
+class UFortAlterationButtonWidget : public UCommonButton
+{
+public:
+	class UFortAlterationInfo*                         AlterationInfo;                                           // 0x0888(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortAlterationButtonWidget");
+		return ptr;
+	}
+
+
+	void Setup(class UFortAlterationInfo* InAlterationInfo);
+	void OnSetup();
+	class UFortAlterationInfo* GetAlterationInfo();
+};
+
+
+// Class FortniteUI.FortAlterationModOptinScreenBase
+// 0x0018 (0x0310 - 0x02F8)
+class UFortAlterationModOptinScreenBase : public UCommonActivatablePanel
+{
+public:
+	class UFortItem*                                   ItemToOptin;                                              // 0x02F8(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0300(0x0010) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortAlterationModOptinScreenBase");
+		return ptr;
+	}
+
+
+	void SetupItem(class UFortItem* Item);
+	void RequestClose(bool bCancelled);
+	void OnSetupItem();
+	void OnItemConversionComplete();
+	void ConvertItemAlterations();
+};
+
+
+// Class FortniteUI.FortAlterationModScreenBase
+// 0x0058 (0x0380 - 0x0328)
+class UFortAlterationModScreenBase : public UFortActivatablePanel
+{
+public:
+	class UFortAlterationsWidget*                      AlterationsToEdit;                                        // 0x0328(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortAlterationOptionsBase*                  AlterationSlotOptions;                                    // 0x0330(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemDetailsHostPanel*                   ItemInspectionMainItemDetailsHostPanel;                   // 0x0338(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemDetailsHostPanel*                   AlerationsExtraDetailsPanel;                              // 0x0340(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UClass*                                      AlterationModOptinScreenClass;                            // 0x0348(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FDataTableRowHandle                         BackInputAction;                                          // 0x0350(0x0010) (Edit)
+	TWeakObjectPtr<class UFortAlterableItem>           AlterableItem;                                            // 0x0360(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0368(0x0018) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortAlterationModScreenBase");
+		return ptr;
+	}
+
+
+	void SetItemForAlterationsModding(class UFortAlterableItem* InAlterableItem);
+	void RefreshItemAndAlterationsBP();
+	void OnAlterationModificationSucess(int ModifiedSlotIndex);
+	void OnAlterationModificationStarted();
+	void OnAlterationModificationCompleted();
+	void HandleBackAction(bool* bPassThrough);
+};
+
+
+// Class FortniteUI.FortAlterationOption
+// 0x0040 (0x08C8 - 0x0888)
+class UFortAlterationOption : public UCommonButton
+{
+public:
+	struct FAlterationOption                           AlterationOption;                                         // 0x0888(0x0038)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x08C0(0x0008) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortAlterationOption");
+		return ptr;
+	}
+
+
+	void Setup(EFortAlterationOptionType InAlterationOptionType, struct FAlterationOption* InAlterationOption);
+	void OnSetup();
+	TArray<struct FFortItemQuantityPair> GetRequiredIngredients();
+	float GetNextPipCount(float MaxPipCount);
+	float GetCurrentPipCount(float MaxPipCount);
+	EFortAlterationOptionType GetAlterationOptionType();
+	class UFortAlterationItemDefinition* GetAlterationDefinition();
+};
+
+
+// Class FortniteUI.FortAlterationOptionsBase
+// 0x0098 (0x02A8 - 0x0210)
+class UFortAlterationOptionsBase : public UCommonUserWidget
+{
+public:
+	class UClass*                                      AlterationOptionClass;                                    // 0x0210(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UCommonButtonGroup*                          AlterationOptionButtons;                                  // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x20];                                      // 0x0220(0x0020) MISSED OFFSET
+	class UFortAlterableItem*                          Item;                                                     // 0x0240(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	int                                                SlotIndex;                                                // 0x0248(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bUpgradeOptionExists;                                     // 0x024C(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x024D(0x0003) MISSED OFFSET
+	struct FAlterationOption                           UpgradeOption;                                            // 0x0250(0x0038) (Transient)
+	TArray<struct FAlterationOption>                   RespecOptions;                                            // 0x0288(0x0010) (ZeroConstructor, Transient)
+	unsigned char                                      UnknownData02[0x10];                                      // 0x0298(0x0010) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortAlterationOptionsBase");
+		return ptr;
+	}
+
+
+	void SetItem(class UFortAlterableItem* InItem, int InSlotIndex, bool bSelectionRequired);
+	void ProcessAlterationOptions();
+	void OnShouldGiveFocus(int Index, bool bGiveFocus);
+	void OnItemChanged();
+	void OnIngredientsChanged(TArray<struct FFortItemQuantityPair> RequiredIngredients);
+	void OnGenerateOption(EFortAlterationOptionType OptionType, class UFortAlterationOption* OptionWidget);
+	bool IsValidAlterationSlot();
+	bool IsGameplayAlterationSlot();
+	void HandleAlterationsOptionSelected(class UCommonButton* AlterationOptionButton, int GroupIndex);
+	void HandleAlterationsOptionHovered(class UCommonButton* AlterationOptionButton, int GroupIndex);
+	void HandleAlterationOptionConfirmed(class UCommonButton* AlterationOptionButton, int GroupIndex);
+	bool DoAlterationOptionsExist(EFortAlterationOptionType OptionType);
+	void ConfirmSelection();
+	void ConfirmationComplete();
+	void CancelSelection();
+	bool AreIngredientRequirementsMent(TArray<struct FFortItemQuantityPair> RequiredIngredients);
+};
+
+
+// Class FortniteUI.FortAlterationInfo
+// 0x0028 (0x0050 - 0x0028)
+class UFortAlterationInfo : public UObject
+{
+public:
+	class UFortItem*                                   CorrespondingItem;                                        // 0x0028(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	int                                                SlotIndex;                                                // 0x0030(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0034(0x0004) MISSED OFFSET
+	class UFortAlterationItemDefinition*               AlterationDef;                                            // 0x0038(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	int                                                RequiredMinLevel;                                         // 0x0040(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bIsUpgrade;                                               // 0x0044(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x0045(0x0003) MISSED OFFSET
+	int                                                CurrentItemLevel;                                         // 0x0048(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bFreeAlterationSlot;                                      // 0x004C(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bUnlockedByEvolution;                                     // 0x004D(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x2];                                       // 0x004E(0x0002) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortAlterationInfo");
+		return ptr;
+	}
+
+
+	bool IsFreeAlterationChoice();
+	bool IsAlterationUnlocked();
+	bool IsAlterationHighlighted();
+	int GetSlotIndex();
+	int GetRequiredLevel();
+	EFortRarity GetRarity();
+	float GetCurrentPipCount(float MaxPips);
+	class UFortItem* GetCorrespondingItem();
+	class UFortAlterationItemDefinition* GetAlterationDefintion();
+};
+
+
 // Class FortniteUI.FortAlterationsWidget
-// 0x0030 (0x0248 - 0x0218)
+// 0x0078 (0x0288 - 0x0210)
 class UFortAlterationsWidget : public UCommonUserWidget
 {
 public:
-	class UFortItem*                                   Item;                                                     // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortAlterationWidgetState                         State;                                                    // 0x0220(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
-	class UFortItem*                                   ItemToCompareWith;                                        // 0x0228(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UCommonTextBlock*                            EmptyText;                                                // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x10];                                      // 0x0238(0x0010) MISSED OFFSET
+	class UFortItem*                                   Item;                                                     // 0x0210(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortAlterationWidgetState                         State;                                                    // 0x0218(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0219(0x0007) MISSED OFFSET
+	class UFortItem*                                   ItemToCompareWith;                                        // 0x0220(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bUseButtons;                                              // 0x0228(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x37];                                      // 0x0229(0x0037) MISSED OFFSET
+	class UCommonTextBlock*                            EmptyText;                                                // 0x0260(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButtonGroup*                          ButtonGroup;                                              // 0x0268(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x18];                                      // 0x0270(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -1880,23 +2790,30 @@ public:
 	}
 
 
+	void SetupInteractionEvents(class UFortAlterationButtonWidget* Buttion);
 	void SetState(EFortAlterationWidgetState InState);
 	void SetItemToCompareWith(class UFortItem* InItem);
-	void SetItem(class UFortItem* InItem);
+	void SetItem(class UFortItem* InItem, bool bInPreviewNewAlterations, bool bIntroAlterations);
 	void ProcessAlterations();
 	void OnStateChanged();
 	void OnItemToCompareWithChanged();
-	void OnItemChanged();
-	void OnGenerateAlteration(const struct FFortUIAlteration& AlterationInfo);
+	void OnItemChanged(bool bIntroAlterations);
+	void OnGenerateAlteration(class UFortAlterationInfo* AlterationInfo);
+	void OnFocusFirstItem();
+	void OnAlterationSlotIndexModifiedBP(int ModifiedIndex);
+	void HandleAlterationsSlotSelected(class UCommonButton* InAlterationButton, int SelectedIndex);
+	void HandleAlterationsSlotHovered(class UCommonButton* InAlterationButton, int SelectedIndex);
 };
 
 
 // Class FortniteUI.FortAlterationWidget
-// 0x0018 (0x0230 - 0x0218)
+// 0x0010 (0x0220 - 0x0210)
 class UFortAlterationWidget : public UCommonUserWidget
 {
 public:
-	struct FFortUIAlteration                           AlterationInfo;                                           // 0x0218(0x0018) (BlueprintVisible, BlueprintReadOnly)
+	float                                              MaxPipCount;                                              // 0x0210(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0214(0x0004) MISSED OFFSET
+	class UFortAlterationInfo*                         AlterationInfo;                                           // 0x0218(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -1905,19 +2822,18 @@ public:
 	}
 
 
-	bool IsAlterationUnlocked();
-	bool IsAlterationHighlighted();
-	int GetRequiredLevel();
-	class UFortAlterationItemDefinition* GetAlterationDefintion();
+	void Setup(class UFortAlterationInfo* InAlterationInfo);
+	void OnSetup();
+	class UFortAlterationInfo* GetAlterationInfo();
 };
 
 
 // Class FortniteUI.FortAnnouncementWidget
-// 0x0008 (0x0220 - 0x0218)
+// 0x0008 (0x0218 - 0x0210)
 class UFortAnnouncementWidget : public UCommonUserWidget
 {
 public:
-	class AFortClientAnnouncement*                     BoundAnnouncement;                                        // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class AFortClientAnnouncement*                     BoundAnnouncement;                                        // 0x0210(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -1933,7 +2849,7 @@ public:
 
 
 // Class FortniteUI.FortArmoryScreen
-// 0x0000 (0x03C0 - 0x03C0)
+// 0x0000 (0x02F8 - 0x02F8)
 class UFortArmoryScreen : public UCommonActivatablePanel
 {
 public:
@@ -1988,13 +2904,13 @@ public:
 
 
 // Class FortniteUI.FortAsyncAction_ShowAdvancedLatentConfirmation_NUI
-// 0x0198 (0x01C0 - 0x0028)
+// 0x0130 (0x0158 - 0x0028)
 class UFortAsyncAction_ShowAdvancedLatentConfirmation_NUI : public UBlueprintAsyncActionBase
 {
 public:
 	struct FScriptMulticastDelegate                    DialogResult;                                             // 0x0028(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	class UObject*                                     WorldContextObject;                                       // 0x0038(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	struct FFortDialogDescription_NUI                  Description;                                              // 0x0040(0x0180)
+	struct FFortDialogDescription_NUI                  Description;                                              // 0x0040(0x0118)
 
 	static UClass* StaticClass()
 	{
@@ -2008,7 +2924,7 @@ public:
 
 
 // Class FortniteUI.FortAsyncAction_ShowConfirmation
-// 0x0198 (0x01C0 - 0x0028)
+// 0x0168 (0x0190 - 0x0028)
 class UFortAsyncAction_ShowConfirmation : public UBlueprintAsyncActionBase
 {
 public:
@@ -2016,7 +2932,7 @@ public:
 	struct FScriptMulticastDelegate                    OnDeclined;                                               // 0x0038(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	struct FScriptMulticastDelegate                    OnTimedOut;                                               // 0x0048(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	class UObject*                                     WorldContextObject;                                       // 0x0058(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	struct FFortDialogDescription                      Description;                                              // 0x0060(0x0160)
+	struct FFortDialogDescription                      Description;                                              // 0x0060(0x0130)
 
 	static UClass* StaticClass()
 	{
@@ -2030,13 +2946,14 @@ public:
 
 
 // Class FortniteUI.FortAsyncAction_ShowConfirmation_NUI
-// 0x0198 (0x01C0 - 0x0028)
+// 0x0138 (0x0160 - 0x0028)
 class UFortAsyncAction_ShowConfirmation_NUI : public UBlueprintAsyncActionBase
 {
 public:
 	struct FScriptMulticastDelegate                    DialogResult;                                             // 0x0028(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	class UObject*                                     WorldContextObject;                                       // 0x0038(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	struct FFortDialogDescription_NUI                  Description;                                              // 0x0040(0x0180)
+	struct FFortDialogDescription_NUI                  Description;                                              // 0x0040(0x0118)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0158(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2052,14 +2969,14 @@ public:
 
 
 // Class FortniteUI.FortAsyncAction_ShowPartyDialog
-// 0x0388 (0x03B0 - 0x0028)
+// 0x0320 (0x0348 - 0x0028)
 class UFortAsyncAction_ShowPartyDialog : public UBlueprintAsyncActionBase
 {
 public:
 	class UObject*                                     WorldContextObject;                                       // 0x0028(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	struct FFortDialogDescription_NUI                  Description;                                              // 0x0030(0x0180)
-	struct FFortTeamMemberInfo                         TeamMemberInfo;                                           // 0x01B0(0x01F8)
-	class ULocalPlayer*                                LocalPlayer;                                              // 0x03A8(0x0008) (ZeroConstructor, IsPlainOldData)
+	struct FFortDialogDescription_NUI                  Description;                                              // 0x0030(0x0118)
+	struct FFortTeamMemberInfo                         TeamMemberInfo;                                           // 0x0148(0x01F8)
+	class ULocalPlayer*                                LocalPlayer;                                              // 0x0340(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -2073,28 +2990,81 @@ public:
 };
 
 
+// Class FortniteUI.FortAthenaMatchmakingOptions
+// 0x0040 (0x0368 - 0x0328)
+class UFortAthenaMatchmakingOptions : public UFortActivatablePanel
+{
+public:
+	class UClass*                                      TileItemClass;                                            // 0x0328(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	class UScrollBox*                                  StandardGameModeBox;                                      // 0x0330(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UScrollBox*                                  LTMGameModeBox;                                           // 0x0338(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               TeamFillButton;                                           // 0x0340(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               RankedButton;                                             // 0x0348(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButtonGroup*                          MatchmakingTileGroup;                                     // 0x0350(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0358(0x0010) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortAthenaMatchmakingOptions");
+		return ptr;
+	}
+
+
+	void UpdateMatchmakingButtonsBP(bool IsPartyLeader, bool IsMatchmaking, bool PlaylistSupportsPartySize, bool PlaylistIsDisabled, bool CanShowFill);
+	void SetSquadFillText(bool InCurrentSquadFill);
+	void SetRepresentedPlaylist(class UFortPlaylistAthena* PlaylistToRepresent);
+	void RepresentedPlaylistChanged(class UFortPlaylistAthena* NewRepresentedPlaylist);
+	void OnTileDoubleClicked(class UCommonButton* ButtonClicked);
+	void HandlePlaylistNameChanged(const struct FName& NewPlaylistName);
+	void HandleInputTypeChanged(ECommonInputType CurrentInputType);
+	void HandleButtonGroupSelectionChanged(class UCommonButton* Button, int Index);
+	void CloseMatchmakingOptions();
+	void CanceledPlaylist();
+	void AcceptedPlaylist();
+};
+
+
+// Class FortniteUI.FortAthenaMatchmakingTile
+// 0x0010 (0x0898 - 0x0888)
+class UFortAthenaMatchmakingTile : public UCommonButton
+{
+public:
+	class UEpicCMSImage*                               GameModeImage;                                            // 0x0888(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0890(0x0008) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortAthenaMatchmakingTile");
+		return ptr;
+	}
+
+
+	void UpdateTileAvailability(bool Available);
+	void TilePlaylistSetAsMatchmakingPlaylist();
+	void SetTileSize(bool UseLargeSize);
+	void SetDefaultImage();
+	void PlaylistChanged(class UFortPlaylistAthena* PlaylistToRepresent);
+};
+
+
 // Class FortniteUI.FortAthenaMatchmakingWidget
-// 0x00F0 (0x0308 - 0x0218)
+// 0x00C0 (0x02D0 - 0x0210)
 class UFortAthenaMatchmakingWidget : public UCommonUserWidget
 {
 public:
-	class UClass*                                      DefaultMissionGen;                                        // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FName                                       CurrentPlaylistName;                                      // 0x0220(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UFortPlaylistAthena*                         CurrentPlaylistObj;                                       // 0x0228(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bCurrentSquadFill;                                        // 0x0230(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0231(0x0007) MISSED OFFSET
-	class UWidget*                                     SpinnerAndTextContainer;                                  // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               PlayButton;                                               // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               CancelButton;                                             // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               StartMatchButton;                                         // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            MatchmakingHeaderText;                                    // 0x0258(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            MatchmakingMessageText;                                   // 0x0260(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonRotator*                              PlaylistRotator;                                          // 0x0268(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonRotator*                              TeamFillRotator;                                          // 0x0270(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UHorizontalBox*                              TeamFillRow;                                              // 0x0278(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonBorder*                               NewModeBorder;                                            // 0x0280(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            CurrModeText;                                             // 0x0288(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x78];                                      // 0x0290(0x0078) MISSED OFFSET
+	class UClass*                                      DefaultMissionGen;                                        // 0x0210(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FName                                       CurrentPlaylistName;                                      // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UFortPlaylistAthena*                         CurrentPlaylistObj;                                       // 0x0220(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bCurrentSquadFill;                                        // 0x0228(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0229(0x0007) MISSED OFFSET
+	class UWidget*                                     SpinnerAndTextContainer;                                  // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               PlayButton;                                               // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               CancelButton;                                             // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               StartMatchButton;                                         // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            MatchmakingHeaderText;                                    // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            MatchmakingMessageText;                                   // 0x0258(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonBorder*                               NewModeBorder;                                            // 0x0260(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x68];                                      // 0x0268(0x0068) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2103,16 +3073,14 @@ public:
 	}
 
 
-	bool SetCurrentPlaylistData(class UFortPlaylistAthena* NewPlaylist);
+	void SetSquadFillText(bool InCurrentSquadFill);
+	void PlaylistChanged(class UFortPlaylistAthena* NewPlaylist);
 	void OnSetPlayButtonText(const struct FText& PlayButtonText);
 	void OnSetCancelButtonText(const struct FText& CancelButtonText);
-	void OnPlaylistRotatorChanged(int PlaylistIndex);
 	void OnPlayButtonUpdated(bool bShowPlayButton);
 	void OnPlayButtonPressed();
-	void OnChangeTeamFillChanged(bool bFill);
 	void OnCancelButtonPressed();
 	void OnAvailablePlaylistsUpdated();
-	void HandleStartMatchButtonClicked(class UCommonButton* Button);
 	void GetDefaultPlaylists(TArray<class UFortPlaylistAthena*>* DefaultPlaylists);
 	int GetCurrentPartySize();
 	TArray<class UFortPlaylistAthena*> GetActivePlaylists();
@@ -2120,19 +3088,19 @@ public:
 
 
 // Class FortniteUI.FortAthenaNewsWidget
-// 0x0048 (0x0260 - 0x0218)
+// 0x0048 (0x0258 - 0x0210)
 class UFortAthenaNewsWidget : public UCommonUserWidget
 {
 public:
-	class UCommonTextBlock*                            Title1;                                                   // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Body1;                                                    // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UEpicCMSImage*                               Image1;                                                   // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Title2;                                                   // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Body2;                                                    // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UEpicCMSImage*                               Image2;                                                   // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Title3;                                                   // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Body3;                                                    // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UEpicCMSImage*                               Image3;                                                   // 0x0258(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Title1;                                                   // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Body1;                                                    // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UEpicCMSImage*                               Image1;                                                   // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Title2;                                                   // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Body2;                                                    // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UEpicCMSImage*                               Image2;                                                   // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Title3;                                                   // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Body3;                                                    // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UEpicCMSImage*                               Image3;                                                   // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -2144,13 +3112,13 @@ public:
 
 
 // Class FortniteUI.FortAthenaTabsScreenBase
-// 0x0060 (0x0450 - 0x03F0)
+// 0x0060 (0x0388 - 0x0328)
 class UFortAthenaTabsScreenBase : public UFortActivatablePanel
 {
 public:
-	TMap<EFortUIFeature, struct FName>                 FeaturesTabsMap;                                          // 0x03F0(0x0050) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	class UFortTabListWidgetBase*                      TopTabList;                                               // 0x0440(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0448(0x0008) MISSED OFFSET
+	TMap<EFortUIFeature, struct FName>                 FeaturesTabsMap;                                          // 0x0328(0x0050) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UFortTabListWidgetBase*                      TopTabList;                                               // 0x0378(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0380(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2159,6 +3127,7 @@ public:
 	}
 
 
+	void ShowReplayBrowser();
 	void HandleFeatureStateChanged(EFortUIFeature ChangedFeature, EFortUIFeatureState NewState, EFortUIFeatureStateReason Reason);
 	void HandleFeatureNavigateRequest(EFortUIFeature Feature);
 	bool CanShowSeasonShopTab();
@@ -2167,14 +3136,14 @@ public:
 
 
 // Class FortniteUI.FortAttributeList
-// 0x0018 (0x0238 - 0x0220)
+// 0x0018 (0x0230 - 0x0218)
 class UFortAttributeList : public UFortUserWidget
 {
 public:
-	class UClass*                                      AttributeItemClass;                                       // 0x0220(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bHoverEnabledOnElements;                                  // 0x0228(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0229(0x0007) MISSED OFFSET
-	class UVerticalBox*                                AttributeContainer;                                       // 0x0230(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UClass*                                      AttributeItemClass;                                       // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bHoverEnabledOnElements;                                  // 0x0220(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
+	class UVerticalBox*                                AttributeContainer;                                       // 0x0228(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -2191,15 +3160,15 @@ public:
 
 
 // Class FortniteUI.FortAttributeList_NUI
-// 0x0030 (0x0248 - 0x0218)
+// 0x0030 (0x0240 - 0x0210)
 class UFortAttributeList_NUI : public UCommonUserWidget
 {
 public:
-	class UClass*                                      AttributeItemClass;                                       // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bHoverEnabledOnElements;                                  // 0x0220(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
-	TArray<class UFortAttributeListItem_NUI*>          ShownAttributeWidgets;                                    // 0x0228(0x0010) (ExportObject, ZeroConstructor)
-	unsigned char                                      UnknownData01[0x10];                                      // 0x0238(0x0010) MISSED OFFSET
+	class UClass*                                      AttributeItemClass;                                       // 0x0210(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bHoverEnabledOnElements;                                  // 0x0218(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0219(0x0007) MISSED OFFSET
+	TArray<class UFortAttributeListItem_NUI*>          ShownAttributeWidgets;                                    // 0x0220(0x0010) (ExportObject, ZeroConstructor)
+	unsigned char                                      UnknownData01[0x10];                                      // 0x0230(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2218,12 +3187,12 @@ public:
 
 
 // Class FortniteUI.FortAttributeListItem
-// 0x00E8 (0x02F8 - 0x0210)
+// 0x00E8 (0x02F0 - 0x0208)
 class UFortAttributeListItem : public UUserWidget
 {
 public:
-	bool                                               bHoverEnabled;                                            // 0x0210(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0xE7];                                      // 0x0211(0x00E7) MISSED OFFSET
+	bool                                               bHoverEnabled;                                            // 0x0208(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0xE7];                                      // 0x0209(0x00E7) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2246,15 +3215,15 @@ public:
 
 
 // Class FortniteUI.FortAttributeListItem_NUI
-// 0x00F8 (0x0310 - 0x0218)
+// 0x00F8 (0x0308 - 0x0210)
 class UFortAttributeListItem_NUI : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	bool                                               bHoverEnabled;                                            // 0x0220(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
-	struct FGameplayTag                                StatTag;                                                  // 0x0228(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      UnknownData02[0xE0];                                      // 0x0230(0x00E0) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	bool                                               bHoverEnabled;                                            // 0x0218(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0219(0x0007) MISSED OFFSET
+	struct FGameplayTag                                StatTag;                                                  // 0x0220(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      UnknownData02[0xE0];                                      // 0x0228(0x00E0) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2278,7 +3247,7 @@ public:
 
 
 // Class FortniteUI.FortAudioOptions
-// 0x0000 (0x0228 - 0x0228)
+// 0x0000 (0x0220 - 0x0220)
 class UFortAudioOptions : public UFortOptionsTab
 {
 public:
@@ -2292,9 +3261,9 @@ public:
 
 	void SoundFXVolumeChanged(float NewValue);
 	bool ShowQuality();
-	bool ShowChatVolume();
 	bool ShowAllowGameVolumeWhenMinimized();
 	void SetVoiceChatPTTEnabled(bool bNewValue);
+	void SetVoiceChatOutputDevice(const struct FString& NewDevice);
 	void SetVoiceChatInputDevice(const struct FString& NewDevice);
 	void SetVoiceChatEnabled(bool bNewValue);
 	void SetVoiceChat3DEnabled(bool bNewValue);
@@ -2302,8 +3271,10 @@ public:
 	void SetQuality(int NewQuality);
 	void SetAllowGameVolumeWhenMinimized(bool bNewValue);
 	void MusicVolumeChanged(float NewValue);
+	bool IsUsingCustomVoiceChatOutputDevice();
 	bool IsUsingCustomVoiceChatInputDevice();
 	bool GetVoiceChatPTTEnabled();
+	struct FString GetVoiceChatOutputDevice();
 	struct FString GetVoiceChatInputDevice();
 	bool GetVoiceChatEnabled();
 	bool GetVoiceChat3DEnabled();
@@ -2314,11 +3285,32 @@ public:
 	float GetDialogVolumeValue();
 	float GetCinematicsVolume();
 	float GetChatVolumeValue();
+	TArray<struct FString> GetAvailableVoiceChatOutputDevices();
 	TArray<struct FString> GetAvailableVoiceChatInputDevices();
 	bool GetAllowGameVolumeWhenMinimized();
 	void DialogVolumeChanged(float NewValue);
 	void CinematicsVolumeChanged(float NewValue);
 	void ChatVolumeChanged(float NewValue);
+};
+
+
+// Class FortniteUI.FortAutorunLockZone
+// 0x0008 (0x0358 - 0x0350)
+class UFortAutorunLockZone : public UBacchusHUDElement
+{
+public:
+	bool                                               bIsInZone;                                                // 0x0350(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bIsAutorunLockEnabled;                                    // 0x0351(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x6];                                       // 0x0352(0x0006) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortAutorunLockZone");
+		return ptr;
+	}
+
+
+	void OnInZoneChanged(bool bNewIsInZone);
 };
 
 
@@ -2349,14 +3341,14 @@ public:
 
 
 // Class FortniteUI.FortBangWrapper_NUI
-// 0x0018 (0x0230 - 0x0218)
+// 0x0018 (0x0228 - 0x0210)
 class UFortBangWrapper_NUI : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	EFortBangType                                      BangType;                                                 // 0x0220(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
-	struct FName                                       TutorialNameID;                                           // 0x0228(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	EFortBangType                                      BangType;                                                 // 0x0218(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0219(0x0007) MISSED OFFSET
+	struct FName                                       TutorialNameID;                                           // 0x0220(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -2376,16 +3368,16 @@ public:
 
 
 // Class FortniteUI.FortBannerSelectorBase
-// 0x0070 (0x0430 - 0x03C0)
+// 0x0068 (0x0360 - 0x02F8)
 class UFortBannerSelectorBase : public UCommonActivatablePanel
 {
 public:
-	class UEditableText*                               BannerName;                                               // 0x03C0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	int                                                BannerNameMaxLength;                                      // 0x03C8(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x03CC(0x0004) MISSED OFFSET
-	class UBorder*                                     ErrorBorder;                                              // 0x03D0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            ErrorText;                                                // 0x03D8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x50];                                      // 0x03E0(0x0050) MISSED OFFSET
+	class UEditableText*                               BannerName;                                               // 0x02F8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	int                                                BannerNameMaxLength;                                      // 0x0300(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x0304(0x0004) MISSED OFFSET
+	class UBorder*                                     ErrorBorder;                                              // 0x0308(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            ErrorText;                                                // 0x0310(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x48];                                      // 0x0318(0x0048) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2440,34 +3432,34 @@ public:
 
 
 // Class FortniteUI.FortBaseButton
-// 0x05C8 (0x07E8 - 0x0220)
+// 0x05C8 (0x07E0 - 0x0218)
 class UFortBaseButton : public UFortUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0220(0x0008) MISSED OFFSET
-	struct FScriptMulticastDelegate                    EnabledChanged;                                           // 0x0228(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    SelectedChanged;                                          // 0x0238(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    ButtonClicked;                                            // 0x0248(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	EFortBangSize                                      BangSize;                                                 // 0x0258(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x3];                                       // 0x0259(0x0003) MISSED OFFSET
-	struct FVector2D                                   BangOffset;                                               // 0x025C(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
-	EFortBangType                                      BangType;                                                 // 0x0264(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x3];                                       // 0x0265(0x0003) MISSED OFFSET
-	struct FName                                       TutorialNameID;                                           // 0x0268(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortTutorialGlowType                              TutorialGlowType;                                         // 0x0270(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x7];                                       // 0x0271(0x0007) MISSED OFFSET
-	class UClass*                                      Style;                                                    // 0x0278(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	TEnumAsByte<EFortBrushSize>                        BrushSize;                                                // 0x0280(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData04[0x7];                                       // 0x0281(0x0007) MISSED OFFSET
-	struct FSlateSound                                 PressedSlateSoundOverride;                                // 0x0288(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FSlateSound                                 HoveredSlateSoundOverride;                                // 0x02A0(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
-	bool                                               bSelectable;                                              // 0x02B8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData05[0x7];                                       // 0x02B9(0x0007) MISSED OFFSET
-	struct FName                                       SelectionGroup;                                           // 0x02C0(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bToggleable;                                              // 0x02C8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bClickable;                                               // 0x02C9(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	TEnumAsByte<EButtonClickMethod>                    ClickMethod;                                              // 0x02CA(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData06[0x51D];                                     // 0x02CB(0x051D) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
+	struct FScriptMulticastDelegate                    EnabledChanged;                                           // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    SelectedChanged;                                          // 0x0230(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    ButtonClicked;                                            // 0x0240(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	EFortBangSize                                      BangSize;                                                 // 0x0250(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x0251(0x0003) MISSED OFFSET
+	struct FVector2D                                   BangOffset;                                               // 0x0254(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	EFortBangType                                      BangType;                                                 // 0x025C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x3];                                       // 0x025D(0x0003) MISSED OFFSET
+	struct FName                                       TutorialNameID;                                           // 0x0260(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortTutorialGlowType                              TutorialGlowType;                                         // 0x0268(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x7];                                       // 0x0269(0x0007) MISSED OFFSET
+	class UClass*                                      Style;                                                    // 0x0270(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TEnumAsByte<EFortBrushSize>                        BrushSize;                                                // 0x0278(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData04[0x7];                                       // 0x0279(0x0007) MISSED OFFSET
+	struct FSlateSound                                 PressedSlateSoundOverride;                                // 0x0280(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FSlateSound                                 HoveredSlateSoundOverride;                                // 0x0298(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	bool                                               bSelectable;                                              // 0x02B0(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData05[0x7];                                       // 0x02B1(0x0007) MISSED OFFSET
+	struct FName                                       SelectionGroup;                                           // 0x02B8(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bToggleable;                                              // 0x02C0(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bClickable;                                               // 0x02C1(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TEnumAsByte<EButtonClickMethod>                    ClickMethod;                                              // 0x02C2(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData06[0x51D];                                     // 0x02C3(0x051D) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2497,11 +3489,11 @@ public:
 
 
 // Class FortniteUI.FortBluGloCounter
-// 0x0008 (0x0228 - 0x0220)
+// 0x0008 (0x0220 - 0x0218)
 class UFortBluGloCounter : public UFortUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0220(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2515,11 +3507,11 @@ public:
 
 
 // Class FortniteUI.FortBorderStyleList
-// 0x0008 (0x0220 - 0x0218)
+// 0x0008 (0x0218 - 0x0210)
 class UFortBorderStyleList : public UCommonUserWidget
 {
 public:
-	struct FName                                       BordersPath;                                              // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FName                                       BordersPath;                                              // 0x0210(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -2529,6 +3521,23 @@ public:
 
 
 	void GetBorderStyles();
+};
+
+
+// Class FortniteUI.FortBuildingInfoIndicatorWidget
+// 0x0000 (0x0270 - 0x0270)
+class UFortBuildingInfoIndicatorWidget : public UFortActorIndicatorWidget
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortBuildingInfoIndicatorWidget");
+		return ptr;
+	}
+
+
+	void SetKeyBindWidgetBoundAction(class UFortKeybindWidget* FortKeybindWidget, const struct FName& ActionName, EFortBuildingInteraction InteractionType);
 };
 
 
@@ -2550,12 +3559,11 @@ public:
 
 
 // Class FortniteUI.FortCampaignMap
-// 0x0148 (0x0360 - 0x0218)
+// 0x0070 (0x0280 - 0x0210)
 class UFortCampaignMap : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	struct FFortSwipeDetector                          SwipeDetector;                                            // 0x0220(0x0140) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FFortSwipeDetector                          SwipeDetector;                                            // 0x0210(0x0070) (Edit, BlueprintVisible, BlueprintReadOnly)
 
 	static UClass* StaticClass()
 	{
@@ -2572,11 +3580,11 @@ public:
 
 
 // Class FortniteUI.FortCapturePointWidget
-// 0x0010 (0x0230 - 0x0220)
+// 0x0010 (0x0228 - 0x0218)
 class UFortCapturePointWidget : public UFortUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0220(0x0010) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0218(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2590,17 +3598,17 @@ public:
 
 
 // Class FortniteUI.FortChatContainer
-// 0x0018 (0x0238 - 0x0220)
+// 0x0018 (0x0230 - 0x0218)
 class UFortChatContainer : public UFortUserWidget
 {
 public:
-	bool                                               MinimizeEnabled;                                          // 0x0220(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               AutoReleaseFocus;                                         // 0x0221(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               AllowEmotes;                                              // 0x0222(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x1];                                       // 0x0223(0x0001) MISSED OFFSET
-	float                                              ListFadeTime;                                             // 0x0224(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                MinimizedChatMessageNum;                                  // 0x0228(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0xC];                                       // 0x022C(0x000C) MISSED OFFSET
+	bool                                               MinimizeEnabled;                                          // 0x0218(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               AutoReleaseFocus;                                         // 0x0219(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               AllowEmotes;                                              // 0x021A(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x1];                                       // 0x021B(0x0001) MISSED OFFSET
+	float                                              ListFadeTime;                                             // 0x021C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                MinimizedChatMessageNum;                                  // 0x0220(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0xC];                                       // 0x0224(0x000C) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2664,18 +3672,18 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookGenericRewardWidget
-// 0x0018 (0x0230 - 0x0218)
+// 0x0018 (0x0228 - 0x0210)
 class UFortCollectionBookGenericRewardWidget : public UCommonUserWidget
 {
 public:
-	unsigned char                                      bUpdateVisibilityBasedOnRewardExistence : 1;              // 0x0218(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0219(0x0003) MISSED OFFSET
-	ESlateVisibility                                   VisibilityWhenNoRewardSpecified;                          // 0x021C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	ESlateVisibility                                   VisibilityWhenRewardSpecified;                            // 0x021D(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x2];                                       // 0x021E(0x0002) MISSED OFFSET
-	class UFortCollectionBookRewardCardWidget*         RewardCardWidget;                                         // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	ECollectionBookRewardStatus                        RewardStatus;                                             // 0x0228(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x7];                                       // 0x0229(0x0007) MISSED OFFSET
+	unsigned char                                      bUpdateVisibilityBasedOnRewardExistence : 1;              // 0x0210(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0211(0x0003) MISSED OFFSET
+	ESlateVisibility                                   VisibilityWhenNoRewardSpecified;                          // 0x0214(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	ESlateVisibility                                   VisibilityWhenRewardSpecified;                            // 0x0215(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x2];                                       // 0x0216(0x0002) MISSED OFFSET
+	class UFortCollectionBookRewardCardWidget*         RewardCardWidget;                                         // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	ECollectionBookRewardStatus                        RewardStatus;                                             // 0x0220(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2695,16 +3703,16 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookOverviewWidget
-// 0x0048 (0x0260 - 0x0218)
+// 0x0048 (0x0258 - 0x0210)
 class UFortCollectionBookOverviewWidget : public UCommonUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnCollectionBookPageSelected;                             // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnCollectionBookPageClicked;                              // 0x0228(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UCommonTreeView*                             PageTreeViewWidget;                                       // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FScriptMulticastDelegate                    OnCollectionBookPageSelected;                             // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnCollectionBookPageClicked;                              // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	class UFortCollectionBookPage*                     LastSelectedPage;                                         // 0x0230(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UFortCollectionBookCategory*                 LastSelectedCategory;                                     // 0x0238(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
 	TArray<class UFortCollectionBookCategory*>         CategoryObjectPool;                                       // 0x0240(0x0010) (ZeroConstructor, Transient)
-	class UFortCollectionBookPage*                     LastSelectedPage;                                         // 0x0250(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	class UFortCollectionBookCategory*                 LastSelectedCategory;                                     // 0x0258(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UCommonTreeView*                             PageTreeViewWidget;                                       // 0x0250(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -2713,16 +3721,13 @@ public:
 	}
 
 
-	void OnPageItemSelected(class UObject* Item, bool bSelected);
-	void OnPageItemClicked(class UObject* Item);
-	TArray<class UObject*> OnGetChildrenForPageCategory(class UObject* CategoryObject);
 	void OnDeactivated();
 	void OnActivated();
 };
 
 
 // Class FortniteUI.FortCollectionBookPageCompletionRewardWidget
-// 0x0000 (0x0230 - 0x0230)
+// 0x0000 (0x0228 - 0x0228)
 class UFortCollectionBookPageCompletionRewardWidget : public UFortCollectionBookGenericRewardWidget
 {
 public:
@@ -2737,18 +3742,18 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookPageDetailsWidget
-// 0x0070 (0x0288 - 0x0218)
+// 0x0070 (0x0280 - 0x0210)
 class UFortCollectionBookPageDetailsWidget : public UCommonUserWidget
 {
 public:
-	class UCommonTextBlock*                            PageCompletionText;                                       // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortMaterialProgressBar*                    ProgressBar;                                              // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortCollectionBookPageCompletionRewardWidget* PageRewardWidget;                                         // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               RewardDetailsButton;                                      // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortCollectionBookPage*                     DetailsPage;                                              // 0x0238(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x28];                                      // 0x0240(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortCollectionBookPageDetailsWidget.RewardDetailsModalWidgetClass
-	struct FText                                       ModalTitle;                                               // 0x0268(0x0018) (Edit)
-	class UFortCollectionBookRewardModalWidget*        RewardDetailsModalWidget;                                 // 0x0280(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            PageCompletionText;                                       // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortMaterialProgressBar*                    ProgressBar;                                              // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookPageCompletionRewardWidget* PageRewardWidget;                                         // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               RewardDetailsButton;                                      // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookPage*                     DetailsPage;                                              // 0x0230(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0238(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortCollectionBookPageDetailsWidget.RewardDetailsModalWidgetClass
+	struct FText                                       ModalTitle;                                               // 0x0260(0x0018) (Edit)
+	class UFortCollectionBookRewardModalWidget*        RewardDetailsModalWidget;                                 // 0x0278(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -2758,7 +3763,6 @@ public:
 
 
 	void OnSlotItemComplete(class UFortAccountItem* SlottedItem, const struct FName& SlotId);
-	void OnRewardDetailsButtonClicked(class UCommonButton* ClickedButton);
 	void OnPageProgressionUpdated(int TotalFilledSlots, int TotalSlots, EFortCollectionBookState State);
 	void OnDetailsPageChanged(class UFortCollectionBookPage* InNewDetailsPage);
 	void HandleRewardDetailsModalWidgetDeactivated(class UCommonActivatablePanel* DeactivatedPanel);
@@ -2766,17 +3770,17 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookPageListWidget
-// 0x0030 (0x0838 - 0x0808)
+// 0x0030 (0x08B8 - 0x0888)
 class UFortCollectionBookPageListWidget : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	class UCommonTextBlock*                            PageNameWidget;                                           // 0x0810(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonNumericTextBlock*                     AvailableSlotsWidget;                                     // 0x0818(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            PageCompletionWidget;                                     // 0x0820(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TWeakObjectPtr<class UObject>                      AssociatedPageOrCategory;                                 // 0x0828(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	bool                                               bIsExpanded;                                              // 0x0830(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0831(0x0007) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UCommonTextBlock*                            PageNameWidget;                                           // 0x0890(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonNumericTextBlock*                     AvailableSlotsWidget;                                     // 0x0898(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            PageCompletionWidget;                                     // 0x08A0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TWeakObjectPtr<class UObject>                      AssociatedPageOrCategory;                                 // 0x08A8(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bIsExpanded;                                              // 0x08B0(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x08B1(0x0007) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2789,19 +3793,18 @@ public:
 	void SetupAsCategory(class UFortCollectionBookCategory* Category);
 	void OnSlotItemComplete(class UFortAccountItem* SlottedItem, const struct FName& SlotId);
 	void OnPageDetailsUpdated(int AvailableSlots, int FilledSlots, int TotalSlots, EFortCollectionBookState State);
-	void OnExpansionChanged(bool bExpanded);
 	void OnCategoryDetailsUpdated(int AvailableSlots, int FilledSlots, int TotalSlots);
 };
 
 
 // Class FortniteUI.FortCollectionBookPicker
-// 0x0020 (0x02A0 - 0x0280)
+// 0x0020 (0x02C8 - 0x02A8)
 class UFortCollectionBookPicker : public UFortItemPickerBase
 {
 public:
-	struct FScriptMulticastDelegate                    OnSlotItemConfirmationCompleteEvent;                      // 0x0280(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0290(0x0008) MISSED OFFSET
-	class UFortAccountItem*                            CurrentSlottedItem;                                       // 0x0298(0x0008) (ZeroConstructor, IsPlainOldData)
+	struct FScriptMulticastDelegate                    OnSlotItemConfirmationCompleteEvent;                      // 0x02A8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x02B8(0x0008) MISSED OFFSET
+	class UFortAccountItem*                            CurrentSlottedItem;                                       // 0x02C0(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -2817,21 +3820,21 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookPrimaryPanel
-// 0x00C0 (0x0480 - 0x03C0)
+// 0x00C0 (0x03B8 - 0x02F8)
 class UFortCollectionBookPrimaryPanel : public UCommonActivatablePanel
 {
 public:
-	struct FScriptMulticastDelegate                    OnCollectionBookPageSelectedDelegate;                     // 0x03C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnCollectionBookPageClickedDelegate;                      // 0x03D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnCollectionBookSectionClickedDelegate;                   // 0x03E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FDataTableRowHandle                         BackActionRowHandle;                                      // 0x03F0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FDataTableRowHandle                         SummonInfoPanelActionRowHandle;                           // 0x0400(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	class UFortCollectionBookOverviewWidget*           OverviewWidget;                                           // 0x0410(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTileView*                             SectionTileViewWidget;                                    // 0x0418(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	ECollectionBookPrimaryNavTarget                    CurrentNavTarget;                                         // 0x0420(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0421(0x0007) MISSED OFFSET
-	class UFortCollectionBookSection*                  LastClickedSection;                                       // 0x0428(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x50];                                      // 0x0430(0x0050) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnCollectionBookPageSelectedDelegate;                     // 0x02F8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnCollectionBookPageClickedDelegate;                      // 0x0308(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnCollectionBookSectionClickedDelegate;                   // 0x0318(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FDataTableRowHandle                         BackActionRowHandle;                                      // 0x0328(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FDataTableRowHandle                         SummonInfoPanelActionRowHandle;                           // 0x0338(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	class UFortCollectionBookOverviewWidget*           OverviewWidget;                                           // 0x0348(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTileView*                             SectionTileViewWidget;                                    // 0x0350(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	ECollectionBookPrimaryNavTarget                    CurrentNavTarget;                                         // 0x0358(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0359(0x0007) MISSED OFFSET
+	class UFortCollectionBookSection*                  LastClickedSection;                                       // 0x0360(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x50];                                      // 0x0368(0x0050) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2841,23 +3844,22 @@ public:
 
 
 	void OnSummonInfoPanelExecuted(bool* bPassThrough);
-	void OnInputMethodChanged(bool bUsingGamepad);
+	void OnInputMethodChanged(ECommonInputType CurrentInputType);
 	void OnCollectionBookSectionClicked(class UFortCollectionBookSection* ClickedSection);
 	void OnCollectionBookPageSelected(class UFortCollectionBookPage* SelectedPage);
 	void OnCollectionBookPageClicked(class UFortCollectionBookPage* ClickedPage);
 	void OnBackActionExecuted(bool* bPassThrough);
-	void HandleSectionTileClicked(class UObject* Item);
 };
 
 
 // Class FortniteUI.FortCollectionBookProgressionRewardDetailInspectWidget
-// 0x0018 (0x0230 - 0x0218)
+// 0x0018 (0x0228 - 0x0210)
 class UFortCollectionBookProgressionRewardDetailInspectWidget : public UCommonUserWidget
 {
 public:
-	class UCommonNumericTextBlock*                     LevelTextWidget;                                          // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortRewardInfoWidget*                       RewardWidget;                                             // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0228(0x0008) MISSED OFFSET
+	class UCommonNumericTextBlock*                     LevelTextWidget;                                          // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortRewardInfoWidget*                       RewardWidget;                                             // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0220(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -2873,20 +3875,19 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookProgressionRewardsModalWidget
-// 0x0070 (0x0460 - 0x03F0)
+// 0x0068 (0x0390 - 0x0328)
 class UFortCollectionBookProgressionRewardsModalWidget : public UFortActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x28];                                      // 0x03F0(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortCollectionBookProgressionRewardsModalWidget.RewardWidgetClass
-	struct FMargin                                     RewardWidgetPadding;                                      // 0x0418(0x0010) (Edit, IsPlainOldData)
-	int                                                NumRewardsToShow;                                         // 0x0428(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x4];                                       // 0x042C(0x0004) MISSED OFFSET
-	class UVerticalBox*                                RewardBoxWidget;                                          // 0x0430(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UVerticalBox*                                MajorRewardBoxWidget;                                     // 0x0438(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            XPTextWidget;                                             // 0x0440(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonNumericTextBlock*                     LevelTextWidget;                                          // 0x0448(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButtonGroup*                          ButtonGroup;                                              // 0x0450(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x8];                                       // 0x0458(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0328(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortCollectionBookProgressionRewardsModalWidget.RewardWidgetClass
+	struct FMargin                                     RewardWidgetPadding;                                      // 0x0350(0x0010) (Edit, IsPlainOldData)
+	int                                                NumRewardsToShow;                                         // 0x0360(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x0364(0x0004) MISSED OFFSET
+	class UVerticalBox*                                RewardBoxWidget;                                          // 0x0368(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UVerticalBox*                                MajorRewardBoxWidget;                                     // 0x0370(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            XPTextWidget;                                             // 0x0378(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonNumericTextBlock*                     LevelTextWidget;                                          // 0x0380(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButtonGroup*                          ButtonGroup;                                              // 0x0388(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -2903,12 +3904,12 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookProgressionRewardsPreviewWidget
-// 0x0010 (0x0228 - 0x0218)
+// 0x0010 (0x0220 - 0x0210)
 class UFortCollectionBookProgressionRewardsPreviewWidget : public UCommonUserWidget
 {
 public:
-	class UFortCollectionBookProgressionRewardWidget*  NextRewardWidget;                                         // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortCollectionBookProgressionRewardWidget*  NextMajorRewardWidget;                                    // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookProgressionRewardWidget*  NextRewardWidget;                                         // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookProgressionRewardWidget*  NextMajorRewardWidget;                                    // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -2920,12 +3921,12 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookProgressionRewardWidget
-// 0x0010 (0x0240 - 0x0230)
+// 0x0010 (0x0238 - 0x0228)
 class UFortCollectionBookProgressionRewardWidget : public UFortCollectionBookGenericRewardWidget
 {
 public:
-	class UCommonNumericTextBlock*                     LevelTextWidget;                                          // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            DisplayNameWidget;                                        // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonNumericTextBlock*                     LevelTextWidget;                                          // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            DisplayNameWidget;                                        // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -2939,19 +3940,19 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookProgressWidget
-// 0x0060 (0x0278 - 0x0218)
+// 0x0060 (0x0270 - 0x0210)
 class UFortCollectionBookProgressWidget : public UCommonUserWidget
 {
 public:
-	int                                                CachedXPLevel;                                            // 0x0218(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	float                                              CachedXPCompletionPct;                                    // 0x021C(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x28];                                      // 0x0220(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortCollectionBookProgressWidget.RewardDetailsModalWidgetClass
-	class UFortCollectionBookProgressionRewardsPreviewWidget* ProgressionRewardsPreviewWidget;                          // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            XPTextWidget;                                             // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonNumericTextBlock*                     LevelTextWidget;                                          // 0x0258(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               DetailsButtonWidget;                                      // 0x0260(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortCollectionBookPageDetailsWidget*        PageDetailsWidget;                                        // 0x0268(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortCollectionBookProgressionRewardsModalWidget* DetailsModalWidget;                                       // 0x0270(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	int                                                CachedXPLevel;                                            // 0x0210(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	float                                              CachedXPCompletionPct;                                    // 0x0214(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0218(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortCollectionBookProgressWidget.RewardDetailsModalWidgetClass
+	class UFortCollectionBookProgressionRewardsPreviewWidget* ProgressionRewardsPreviewWidget;                          // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            XPTextWidget;                                             // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonNumericTextBlock*                     LevelTextWidget;                                          // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               DetailsButtonWidget;                                      // 0x0258(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookPageDetailsWidget*        PageDetailsWidget;                                        // 0x0260(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookProgressionRewardsModalWidget* DetailsModalWidget;                                       // 0x0268(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -2961,7 +3962,6 @@ public:
 
 
 	void OnSlottedItemOperationComplete(class UFortAccountItem* ItemSlotted, const struct FName& SlotId);
-	void OnDetailsButtonClicked(class UCommonButton* ClickedButton);
 	void OnCollectionBookPreviewXPChange(float PreviewCompletionPct);
 	void OnCollectionBookPageSelected(class UFortCollectionBookPage* SelectedPage);
 	void OnCollectionBookLevelProgressionChanged(float NewCompletionPct);
@@ -2971,14 +3971,14 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookRecycleSlotResultsWidget
-// 0x0018 (0x0230 - 0x0218)
+// 0x0018 (0x0228 - 0x0210)
 class UFortCollectionBookRecycleSlotResultsWidget : public UCommonUserWidget
 {
 public:
-	class UPanelWidget*                                RecycleResultsWidget;                                     // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	EFortItemCardSize                                  ItemCardSize;                                             // 0x0220(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
-	class UFortAccountItem*                            ItemToRecycle;                                            // 0x0228(0x0008) (ZeroConstructor, IsPlainOldData)
+	class UPanelWidget*                                RecycleResultsWidget;                                     // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	EFortItemCardSize                                  ItemCardSize;                                             // 0x0218(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0219(0x0007) MISSED OFFSET
+	class UFortAccountItem*                            ItemToRecycle;                                            // 0x0220(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -2992,22 +3992,22 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookRewardCardWidget
-// 0x0080 (0x0298 - 0x0218)
+// 0x0080 (0x0290 - 0x0210)
 class UFortCollectionBookRewardCardWidget : public UCommonUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnDisplayedItemChangedEvent;                              // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UFortMultiSizeItemCard*                      ItemCardWidget;                                           // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UWidget*                                     MultiItemRewardOverlay;                                   // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UWidget*                                     ChoiceRewardOverlay;                                      // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	float                                              UpdateCardInterval;                                       // 0x0240(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortItemCardSize                                  ItemCardSize;                                             // 0x0244(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bDisplayAsRewardCard;                                     // 0x0245(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x2];                                       // 0x0246(0x0002) MISSED OFFSET
-	struct FFortRewardInfo                             RepresentedRewards;                                       // 0x0248(0x0030) (Transient)
-	TArray<class UFortItem*>                           DummyItems;                                               // 0x0278(0x0010) (ZeroConstructor, Transient)
-	struct FTimerHandle                                UpdateCardTimer;                                          // 0x0288(0x0008) (Transient)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0290(0x0008) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnDisplayedItemChangedEvent;                              // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	class UFortMultiSizeItemCard*                      ItemCardWidget;                                           // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UWidget*                                     MultiItemRewardOverlay;                                   // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UWidget*                                     ChoiceRewardOverlay;                                      // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	float                                              UpdateCardInterval;                                       // 0x0238(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortItemCardSize                                  ItemCardSize;                                             // 0x023C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bDisplayAsRewardCard;                                     // 0x023D(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x2];                                       // 0x023E(0x0002) MISSED OFFSET
+	struct FFortRewardInfo                             RepresentedRewards;                                       // 0x0240(0x0030) (Transient)
+	TArray<class UFortItem*>                           DummyItems;                                               // 0x0270(0x0010) (ZeroConstructor, Transient)
+	struct FTimerHandle                                UpdateCardTimer;                                          // 0x0280(0x0008) (Transient)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x0288(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3024,15 +4024,15 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookRewardModalWidget
-// 0x0050 (0x0410 - 0x03C0)
+// 0x0050 (0x0348 - 0x02F8)
 class UFortCollectionBookRewardModalWidget : public UCommonActivatablePanel
 {
 public:
-	class UCommonTextBlock*                            TitleWidget;                                              // 0x03C0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortRewardInfoWidget*                       RewardWidget;                                             // 0x03C8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortMaterialProgressBar*                    ProgressBar;                                              // 0x03D0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            ProgressTextWidget;                                       // 0x03D8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x30];                                      // 0x03E0(0x0030) MISSED OFFSET
+	class UCommonTextBlock*                            TitleWidget;                                              // 0x02F8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortRewardInfoWidget*                       RewardWidget;                                             // 0x0300(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortMaterialProgressBar*                    ProgressBar;                                              // 0x0308(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            ProgressTextWidget;                                       // 0x0310(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x30];                                      // 0x0318(0x0030) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3044,15 +4044,15 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookSectionCompletionRewardWidget
-// 0x0058 (0x0288 - 0x0230)
+// 0x0058 (0x0280 - 0x0228)
 class UFortCollectionBookSectionCompletionRewardWidget : public UFortCollectionBookGenericRewardWidget
 {
 public:
-	class UCommonButton*                               RewardDetailsButton;                                      // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x28];                                      // 0x0238(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortCollectionBookSectionCompletionRewardWidget.RewardDetailsModalWidgetClass
-	struct FText                                       ModalTitle;                                               // 0x0260(0x0018) (Edit)
-	class UFortCollectionBookRewardModalWidget*        RewardDetailsModalWidget;                                 // 0x0278(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UFortCollectionBookSection*                  Section;                                                  // 0x0280(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UCommonButton*                               RewardDetailsButton;                                      // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0230(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortCollectionBookSectionCompletionRewardWidget.RewardDetailsModalWidgetClass
+	struct FText                                       ModalTitle;                                               // 0x0258(0x0018) (Edit)
+	class UFortCollectionBookRewardModalWidget*        RewardDetailsModalWidget;                                 // 0x0270(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookSection*                  Section;                                                  // 0x0278(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -3061,45 +4061,53 @@ public:
 	}
 
 
-	void OnRewardDetailsButtonClicked(class UCommonButton* ClickedButton);
 	void HandleRewardDetailsModalWidgetDeactivated(class UCommonActivatablePanel* DeactivatedPanel);
 };
 
 
 // Class FortniteUI.FortCollectionBookSectionPanel
-// 0x0150 (0x0510 - 0x03C0)
+// 0x01B8 (0x04B0 - 0x02F8)
 class UFortCollectionBookSectionPanel : public UCommonActivatablePanel
 {
 public:
-	struct FScriptMulticastDelegate                    OnSectionCloseRequest;                                    // 0x03C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnPreviewXPChangeEvent;                                   // 0x03D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UCommonTextBlock*                            SectionNameTextWidget;                                    // 0x03E0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortCollectionBookSlotView*                 SlotViewWidget;                                           // 0x03E8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortCollectionBookPicker*                   SlotItemPicker;                                           // 0x03F0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UWidget*                                     ContextOverlayWidget;                                     // 0x03F8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UTextBlock*                                  ContextTextWidget;                                        // 0x0400(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortCollectionBookSectionCompletionRewardWidget* SectionRewardWidget;                                      // 0x0408(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UWidget*                                     ItemAcquisitionSourceContainerWidget;                     // 0x0410(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            ItemAcquisitionSourceDescWidget;                          // 0x0418(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            ItemAcquisitionSourceDesc2Widget;                         // 0x0420(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	struct FDataTableRowHandle                         BackActionRowHandle;                                      // 0x0428(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FDataTableRowHandle                         CloseActionRowHandle;                                     // 0x0438(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FDataTableRowHandle                         SlotItemActionRowHandle;                                  // 0x0448(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FDataTableRowHandle                         InspectItemActionRowHandle;                               // 0x0458(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FDataTableRowHandle                         InspectCollectionBookItemActionRowHandle;                 // 0x0468(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FDataTableRowHandle                         InspectPreviewItemActionRowHandle;                        // 0x0478(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FDataTableRowHandle                         OpenPickerActionRowHandle;                                // 0x0488(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FDataTableRowHandle                         LogAllowedItemsActionRowHandle;                           // 0x0498(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	ECollectionBookSectionNavTarget                    CurrentNavTarget;                                         // 0x04A8(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x04A9(0x0007) MISSED OFFSET
-	class UFortCollectionBookSection*                  AssociatedSection;                                        // 0x04B0(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	bool                                               bHasSummonedInspectPanel;                                 // 0x04B8(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x3];                                       // 0x04B9(0x0003) MISSED OFFSET
-	struct FFortDialogExternalLatentActionHandle       SlotConfirmationDialogLatentHandle;                       // 0x04BC(0x0004) (Transient)
-	struct FScriptMulticastDelegate                    OnShowItemDetailEvent;                                    // 0x04C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnSlotItemConfirmEvent;                                   // 0x04D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnInspectItemEvent;                                       // 0x04E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData02[0x20];                                      // 0x04F0(0x0020) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnSectionCloseRequest;                                    // 0x02F8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnPreviewXPChangeEvent;                                   // 0x0308(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	class UCommonTextBlock*                            SectionNameTextWidget;                                    // 0x0318(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookSlotView*                 SlotViewWidget;                                           // 0x0320(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookPicker*                   SlotItemPicker;                                           // 0x0328(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UWidget*                                     ContextOverlayWidget;                                     // 0x0330(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UTextBlock*                                  ContextTextWidget;                                        // 0x0338(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookSectionCompletionRewardWidget* SectionRewardWidget;                                      // 0x0340(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UWidget*                                     ItemAcquisitionSourceContainerWidget;                     // 0x0348(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            ItemAcquisitionSourceDescWidget;                          // 0x0350(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            ItemAcquisitionSourceDesc2Widget;                         // 0x0358(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UWidget*                                     ResearchRecruitUnslotContainerWidget;                     // 0x0360(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            PersonRecruitUnavailableMessageWidget;                    // 0x0368(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            ItemResearchUnavailableMessageWidget;                     // 0x0370(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            UnslotUnavailableMessageWidget;                           // 0x0378(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FDataTableRowHandle                         BackActionRowHandle;                                      // 0x0380(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FDataTableRowHandle                         CloseActionRowHandle;                                     // 0x0390(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FDataTableRowHandle                         SlotItemActionRowHandle;                                  // 0x03A0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FDataTableRowHandle                         InspectItemActionRowHandle;                               // 0x03B0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FDataTableRowHandle                         InspectCollectionBookItemActionRowHandle;                 // 0x03C0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FDataTableRowHandle                         InspectPreviewItemActionRowHandle;                        // 0x03D0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FDataTableRowHandle                         OpenPickerActionRowHandle;                                // 0x03E0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FDataTableRowHandle                         LogAllowedItemsActionRowHandle;                           // 0x03F0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FDataTableRowHandle                         ResearchItemActionRowHandle;                              // 0x0400(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FDataTableRowHandle                         RecruitActionRowHandle;                                   // 0x0410(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FDataTableRowHandle                         UnslotItemActionRowHandle;                                // 0x0420(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	ECollectionBookSectionNavTarget                    CurrentNavTarget;                                         // 0x0430(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0431(0x0007) MISSED OFFSET
+	class UFortCollectionBookSection*                  AssociatedSection;                                        // 0x0438(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bHasSummonedInspectPanel;                                 // 0x0440(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x0441(0x0003) MISSED OFFSET
+	struct FFortDialogExternalLatentActionHandle       SlotConfirmationDialogLatentHandle;                       // 0x0444(0x0004) (Transient)
+	struct FScriptMulticastDelegate                    OnShowItemDetailEvent;                                    // 0x0448(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnSlotItemConfirmEvent;                                   // 0x0458(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnResearchItemConfirmEvent;                               // 0x0468(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnUnslotItemConfirmEvent;                                 // 0x0478(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnInspectItemEvent;                                       // 0x0488(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData02[0x18];                                      // 0x0498(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3108,6 +4116,8 @@ public:
 	}
 
 
+	void OnUnslotItemOperationComplete(class UFortAccountItem* UnslottedItem, class UFortAccountItem* OldSlottedItem, const struct FName& SlotId);
+	void OnUnslotItemActionExecuted(bool* bPassThrough);
 	void OnSlottedItemOperationComplete(class UFortAccountItem* SlottedItem, const struct FName& SlotId);
 	void OnSlotPickerItemSelected(class UFortItem* SelectedItem);
 	void OnSlotPickerItemHovered(class UFortItem* HoveredItem);
@@ -3117,33 +4127,36 @@ public:
 	void OnSlotButtonSelected(class UFortCollectionBookSlotButton* SlotButton);
 	void OnSlotButtonCommitted(class UFortCollectionBookSlotButton* SlotButton);
 	void OnSectionChanged(class UFortCollectionBookSection* Section);
+	void OnResearchItemOperationComplete(class UFortAccountItem* NewItem, const struct FString& TemplateId);
+	void OnResearchItemAction__DelegateSignature(class UFortItem* SelectedItem, const struct FFortCollectionBookSlotData& SlotData);
+	void OnPurchaseItemActionExecuted(bool* bPassThrough);
 	void OnOpenPickerActionExecuted(bool* bPassThrough);
 	void OnLogAllowedItemsActionExecuted(bool* bPassThrough);
 	void OnItemInspectAction__DelegateSignature(class UFortItem* SelectedItem, bool EnableItemActions, bool IsPlaceholderItem);
 	void OnItemAction__DelegateSignature(class UFortItem* SelectedItem);
 	void OnInspectActionExecuted(bool* bPassThrough);
-	void OnInputMethodChanged(bool bUsingGamepad);
+	void OnInputMethodChanged(ECommonInputType CurrentInputType);
 	void OnBackActionExecuted(bool* bPassThrough);
 };
 
 
 // Class FortniteUI.FortCollectionBookSectionTileWidget
-// 0x0078 (0x0880 - 0x0808)
+// 0x0078 (0x0900 - 0x0888)
 class UFortCollectionBookSectionTileWidget : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	unsigned char                                      UnknownData01[0x28];                                      // 0x0808(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortCollectionBookSectionTileWidget.SlotWidgetClass
-	struct FMargin                                     SlotWidgetPadding;                                        // 0x0838(0x0010) (Edit, IsPlainOldData)
-	TEnumAsByte<EHorizontalAlignment>                  SlotWidgetHorizontalAlignment;                            // 0x0848(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	TEnumAsByte<EVerticalAlignment>                    SlotWidgetVerticalAlignment;                              // 0x0849(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x2];                                       // 0x084A(0x0002) MISSED OFFSET
-	int                                                MaxNumSlotsSupported;                                     // 0x084C(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	class UHorizontalBox*                              SlotBoxWidget;                                            // 0x0850(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            SectionNameWidget;                                        // 0x0858(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortCollectionBookGenericRewardWidget*      SectionRewardWidget;                                      // 0x0860(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortCollectionBookSection*                  AssociatedSection;                                        // 0x0868(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	TArray<class UFortCollectionBookSlotWidget*>       SlotWidgets;                                              // 0x0870(0x0010) (ExportObject, ZeroConstructor, Transient)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData01[0x28];                                      // 0x0888(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortCollectionBookSectionTileWidget.SlotWidgetClass
+	struct FMargin                                     SlotWidgetPadding;                                        // 0x08B8(0x0010) (Edit, IsPlainOldData)
+	TEnumAsByte<EHorizontalAlignment>                  SlotWidgetHorizontalAlignment;                            // 0x08C8(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	TEnumAsByte<EVerticalAlignment>                    SlotWidgetVerticalAlignment;                              // 0x08C9(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x2];                                       // 0x08CA(0x0002) MISSED OFFSET
+	int                                                MaxNumSlotsSupported;                                     // 0x08CC(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	class UHorizontalBox*                              SlotBoxWidget;                                            // 0x08D0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            SectionNameWidget;                                        // 0x08D8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookGenericRewardWidget*      SectionRewardWidget;                                      // 0x08E0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookSection*                  AssociatedSection;                                        // 0x08E8(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	TArray<class UFortCollectionBookSlotWidget*>       SlotWidgets;                                              // 0x08F0(0x0010) (ExportObject, ZeroConstructor, Transient)
 
 	static UClass* StaticClass()
 	{
@@ -3153,16 +4166,17 @@ public:
 
 
 	void OnSectionSlotUpdate(int NumFilledSlots, int NumSlots, EFortCollectionBookState SectionState);
+	void OnItemUnslotted(class UFortAccountItem* ItemUnslotted, class UFortAccountItem* OldSlottedItem, const struct FName& SlotId);
 	void OnItemSlotted(class UFortAccountItem* ItemSlotted, const struct FName& SlotId);
 };
 
 
 // Class FortniteUI.FortCollectionBookSlotButton
-// 0x0008 (0x0810 - 0x0808)
+// 0x0008 (0x0890 - 0x0888)
 class UFortCollectionBookSlotButton : public UCommonButton
 {
 public:
-	class UFortCollectionBookSlotWidget*               CollectionBookSlotWidget;                                 // 0x0808(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookSlotWidget*               CollectionBookSlotWidget;                                 // 0x0888(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -3176,7 +4190,7 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookSlotDetailsWidget
-// 0x0000 (0x0218 - 0x0218)
+// 0x0000 (0x0210 - 0x0210)
 class UFortCollectionBookSlotDetailsWidget : public UCommonUserWidget
 {
 public:
@@ -3191,22 +4205,22 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookSlotView
-// 0x0148 (0x0360 - 0x0218)
+// 0x0098 (0x02A8 - 0x0210)
 class UFortCollectionBookSlotView : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x28];                                      // 0x0218(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortCollectionBookSlotView.CollectionBookButtonClass
-	class UHorizontalBox*                              CollectionBookButtonBox;                                  // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortCommittableButtonGroup*                 CollectionBookSlotButtonGroup;                            // 0x0248(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	TArray<class UFortCollectionBookSlotButton*>       CollectionBookSlotButtons;                                // 0x0250(0x0010) (ExportObject, ZeroConstructor, Transient)
-	class UFortCollectionBookSection*                  AssociatedSection;                                        // 0x0260(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	bool                                               bSendOnSlotCommittedEventOnMouseClick;                    // 0x0268(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0xE7];                                      // 0x0269(0x00E7) MISSED OFFSET
-	bool                                               bCommitSelectedItemsOnClick;                              // 0x0350(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x3];                                       // 0x0351(0x0003) MISSED OFFSET
-	int                                                PreviousSelectedButtonIdx;                                // 0x0354(0x0004) (ZeroConstructor, IsPlainOldData)
-	int                                                CurrentSelectedButtonIdx;                                 // 0x0358(0x0004) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x4];                                       // 0x035C(0x0004) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0210(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortCollectionBookSlotView.CollectionBookButtonClass
+	class UHorizontalBox*                              CollectionBookButtonBox;                                  // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCommittableButtonGroup*                 CollectionBookSlotButtonGroup;                            // 0x0240(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	TArray<class UFortCollectionBookSlotButton*>       CollectionBookSlotButtons;                                // 0x0248(0x0010) (ExportObject, ZeroConstructor, Transient)
+	class UFortCollectionBookSection*                  AssociatedSection;                                        // 0x0258(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bSendOnSlotCommittedEventOnMouseClick;                    // 0x0260(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x37];                                      // 0x0261(0x0037) MISSED OFFSET
+	bool                                               bCommitSelectedItemsOnClick;                              // 0x0298(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x3];                                       // 0x0299(0x0003) MISSED OFFSET
+	int                                                PreviousSelectedButtonIdx;                                // 0x029C(0x0004) (ZeroConstructor, IsPlainOldData)
+	int                                                CurrentSelectedButtonIdx;                                 // 0x02A0(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x4];                                       // 0x02A4(0x0004) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3222,29 +4236,29 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookSlotWidget
-// 0x0128 (0x0340 - 0x0218)
+// 0x0128 (0x0338 - 0x0210)
 class UFortCollectionBookSlotWidget : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0218(0x0010) MISSED OFFSET
-	EFortItemCardSize                                  ItemCardSize;                                             // 0x0228(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bIsRewardCard;                                            // 0x0229(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x6];                                       // 0x022A(0x0006) MISSED OFFSET
-	class UFortMultiSizeItemCard*                      ItemCardWidget;                                           // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UWidget*                                     UnslottedOverlayWidget;                                   // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UWidget*                                     ReadyToSlotOverlayWidget;                                 // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UWidget*                                     UnslottedButReadyOverlayWidget;                           // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	struct FName                                       SlotRowName;                                              // 0x0250(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	struct FText                                       ItemAvailableToSlotText;                                  // 0x0258(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FText                                       NoItemsAvailableToSlotText;                               // 0x0270(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FText                                       HigherQualityItemsAvailableToSlotAndUpgradeAvailableText; // 0x0288(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FText                                       HigherQualityItemsAvailableToSlotAndEvolveAvailableText;  // 0x02A0(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FText                                       HigherQualityItemsAvailableToSlotText;                    // 0x02B8(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FText                                       ItemInSlotFullyUpgradedText;                              // 0x02D0(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FText                                       ItemInSlotCanBeUpgradedText;                              // 0x02E8(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FText                                       ItemInSlotCanBeEvolvedText;                               // 0x0300(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
-	class UFortItem*                                   SlottedItemRepresentation;                                // 0x0318(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x20];                                      // 0x0320(0x0020) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0210(0x0010) MISSED OFFSET
+	EFortItemCardSize                                  ItemCardSize;                                             // 0x0220(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bIsRewardCard;                                            // 0x0221(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x6];                                       // 0x0222(0x0006) MISSED OFFSET
+	class UFortMultiSizeItemCard*                      ItemCardWidget;                                           // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UWidget*                                     UnslottedOverlayWidget;                                   // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UWidget*                                     ReadyToSlotOverlayWidget;                                 // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UWidget*                                     UnslottedButReadyOverlayWidget;                           // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FName                                       SlotRowName;                                              // 0x0248(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	struct FText                                       ItemAvailableToSlotText;                                  // 0x0250(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       NoItemsAvailableToSlotText;                               // 0x0268(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       HigherQualityItemsAvailableToSlotAndUpgradeAvailableText; // 0x0280(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       HigherQualityItemsAvailableToSlotAndEvolveAvailableText;  // 0x0298(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       HigherQualityItemsAvailableToSlotText;                    // 0x02B0(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       ItemInSlotFullyUpgradedText;                              // 0x02C8(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       ItemInSlotCanBeUpgradedText;                              // 0x02E0(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       ItemInSlotCanBeEvolvedText;                               // 0x02F8(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	class UFortItem*                                   SlottedItemRepresentation;                                // 0x0310(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x20];                                      // 0x0318(0x0020) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3265,17 +4279,17 @@ public:
 
 
 // Class FortniteUI.FortCollectionBookWidget
-// 0x0030 (0x0420 - 0x03F0)
+// 0x0030 (0x0358 - 0x0328)
 class UFortCollectionBookWidget : public UFortActivatablePanel
 {
 public:
-	class UFortCollectionBookProgressWidget*           ProgressWidget;                                           // 0x03F0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonWidgetSwitcher*                       MainWidgetSwitcher;                                       // 0x03F8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortCollectionBookPrimaryPanel*             PrimaryPanelWidget;                                       // 0x0400(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortCollectionBookSectionPanel*             SectionPanelWidget;                                       // 0x0408(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	int                                                PrimaryPanelIdx;                                          // 0x0410(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	int                                                SectionPanelIdx;                                          // 0x0414(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0418(0x0008) MISSED OFFSET
+	class UFortCollectionBookProgressWidget*           ProgressWidget;                                           // 0x0328(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonWidgetSwitcher*                       MainWidgetSwitcher;                                       // 0x0330(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookPrimaryPanel*             PrimaryPanelWidget;                                       // 0x0338(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortCollectionBookSectionPanel*             SectionPanelWidget;                                       // 0x0340(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	int                                                PrimaryPanelIdx;                                          // 0x0348(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	int                                                SectionPanelIdx;                                          // 0x034C(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0350(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3353,14 +4367,14 @@ public:
 
 
 // Class FortniteUI.FortCraftingBarWidget
-// 0x0028 (0x0268 - 0x0240)
+// 0x0028 (0x0260 - 0x0238)
 class UFortCraftingBarWidget : public UFortHUDElementWidget
 {
 public:
-	class UCommonTextBlock*                            CraftingText;                                             // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UProgressBar*                                CraftingProgressBar;                                      // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	float                                              CompletedRemainVisibleTime;                               // 0x0250(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x14];                                      // 0x0254(0x0014) MISSED OFFSET
+	class UCommonTextBlock*                            CraftingText;                                             // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UProgressBar*                                CraftingProgressBar;                                      // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	float                                              CompletedRemainVisibleTime;                               // 0x0248(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x14];                                      // 0x024C(0x0014) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3377,11 +4391,11 @@ public:
 
 
 // Class FortniteUI.FortDailyRewards
-// 0x0010 (0x0400 - 0x03F0)
+// 0x0008 (0x0330 - 0x0328)
 class UFortDailyRewards : public UFortActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x03F0(0x0010) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0328(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3398,11 +4412,11 @@ public:
 
 
 // Class FortniteUI.FortDailyRewardsItem
-// 0x0010 (0x0228 - 0x0218)
+// 0x0010 (0x0220 - 0x0210)
 class UFortDailyRewardsItem : public UCommonUserWidget
 {
 public:
-	struct FFortDailyRewardsItemData                   ItemData;                                                 // 0x0218(0x0010) (BlueprintVisible, BlueprintReadOnly)
+	struct FFortDailyRewardsItemData                   ItemData;                                                 // 0x0210(0x0010) (BlueprintVisible, BlueprintReadOnly)
 
 	static UClass* StaticClass()
 	{
@@ -3414,11 +4428,11 @@ public:
 
 
 // Class FortniteUI.FortDailyRewardsSchedule
-// 0x0098 (0x02B0 - 0x0218)
+// 0x0098 (0x02A8 - 0x0210)
 class UFortDailyRewardsSchedule : public UCommonUserWidget
 {
 public:
-	struct FFortDailyRewardsScheduleData               ScheduleData;                                             // 0x0218(0x0098) (BlueprintVisible, BlueprintReadOnly)
+	struct FFortDailyRewardsScheduleData               ScheduleData;                                             // 0x0210(0x0098) (BlueprintVisible, BlueprintReadOnly)
 
 	static UClass* StaticClass()
 	{
@@ -3430,16 +4444,16 @@ public:
 
 
 // Class FortniteUI.FortDefenderConfigPanel
-// 0x0030 (0x03F0 - 0x03C0)
+// 0x0028 (0x0320 - 0x02F8)
 class UFortDefenderConfigPanel : public UCommonActivatablePanel
 {
 public:
-	TWeakObjectPtr<class UFortItem>                    SelectedDefenderItem;                                     // 0x03C0(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	TWeakObjectPtr<class UFortItem>                    SelectedWeaponItem;                                       // 0x03C8(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	TWeakObjectPtr<class UFortItem>                    SelectedAmmoItem;                                         // 0x03D0(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	int                                                SelectedAmmoQuantity;                                     // 0x03D8(0x0004) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	TWeakObjectPtr<class ABuildingTrapDefender>        DefenderTrap;                                             // 0x03DC(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0xC];                                       // 0x03E4(0x000C) MISSED OFFSET
+	TWeakObjectPtr<class UFortItem>                    SelectedDefenderItem;                                     // 0x02F8(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	TWeakObjectPtr<class UFortItem>                    SelectedWeaponItem;                                       // 0x0300(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	TWeakObjectPtr<class UFortItem>                    SelectedAmmoItem;                                         // 0x0308(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	int                                                SelectedAmmoQuantity;                                     // 0x0310(0x0004) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	TWeakObjectPtr<class ABuildingTrapDefender>        DefenderTrap;                                             // 0x0314(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x031C(0x0004) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3463,7 +4477,7 @@ public:
 
 
 // Class FortniteUI.FortDefenderItemTileButton
-// 0x0000 (0x0838 - 0x0838)
+// 0x0000 (0x08B8 - 0x08B8)
 class UFortDefenderItemTileButton : public UFortItemPickerButton
 {
 public:
@@ -3480,21 +4494,22 @@ public:
 
 
 // Class FortniteUI.FortItemTileView
-// 0x0120 (0x0410 - 0x02F0)
+// 0x0128 (0x0470 - 0x0348)
 class UFortItemTileView : public UCommonTileView
 {
 public:
-	struct FFortItemFilterDefinition                   Filter;                                                   // 0x02F0(0x0060) (BlueprintVisible, BlueprintReadOnly)
-	struct FFortItemSorterDefinition                   Sorter;                                                   // 0x0350(0x0050) (BlueprintVisible, BlueprintReadOnly)
-	bool                                               bShouldShowNullItemTile;                                  // 0x03A0(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bAutomaticallyLoadItemDetails;                            // 0x03A1(0x0001) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	EItemTileViewDisplayType                           DisplayType;                                              // 0x03A2(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x5];                                       // 0x03A3(0x0005) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnInventoryUpdatedEvent;                                  // 0x03A8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData01[0x18];                                      // 0x03B8(0x0018) MISSED OFFSET
-	TArray<TWeakObjectPtr<class UFortItem>>            ItemsForTileView;                                         // 0x03D0(0x0010) (ZeroConstructor)
-	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x03E0(0x0010) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x20];                                      // 0x03F0(0x0020) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0348(0x0008) MISSED OFFSET
+	struct FFortItemFilterDefinition                   Filter;                                                   // 0x0350(0x0060) (BlueprintVisible, BlueprintReadOnly)
+	struct FFortItemSorterDefinition                   Sorter;                                                   // 0x03B0(0x0050) (BlueprintVisible, BlueprintReadOnly)
+	bool                                               bShouldShowNullItemTile;                                  // 0x0400(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bAutomaticallyLoadItemDetails;                            // 0x0401(0x0001) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	EItemTileViewDisplayType                           DisplayType;                                              // 0x0402(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x5];                                       // 0x0403(0x0005) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnInventoryUpdatedEvent;                                  // 0x0408(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData02[0x18];                                      // 0x0418(0x0018) MISSED OFFSET
+	TArray<TWeakObjectPtr<class UFortItem>>            ItemsForTileView;                                         // 0x0430(0x0010) (ZeroConstructor)
+	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x0440(0x0010) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x20];                                      // 0x0450(0x0020) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3512,14 +4527,13 @@ public:
 	void RefreshFilterAndSort();
 	void OnInventoryUpdated__DelegateSignature();
 	void HideNullItemTile();
-	void HandleItemWidgetCreated(class UUserWidget* Widget);
 	bool ContainsItem(class UFortItem* Item);
 	void CenterSelectedItemTileWidget();
 };
 
 
 // Class FortniteUI.FortDefenderItemTileView
-// 0x0000 (0x0410 - 0x0410)
+// 0x0000 (0x0470 - 0x0470)
 class UFortDefenderItemTileView : public UFortItemTileView
 {
 public:
@@ -3534,7 +4548,7 @@ public:
 
 
 // Class FortniteUI.FortDefenderSlotButton
-// 0x0000 (0x0808 - 0x0808)
+// 0x0000 (0x0888 - 0x0888)
 class UFortDefenderSlotButton : public UCommonButton
 {
 public:
@@ -3549,12 +4563,12 @@ public:
 
 
 // Class FortniteUI.FortDefenderSlotItemPicker
-// 0x0008 (0x0288 - 0x0280)
+// 0x0008 (0x02B0 - 0x02A8)
 class UFortDefenderSlotItemPicker : public UFortItemPickerBase
 {
 public:
-	EFortDefenderSlotType                              DefenderSlotType;                                         // 0x0280(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0281(0x0007) MISSED OFFSET
+	EFortDefenderSlotType                              DefenderSlotType;                                         // 0x02A8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x02A9(0x0007) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3564,12 +4578,11 @@ public:
 
 
 	void PopulateDefenderSlotItems(class UFortDefenderItem* DefenderItem);
-	void HandleItemWidgetCreated(class UUserWidget* ItemWidget);
 };
 
 
 // Class FortniteUI.FortDefenderSlotView
-// 0x0000 (0x0218 - 0x0218)
+// 0x0000 (0x0210 - 0x0210)
 class UFortDefenderSlotView : public UCommonUserWidget
 {
 public:
@@ -3584,7 +4597,7 @@ public:
 
 
 // Class FortniteUI.FortDefenderSlotWidget
-// 0x0000 (0x0218 - 0x0218)
+// 0x0000 (0x0210 - 0x0210)
 class UFortDefenderSlotWidget : public UCommonUserWidget
 {
 public:
@@ -3599,13 +4612,13 @@ public:
 
 
 // Class FortniteUI.FortSquadSelectorButton
-// 0x0020 (0x0828 - 0x0808)
+// 0x0020 (0x08A8 - 0x0888)
 class UFortSquadSelectorButton : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0808(0x0010) MISSED OFFSET
-	class UClass*                                      SquadManagementScreenType;                                // 0x0818(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0820(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0888(0x0010) MISSED OFFSET
+	class UClass*                                      SquadManagementScreenType;                                // 0x0898(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x08A0(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3623,7 +4636,7 @@ public:
 
 
 // Class FortniteUI.FortDefenderSquadSelectorButton
-// 0x0000 (0x0828 - 0x0828)
+// 0x0000 (0x08A8 - 0x08A8)
 class UFortDefenderSquadSelectorButton : public UFortSquadSelectorButton
 {
 public:
@@ -3657,7 +4670,9 @@ public:
 
 
 	bool OfferHasDenyRequirements();
+	bool IsValidOffer();
 	bool IsUnique();
+	bool IsRefundable();
 	bool IsPriceInRealMoney(int PriceIndex);
 	bool IsPriceInMTX(int PriceIndex);
 	bool IsLockedByRequirement();
@@ -3665,14 +4680,16 @@ public:
 	bool IsExclusive();
 	bool HasRequirement(struct FText* RequirementText);
 	bool HasDisplayAsset();
+	bool HasCatalogOfferName(struct FText* CatalogOfferName);
 	int GetTotalQuantity();
 	struct FSlateBrush GetTileImage();
 	struct FName GetStorefrontName();
 	int GetSortPriority();
+	struct FText GetShortName();
 	struct FText GetShortDescription();
 	TEnumAsByte<ECatalogSaleType> GetSaleType(int PriceIndex);
-	struct FText GetSaleText(int PriceIndex);
-	bool GetSalePrice(int PriceIndex, struct FText* SalePrice);
+	struct FText GetSaleText(int PriceIndex, int ItemQuantity);
+	bool GetSalePrice(int PriceIndex, int ItemQuantity, struct FText* SalePrice);
 	ECatalogRequirementType GetRequirementTypeAtIndex(int RequirementIndex);
 	int GetRequirementMinQuantityAtIndex(int RequirementIndex);
 	struct FString GetRequirementIdAtIndex(int RequirementIndex);
@@ -3682,7 +4699,8 @@ public:
 	class UFortMtxOfferData* GetOfferDisplayAsset();
 	struct FCatalogOffer GetOffer();
 	int GetNumRequirements();
-	struct FText GetNormalPrice(int PriceIndex);
+	int GetNumGrantedItems();
+	struct FText GetNormalPrice(int PriceIndex, int ItemQuantity);
 	struct FText GetName();
 	bool GetMetaAsBool(const struct FString& MetaTag);
 	struct FText GetItemTypeText();
@@ -3692,7 +4710,6 @@ public:
 	struct FFortMtxGradient GetGradient();
 	EFortMtxStoreOfferType GetFortStoreOfferType();
 	struct FString GetFortStoreOfferCategory();
-	struct FString GetForcedGiftBoxTemplateId();
 	int GetFirstGrantQuantity();
 	class UFortAccountItemDefinition* GetFirstGrantItemDefinition();
 	struct FSlateBrush GetDetailsImage();
@@ -3709,12 +4726,12 @@ public:
 
 
 // Class FortniteUI.FortDirectAcquisitionOfferWidgetBase
-// 0x0018 (0x0820 - 0x0808)
+// 0x0018 (0x08A0 - 0x0888)
 class UFortDirectAcquisitionOfferWidgetBase : public UCommonButton
 {
 public:
-	TArray<class UFortDirectAcquisitionOfferInfo*>     GroupedOffers;                                            // 0x0808(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	class UFortDirectAcquisitionOfferInfo*             OfferData;                                                // 0x0818(0x0008) (ZeroConstructor, IsPlainOldData)
+	TArray<class UFortDirectAcquisitionOfferInfo*>     GroupedOffers;                                            // 0x0888(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UFortDirectAcquisitionOfferInfo*             OfferData;                                                // 0x0898(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -3735,14 +4752,17 @@ public:
 
 
 // Class FortniteUI.FortDirectAcquisitionOfferDetailsWidgetBase
-// 0x0060 (0x0450 - 0x03F0)
-class UFortDirectAcquisitionOfferDetailsWidgetBase : public UFortActivatablePanel
+// 0x0048 (0x0408 - 0x03C0)
+class UFortDirectAcquisitionOfferDetailsWidgetBase : public UFortActivatablePanelWithItemPreview
 {
 public:
-	unsigned char                                      UnknownData00[0x40];                                      // 0x03F0(0x0040) MISSED OFFSET
-	TArray<class UFortDirectAcquisitionOfferInfo*>     PagedItems;                                               // 0x0430(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	class UFortDirectAcquisitionOfferInfo*             OfferData;                                                // 0x0440(0x0008) (ZeroConstructor, IsPlainOldData)
-	class UFortGiftingOptionsPanel*                    GiftingOptions;                                           // 0x0448(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x03C0(0x0010) MISSED OFFSET
+	struct FDataTableRowHandle                         EnterViewModeInputActionRowHandle;                        // 0x03D0(0x0010) (Edit, DisableEditOnInstance)
+	bool                                               IsInItemViewMode;                                         // 0x03E0(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x03E1(0x0007) MISSED OFFSET
+	TArray<class UFortDirectAcquisitionOfferInfo*>     PagedItems;                                               // 0x03E8(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UFortDirectAcquisitionOfferInfo*             OfferData;                                                // 0x03F8(0x0008) (ZeroConstructor, IsPlainOldData)
+	class UFortVariantPicker*                          Picker_VariantSelector;                                   // 0x0400(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -3751,13 +4771,17 @@ public:
 	}
 
 
+	void UpdateItemViewModeBP();
+	bool ShouldHavePurchaseConfirmation();
 	void SetupOffer(class UFortDirectAcquisitionOfferInfo* InOfferData);
 	void SetPagedItems(TArray<class UFortDirectAcquisitionOfferInfo*> InPagedItems);
+	void SetIsInItemViewMode(bool Value);
+	void SendShopInteractionAnalytic(const struct FString& Interaction);
 	void PurchaseAmountRight();
 	void PurchaseAmountLeft();
 	void OnUpdateStatus();
 	void OnOfferSet();
-	void OnCancelGifting();
+	void OnEnterViewModeActionCommitted(bool* Passthrough);
 	void HandleCurrentlyViewedAccountInfoChanged(const struct FFortPublicAccountInfo& NewInfo);
 	class UFortDirectAcquisitionOfferInfo* GetOfferInfo();
 	void AutoEquip();
@@ -3765,15 +4789,15 @@ public:
 
 
 // Class FortniteUI.FortDirectAcquisitionWidgetBase
-// 0x0060 (0x0450 - 0x03F0)
+// 0x0060 (0x0388 - 0x0328)
 class UFortDirectAcquisitionWidgetBase : public UFortActivatablePanel
 {
 public:
-	TArray<struct FString>                             StorefrontNames;                                          // 0x03F0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	bool                                               bShowIneligible;                                          // 0x0400(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0401(0x0007) MISSED OFFSET
-	TArray<class UFortDirectAcquisitionOfferInfo*>     AcquisitionOfferData;                                     // 0x0408(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	unsigned char                                      UnknownData01[0x38];                                      // 0x0418(0x0038) MISSED OFFSET
+	TArray<struct FString>                             StorefrontNames;                                          // 0x0328(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	bool                                               bShowIneligible;                                          // 0x0338(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0339(0x0007) MISSED OFFSET
+	TArray<class UFortDirectAcquisitionOfferInfo*>     AcquisitionOfferData;                                     // 0x0340(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	unsigned char                                      UnknownData01[0x38];                                      // 0x0350(0x0038) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3784,6 +4808,7 @@ public:
 
 	void TriggerRefresh();
 	void SetStorefrontNames(TArray<struct FString> InStorefrontNames);
+	void OnUpdateOtherPlatformMTXMessage(bool HasOtherPlatformCurrency, const struct FText& CurrencyMessageLocText);
 	void OnStartReadingOffers();
 	void OnOffersGenerated();
 	void NoOffersAvailable();
@@ -3791,21 +4816,23 @@ public:
 	struct FDateTime GetSeasonStoreEndDate();
 	struct FDateTime GetDailyStoreEndDate();
 	void GenerateOfferWidget(class UFortDirectAcquisitionOfferInfo* OfferData);
+	void ClearOfferWidgets();
 };
 
 
 // Class FortniteUI.FortDisplayNameWidget
-// 0x00A0 (0x0460 - 0x03C0)
+// 0x0088 (0x0380 - 0x02F8)
 class UFortDisplayNameWidget : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x40];                                      // 0x03C0(0x0040) MISSED OFFSET
-	struct FText                                       ButtonDisableReason;                                      // 0x0400(0x0018) (Edit)
-	struct FText                                       NameTakenText;                                            // 0x0418(0x0018) (Edit)
-	struct FText                                       NameInvalidFormatText;                                    // 0x0430(0x0018) (Edit)
-	class UCommonButton*                               Button_Enter;                                             // 0x0448(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_Error;                                               // 0x0450(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UEditableText*                               EditText_DisplayName;                                     // 0x0458(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x02F8(0x0010) MISSED OFFSET
+	struct FText                                       ButtonDisableReason;                                      // 0x0308(0x0018) (Edit)
+	struct FText                                       NameTakenText;                                            // 0x0320(0x0018) (Edit)
+	struct FText                                       NameInvalidFormatText;                                    // 0x0338(0x0018) (Edit)
+	struct FText                                       NameTooShortText;                                         // 0x0350(0x0018) (Edit)
+	class UCommonButton*                               Button_Enter;                                             // 0x0368(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_Error;                                               // 0x0370(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UEditableText*                               EditText_DisplayName;                                     // 0x0378(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -3814,20 +4841,17 @@ public:
 	}
 
 
-	void UpdateSignInButton(const struct FText& Text);
-	void HandleTextCommitted(const struct FText& Text, TEnumAsByte<ETextCommit> CommitMethod);
-	void HandleOKSelected(class UCommonButton* Button);
+	void HandleTextChanged(const struct FText& Text);
 };
 
 
 // Class FortniteUI.FortErrorWindow
-// 0x0020 (0x0410 - 0x03F0)
+// 0x0018 (0x0340 - 0x0328)
 class UFortErrorWindow : public UFortActivatablePanel
 {
 public:
-	class UClass*                                      ErrorEntryClass;                                          // 0x03F0(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	TArray<class UCommonUserWidget*>                   ErrorEntriesPool;                                         // 0x03F8(0x0010) (ExportObject, ZeroConstructor)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0408(0x0008) MISSED OFFSET
+	class UClass*                                      ErrorEntryClass;                                          // 0x0328(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TArray<class UCommonUserWidget*>                   ErrorEntriesPool;                                         // 0x0330(0x0010) (ExportObject, ZeroConstructor)
 
 	static UClass* StaticClass()
 	{
@@ -3843,18 +4867,15 @@ public:
 
 
 // Class FortniteUI.FortEulaWidget
-// 0x0080 (0x0440 - 0x03C0)
+// 0x0038 (0x0330 - 0x02F8)
 class UFortEulaWidget : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x48];                                      // 0x03C0(0x0048) MISSED OFFSET
-	class USafeZone*                                   SafeZone;                                                 // 0x0408(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortRichTextBlock*                          Text_Description;                                         // 0x0410(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UScrollBox*                                  ScrollBox_License;                                        // 0x0418(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UHorizontalBox*                              HBox_Buttons;                                             // 0x0420(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Confirm;                                           // 0x0428(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Decline;                                           // 0x0430(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0438(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x18];                                      // 0x02F8(0x0018) MISSED OFFSET
+	class UFortRichTextBlock*                          Text_Description;                                         // 0x0310(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UScrollBox*                                  ScrollBox_License;                                        // 0x0318(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Confirm;                                           // 0x0320(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Decline;                                           // 0x0328(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -3862,9 +4883,6 @@ public:
 		return ptr;
 	}
 
-
-	void HandleDeclineClicked(class UCommonButton* Button);
-	void HandleConfirmClicked(class UCommonButton* Button);
 };
 
 
@@ -3905,18 +4923,18 @@ public:
 
 
 // Class FortniteUI.FortExpeditionBuildSquadWidget
-// 0x0060 (0x0420 - 0x03C0)
+// 0x0060 (0x0358 - 0x02F8)
 class UFortExpeditionBuildSquadWidget : public UCommonActivatablePanel
 {
 public:
-	TWeakObjectPtr<class UFortExpeditionItem>          Item;                                                     // 0x03C0(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FName                                       CurrentSquadId;                                           // 0x03C8(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	class UFortSquadSlotsView*                         ExpeditionSquadSlotsView;                                 // 0x03D0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortSquadSlotDetailsPanel*                  ExpeditionSquadSlotDetails;                               // 0x03D8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortSquadSlotItemPicker*                    ExpeditionSquadSlotPicker;                                // 0x03E0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortItemViewContext_ExpeditionSquadSlotsView* ItemViewContext_ExpeditionSlotsView;                      // 0x03E8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortItemViewContext_ExpeditionSquadSlotItemPicker* ItemViewContext_ExpeditionSlotItemPicker;                 // 0x03F0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x28];                                      // 0x03F8(0x0028) MISSED OFFSET
+	TWeakObjectPtr<class UFortExpeditionItem>          Item;                                                     // 0x02F8(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FName                                       CurrentSquadId;                                           // 0x0300(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	class UFortSquadSlotsView*                         ExpeditionSquadSlotsView;                                 // 0x0308(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortSquadSlotDetailsPanel*                  ExpeditionSquadSlotDetails;                               // 0x0310(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortSquadSlotItemPicker*                    ExpeditionSquadSlotPicker;                                // 0x0318(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemViewContext_ExpeditionSquadSlotsView* ItemViewContext_ExpeditionSlotsView;                      // 0x0320(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemViewContext_ExpeditionSquadSlotItemPicker* ItemViewContext_ExpeditionSlotItemPicker;                 // 0x0328(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0330(0x0028) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3940,15 +4958,15 @@ public:
 
 
 // Class FortniteUI.FortExpeditionDetailsWidget
-// 0x0040 (0x0258 - 0x0218)
+// 0x0040 (0x0250 - 0x0210)
 class UFortExpeditionDetailsWidget : public UCommonUserWidget
 {
 public:
-	TWeakObjectPtr<class UFortExpeditionItem>          Item;                                                     // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UFortSquadSlotsView*                         ExpeditionSquadSlotsView;                                 // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	struct FName                                       CurrentSquadId;                                           // 0x0228(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	class UFortItemViewContext_ExpeditionSquadSlotsView* ItemViewContext_ExpeditionSlotsView;                      // 0x0230(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x20];                                      // 0x0238(0x0020) MISSED OFFSET
+	TWeakObjectPtr<class UFortExpeditionItem>          Item;                                                     // 0x0210(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UFortSquadSlotsView*                         ExpeditionSquadSlotsView;                                 // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FName                                       CurrentSquadId;                                           // 0x0220(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	class UFortItemViewContext_ExpeditionSquadSlotsView* ItemViewContext_ExpeditionSlotsView;                      // 0x0228(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x20];                                      // 0x0230(0x0020) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3966,12 +4984,12 @@ public:
 
 
 // Class FortniteUI.FortExpeditionExpiresWidget
-// 0x0010 (0x0228 - 0x0218)
+// 0x0010 (0x0220 - 0x0210)
 class UFortExpeditionExpiresWidget : public UCommonUserWidget
 {
 public:
-	TWeakObjectPtr<class UFortExpeditionItem>          Item;                                                     // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0220(0x0008) MISSED OFFSET
+	TWeakObjectPtr<class UFortExpeditionItem>          Item;                                                     // 0x0210(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -3986,13 +5004,13 @@ public:
 
 
 // Class FortniteUI.FortExpeditionListItemWidget
-// 0x0018 (0x0820 - 0x0808)
+// 0x0018 (0x08A0 - 0x0888)
 class UFortExpeditionListItemWidget : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	TWeakObjectPtr<class UFortExpeditionItem>          Item;                                                     // 0x0810(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0818(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	TWeakObjectPtr<class UFortExpeditionItem>          Item;                                                     // 0x0890(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x0898(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -4006,16 +5024,16 @@ public:
 
 
 // Class FortniteUI.FortExpeditionListViewWidget
-// 0x0038 (0x0250 - 0x0218)
+// 0x0038 (0x0248 - 0x0210)
 class UFortExpeditionListViewWidget : public UCommonUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnExpeditionSelected;                                     // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnExpeditionListViewRefreshed;                            // 0x0228(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UCommonListView*                             ExpeditionListView;                                       // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	struct FName                                       CurrentTabNameId;                                         // 0x0240(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	EFortExpeditionListSort                            SortType;                                                 // 0x0248(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0249(0x0007) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnExpeditionSelected;                                     // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnExpeditionListViewRefreshed;                            // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	class UCommonListView*                             ExpeditionListView;                                       // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FName                                       CurrentTabNameId;                                         // 0x0238(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	EFortExpeditionListSort                            SortType;                                                 // 0x0240(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0241(0x0007) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -4025,17 +5043,16 @@ public:
 
 
 	void SetExpeditionListSortType(EFortExpeditionListSort InSortType);
-	void HandleListItemSelected(class UObject* Item, bool bSelected);
 	struct FText GetExpeditionListSortName();
 };
 
 
 // Class FortniteUI.FortExpeditionMasterWidget
-// 0x0080 (0x0440 - 0x03C0)
+// 0x0020 (0x0318 - 0x02F8)
 class UFortExpeditionMasterWidget : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x80];                                      // 0x03C0(0x0080) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x20];                                      // 0x02F8(0x0020) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -4047,14 +5064,14 @@ public:
 
 
 // Class FortniteUI.FortExpeditionOverviewWidget
-// 0x0028 (0x0240 - 0x0218)
+// 0x0028 (0x0238 - 0x0210)
 class UFortExpeditionOverviewWidget : public UCommonUserWidget
 {
 public:
-	class UClass*                                      TabButtonType;                                            // 0x0218(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	TArray<struct FExpeditionTabInfo>                  TabListRegistrationInfo;                                  // 0x0220(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	class UFortTabListWidgetBase*                      ExpeditionTabList;                                        // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortExpeditionListViewWidget*               ExpeditionListView;                                       // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UClass*                                      TabButtonType;                                            // 0x0210(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	TArray<struct FExpeditionTabInfo>                  TabListRegistrationInfo;                                  // 0x0218(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UFortTabListWidgetBase*                      ExpeditionTabList;                                        // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortExpeditionListViewWidget*               ExpeditionListView;                                       // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -4072,12 +5089,11 @@ public:
 
 
 // Class FortniteUI.FortExpeditionPickVehicleWidget
-// 0x0010 (0x03D0 - 0x03C0)
+// 0x0008 (0x0300 - 0x02F8)
 class UFortExpeditionPickVehicleWidget : public UCommonActivatablePanel
 {
 public:
-	TWeakObjectPtr<class UFortExpeditionItem>          Item;                                                     // 0x03C0(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x03C8(0x0008) MISSED OFFSET
+	TWeakObjectPtr<class UFortExpeditionItem>          Item;                                                     // 0x02F8(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -4091,12 +5107,12 @@ public:
 
 
 // Class FortniteUI.FortExpeditionReturnsWidget
-// 0x0010 (0x0228 - 0x0218)
+// 0x0010 (0x0220 - 0x0210)
 class UFortExpeditionReturnsWidget : public UCommonUserWidget
 {
 public:
-	TWeakObjectPtr<class UFortExpeditionItem>          Item;                                                     // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0220(0x0008) MISSED OFFSET
+	TWeakObjectPtr<class UFortExpeditionItem>          Item;                                                     // 0x0210(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -4111,14 +5127,14 @@ public:
 
 
 // Class FortniteUI.FortExpeditionRewardsWidget
-// 0x0028 (0x0240 - 0x0218)
+// 0x0028 (0x0238 - 0x0210)
 class UFortExpeditionRewardsWidget : public UCommonUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnAllExpeditionsCollected;                                // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UCommonTileView*                             RewardsTileView;                                          // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	bool                                               bPendingCollection;                                       // 0x0230(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0xF];                                       // 0x0231(0x000F) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnAllExpeditionsCollected;                                // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	class UCommonTileView*                             RewardsTileView;                                          // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	bool                                               bPendingCollection;                                       // 0x0228(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0xF];                                       // 0x0229(0x000F) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -4134,26 +5150,26 @@ public:
 
 
 // Class FortniteUI.FortExpeditionSummaryWidget
-// 0x0058 (0x0270 - 0x0218)
+// 0x0058 (0x0268 - 0x0210)
 class UFortExpeditionSummaryWidget : public UCommonUserWidget
 {
 public:
-	int                                                AvailableExpeditions;                                     // 0x0218(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                CompletedExpeditions;                                     // 0x021C(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                LandVehiclesTotal;                                        // 0x0220(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                LandVehiclesAvailable;                                    // 0x0224(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                AirVehiclesTotal;                                         // 0x0228(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                AirVehiclesAvailable;                                     // 0x022C(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                SeaVehiclesTotal;                                         // 0x0230(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                SeaVehiclesAvailable;                                     // 0x0234(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                LandExpeditionsTotal;                                     // 0x0238(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                LandExpeditionsAvailable;                                 // 0x023C(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                AirExpeditionsTotal;                                      // 0x0240(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                AirExpeditionsAvailable;                                  // 0x0244(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                SeaExpeditionsTotal;                                      // 0x0248(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                SeaExpeditionsAvailable;                                  // 0x024C(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	TArray<class UFortExpeditionItem*>                 InProgressExpeditions;                                    // 0x0250(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0260(0x0010) MISSED OFFSET
+	int                                                AvailableExpeditions;                                     // 0x0210(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                CompletedExpeditions;                                     // 0x0214(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                LandVehiclesTotal;                                        // 0x0218(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                LandVehiclesAvailable;                                    // 0x021C(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                AirVehiclesTotal;                                         // 0x0220(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                AirVehiclesAvailable;                                     // 0x0224(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                SeaVehiclesTotal;                                         // 0x0228(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                SeaVehiclesAvailable;                                     // 0x022C(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                LandExpeditionsTotal;                                     // 0x0230(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                LandExpeditionsAvailable;                                 // 0x0234(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                AirExpeditionsTotal;                                      // 0x0238(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                AirExpeditionsAvailable;                                  // 0x023C(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                SeaExpeditionsTotal;                                      // 0x0240(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                SeaExpeditionsAvailable;                                  // 0x0244(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TArray<class UFortExpeditionItem*>                 InProgressExpeditions;                                    // 0x0248(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0258(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -4199,12 +5215,12 @@ public:
 
 
 // Class FortniteUI.FortExpeditionVehicleTileItemWidget
-// 0x0010 (0x0818 - 0x0808)
+// 0x0010 (0x0898 - 0x0888)
 class UFortExpeditionVehicleTileItemWidget : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	TWeakObjectPtr<class UObject>                      SquadId;                                                  // 0x0810(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	TWeakObjectPtr<class UObject>                      SquadId;                                                  // 0x0890(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -4231,11 +5247,11 @@ public:
 
 
 // Class FortniteUI.FortMobileShareButton
-// 0x0030 (0x0838 - 0x0808)
+// 0x0030 (0x08B8 - 0x0888)
 class UFortMobileShareButton : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x30];                                      // 0x0808(0x0030) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x30];                                      // 0x0888(0x0030) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -4250,17 +5266,17 @@ public:
 
 
 // Class FortniteUI.FortFriendCodeEntryBase
-// 0x0070 (0x08A8 - 0x0838)
+// 0x0070 (0x0928 - 0x08B8)
 class UFortFriendCodeEntryBase : public UFortMobileShareButton
 {
 public:
-	struct FFriendCode                                 FriendCode;                                               // 0x0838(0x0020)
-	class UCommonTextBlock*                            LinkDataTextBox;                                          // 0x0858(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	struct FString                                     DebugName;                                                // 0x0860(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	int                                                LengthOfCode;                                             // 0x0870(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x0874(0x0004) MISSED OFFSET
-	struct FText                                       SharedMessage;                                            // 0x0878(0x0018) (Edit)
-	struct FText                                       SharedMessageNoInvite;                                    // 0x0890(0x0018) (Edit)
+	struct FFriendCode                                 FriendCode;                                               // 0x08B8(0x0020)
+	class UCommonTextBlock*                            LinkDataTextBox;                                          // 0x08D8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FString                                     DebugName;                                                // 0x08E0(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	int                                                LengthOfCode;                                             // 0x08F0(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x08F4(0x0004) MISSED OFFSET
+	struct FText                                       SharedMessage;                                            // 0x08F8(0x0018) (Edit)
+	struct FText                                       SharedMessageNoInvite;                                    // 0x0910(0x0018) (Edit)
 
 	static UClass* StaticClass()
 	{
@@ -4272,15 +5288,14 @@ public:
 
 
 // Class FortniteUI.FortFriendCodeListBase
-// 0x0030 (0x0420 - 0x03F0)
+// 0x0028 (0x0350 - 0x0328)
 class UFortFriendCodeListBase : public UFortActivatablePanel
 {
 public:
-	TArray<struct FFriendCode>                         BacchusFriendCodes;                                       // 0x03F0(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	class UClass*                                      FriendCodeEntryClass;                                     // 0x0400(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UCommonDynamicEntryBox*                      EntryBox_FriendCodes;                                     // 0x0408(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class URichTextBlock*                              WarningText;                                              // 0x0410(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0418(0x0008) MISSED OFFSET
+	TArray<struct FFriendCode>                         BacchusFriendCodes;                                       // 0x0328(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UClass*                                      FriendCodeEntryClass;                                     // 0x0338(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UDynamicEntryBox*                            EntryBox_FriendCodes;                                     // 0x0340(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class URichTextBlock*                              WarningText;                                              // 0x0348(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -4295,8 +5310,27 @@ public:
 };
 
 
+// Class FortniteUI.FortFriendLinkPanel
+// 0x0008 (0x0330 - 0x0328)
+class UFortFriendLinkPanel : public UFortActivatablePanel
+{
+public:
+	class UCommonButton*                               Button_ShareButton;                                       // 0x0328(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortFriendLinkPanel");
+		return ptr;
+	}
+
+
+	void OnShareButtonTypeSet(EShareButtonType Type);
+	void OnCopiedToClipboard();
+};
+
+
 // Class FortniteUI.FortFrontEndContext
-// 0x02D8 (0x0300 - 0x0028)
+// 0x02E8 (0x0310 - 0x0028)
 class UFortFrontEndContext : public UBlueprintContextBase
 {
 public:
@@ -4322,17 +5356,18 @@ public:
 	struct FScriptMulticastDelegate                    OnTheaterDataChanged;                                     // 0x0150(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	struct FScriptMulticastDelegate                    OnTheaterTileClicked;                                     // 0x0160(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	struct FScriptMulticastDelegate                    OnTheaterTileUnselected;                                  // 0x0170(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnTheaterTileFocused;                                     // 0x0180(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnTheaterTileUnfocused;                                   // 0x0190(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnRecruitHero;                                            // 0x01A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnTheaterTileDoubleClicked;                               // 0x0180(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnTheaterTileFocused;                                     // 0x0190(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnTheaterTileUnfocused;                                   // 0x01A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	struct FScriptMulticastDelegate                    OnVaultItemViewed;                                        // 0x01B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	struct FScriptMulticastDelegate                    OnVaultItemsViewed;                                       // 0x01C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	struct FScriptMulticastDelegate                    OnPlayerLoggedIn;                                         // 0x01D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	struct FScriptMulticastDelegate                    OnPlayerLoggedOut;                                        // 0x01E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	struct FScriptMulticastDelegate                    OnMainTabSelected;                                        // 0x01F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0200(0x0008) MISSED OFFSET
-	struct FFortFrontEndFeatureStruct                  Features[0x9];                                            // 0x0208(0x0018) (Transient)
-	struct FFortSavedModeLoadout                       CachedModeLoadout;                                        // 0x02E0(0x0020) (Transient)
+	struct FScriptMulticastDelegate                    OnSocialImportClosed;                                     // 0x0200(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	struct FFortFrontEndFeatureStruct                  Features[0x9];                                            // 0x0218(0x0018) (Transient)
+	struct FFortSavedModeLoadout                       CachedModeLoadout;                                        // 0x02F0(0x0020) (Transient)
 
 	static UClass* StaticClass()
 	{
@@ -4348,15 +5383,19 @@ public:
 	void UpdateNewAccountItemBangCounts(class UFortInventoryContext* InventoryContext);
 	bool TryGetAttributeInfo(const struct FGameplayAttribute& GameplayAttribute, struct FFortAttributeInfo* OutAttribute);
 	void SkipInitialBenchmark();
+	class UFortSocialImportPanel* ShowSocialImport(class UClass* PanelClass);
 	void ShowAthenaStoreNewItemBang();
+	bool ShouldShowSocialImport();
 	bool ShouldShowLoginMessage();
 	bool ShouldRunInitialBenchmark();
 	void SetSelectedTheater(const struct FString& TheaterId);
 	void SetSeenLoginMessage();
-	void SetPersonalHeroChoice(class UFortHero* Hero);
-	void SetHeroChoice(int PartyMemberIndex, class UFortHero* Hero);
+	void SetPersonalHeroChoice(class UFortHero* Hero, const struct FDisplayManagerVariantData& VariantData);
+	void SetLocalVariantPreview(class UAthenaCosmeticItemDefinition* CosmeticItem, const struct FGameplayTag& VariantChannelTag, const struct FGameplayTag& VariantTag);
+	void SetHeroChoice(int PartyMemberIndex, class UFortHero* Hero, const struct FDisplayManagerVariantData& VariantData);
 	void SetFrontEndVisibility(bool bHideHeader, bool bHideFooter, bool bHideChatWidget);
 	void SetFrontEndCamera(EFrontEndCamera NewState);
+	void SetDefaultLocalVariantPreview(class UAthenaCosmeticItemDefinition* CosmeticItem);
 	void SendPlayQuestAnalytic(class UFortQuestItem* QuestItem);
 	void SendFrontendEnteredEvent();
 	bool SelectTileForQuest(class UFortQuestItem* QuestItem, float* OutCriticalMissionDifficultyOverrideMin, float* OutCriticalMissionDifficultyOverrideMax);
@@ -4368,7 +5407,10 @@ public:
 	void PlayLevelUpEffect();
 	void PlayEvolutionEffect();
 	bool IsActiveTileMissionValid();
+	bool Is4PlayerTile(class AFortTheaterMapTile* Tile);
 	void HideAthenaStoreNewItemBang();
+	void HandleDynamicSocialImportClosed();
+	struct FDisplayManagerVariantData GetVariantDataForMemberIndex(int MemberIndex);
 	class UClass* GetUITestingClass();
 	bool GetTileMissionDetails(class AFortTheaterMapTile* Tile, struct FFortMissionDetails* MissionDetails);
 	EFortTheaterType GetTheaterType(const struct FString& TheaterId);
@@ -4382,6 +5424,7 @@ public:
 	struct FText GetRequirementText(const struct FFortRequirementsInfo& InRequirements);
 	TArray<struct FGameDifficultyInfo> GetRecommendedTeamDifficulties();
 	TArray<int> GetRecommendedDifficultyIndexesInAvailableDifficulties(bool bIncludeMissionAlertTiles);
+	class AActor* GetPrefabActorForCurrentDisplayedItem();
 	void GetOutpostStructureUpgradeCost(int TheaterSlot, int UpgradeLevel, class UFortOutpostItemDefinition* OutpostStructure, TArray<struct FFortItemQuantityPair>* OutWorldItems, TArray<struct FFortItemQuantityPair>* OutAccountItems);
 	int GetOutpostStructureMaxLevel(int TheaterSlot, class UFortOutpostItemDefinition* OutpostStructure);
 	bool GetOutpostCoreLevelByTheaterId(const struct FString& TheaterId, int* OutCoreLevel);
@@ -4407,7 +5450,6 @@ public:
 	struct FName GetDefenderSquadIDByTheaterID(const struct FString& TheaterId);
 	struct FText GetCurrentTheaterName();
 	TArray<struct FGameDifficultyInfo> GetAvailableDifficulties(bool bIncludeMissionAlertTiles);
-	TArray<class UAthenaCustomPlaylistEvent*> GetAvailableAthenaPlaylists();
 	struct FFortMultiSizeBrush GetAttributeIcon(const struct FFortAttributeInfo& InAttribute, const struct FGameplayTagContainer& InRequiredTags);
 	struct FText GetAttributeDisplayName(const struct FFortAttributeInfo& InAttribute, const struct FGameplayTagContainer& InRequiredTags);
 	struct FText GetAttributeDescription(const struct FFortAttributeInfo& InAttribute, const struct FGameplayTagContainer& InRequiredTags);
@@ -4417,6 +5459,7 @@ public:
 	void GetAccountLevelUpRewards(int AccountLevel, TArray<struct FFortItemQuantityPair>* Rewards);
 	void ForceSetFeatureState(EFortFrontEndFeature Feature, EFortFrontEndFeatureState State, EFortFrontEndFeatureStateReason Reason);
 	void ClearSelectedTheater();
+	void ClearLocalPreview(bool StopUsingLocalPreview);
 	bool CanShowLockerSlotType(EAthenaCustomizationCategory SlotType);
 	bool CanFindTileForQuest(class UFortQuestItem* QuestItem);
 	bool CanCompleteQuestInFocusedOrActiveTileMission(class UFortQuestItem* QuestItem);
@@ -4428,14 +5471,15 @@ public:
 
 
 // Class FortniteUI.FortGameFeedbackBase
-// 0x00A0 (0x0490 - 0x03F0)
+// 0x00A0 (0x03C8 - 0x0328)
 class UFortGameFeedbackBase : public UFortActivatablePanel
 {
 public:
-	class UEditableText*                               SubjectEditable;                                          // 0x03F0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UMultiLineEditableText*                      BodyEditable;                                             // 0x03F8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButtonGroup*                          ButtonGroup;                                              // 0x0400(0x0008) (Edit, ZeroConstructor, EditConst, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x88];                                      // 0x0408(0x0088) MISSED OFFSET
+	class UEditableText*                               SubjectEditable;                                          // 0x0328(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UMultiLineEditableText*                      BodyEditable;                                             // 0x0330(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UEditableText*                               BodyEditable_SingleLine;                                  // 0x0338(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButtonGroup*                          ButtonGroup;                                              // 0x0340(0x0008) (Edit, ZeroConstructor, EditConst, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x80];                                      // 0x0348(0x0080) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -4454,16 +5498,16 @@ public:
 
 
 // Class FortniteUI.FortGameOptions
-// 0x0038 (0x0260 - 0x0228)
+// 0x0038 (0x0258 - 0x0220)
 class UFortGameOptions : public UFortOptionsTab
 {
 public:
-	float                                              MinGammaValue;                                            // 0x0228(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	float                                              MaxGammaValue;                                            // 0x022C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	TArray<class UFortSettingInfo*>                    TabSettingsData;                                          // 0x0230(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	TArray<class UFortHUDVisibilityData*>              HUDData;                                                  // 0x0240(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	class UCommonListView*                             OptionsListView;                                          // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonListView*                             HUDCommonListView;                                        // 0x0258(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	float                                              MinGammaValue;                                            // 0x0220(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              MaxGammaValue;                                            // 0x0224(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	TArray<class UFortSettingInfo*>                    TabSettingsData;                                          // 0x0228(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	TArray<class UFortHUDVisibilityData*>              HUDData;                                                  // 0x0238(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UCommonListView*                             OptionsListView;                                          // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonListView*                             HUDCommonListView;                                        // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -4475,6 +5519,7 @@ public:
 	void UpdatePossibleLanguages();
 	void UpdateHUDSettings(const struct FGameplayTag& HUDMapping, bool NewVisibility);
 	void UpdateGammaSettings(float GammaValue);
+	void SetIgnoreGamepadInput(bool bIgnore);
 	void SetHearingImpairedMode(bool bHearingImpaired);
 	void SetControllerPlatform(const struct FString& InControllerPlatform);
 	void SetColorBlindStrength(float InColorBlindStrength);
@@ -4483,6 +5528,7 @@ public:
 	bool Initialize();
 	void HandleGamePadToggleMode();
 	class UWidget* GetOptionsListWidget(class UObject* Item);
+	bool GetIgnoreGamepadInput();
 	bool GetHUDSettings(const struct FGameplayTag& HUDMapping);
 	class UWidget* GetHUDListWidget(class UObject* Item);
 	bool GetHearingImpairedMode();
@@ -4493,19 +5539,19 @@ public:
 	EColorBlindMode GetColorBlindMode();
 	void ConstructSettingList();
 	void ConstructHUDTagList();
+	bool CanIgnoreGamepadInput();
 };
 
 
 // Class FortniteUI.FortInputOptions
-// 0x0038 (0x0260 - 0x0228)
+// 0x0028 (0x0248 - 0x0220)
 class UFortInputOptions : public UFortOptionsTab
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0228(0x0010) MISSED OFFSET
-	TArray<class UFortOptionsMenuInputData*>           InputData;                                                // 0x0238(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	class UCommonListView*                             InputCommonListView;                                      // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            TooltipDisplay;                                           // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0258(0x0008) MISSED OFFSET
+	TArray<class UFortOptionsMenuInputData*>           InputData;                                                // 0x0220(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UCommonListView*                             InputCommonListView;                                      // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            TooltipDisplay;                                           // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0240(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -4523,11 +5569,10 @@ public:
 
 
 // Class FortniteUI.FortGamepadInputOptions
-// 0x0010 (0x0270 - 0x0260)
+// 0x0000 (0x0248 - 0x0248)
 class UFortGamepadInputOptions : public UFortInputOptions
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0260(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -4550,13 +5595,13 @@ public:
 
 
 // Class FortniteUI.FortGiftBoxButton
-// 0x0018 (0x0820 - 0x0808)
+// 0x0018 (0x08A0 - 0x0888)
 class UFortGiftBoxButton : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	class UFortGiftBoxItemDefinition*                  GiftBoxDefinition;                                        // 0x0810(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	class UCommonLazyImage*                            Image_Gift;                                               // 0x0818(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UFortGiftBoxItemDefinition*                  GiftBoxDefinition;                                        // 0x0890(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UCommonLazyImage*                            Image_Gift;                                               // 0x0898(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -4570,33 +5615,37 @@ public:
 
 
 // Class FortniteUI.FortGiftingOptionsPanel
-// 0x0158 (0x0370 - 0x0218)
+// 0x0178 (0x0388 - 0x0210)
 class UFortGiftingOptionsPanel : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x48];                                      // 0x0218(0x0048) MISSED OFFSET
-	unsigned char                                      UnknownData01[0x10];                                      // 0x0218(0x0010) UNKNOWN PROPERTY: ArrayProperty FortniteUI.FortGiftingOptionsPanel.GiftBoxes
-	TArray<class UFortGiftBoxItemDefinition*>          GiftBoxItemDefs;                                          // 0x0270(0x0010) (ZeroConstructor, Transient)
-	unsigned char                                      UnknownData02[0x18];                                      // 0x0280(0x0018) MISSED OFFSET
-	class UFortGiftBoxButton*                          GiftBoxButton;                                            // 0x0298(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	struct FText                                       DefaultGiftMessage;                                       // 0x02A0(0x0018) (Edit)
-	int                                                PersonalizedMessageLength;                                // 0x02B8(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x34];                                      // 0x02BC(0x0034) MISSED OFFSET
-	TArray<class UFortUserDetails*>                    UserDetailArray;                                          // 0x02F0(0x0010) (ZeroConstructor)
-	class UCommonListView*                             ListView_Friends;                                         // 0x0300(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTileView*                             TileView_GiftBoxes;                                       // 0x0308(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_FriendCount;                                         // 0x0310(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_Price;                                               // 0x0318(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_FinalPrice;                                          // 0x0320(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_GiftCount;                                           // 0x0328(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Cancel;                                            // 0x0330(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Continue;                                          // 0x0338(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_BackToFriends;                                     // 0x0340(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UEditableText*                               EditableText_Message;                                     // 0x0348(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_CharCount;                                           // 0x0350(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      Image_RecipientCurrency;                                  // 0x0358(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      Image_GiftCurrency;                                       // 0x0360(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Send;                                              // 0x0368(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0210(0x0010) MISSED OFFSET
+	unsigned char                                      UnknownData01[0x10];                                      // 0x0210(0x0010) UNKNOWN PROPERTY: ArrayProperty FortniteUI.FortGiftingOptionsPanel.GiftBoxes
+	TArray<class UFortGiftBoxItemDefinition*>          GiftBoxItemDefs;                                          // 0x0230(0x0010) (ZeroConstructor, Transient)
+	unsigned char                                      UnknownData02[0x18];                                      // 0x0240(0x0018) MISSED OFFSET
+	class UFortGiftBoxButton*                          GiftBoxButton;                                            // 0x0258(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	TArray<struct FGiftingErrorText>                   GiftingErrorMessages;                                     // 0x0260(0x0010) (Edit, ZeroConstructor)
+	struct FGiftingErrorText                           GiftingErrorMessageDefault;                               // 0x0270(0x0038) (Edit)
+	struct FText                                       DefaultGiftMessage;                                       // 0x02A8(0x0018) (Edit)
+	int                                                PersonalizedMessageLength;                                // 0x02C0(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x34];                                      // 0x02C4(0x0034) MISSED OFFSET
+	TArray<class UFortUserDetails*>                    UserDetailArray;                                          // 0x02F8(0x0010) (ZeroConstructor, Transient)
+	class UFortUserDetails*                            LocalPlayerDetails;                                       // 0x0308(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UCommonListView*                             ListView_Friends;                                         // 0x0310(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTileView*                             TileView_GiftBoxes;                                       // 0x0318(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_FriendCount;                                         // 0x0320(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_Price;                                               // 0x0328(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_FinalPrice;                                          // 0x0330(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_GiftCount;                                           // 0x0338(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Cancel;                                            // 0x0340(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Continue;                                          // 0x0348(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_BackToFriends;                                     // 0x0350(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UEditableText*                               EditableText_Message;                                     // 0x0358(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_CharCount;                                           // 0x0360(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonListView*                             ListView_FinalRecipients;                                 // 0x0368(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      Image_RecipientCurrency;                                  // 0x0370(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      Image_GiftCurrency;                                       // 0x0378(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Send;                                              // 0x0380(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -4607,16 +5656,34 @@ public:
 
 	void ShowFriendSelection();
 	void SetOffer(class UFortDirectAcquisitionOfferInfo* OfferInfo);
-	void HandleSendClicked(class UCommonButton* Button);
 	void HandleMessageChanged(const struct FText& Text);
-	void HandleContinueClicked(class UCommonButton* Button);
-	void HandleCancelSelected(class UCommonButton* Button);
-	void HandleBackToFriendsSelected(class UCommonButton* Button);
-	void GiftSentCallback(bool bSuccess, TArray<struct FString> IneligableAccounts);
-	void DynamicItemCreated(class UUserWidget* Widget);
-	void DynamicHandleGiftboxSelected(class UObject* SelectedItem);
-	void DynamicHandleFriendSelected(class UObject* SelectedItem);
+	void DynamicHandleGiftSent(bool bSuccess, TArray<struct FString> IneligableAccounts);
 	void AllowGiftWrapSelection(bool bIsAllowed);
+};
+
+
+// Class FortniteUI.FortGiftingScreen
+// 0x0040 (0x0338 - 0x02F8)
+class UFortGiftingScreen : public UCommonActivatablePanel
+{
+public:
+	class UFortDirectAcquisitionOfferInfo*             OfferInfo;                                                // 0x02F8(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	TArray<class UFortUserDetails*>                    UserDetailArray;                                          // 0x0300(0x0010) (ZeroConstructor, Transient)
+	class UFortUserDetails*                            LocalPlayerDetails;                                       // 0x0310(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UCommonButton*                               Tab_Recipients;                                           // 0x0318(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Tab_GiftWrap;                                             // 0x0320(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_ItemName;                                            // 0x0328(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonListView*                             ListView_Friends;                                         // 0x0330(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortGiftingScreen");
+		return ptr;
+	}
+
+
+	void SetOffer(class UFortDirectAcquisitionOfferInfo* NewOfferInfo);
+	void OnOfferSet(class UFortDirectAcquisitionOfferInfo* NewOfferInfo);
 };
 
 
@@ -4637,14 +5704,14 @@ public:
 
 
 // Class FortniteUI.FortGiftingUserItem
-// 0x0020 (0x0828 - 0x0808)
+// 0x0020 (0x08A8 - 0x0888)
 class UFortGiftingUserItem : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	class UFortUserDetails*                            ItemData;                                                 // 0x0810(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	class UCommonTextBlock*                            Text_DisplayName;                                         // 0x0818(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_Alias;                                               // 0x0820(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UFortUserDetails*                            ItemData;                                                 // 0x0890(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UCommonTextBlock*                            Text_DisplayName;                                         // 0x0898(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_Alias;                                               // 0x08A0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -4658,46 +5725,45 @@ public:
 
 
 // Class FortniteUI.FortGlobalUIContext
-// 0x03C8 (0x03F0 - 0x0028)
+// 0x0370 (0x0398 - 0x0028)
 class UFortGlobalUIContext : public UBlueprintContextBase
 {
 public:
 	unsigned char                                      UnknownData00[0x8];                                       // 0x0028(0x0008) MISSED OFFSET
 	struct FScriptMulticastDelegate                    SubGameChanged;                                           // 0x0030(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData01[0x70];                                      // 0x0040(0x0070) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnKeybindsChanged;                                        // 0x00B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnInputActionHoldStarted;                                 // 0x00C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnInputActionHoldStopped;                                 // 0x00D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnTeamPowerChanged;                                       // 0x00E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    DragAndDropStartedDelegate;                               // 0x00F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    DragAndDropEndedDelegate;                                 // 0x0100(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnScoreReportChanged;                                     // 0x0110(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnContextHelpChanged;                                     // 0x0120(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnItemReceivedNotificationShown;                          // 0x0130(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnInventoryUpdated;                                       // 0x0140(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnItemReceivedFlowUpdated;                                // 0x0150(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnGraphNodeDrillDown;                                     // 0x0160(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnGraphNodeSelected;                                      // 0x0170(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnQueryFortBackendVersionComplete;                        // 0x0180(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLoadingScreenVisibilityChanged;                         // 0x0190(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerControllerConnectionChanged;                 // 0x01A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData02[0x18];                                      // 0x01B0(0x0018) MISSED OFFSET
-	TMap<struct FName, class UFortUIMessageManager*>   MessageManagersByName;                                    // 0x01C8(0x0050) (ZeroConstructor, Transient)
-	TMap<EFortUIFeature, struct FFortUIFeatureStruct>  Features;                                                 // 0x0218(0x0050) (ZeroConstructor, Transient)
-	unsigned char                                      UnknownData03[0xF0];                                      // 0x0268(0x00F0) MISSED OFFSET
-	class UAthenaMatchReadyDesktopPopup*               AthenaMatchReadyNotificationWidget;                       // 0x0358(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData04[0x10];                                      // 0x0360(0x0010) MISSED OFFSET
-	class UFortHelpItem*                               ActiveContextSpecificHelpItem;                            // 0x0370(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	bool                                               bIsUIVisible;                                             // 0x0378(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	bool                                               bShowRateWidget;                                          // 0x0379(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	bool                                               bItemReceivedFlowActive;                                  // 0x037A(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData05[0x5];                                       // 0x037B(0x0005) MISSED OFFSET
-	TArray<class UFortItemReceivedWidgetBase*>         RegisteredItemReceivedWidgets;                            // 0x0380(0x0010) (ExportObject, ZeroConstructor, Transient)
-	struct FText                                       FeedbackTitle;                                            // 0x0390(0x0018) (Transient)
-	struct FDateTime                                   FirstLoginTime;                                           // 0x03A8(0x0008) (Transient)
-	struct FTimerHandle                                AddictionMsgTimer;                                        // 0x03B0(0x0008) (Transient)
-	struct FUniqueNetIdRepl                            CurrentLocalPlayerUniqueNetId;                            // 0x03B8(0x0028) (Transient)
-	unsigned char                                      UnknownData06[0x10];                                      // 0x03E0(0x0010) MISSED OFFSET
+	unsigned char                                      UnknownData01[0x18];                                      // 0x0040(0x0018) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnKeybindsChanged;                                        // 0x0058(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnInputActionHoldStarted;                                 // 0x0068(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnInputActionHoldStopped;                                 // 0x0078(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnEnterVehicleDriver;                                     // 0x0088(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnEnterVehiclePassenger;                                  // 0x0098(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnExitVehicle;                                            // 0x00A8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnTeamPowerChanged;                                       // 0x00B8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    DragAndDropStartedDelegate;                               // 0x00C8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    DragAndDropEndedDelegate;                                 // 0x00D8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnScoreReportChanged;                                     // 0x00E8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnContextHelpChanged;                                     // 0x00F8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnItemReceivedNotificationShown;                          // 0x0108(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnGraphNodeDrillDown;                                     // 0x0118(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnGraphNodeSelected;                                      // 0x0128(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnQueryFortBackendVersionComplete;                        // 0x0138(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLoadingScreenVisibilityChanged;                         // 0x0148(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerControllerConnectionChanged;                 // 0x0158(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData02[0x18];                                      // 0x0168(0x0018) MISSED OFFSET
+	TMap<struct FName, class UFortUIMessageManager*>   MessageManagersByName;                                    // 0x0180(0x0050) (ZeroConstructor, Transient)
+	TMap<EFortUIFeature, struct FFortUIFeatureStruct>  Features;                                                 // 0x01D0(0x0050) (ZeroConstructor, Transient)
+	unsigned char                                      UnknownData03[0xF0];                                      // 0x0220(0x00F0) MISSED OFFSET
+	class UAthenaMatchReadyDesktopPopup*               AthenaMatchReadyNotificationWidget;                       // 0x0310(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData04[0x10];                                      // 0x0318(0x0010) MISSED OFFSET
+	class UFortHelpItem*                               ActiveContextSpecificHelpItem;                            // 0x0328(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bIsUIVisible;                                             // 0x0330(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bShowRateWidget;                                          // 0x0331(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData05[0x6];                                       // 0x0332(0x0006) MISSED OFFSET
+	struct FText                                       FeedbackTitle;                                            // 0x0338(0x0018) (Transient)
+	struct FDateTime                                   FirstLoginTime;                                           // 0x0350(0x0008) (Transient)
+	struct FTimerHandle                                AddictionMsgTimer;                                        // 0x0358(0x0008) (Transient)
+	struct FUniqueNetIdRepl                            CurrentLocalPlayerUniqueNetId;                            // 0x0360(0x0028) (Transient)
+	unsigned char                                      UnknownData06[0x10];                                      // 0x0388(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -4708,7 +5774,6 @@ public:
 
 	void UnregisterToReceiveNotifications(EFortNotificationQueueType NotificationQueueType);
 	void UnregisterScriptedAction(class UClass* ScriptedAction);
-	bool UnregisterItemReceivedWidget(class UFortItemReceivedWidgetBase* WidgetToUnregster);
 	void UnbindToFeatureState(EFortUIFeature Feature, const struct FScriptDelegate& Delegate);
 	void TriggerUIFeedbackEvent(const struct FName& EventName);
 	void TriggerNewQuestStickies();
@@ -4719,25 +5784,23 @@ public:
 	void ShowAthenaMatchReadyExternalNotificationWindow();
 	bool ShouldShowRateWidget();
 	bool ShouldCloseMenuOnEscape();
-	void SetUpGiftReceivedCallbacks();
 	void SetSubGame(ESubGame SubGame);
 	void SetRatingWidgetFeedbackTitle(const struct FText& Title);
-	void SetItemReceivedFlowActive(bool bFlowActive);
 	void SetInputMode(EFortInputMode InMode);
+	void SetHidePerkRecombobulatorHelp(bool bInHideHelp);
 	void SetCurrentInputPresetName(const struct FString& InputPresetName);
 	void SetCurrentCustomInputTemplatePresetName(const struct FString& InputPresetName);
 	void SetContextHelpItem(class UFortHelpItem* ContextSpecificHelpItem);
 	void SetBangFromCount(EFortBangType Type, int Count);
 	void SendUINavigationAnalytic(const struct FString& Destination, bool bUserInitiated);
 	void SendLeaveZoneAnalytic();
-	void SendExperienceRatingAnalytic(const struct FString& RatingType, const struct FString& FeedbackSentBy, const struct FText& RatingQuestion, int StarCount, const struct FString& GameSessionID, const struct FString& Comment);
+	void SendExperienceRatingAnalytic(const struct FString& RatingType, const struct FString& FeedbackSentBy, const struct FText& RatingQuestion, int StarCount, const struct FString& GameSessionId, const struct FString& Comment);
 	void RunLauncherWithOptions(const struct FString& Options);
 	void ReturnToSubGameSelect();
 	void RemoveNotification(EFortNotificationQueueType NotificationQueueType, const struct FFortDialogDescription& NotificationDescription);
 	void RegisterToReceiveNotifications(EFortNotificationQueueType NotificationQueueType, const struct FScriptDelegate& InOnNotificationAvailable);
 	void RegisterScriptedActions(TArray<class UClass*> ScriptedActions);
 	void RegisterScriptedAction(class UClass* ScriptedAction);
-	void RegisterItemReceivedWidget(class UFortItemReceivedWidgetBase* WidgetToRegister);
 	void QuitGame();
 	void QueryGameBackendVersion();
 	void ProcessNotificationResult(EFortDialogResult InResult, const struct FFortDialogDescription& NotificationDescription);
@@ -4756,6 +5819,7 @@ public:
 	bool IsHUDVisible();
 	bool IsGamepadAttached();
 	bool IsDesktopPlatform();
+	bool IsCustomGamepadConfig(int ConfigIndex);
 	bool IsCurrentlyShowingLoadingScreen();
 	bool IsBluGloEnabled();
 	bool IsBattleRoyaleMatchmakingEnabled();
@@ -4766,39 +5830,62 @@ public:
 	bool HasCompletedOnboardingObjective(const struct FDataTableRowHandle& Objective);
 	bool HasAccesstoMultipleSubGames();
 	struct FString GetWatermark();
+	struct FName GetUseActionName();
 	struct FName GetTrapPickerActionName();
+	struct FName GetTrapConfirmActionName();
 	void GetTopLevelHelpItems(TArray<class UFortHelpItem*>* ActiveHelpEntries);
+	struct FName GetSwitchQuickBarActionName();
 	ESubGame GetSubGame();
 	struct FString GetSessionId();
 	class UFortSeasonalEventManager* GetSeasonalEventManager();
 	class UFortUIScoreReport* GetScoreReport();
+	struct FName GetRotatePrimitiveClockwiseActionName();
 	class UFortQuestManager* GetQuestManager(ESubGame SubGame);
 	struct FText GetPlatformDisplayName();
+	struct FName GetPickerConfirmActionName(EFortPickerMode PickerMode);
+	struct FName GetPickerCancelActionName(EFortPickerMode PickerMode);
+	struct FName GetPerformBuildingImprovementInteractionActionName();
+	struct FName GetPerformBuildingEditInteractionActionName();
 	bool GetNextNotification(EFortNotificationQueueType NotificationQueueType, struct FFortDialogDescription* NotificationDescription);
 	class UFortUIMessageManager* GetMessageManager(const struct FName& ManagerName, bool* bCreatedNew);
 	class UFortUIRewardReport* GetLastMissionRewardReport();
 	void GetLastMissionInfo(struct FFortLastMissionInfo* LastMissionInfo);
 	struct FGameSummaryInfo GetLastGameSummaryInfo();
 	struct FText GetKeyTextForAction(const struct FName& Action, bool bUseAbbreviatedText, struct FText* ButtonActionType);
-	struct FKey GetKeyForAction(const struct FName& Action);
-	bool GetItemReceivedFlowActive();
+	struct FKey GetKeyForAction(const struct FName& Action, bool bForceGamepadKey);
+	struct FName GetJumpActionName();
 	int GetInputPriority(EInputPriority Priority);
 	bool GetInputDetailsForAction(const struct FName& Action, struct FFortInputActionDetails* InputActionDetails);
+	bool GetHidePerkRecombobulatorHelp();
+	struct FName GetGadget2ActionName();
+	struct FName GetGadget1ActionName();
+	struct FName GetFireActionName();
 	struct FText GetFeedbackTitle();
 	struct FText GetFeatureStateReasonText(EFortUIFeatureStateReason Reason);
 	void GetFeatureState(EFortUIFeature Feature, EFortUIFeatureState* OutFeatureState, EFortUIFeatureStateReason* OutReason);
 	struct FString GetCurrentInputPresetName();
 	struct FString GetCurrentCustomInputTemplatePresetName();
+	struct FName GetCrouchActionName();
 	struct FText GetConningXpModifierMessage(int TotalSkillPoints, int ContentDifficulty);
 	float GetConningDifficultyXpModifier(int TotalSkillPoints, int ContentDifficulty);
 	class UFortCollectionBookManager* GetCollectionBookManager();
+	struct FName GetChangeMaterialActionName();
 	struct FName GetBuildConfirmActionName();
+	bool GetBrushForKeyWithCustomInput(const struct FKey& Key, ECommonInputType InputType, ECommonGamepadType GamepadType, struct FSlateBrush* Brush);
+	bool GetBrushForKey(const struct FKey& Key, struct FSlateBrush* Brush);
 	struct FString GetBackendName();
 	struct FString GetAthenaCodeOfConductURL();
 	void GetAllPlayerInputPresetNamesForSubGame(ESubGame SubGame, TArray<struct FString>* InputPresetNames, TArray<struct FText>* InputPresetFriendlyNames);
 	void GetAllPlayerInputPresetNames(TArray<struct FString>* InputPresetNames, TArray<struct FText>* InputPresetFriendlyNames);
 	struct FText GetAccountGameplayRestrictionText();
+	ESubGameAccessReason GetAccessReason(ESubGame SubGame);
+	struct FName GetAbility3ActionName();
+	struct FName GetAbility2ActionName();
+	struct FName GetAbility1ActionName();
 	void ForceSetFeatureState(EFortUIFeature Feature, EFortUIFeatureState ForcedState, EFortUIFeatureStateReason Reason);
+	void ExitVehicle();
+	void EnterVehiclePassenger();
+	void EnterVehicleDriver();
 	void DisplayStateContent(bool bDisplay);
 	void CopyToClipboard(const struct FString& ClipboardText);
 	float ContentInstallationProgress();
@@ -4896,7 +5983,7 @@ public:
 
 
 // Class FortniteUI.FortGridPickerGrid
-// 0x0000 (0x0220 - 0x0220)
+// 0x0000 (0x0218 - 0x0218)
 class UFortGridPickerGrid : public UFortUserWidget
 {
 public:
@@ -4911,12 +5998,12 @@ public:
 
 
 // Class FortniteUI.FortGridPickerTile
-// 0x0010 (0x0230 - 0x0220)
+// 0x0010 (0x0228 - 0x0218)
 class UFortGridPickerTile : public UFortUserWidget
 {
 public:
-	class UObject*                                     Data;                                                     // 0x0220(0x0008) (ZeroConstructor, IsPlainOldData)
-	class UFortGridWidgetBase*                         Owner;                                                    // 0x0228(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UObject*                                     Data;                                                     // 0x0218(0x0008) (ZeroConstructor, IsPlainOldData)
+	class UFortGridWidgetBase*                         Owner;                                                    // 0x0220(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -4950,13 +6037,13 @@ public:
 
 
 // Class FortniteUI.FortHaveInviteSelect
-// 0x0050 (0x0410 - 0x03C0)
+// 0x0020 (0x0318 - 0x02F8)
 class UFortHaveInviteSelect : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x40];                                      // 0x03C0(0x0040) MISSED OFFSET
-	class UCommonButton*                               Button_Yes;                                               // 0x0400(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_No;                                                // 0x0408(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x02F8(0x0010) MISSED OFFSET
+	class UCommonButton*                               Button_Yes;                                               // 0x0308(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_No;                                                // 0x0310(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -4964,22 +6051,19 @@ public:
 		return ptr;
 	}
 
-
-	void HandleYesClicked(class UCommonButton* Button);
-	void HandleNoClicked(class UCommonButton* Button);
 };
 
 
 // Class FortniteUI.FortHealthWarningBase
-// 0x0060 (0x0420 - 0x03C0)
+// 0x0030 (0x0328 - 0x02F8)
 class UFortHealthWarningBase : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x48];                                      // 0x03C0(0x0048) MISSED OFFSET
-	float                                              ShowTimeLength;                                           // 0x0408(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x4];                                       // 0x040C(0x0004) MISSED OFFSET
-	class UCommonTextBlock*                            Text_HealthWarning;                                       // 0x0410(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UHorizontalBox*                              HBox_RatingsIcons;                                        // 0x0418(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x18];                                      // 0x02F8(0x0018) MISSED OFFSET
+	float                                              ShowTimeLength;                                           // 0x0310(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x0314(0x0004) MISSED OFFSET
+	class UCommonTextBlock*                            Text_HealthWarning;                                       // 0x0318(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UHorizontalBox*                              HBox_RatingsIcons;                                        // 0x0320(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -4991,13 +6075,12 @@ public:
 
 
 // Class FortniteUI.FortHelpTreeItemBase
-// 0x0018 (0x0820 - 0x0808)
+// 0x0010 (0x0898 - 0x0888)
 class UFortHelpTreeItemBase : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	class UFortHelpItem*                               HelpItem;                                                 // 0x0810(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0818(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UFortHelpItem*                               HelpItem;                                                 // 0x0890(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -5005,9 +6088,6 @@ public:
 		return ptr;
 	}
 
-
-	void OnHelpItemSet();
-	void ExpansionChanged(bool bExpanded);
 };
 
 
@@ -5087,11 +6167,11 @@ public:
 
 
 // Class FortniteUI.FortSquadStatDetailsWidget
-// 0x0030 (0x0248 - 0x0218)
+// 0x0030 (0x0240 - 0x0210)
 class UFortSquadStatDetailsWidget : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x30];                                      // 0x0218(0x0030) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x30];                                      // 0x0210(0x0030) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -5103,12 +6183,12 @@ public:
 
 
 // Class FortniteUI.FortHeroSquadBonusPerksWidgetBase
-// 0x0010 (0x0258 - 0x0248)
+// 0x0010 (0x0250 - 0x0240)
 class UFortHeroSquadBonusPerksWidgetBase : public UFortSquadStatDetailsWidget
 {
 public:
-	class UFortPerkWidget_NUI*                         SupportBonusPerkWidget;                                   // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortPerkWidget_NUI*                         TacticalBonusPerkWidget;                                  // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortPerkWidget_NUI*                         SupportBonusPerkWidget;                                   // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortPerkWidget_NUI*                         TacticalBonusPerkWidget;                                  // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -5120,30 +6200,30 @@ public:
 
 
 // Class FortniteUI.FortSquadManagementScreenBase
-// 0x0110 (0x0500 - 0x03F0)
+// 0x0110 (0x0438 - 0x0328)
 class UFortSquadManagementScreenBase : public UFortActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x03F0(0x0010) MISSED OFFSET
-	class UFortSquadStatsWidgetBase*                   SquadStatsWidget;                                         // 0x0400(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortSquadSlotsView*                         SquadSlotsView;                                           // 0x0408(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortSquadSlotDetailsPanel*                  SelectedSlotDetailsPanel;                                 // 0x0410(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortSquadSlotItemPicker*                    SelectedSlotItemPicker;                                   // 0x0418(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	struct FDataTableRowHandle                         InspectInputActionRowHandle;                              // 0x0420(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FDataTableRowHandle                         ManageInputActionRowHandle;                               // 0x0430(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FDataTableRowHandle                         BackInputActionRowHandle;                                 // 0x0440(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FDataTableRowHandle                         InventoryInputActionRowHandle;                            // 0x0450(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FDataTableRowHandle                         InventoryCloseInputActionRowHandle;                       // 0x0460(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FDataTableRowHandle                         ClosePickerInputActionRowHandle;                          // 0x0470(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FDataTableRowHandle                         SelectPickerSlotActionRowHandle;                          // 0x0480(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FDataTableRowHandle                         CyclePickerSortActionRowHandle;                           // 0x0490(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FDataTableRowHandle                         PreviousSquadActionRowHandle;                             // 0x04A0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FDataTableRowHandle                         NextSquadActionRowHandle;                                 // 0x04B0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FDataTableRowHandle                         ClearAllActionRowHandle;                                  // 0x04C0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FDataTableRowHandle                         AutoSlotActionRowHandle;                                  // 0x04D0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      UnknownData01[0x10];                                      // 0x04E0(0x0010) MISSED OFFSET
-	class UFortItemViewContext_SquadSlotsView*         ItemViewContext_SquadSlotsView;                           // 0x04F0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortItemViewContext_SquadSlotItemPicker*    ItemViewContext_SquadSlotItemPicker;                      // 0x04F8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0328(0x0010) MISSED OFFSET
+	class UFortSquadStatsWidgetBase*                   SquadStatsWidget;                                         // 0x0338(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortSquadSlotsView*                         SquadSlotsView;                                           // 0x0340(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortSquadSlotDetailsPanel*                  SelectedSlotDetailsPanel;                                 // 0x0348(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortSquadSlotItemPicker*                    SelectedSlotItemPicker;                                   // 0x0350(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FDataTableRowHandle                         InspectInputActionRowHandle;                              // 0x0358(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         ManageInputActionRowHandle;                               // 0x0368(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         BackInputActionRowHandle;                                 // 0x0378(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         InventoryInputActionRowHandle;                            // 0x0388(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         InventoryCloseInputActionRowHandle;                       // 0x0398(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         ClosePickerInputActionRowHandle;                          // 0x03A8(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         SelectPickerSlotActionRowHandle;                          // 0x03B8(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         CyclePickerSortActionRowHandle;                           // 0x03C8(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         PreviousSquadActionRowHandle;                             // 0x03D8(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         NextSquadActionRowHandle;                                 // 0x03E8(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         ClearAllActionRowHandle;                                  // 0x03F8(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         AutoSlotActionRowHandle;                                  // 0x0408(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      UnknownData01[0x10];                                      // 0x0418(0x0010) MISSED OFFSET
+	class UFortItemViewContext_SquadSlotsView*         ItemViewContext_SquadSlotsView;                           // 0x0428(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemViewContext_SquadSlotItemPicker*    ItemViewContext_SquadSlotItemPicker;                      // 0x0430(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -5185,13 +6265,13 @@ public:
 
 
 // Class FortniteUI.FortHeroSquadManagementScreen
-// 0x0020 (0x0520 - 0x0500)
+// 0x0020 (0x0458 - 0x0438)
 class UFortHeroSquadManagementScreen : public UFortSquadManagementScreenBase
 {
 public:
-	struct FDataTableRowHandle                         ManageDefendersInputActionRowHandle;                      // 0x0500(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	class UFortHeroSquadBonusPerksWidgetBase*          BonusPerksWidget;                                         // 0x0510(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0518(0x0008) MISSED OFFSET
+	struct FDataTableRowHandle                         ManageDefendersInputActionRowHandle;                      // 0x0438(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	class UFortHeroSquadBonusPerksWidgetBase*          BonusPerksWidget;                                         // 0x0448(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0450(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -5248,18 +6328,18 @@ public:
 
 
 // Class FortniteUI.FortHeroSupportPerkWidget
-// 0x0358 (0x0568 - 0x0210)
+// 0x0358 (0x0560 - 0x0208)
 class UFortHeroSupportPerkWidget : public UUserWidget
 {
 public:
-	TWeakObjectPtr<class UFortHero>                    HeroToRepresent;                                          // 0x0210(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortSupportBonusType                              SupportTypeToRepresent;                                   // 0x0218(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortSupportPerkWidgetState                        SupportPerkWidgetState;                                   // 0x0219(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x6];                                       // 0x021A(0x0006) MISSED OFFSET
-	class UFortMultiSizeImage*                         PerkImage;                                                // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            NameText;                                                 // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            DescriptionText;                                          // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x330];                                     // 0x0238(0x0330) MISSED OFFSET
+	TWeakObjectPtr<class UFortHero>                    HeroToRepresent;                                          // 0x0208(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortSupportBonusType                              SupportTypeToRepresent;                                   // 0x0210(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortSupportPerkWidgetState                        SupportPerkWidgetState;                                   // 0x0211(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x6];                                       // 0x0212(0x0006) MISSED OFFSET
+	class UFortMultiSizeImage*                         PerkImage;                                                // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            NameText;                                                 // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            DescriptionText;                                          // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x330];                                     // 0x0230(0x0330) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -5358,12 +6438,11 @@ public:
 
 
 // Class FortniteUI.FortHomeCMSScreenBase
-// 0x0010 (0x0460 - 0x0450)
+// 0x0008 (0x0390 - 0x0388)
 class UFortHomeCMSScreenBase : public UEpicCMSScreenBase
 {
 public:
-	class UWidgetSwitcher*                             LayoutSwitcher;                                           // 0x0450(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0458(0x0008) MISSED OFFSET
+	class UWidgetSwitcher*                             LayoutSwitcher;                                           // 0x0388(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -5378,13 +6457,13 @@ public:
 
 
 // Class FortniteUI.FortHUDCenterPopupMessageWidget
-// 0x0038 (0x0250 - 0x0218)
+// 0x0038 (0x0248 - 0x0210)
 class UFortHUDCenterPopupMessageWidget : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x28];                                      // 0x0218(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortHUDCenterPopupMessageWidget.CenterPopupModalWidgetClass
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0240(0x0008) MISSED OFFSET
-	class UCommonActivatablePanel*                     CenterPopupModalWidget;                                   // 0x0248(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0210(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortHUDCenterPopupMessageWidget.CenterPopupModalWidgetClass
+	unsigned char                                      UnknownData01[0x8];                                       // 0x0238(0x0008) MISSED OFFSET
+	class UCommonActivatablePanel*                     CenterPopupModalWidget;                                   // 0x0240(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -5400,90 +6479,92 @@ public:
 
 
 // Class FortniteUI.FortHUDContext
-// 0x05B8 (0x05E0 - 0x0028)
+// 0x0590 (0x05B8 - 0x0028)
 class UFortHUDContext : public UBlueprintContextBase
 {
 public:
 	unsigned char                                      UnknownData00[0x8];                                       // 0x0028(0x0008) MISSED OFFSET
 	struct FScriptMulticastDelegate                    OnCursorModeChanging;                                     // 0x0030(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 	struct FScriptMulticastDelegate                    OnCursorModeChanged;                                      // 0x0040(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnMgmtMenuTabChangeRequested;                             // 0x0050(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnIndicatorModeChanged;                                   // 0x0060(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnContextualReticleChanged;                               // 0x0070(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnBuildingFocused;                                        // 0x0080(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnFocusedBuildingStateChanged;                            // 0x0090(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnFocusedBuildingHealthChanged;                           // 0x00A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnFocusedBuildingRepairCostChanged;                       // 0x00B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnFocusedBuildingAttachedTrapDurabilityChanged;           // 0x00C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnFocusedBuildingAttachedTrapChanged;                     // 0x00D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnDamagedResourceBuilding;                                // 0x00E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnPlayerCanInteract;                                      // 0x00F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnInteractUpdated;                                        // 0x0100(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnPlayerTargetingChanged;                                 // 0x0110(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnScoreChanged;                                           // 0x0120(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnScoreStatChanged;                                       // 0x0130(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnZoneCompleted;                                          // 0x0140(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnPawnSet;                                                // 0x0150(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnDamageReceived;                                         // 0x0160(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnUnableToPerformAction;                                  // 0x0170(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerMaxHealthChanged;                            // 0x0180(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerHealthChanged;                               // 0x0190(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerDied;                                        // 0x01A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerSpawned;                                     // 0x01B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerRevived;                                     // 0x01C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerKillsChanged;                                // 0x01D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerPlaceChanged;                                // 0x01E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerViewTargetChanged;                           // 0x01F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerMaxShieldChanged;                            // 0x0200(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerShieldChanged;                               // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerMaxStaminaChanged;                           // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnLocalPlayerStaminaChanged;                              // 0x0230(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnToggleScoreboard;                                       // 0x0240(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnEndOfDayRecap;                                          // 0x0250(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnWaveCombatStart;                                        // 0x0260(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnWaveBasedModifiersApplied;                              // 0x0270(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnActiveGameplayModifiersChanged;                         // 0x0280(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnHordeTierInitialized;                                   // 0x0290(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnHordeTierComplete;                                      // 0x02A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnHordeWaveComplete;                                      // 0x02B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnBuildingMaterialCycled;                                 // 0x02C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnHighlightsCountChanged;                                 // 0x02D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnHUDStateRefreshed;                                      // 0x02E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnWeaponEquippedDelegate;                                 // 0x02F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnAbilityDecisionWindowStackUpdated;                      // 0x0300(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnItemCollectorChanged;                                   // 0x0310(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnTotalQuantumChanged;                                    // 0x0320(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnAllFOBCoresAdded;                                       // 0x0330(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnWorldDaysElapsedChanged;                                // 0x0340(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnNumSurvivorsRescuedChanged;                             // 0x0350(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnEarnedBadgesChanged;                                    // 0x0360(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnPotentialBadgesChanged;                                 // 0x0370(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnMissionManagerCreated;                                  // 0x0380(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnMissionsUpdated;                                        // 0x0390(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnFocusedMissionChanged;                                  // 0x03A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnTheaterUniqueIDChanged;                                 // 0x03B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnZoneDifficultyInfoRowChanged;                           // 0x03C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnDifficultyIncreaseRewardTierChanged;                    // 0x03D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnDifficultyIncreaseRewardsChanged;                       // 0x03E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnMissionGeneratorChanged;                                // 0x03F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnMissionRewardsChanged;                                  // 0x0400(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnPointOfInterestAdded;                                   // 0x0410(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnPointOfInterestRemoved;                                 // 0x0420(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData01[0x70];                                      // 0x0430(0x0070) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnHUDElementVisibilityChanged;                            // 0x04A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData02[0x10];                                      // 0x04B0(0x0010) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnDebugHUDObjectiveHeightChangedDelegate;                 // 0x04C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnBuildModeChanged;                                       // 0x04D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnPersonalVehicleModeChanged;                             // 0x04E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	bool                                               bDebugHudObjectiveHeight;                                 // 0x04F0(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	bool                                               bPendingAttachToHUD;                                      // 0x04F1(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x6];                                       // 0x04F2(0x0006) MISSED OFFSET
-	class AFortPlayerState*                            OwningPlayerState;                                        // 0x04F8(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	class ABuildingActor*                              CurFocusedBuilding;                                       // 0x0500(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	class ABuildingTrap*                               CurFocusedTrap;                                           // 0x0508(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData04[0x8];                                       // 0x0510(0x0008) MISSED OFFSET
-	class ABuildingActor*                              PendingFocusBuilding;                                     // 0x0518(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData05[0xC0];                                      // 0x0520(0x00C0) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnGameViewportActivationChanged;                          // 0x0050(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnMgmtMenuTabChangeRequested;                             // 0x0060(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnIndicatorModeChanged;                                   // 0x0070(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnContextualReticleChanged;                               // 0x0080(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnBuildingFocused;                                        // 0x0090(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnFocusedBuildingStateChanged;                            // 0x00A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnFocusedBuildingHealthChanged;                           // 0x00B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnFocusedBuildingRepairCostChanged;                       // 0x00C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnFocusedBuildingAttachedTrapDurabilityChanged;           // 0x00D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnFocusedBuildingAttachedTrapChanged;                     // 0x00E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnDamagedResourceBuilding;                                // 0x00F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnPlayerCanInteract;                                      // 0x0100(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnInteractUpdated;                                        // 0x0110(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnPlayerTargetingChanged;                                 // 0x0120(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnScoreChanged;                                           // 0x0130(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnScoreStatChanged;                                       // 0x0140(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnZoneCompleted;                                          // 0x0150(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnPawnSet;                                                // 0x0160(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnDamageReceived;                                         // 0x0170(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnUnableToPerformAction;                                  // 0x0180(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerMaxHealthChanged;                            // 0x0190(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerHealthChanged;                               // 0x01A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerDied;                                        // 0x01B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerSpawned;                                     // 0x01C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerRevived;                                     // 0x01D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerKillsChanged;                                // 0x01E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerPlaceChanged;                                // 0x01F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerViewTargetChanged;                           // 0x0200(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerMaxShieldChanged;                            // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerShieldChanged;                               // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerMaxStaminaChanged;                           // 0x0230(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnLocalPlayerStaminaChanged;                              // 0x0240(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnToggleScoreboard;                                       // 0x0250(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnEndOfDayRecap;                                          // 0x0260(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnWaveCombatStart;                                        // 0x0270(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnWaveBasedModifiersApplied;                              // 0x0280(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnActiveGameplayModifiersChanged;                         // 0x0290(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnHordeTierInitialized;                                   // 0x02A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnHordeTierComplete;                                      // 0x02B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnHordeWaveComplete;                                      // 0x02C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnBuildingMaterialCycled;                                 // 0x02D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnHighlightsCountChanged;                                 // 0x02E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnUIResetRequired;                                        // 0x02F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnHUDStateRefreshed;                                      // 0x0300(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnWeaponEquippedDelegate;                                 // 0x0310(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnAbilityDecisionWindowStackUpdated;                      // 0x0320(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnItemCollectorChanged;                                   // 0x0330(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnTotalQuantumChanged;                                    // 0x0340(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnAllFOBCoresAdded;                                       // 0x0350(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnWorldDaysElapsedChanged;                                // 0x0360(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnNumSurvivorsRescuedChanged;                             // 0x0370(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnEarnedBadgesChanged;                                    // 0x0380(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnPotentialBadgesChanged;                                 // 0x0390(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnMissionManagerCreated;                                  // 0x03A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnMissionsUpdated;                                        // 0x03B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnFocusedMissionChanged;                                  // 0x03C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnTheaterUniqueIDChanged;                                 // 0x03D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnZoneDifficultyInfoRowChanged;                           // 0x03E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnDifficultyIncreaseRewardTierChanged;                    // 0x03F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnDifficultyIncreaseRewardsChanged;                       // 0x0400(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnMissionGeneratorChanged;                                // 0x0410(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnMissionRewardsChanged;                                  // 0x0420(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnPointOfInterestAdded;                                   // 0x0430(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnPointOfInterestRemoved;                                 // 0x0440(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData01[0x18];                                      // 0x0450(0x0018) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnHUDElementVisibilityChanged;                            // 0x0468(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData02[0x10];                                      // 0x0478(0x0010) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnDebugHUDObjectiveHeightChangedDelegate;                 // 0x0488(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnBuildModeChanged;                                       // 0x0498(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnPersonalVehicleModeChanged;                             // 0x04A8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	bool                                               bDebugHudObjectiveHeight;                                 // 0x04B8(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bPendingAttachToHUD;                                      // 0x04B9(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x6];                                       // 0x04BA(0x0006) MISSED OFFSET
+	class AFortPlayerState*                            OwningPlayerState;                                        // 0x04C0(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class ABuildingActor*                              CurFocusedBuilding;                                       // 0x04C8(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class ABuildingTrap*                               CurFocusedTrap;                                           // 0x04D0(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData04[0x8];                                       // 0x04D8(0x0008) MISSED OFFSET
+	class ABuildingActor*                              BuildingFocusCandidates[0x3];                             // 0x04E0(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData05[0xC0];                                      // 0x04F8(0x00C0) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -5493,6 +6574,7 @@ public:
 
 
 	void UpdateTrapAttachedToBuilding();
+	void ToggleFullScreenMap();
 	bool ShouldOnlyShowNextPrevBuildingSlotKeybinds();
 	void SetPreparingMgmtMenu(bool bPreparing);
 	void SetIndicatorsState(EFortIndicatorState NewState);
@@ -5511,6 +6593,7 @@ public:
 	void HandleLocalPawnSpawned();
 	void HandleLocalPawnRevived();
 	void HandleLocalPawnDied(const struct FFortPlayerDeathReport& DeathReport);
+	void HandleGameplayVoteNotifications(EFortVoteType VoteType, EFortVoteStatus VoteStatus, int VoteResult, TArray<struct FVoter> Voters);
 	void HandleFocusedBuildingHealthChanged();
 	void HandleBuildingModeChanged(bool bEntering);
 	float GetTimeToDelayEndOfDayZoneWidgetDisplay();
@@ -5548,7 +6631,7 @@ public:
 
 
 // Class FortniteUI.FortHUDEquipProgressBase
-// 0x0000 (0x0240 - 0x0240)
+// 0x0000 (0x0238 - 0x0238)
 class UFortHUDEquipProgressBase : public UFortHUDElementWidget
 {
 public:
@@ -5580,15 +6663,15 @@ public:
 
 
 // Class FortniteUI.FortHUDTargetUnderReticleWidget
-// 0x0048 (0x0260 - 0x0218)
+// 0x0048 (0x0258 - 0x0210)
 class UFortHUDTargetUnderReticleWidget : public UCommonUserWidget
 {
 public:
-	TScriptInterface<class UFortHUDTargetUnderReticleInterface> Target;                                                   // 0x0218(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	bool                                               bKeepTargetUntilNewValidTarget;                           // 0x0228(0x0001) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0229(0x0007) MISSED OFFSET
-	struct FGameplayTagContainer                       TargetRequiredTags;                                       // 0x0230(0x0020) (Edit, DisableEditOnTemplate)
-	unsigned char                                      UnknownData01[0x10];                                      // 0x0250(0x0010) MISSED OFFSET
+	TScriptInterface<class UFortHUDTargetUnderReticleInterface> Target;                                                   // 0x0210(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bKeepTargetUntilNewValidTarget;                           // 0x0220(0x0001) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
+	struct FGameplayTagContainer                       TargetRequiredTags;                                       // 0x0228(0x0020) (Edit, DisableEditOnTemplate)
+	unsigned char                                      UnknownData01[0x10];                                      // 0x0248(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -5628,12 +6711,11 @@ public:
 
 
 // Class FortniteUI.FortInfoWindow
-// 0x0010 (0x0400 - 0x03F0)
+// 0x0008 (0x0330 - 0x0328)
 class UFortInfoWindow : public UFortActivatablePanel
 {
 public:
-	class UCommonListView*                             InfoEntries;                                              // 0x03F0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x03F8(0x0008) MISSED OFFSET
+	class UCommonListView*                             InfoEntries;                                              // 0x0328(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -5647,15 +6729,15 @@ public:
 
 
 // Class FortniteUI.FortInputReflector
-// 0x0030 (0x0278 - 0x0248)
+// 0x0030 (0x0270 - 0x0240)
 class UFortInputReflector : public UCommonInputReflector
 {
 public:
-	struct FDataTableRowHandle                         MoreInfoActionData;                                       // 0x0248(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	class UCommonButton*                               MoreInfoButton;                                           // 0x0258(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UMenuAnchor*                                 MoreInfoMenuAnchor;                                       // 0x0260(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TWeakObjectPtr<class UFortActivatablePanel>        PanelRequestingMoreInfo;                                  // 0x0268(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0270(0x0008) MISSED OFFSET
+	struct FDataTableRowHandle                         MoreInfoActionData;                                       // 0x0240(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	TWeakObjectPtr<class UFortActivatablePanel>        PanelRequestingMoreInfo;                                  // 0x0250(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0258(0x0008) MISSED OFFSET
+	class UCommonButton*                               MoreInfoButton;                                           // 0x0260(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UMenuAnchor*                                 MoreInfoMenuAnchor;                                       // 0x0268(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -5665,7 +6747,6 @@ public:
 
 
 	void OnInputActionTriggered(bool* bPassThrough);
-	void OnButtonClicked(class UCommonButton* ClickedButton);
 	class UWidget* GetPopupMenuWidget();
 };
 
@@ -5701,6 +6782,7 @@ public:
 	}
 
 
+	bool WouldExceedMaxStackSize(class UFortItemDefinition* ItemDefinition, int QuantityToTest);
 	void UnlockSchematic(class UFortSchematicItemDefinition* SchematicDefinition);
 	void UnlockAllSchematics();
 	void SortAccountItemArrayForTransmog(TArray<class UFortAccountItem*>* VaultItems, TArray<class UFortAccountItem*>* SortedItems);
@@ -5725,6 +6807,7 @@ public:
 	int GetVaultItemLimit();
 	TArray<struct FText> STATIC_GetUserFriendlyTags(class UFortItem* Item);
 	struct FRecipe GetUpgradeItemRarityRecipeFromItemDefintion(class UFortItemDefinition* ItemDefinition);
+	void GetUnseenTransformKeys(EConversionControlKeyRequest RequestType, EInventoryContentSortType SortType, TArray<class UFortAccountItem*>* TransformKeys);
 	struct FText GetTrapAttachTypeName(class ABuildingSMActor* Actor);
 	bool GetTransmogSacrificeDataFromItemDefintion(class UFortItemDefinition* ItemDefinition, struct FTransmogSacrifice* OutTransmogData);
 	void GetTransformKeys(EConversionControlKeyRequest RequestType, EInventoryContentSortType SortType, TArray<class UFortAccountItem*>* TransformKeys);
@@ -5782,6 +6865,7 @@ public:
 	bool CraftSchematic(class UFortSchematicItem* SchematicItem, EFortCraftFailCause* FailCause);
 	bool CraftAndSlotSchematic(class UFortSchematicItem* SchematicItem, int PostCraftSlot, EFortCraftFailCause* FailCause);
 	bool CanUpgradeItemRarity(class UFortItem* Item, TArray<EItemEvolutionRestrictionReason>* OutRestrictionReasons);
+	bool CanSwapItem(class UFortItem* Item, EFortQuickBars TargetQuickbar, int TargetSlot);
 	bool CanRecycle(class UFortItem* Item, TArray<EItemRecyclingRestrictionReason>* OutRestrictionReasons);
 	bool CanPinSchematic(class UFortSchematicItem* Schematic);
 	bool CanEvolve(class UFortItem* Item, TArray<EItemEvolutionRestrictionReason>* OutRestrictionReasons);
@@ -5810,13 +6894,13 @@ public:
 
 
 // Class FortniteUI.FortInviteRequest
-// 0x0058 (0x0270 - 0x0218)
+// 0x0020 (0x0230 - 0x0210)
 class UFortInviteRequest : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x48];                                      // 0x0218(0x0048) MISSED OFFSET
-	class UCommonButton*                               Button_RequestInvite;                                     // 0x0260(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Logout;                                            // 0x0268(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0210(0x0010) MISSED OFFSET
+	class UCommonButton*                               Button_RequestInvite;                                     // 0x0220(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Logout;                                            // 0x0228(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -5824,9 +6908,31 @@ public:
 		return ptr;
 	}
 
+};
 
-	void HandleRequestInviteClicked(class UCommonButton* Button);
-	void HandleLogoutClicked(class UCommonButton* Button);
+
+// Class FortniteUI.FortItemBaseWidget
+// 0x0038 (0x0248 - 0x0210)
+class UFortItemBaseWidget : public UCommonUserWidget
+{
+public:
+	struct FFortItemQuantityPair                       ItemQuantityPair;                                         // 0x0210(0x0030)
+	class UFortItemDefinition*                         ItemDefinition;                                           // 0x0240(0x0008) (ZeroConstructor, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortItemBaseWidget");
+		return ptr;
+	}
+
+
+	void SetItemQuantityPairToRepresent(const struct FFortItemQuantityPair& InItemQuantityPair);
+	void SetItemDefinitionToRepresent(class UFortItemDefinition* InItemDefinition);
+	void OnItemDefinitionChanged();
+	void OnItemCountChanged(int NewCount);
+	void HandleItemCountChanged(class UFortItemDefinition* Definition, int Delta);
+	int GetQuantity();
+	class UFortItemDefinition* GetItemDefinition();
 };
 
 
@@ -5925,12 +7031,12 @@ public:
 
 
 // Class FortniteUI.FortItemCollectorWidget
-// 0x0010 (0x0230 - 0x0220)
+// 0x0010 (0x0228 - 0x0218)
 class UFortItemCollectorWidget : public UFortUserWidget
 {
 public:
-	class ABuildingItemCollectorActor*                 ItemCollector;                                            // 0x0220(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0228(0x0008) MISSED OFFSET
+	class ABuildingItemCollectorActor*                 ItemCollector;                                            // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, EditConst, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0220(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -5946,18 +7052,18 @@ public:
 
 
 // Class FortniteUI.FortItemCooldownWidget
-// 0x0090 (0x02A8 - 0x0218)
+// 0x0090 (0x02A0 - 0x0210)
 class UFortItemCooldownWidget : public UCommonUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnCooldownStarted_Delegate;                               // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnCooldownStopped_Delegate;                               // 0x0228(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UCommonTextBlock*                            CooldownText;                                             // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      CooldownImage;                                            // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	struct FName                                       CooldownMaterialParameterName;                            // 0x0248(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	TArray<EFortItemCooldownType>                      CooldownTypesSupported;                                   // 0x0250(0x0010) (Edit, BlueprintVisible, ZeroConstructor)
-	class UMaterialInstanceDynamic*                    CooldownPercentageMID;                                    // 0x0260(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x40];                                      // 0x0268(0x0040) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnCooldownStarted_Delegate;                               // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnCooldownStopped_Delegate;                               // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	class UCommonTextBlock*                            CooldownText;                                             // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      CooldownImage;                                            // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FName                                       CooldownMaterialParameterName;                            // 0x0240(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	TArray<EFortItemCooldownType>                      CooldownTypesSupported;                                   // 0x0248(0x0010) (Edit, BlueprintVisible, ZeroConstructor)
+	class UMaterialInstanceDynamic*                    CooldownPercentageMID;                                    // 0x0258(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x40];                                      // 0x0260(0x0040) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -5974,16 +7080,16 @@ public:
 
 
 // Class FortniteUI.FortItemCountTextBlock
-// 0x0018 (0x0310 - 0x02F8)
+// 0x0018 (0x0300 - 0x02E8)
 class UFortItemCountTextBlock : public UCommonNumericTextBlock
 {
 public:
-	class UFortItemDefinition*                         ItemDefinition;                                           // 0x02F8(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortItemCountStyle                                CountStyle;                                               // 0x0300(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0301(0x0003) MISSED OFFSET
-	float                                              ItemCountMaxInterpolateDuration;                          // 0x0304(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              ItemCountMinInterpolateRate;                              // 0x0308(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x4];                                       // 0x030C(0x0004) MISSED OFFSET
+	class UFortItemDefinition*                         ItemDefinition;                                           // 0x02E8(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortItemCountStyle                                CountStyle;                                               // 0x02F0(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x02F1(0x0003) MISSED OFFSET
+	float                                              ItemCountMaxInterpolateDuration;                          // 0x02F4(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              ItemCountMinInterpolateRate;                              // 0x02F8(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x02FC(0x0004) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6001,14 +7107,14 @@ public:
 
 
 // Class FortniteUI.FortItemDetailsActivatablePanel
-// 0x0040 (0x0400 - 0x03C0)
+// 0x0038 (0x0330 - 0x02F8)
 class UFortItemDetailsActivatablePanel : public UCommonActivatablePanel
 {
 public:
-	TWeakObjectPtr<class UFortItem>                    ItemToDetail;                                             // 0x03C0(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	TWeakObjectPtr<class UFortItem>                    ItemToCompareWith;                                        // 0x03C8(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x03D0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x28];                                      // 0x03D8(0x0028) MISSED OFFSET
+	TWeakObjectPtr<class UFortItem>                    ItemToDetail;                                             // 0x02F8(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TWeakObjectPtr<class UFortItem>                    ItemToCompareWith;                                        // 0x0300(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x0308(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x20];                                      // 0x0310(0x0020) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6024,10 +7130,11 @@ public:
 
 
 // Class FortniteUI.FortItemDetailsModeActivatablePanel
-// 0x0000 (0x0400 - 0x0400)
+// 0x0008 (0x0338 - 0x0330)
 class UFortItemDetailsModeActivatablePanel : public UFortItemDetailsActivatablePanel
 {
 public:
+	class UCommonWidgetSwitcher*                       DetailPanelWidgetSwitcher;                                // 0x0330(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -6041,12 +7148,12 @@ public:
 
 
 // Class FortniteUI.FortItemCompareModeActivatablePanel
-// 0x0010 (0x0410 - 0x0400)
+// 0x0010 (0x0340 - 0x0330)
 class UFortItemCompareModeActivatablePanel : public UFortItemDetailsActivatablePanel
 {
 public:
-	class UFortItemManagementItemDetailsPanel*         ComparisonModeRightItemDetailsPanel;                      // 0x0400(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0408(0x0008) MISSED OFFSET
+	class UFortItemManagementItemDetailsPanel*         ComparisonModeLeftItemDetailsPanel;                       // 0x0330(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemManagementItemDetailsPanel*         ComparisonModeRightItemDetailsPanel;                      // 0x0338(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -6058,12 +7165,12 @@ public:
 
 
 // Class FortniteUI.FortItemMulchModeActivatablePanel
-// 0x0010 (0x0410 - 0x0400)
+// 0x0010 (0x0340 - 0x0330)
 class UFortItemMulchModeActivatablePanel : public UFortItemDetailsActivatablePanel
 {
 public:
-	class UFortItemManagementMulchDetailsPanel*        MulchDetailsPanel;                                        // 0x0400(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0408(0x0008) MISSED OFFSET
+	class UFortItemManagementItemDetailsPanel*         MulchModeItemDetailsPanel;                                // 0x0330(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemManagementMulchDetailsPanel*        MulchDetailsPanel;                                        // 0x0338(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -6075,17 +7182,17 @@ public:
 
 
 // Class FortniteUI.FortItemDetailElementWidget
-// 0x0048 (0x0260 - 0x0218)
+// 0x0048 (0x0258 - 0x0210)
 class UFortItemDetailElementWidget : public UCommonUserWidget
 {
 public:
-	TWeakObjectPtr<class UFortItem>                    ItemToDetail;                                             // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, EditConst, IsPlainOldData)
-	TWeakObjectPtr<class UFortItem>                    ItemToCompareWith;                                        // 0x0220(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, EditConst, IsPlainOldData)
-	bool                                               bShouldPreviewUpgradingItem;                              // 0x0228(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, EditConst, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0229(0x0007) MISSED OFFSET
-	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x0230(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortItemInspectionMode                            CurrentInspectMode;                                       // 0x0240(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x1F];                                      // 0x0241(0x001F) MISSED OFFSET
+	TWeakObjectPtr<class UFortItem>                    ItemToDetail;                                             // 0x0210(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, EditConst, IsPlainOldData)
+	TWeakObjectPtr<class UFortItem>                    ItemToCompareWith;                                        // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, EditConst, IsPlainOldData)
+	bool                                               bShouldPreviewUpgradingItem;                              // 0x0220(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, EditConst, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
+	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x0228(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortItemInspectionMode                            CurrentInspectMode;                                       // 0x0238(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x1F];                                      // 0x0239(0x001F) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6105,20 +7212,20 @@ public:
 
 
 // Class FortniteUI.FortItemDetailsHostPanel
-// 0x0068 (0x0280 - 0x0218)
+// 0x0068 (0x0278 - 0x0210)
 class UFortItemDetailsHostPanel : public UCommonUserWidget
 {
 public:
-	TWeakObjectPtr<class UFortItem>                    ItemToDetail;                                             // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, EditConst, IsPlainOldData)
-	TWeakObjectPtr<class UFortItem>                    ItemToCompareWith;                                        // 0x0220(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, EditConst, IsPlainOldData)
-	bool                                               bShouldPreviewUpgradingItem;                              // 0x0228(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, EditConst, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0229(0x0007) MISSED OFFSET
-	class UScrollBox*                                  ScrollBox;                                                // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UNamedSlot*                                  DetailsContainerSlotWidget;                               // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonBorder*                               HighRarityBorder;                                         // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x0248(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortItemInspectionMode                            CurrentInspectMode;                                       // 0x0258(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x27];                                      // 0x0259(0x0027) MISSED OFFSET
+	TWeakObjectPtr<class UFortItem>                    ItemToDetail;                                             // 0x0210(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, EditConst, IsPlainOldData)
+	TWeakObjectPtr<class UFortItem>                    ItemToCompareWith;                                        // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, EditConst, IsPlainOldData)
+	bool                                               bShouldPreviewUpgradingItem;                              // 0x0220(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, EditConst, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
+	class UScrollBox*                                  ScrollBox;                                                // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UNamedSlot*                                  DetailsContainerSlotWidget;                               // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonBorder*                               HighRarityBorder;                                         // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x0240(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortItemInspectionMode                            CurrentInspectMode;                                       // 0x0250(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x27];                                      // 0x0251(0x0027) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6141,13 +7248,13 @@ public:
 
 
 // Class FortniteUI.FortItemDetailsPanel
-// 0x0028 (0x0240 - 0x0218)
+// 0x0028 (0x0238 - 0x0210)
 class UFortItemDetailsPanel : public UCommonUserWidget
 {
 public:
-	TWeakObjectPtr<class UFortItem>                    ItemToDetail;                                             // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	TWeakObjectPtr<class UFortItem>                    ItemToCompareWith;                                        // 0x0220(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x18];                                      // 0x0228(0x0018) MISSED OFFSET
+	TWeakObjectPtr<class UFortItem>                    ItemToDetail;                                             // 0x0210(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TWeakObjectPtr<class UFortItem>                    ItemToCompareWith;                                        // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0220(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6167,12 +7274,12 @@ public:
 
 
 // Class FortniteUI.FortItemDisplayNameText
-// 0x0030 (0x02A0 - 0x0270)
+// 0x0030 (0x0290 - 0x0260)
 class UFortItemDisplayNameText : public UCommonTextBlock
 {
 public:
-	TWeakObjectPtr<class UFortItem>                    ItemToRepresent;                                          // 0x0270(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x28];                                      // 0x0278(0x0028) MISSED OFFSET
+	TWeakObjectPtr<class UFortItem>                    ItemToRepresent;                                          // 0x0260(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0268(0x0028) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6215,14 +7322,43 @@ public:
 };
 
 
+// Class FortniteUI.FortItemInfoWidget
+// 0x0000 (0x0210 - 0x0210)
+class UFortItemInfoWidget : public UCommonUserWidget
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortItemInfoWidget");
+		return ptr;
+	}
+
+
+	void PopulateUsingItemDefinition(class UFortItemDefinition* NewItem);
+	void PopulateUsingItem(class UFortItem* NewItem);
+};
+
+
 // Class FortniteUI.FortItemInspectionScreen
-// 0x0010 (0x03D0 - 0x03C0)
-class UFortItemInspectionScreen : public UCommonActivatablePanel
+// 0x00A8 (0x0468 - 0x03C0)
+class UFortItemInspectionScreen : public UFortActivatablePanelWithItemPreview
 {
 public:
 	EFortItemInspectionMode                            CurrentInspectMode;                                       // 0x03C0(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x03C1(0x0007) MISSED OFFSET
-	class UFortItemInspectCycleWidget*                 CycleWidget;                                              // 0x03C8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x03C1(0x0003) MISSED OFFSET
+	TWeakObjectPtr<class UFortItem>                    InspectedItem;                                            // 0x03C4(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               UpgradeAllowed;                                           // 0x03CC(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               EvolveAllowed;                                            // 0x03CD(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               FavoriteAllowed;                                          // 0x03CE(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               RarityUpgradingAllowed;                                   // 0x03CF(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               IsPreviewing;                                             // 0x03D0(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x03D1(0x0007) MISSED OFFSET
+	class UFortItemInspectCycleWidget*                 CycleWidget;                                              // 0x03D8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FGameplayTagQuery                           InspectAnimationTag;                                      // 0x03E0(0x0048) (Edit, DisableEditOnInstance)
+	class UClass*                                      AlterationModOptinScreenClass;                            // 0x0428(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      AlterationModScreenClass;                                 // 0x0430(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x30];                                      // 0x0438(0x0030) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6231,22 +7367,36 @@ public:
 	}
 
 
+	void SetItemToRepresent(class UFortItem* Item);
+	void SetInspectionMode(EFortItemInspectionMode NewInspectMode);
+	void SetAttemptingConversion(bool bIsAttemptingConversion);
 	void OpenItemInspect(class UFortItem* ItemToInspect, EFortItemInspectionMode Mode, bool ShouldAllowUpgrading, bool ShouldAllowEvolution, bool ShouldAllowFavorite, bool IsTemporaryItem, bool bAllowRarityUpgrading);
+	bool IsItemSlottedInCollectionBook(class UFortItem* Item);
+	void HandleItemToInspectDestroyedBP();
+	void HandleItemToInspectDestroyed();
+	void HandleItemToInspectChangedBP();
+	void HandleItemToInspectChanged(bool bItemChanged, bool bAmmoChanged, bool bIngredientsChanged);
+	void HandleIsPreviewingChanged();
+	void HandleDifferentItemToInspectSetBP();
+	void HandleDifferentInspectionModeSetBP();
+	class UWidget* GetWidgetForFramingViewedItem();
 	class UFortItemInspectCycleWidget* GetCycleWidget();
+	bool DoesItemHaveLegacyAlterations();
+	void DoAlterationModification();
 };
 
 
 // Class FortniteUI.FortItemInspectCycleWidget
-// 0x0050 (0x0268 - 0x0218)
+// 0x0050 (0x0260 - 0x0210)
 class UFortItemInspectCycleWidget : public UCommonUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnItemToRepresentChanged;                                 // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	TWeakObjectPtr<class UFortItemTileView>            ItemTileView;                                             // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TWeakObjectPtr<class UFortItem>                    ItemToRepresent;                                          // 0x0230(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FDataTableRowHandle                         PreviousItemActionRowHandle;                              // 0x0238(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FDataTableRowHandle                         NextItemActionRowHandle;                                  // 0x0248(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0258(0x0010) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnItemToRepresentChanged;                                 // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	TWeakObjectPtr<class UFortItemTileView>            ItemTileView;                                             // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TWeakObjectPtr<class UFortItem>                    ItemToRepresent;                                          // 0x0228(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FDataTableRowHandle                         PreviousItemActionRowHandle;                              // 0x0230(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         NextItemActionRowHandle;                                  // 0x0240(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0250(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6267,14 +7417,13 @@ public:
 
 
 // Class FortniteUI.FortItemManagementCustomFilterModalWidget
-// 0x0070 (0x0460 - 0x03F0)
+// 0x0068 (0x0390 - 0x0328)
 class UFortItemManagementCustomFilterModalWidget : public UFortActivatablePanel
 {
 public:
-	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x03F0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TArray<EFortInventoryCustomFilter>                 AvailableFilters;                                         // 0x03F8(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	unsigned char                                      UnknownData00[0x50];                                      // 0x0408(0x0050) UNKNOWN PROPERTY: SetProperty FortniteUI.FortItemManagementCustomFilterModalWidget.LocalCustomFilterSet
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0458(0x0008) MISSED OFFSET
+	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x0328(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TArray<EFortInventoryCustomFilter>                 AvailableFilters;                                         // 0x0330(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	unsigned char                                      UnknownData00[0x50];                                      // 0x0340(0x0050) UNKNOWN PROPERTY: SetProperty FortniteUI.FortItemManagementCustomFilterModalWidget.LocalCustomFilterSet
 
 	static UClass* StaticClass()
 	{
@@ -6295,32 +7444,32 @@ public:
 
 
 // Class FortniteUI.FortItemManagementInventoryPanel
-// 0x0168 (0x0380 - 0x0218)
+// 0x0168 (0x0378 - 0x0210)
 class UFortItemManagementInventoryPanel : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x50];                                      // 0x0218(0x0050) MISSED OFFSET
-	struct FName                                       CurrentFilterName;                                        // 0x0268(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EInventoryContentSortType                          CurrentSortType;                                          // 0x0270(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0271(0x0007) MISSED OFFSET
-	class UClass*                                      FilterTabButtonType;                                      // 0x0278(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UClass*                                      FilterTabButtonStyle;                                     // 0x0280(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	TArray<struct FFortItemManagementInventoryFilterTabLabelInfo> FilterTabLabelInfoArray;                                  // 0x0288(0x0010) (Edit, EditFixedSize, ZeroConstructor)
-	class UFortTabListWidgetBase*                      FilterTabList;                                            // 0x0298(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonLoadGuard*                            TileViewLoadGuard;                                        // 0x02A0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortItemTileView*                           TileView;                                                 // 0x02A8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UPanelWidget*                                CraftingPanel;                                            // 0x02B0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonLoadGuard*                            CraftingTileViewLoadGuard;                                // 0x02B8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortItemTileView*                           CraftingTileView;                                         // 0x02C0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UPanelWidget*                                StoragePanel;                                             // 0x02C8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonLoadGuard*                            StorageTileViewLoadGuard;                                 // 0x02D0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortItemTileView*                           StorageTileView;                                          // 0x02D8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            MulchRestrictionReasonText;                               // 0x02E0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	EFortItemCardSize                                  SmallTileSize;                                            // 0x02E8(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortItemCardSize                                  LargeTileSize;                                            // 0x02E9(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x2];                                       // 0x02EA(0x0002) MISSED OFFSET
-	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x02EC(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x8C];                                      // 0x02F4(0x008C) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x50];                                      // 0x0210(0x0050) MISSED OFFSET
+	struct FName                                       CurrentFilterName;                                        // 0x0260(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EInventoryContentSortType                          CurrentSortType;                                          // 0x0268(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0269(0x0007) MISSED OFFSET
+	class UClass*                                      FilterTabButtonType;                                      // 0x0270(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      FilterTabButtonStyle;                                     // 0x0278(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	TArray<struct FFortItemManagementInventoryFilterTabLabelInfo> FilterTabLabelInfoArray;                                  // 0x0280(0x0010) (Edit, EditFixedSize, ZeroConstructor)
+	class UFortTabListWidgetBase*                      FilterTabList;                                            // 0x0290(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonLoadGuard*                            TileViewLoadGuard;                                        // 0x0298(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemTileView*                           TileView;                                                 // 0x02A0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UPanelWidget*                                CraftingPanel;                                            // 0x02A8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonLoadGuard*                            CraftingTileViewLoadGuard;                                // 0x02B0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemTileView*                           CraftingTileView;                                         // 0x02B8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UPanelWidget*                                StoragePanel;                                             // 0x02C0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonLoadGuard*                            StorageTileViewLoadGuard;                                 // 0x02C8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemTileView*                           StorageTileView;                                          // 0x02D0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            MulchRestrictionReasonText;                               // 0x02D8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	EFortItemCardSize                                  SmallTileSize;                                            // 0x02E0(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortItemCardSize                                  LargeTileSize;                                            // 0x02E1(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x2];                                       // 0x02E2(0x0002) MISSED OFFSET
+	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x02E4(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x8C];                                      // 0x02EC(0x008C) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6339,12 +7488,7 @@ public:
 	bool IsSwitchPanelAvailable();
 	void HandleSetOfItemsToMulchChangedBP();
 	void HandleQuickBarChangedBP(EFortQuickBars QuickBarType);
-	void HandleItemWidgetCreated(class UUserWidget* ItemWidget);
 	void HandleInventoryUpdatedEvent();
-	void HandleInventoryItemSelected(class UObject* Item, bool bIsSelected);
-	void HandleInventoryItemHoverChanged(class UObject* Item);
-	void HandleInventoryItemDoubleClicked(class UObject* Item);
-	void HandleInventoryItemClicked(class UObject* Item);
 	void HandleFilterTabSelected(const struct FName& TabNameID);
 	void HandleFilterTabButtonCreated(const struct FName& TabNameID, class UCommonButton* TabButton);
 	void HandleDifferentSortTypeSetBP();
@@ -6366,10 +7510,11 @@ public:
 
 
 // Class FortniteUI.FortPopupMenu
-// 0x0000 (0x03E0 - 0x03E0)
+// 0x0008 (0x0318 - 0x0310)
 class UFortPopupMenu : public UCommonPopupMenu
 {
 public:
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0310(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6381,10 +7526,11 @@ public:
 
 
 // Class FortniteUI.FortItemManagementItemPopupMenu
-// 0x0000 (0x03E0 - 0x03E0)
+// 0x0008 (0x0320 - 0x0318)
 class UFortItemManagementItemPopupMenu : public UFortPopupMenu
 {
 public:
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0318(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6401,20 +7547,20 @@ public:
 
 
 // Class FortniteUI.FortItemManagementItemTileButton
-// 0x0060 (0x0898 - 0x0838)
+// 0x0060 (0x0918 - 0x08B8)
 class UFortItemManagementItemTileButton : public UFortItemTileButton
 {
 public:
-	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x0838(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	bool                                               HasTheItemToDetail;                                       // 0x0840(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               HasTheItemToCompareDetailsWith;                           // 0x0841(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               HasAnItemMarkedForMulching;                               // 0x0842(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x1];                                       // 0x0843(0x0001) MISSED OFFSET
-	int                                                MulchCount;                                               // 0x0844(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UOverlay*                                    NotCraftableOverlay;                                      // 0x0848(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UMenuAnchor*                                 PopupMenuAnchor;                                          // 0x0850(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	bool                                               ShowCollectionBookIndicator;                              // 0x0858(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x3F];                                      // 0x0859(0x003F) MISSED OFFSET
+	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x08B8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	bool                                               HasTheItemToDetail;                                       // 0x08C0(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               HasTheItemToCompareDetailsWith;                           // 0x08C1(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               HasAnItemMarkedForMulching;                               // 0x08C2(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x1];                                       // 0x08C3(0x0001) MISSED OFFSET
+	int                                                MulchCount;                                               // 0x08C4(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UOverlay*                                    NotCraftableOverlay;                                      // 0x08C8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UMenuAnchor*                                 PopupMenuAnchor;                                          // 0x08D0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	bool                                               ShowCollectionBookIndicator;                              // 0x08D8(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3F];                                      // 0x08D9(0x003F) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6437,14 +7583,14 @@ public:
 
 
 // Class FortniteUI.FortItemManagementItemDetailsPanel
-// 0x0018 (0x0298 - 0x0280)
+// 0x0018 (0x0290 - 0x0278)
 class UFortItemManagementItemDetailsPanel : public UFortItemDetailsHostPanel
 {
 public:
-	bool                                               HasItemMarkedForMulching;                                 // 0x0280(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0281(0x0003) MISSED OFFSET
-	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x0284(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0xC];                                       // 0x028C(0x000C) MISSED OFFSET
+	bool                                               HasItemMarkedForMulching;                                 // 0x0278(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0279(0x0003) MISSED OFFSET
+	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x027C(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData01[0xC];                                       // 0x0284(0x000C) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6459,13 +7605,13 @@ public:
 
 
 // Class FortniteUI.FortItemManagementMulchDetailsPanel
-// 0x0018 (0x0230 - 0x0218)
+// 0x0018 (0x0228 - 0x0210)
 class UFortItemManagementMulchDetailsPanel : public UCommonUserWidget
 {
 public:
-	class UFortItemQuantityListBase*                   ResourceList;                                             // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0228(0x0008) MISSED OFFSET
+	class UFortItemQuantityListBase*                   ResourceList;                                             // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0220(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6484,16 +7630,16 @@ public:
 
 
 // Class FortniteUI.FortItemManagementModeDetailsPanel
-// 0x0030 (0x0248 - 0x0218)
+// 0x0030 (0x0240 - 0x0210)
 class UFortItemManagementModeDetailsPanel : public UCommonUserWidget
 {
 public:
-	class UCommonWidgetSwitcher*                       ModeWidgetSwitcher;                                       // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortItemDetailsActivatablePanel*            DetailsModeItemDetailsPanel;                              // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortItemDetailsActivatablePanel*            ComparisonModeItemDetailsPanel;                           // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortItemDetailsActivatablePanel*            MulchModeItemDetailsPanel;                                // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0240(0x0008) MISSED OFFSET
+	class UCommonWidgetSwitcher*                       ModeWidgetSwitcher;                                       // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemDetailsActivatablePanel*            DetailsModeItemDetailsPanel;                              // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemDetailsActivatablePanel*            ComparisonModeItemDetailsPanel;                           // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemDetailsActivatablePanel*            MulchModeItemDetailsPanel;                                // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0238(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6526,27 +7672,27 @@ public:
 
 
 // Class FortniteUI.FortItemManagementScreen
-// 0x0450 (0x0840 - 0x03F0)
+// 0x0188 (0x04B0 - 0x0328)
 class UFortItemManagementScreen : public UFortActivatablePanel
 {
 public:
-	struct FScriptMulticastDelegate                    OnItemViewRefreshed;                                      // 0x03F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData00[0x380];                                     // 0x0400(0x0380) MISSED OFFSET
-	EFortItemManagementMode                            Mode;                                                     // 0x0780(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortFrontendInventoryFilter                       FrontendInventoryFilter;                                  // 0x0781(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bReadOnlyModeWIFE;                                        // 0x0782(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	bool                                               ConsumeItemRequestInProgress;                             // 0x0783(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x4];                                       // 0x0784(0x0004) MISSED OFFSET
-	class UFortItemManagementInventoryPanel*           InventoryPanel;                                           // 0x0788(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortItemManagementModeDetailsPanel*         ModeDetailsPanel;                                         // 0x0790(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TWeakObjectPtr<class UFortItem>                    ItemToDetail;                                             // 0x0798(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x58];                                      // 0x07A0(0x0058) MISSED OFFSET
-	class UClass*                                      MulchConfirmationModalClass;                              // 0x07F8(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	class UClass*                                      CustomFilterModalClass;                                   // 0x0800(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x18];                                      // 0x0808(0x0018) MISSED OFFSET
-	class UFortMulchConfirmationModalWidget*           MulchConfirmationModal;                                   // 0x0820(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UFortItemManagementCustomFilterModalWidget*  CustomFilterModal;                                        // 0x0828(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData04[0x10];                                      // 0x0830(0x0010) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnItemViewRefreshed;                                      // 0x0328(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData00[0xC0];                                      // 0x0338(0x00C0) MISSED OFFSET
+	EFortItemManagementMode                            Mode;                                                     // 0x03F8(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortFrontendInventoryFilter                       FrontendInventoryFilter;                                  // 0x03F9(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bReadOnlyModeWIFE;                                        // 0x03FA(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	bool                                               ConsumeItemRequestInProgress;                             // 0x03FB(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x03FC(0x0004) MISSED OFFSET
+	class UFortItemManagementInventoryPanel*           InventoryPanel;                                           // 0x0400(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemManagementModeDetailsPanel*         ModeDetailsPanel;                                         // 0x0408(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TWeakObjectPtr<class UFortItem>                    ItemToDetail;                                             // 0x0410(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x58];                                      // 0x0418(0x0058) MISSED OFFSET
+	class UClass*                                      MulchConfirmationModalClass;                              // 0x0470(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	class UClass*                                      CustomFilterModalClass;                                   // 0x0478(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x18];                                      // 0x0480(0x0018) MISSED OFFSET
+	class UFortMulchConfirmationModalWidget*           MulchConfirmationModal;                                   // 0x0498(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UFortItemManagementCustomFilterModalWidget*  CustomFilterModal;                                        // 0x04A0(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData04[0x8];                                       // 0x04A8(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6599,13 +7745,13 @@ public:
 
 
 // Class FortniteUI.FortItemQuantityListEntryBase
-// 0x0028 (0x0240 - 0x0218)
+// 0x0028 (0x0238 - 0x0210)
 class UFortItemQuantityListEntryBase : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	int                                                Quantity;                                                 // 0x0220(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x1C];                                      // 0x0224(0x001C) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	int                                                Quantity;                                                 // 0x0218(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x1C];                                      // 0x021C(0x001C) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6629,15 +7775,15 @@ public:
 
 
 // Class FortniteUI.FortItemQuantityListBase
-// 0x0080 (0x0298 - 0x0218)
+// 0x0080 (0x0290 - 0x0210)
 class UFortItemQuantityListBase : public UCommonUserWidget
 {
 public:
-	EFortItemInspectionMode                            CurrentInspectMode;                                       // 0x0218(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0219(0x0007) MISSED OFFSET
-	class UClass*                                      ListEntryWidgetType;                                      // 0x0220(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	TMap<class UObject*, class UFortItemQuantityListEntryBase*> ItemObjectToWidgetMap;                                    // 0x0228(0x0050) (ExportObject, ZeroConstructor)
-	unsigned char                                      UnknownData01[0x20];                                      // 0x0278(0x0020) MISSED OFFSET
+	EFortItemInspectionMode                            CurrentInspectMode;                                       // 0x0210(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0211(0x0007) MISSED OFFSET
+	class UClass*                                      ListEntryWidgetType;                                      // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TMap<class UObject*, class UFortItemQuantityListEntryBase*> ItemObjectToWidgetMap;                                    // 0x0220(0x0050) (ExportObject, ZeroConstructor)
+	unsigned char                                      UnknownData01[0x20];                                      // 0x0270(0x0020) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6658,17 +7804,17 @@ public:
 
 
 // Class FortniteUI.FortItemRatingIndicator
-// 0x0368 (0x0580 - 0x0218)
+// 0x0368 (0x0578 - 0x0210)
 class UFortItemRatingIndicator : public UCommonUserWidget
 {
 public:
-	TWeakObjectPtr<class UFortItem>                    ItemToRepresent;                                          // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	TWeakObjectPtr<class UFortItem>                    ItemToCompareWith;                                        // 0x0220(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FFortMultiSizeBrush                         RatingTypeIcon;                                           // 0x0228(0x0330) (BlueprintVisible, BlueprintReadOnly)
-	int                                                RatingValue;                                              // 0x0558(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortBuffState                                     ComparisonResult;                                         // 0x055C(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               ShouldAppearEnchanted;                                    // 0x055D(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x22];                                      // 0x055E(0x0022) MISSED OFFSET
+	TWeakObjectPtr<class UFortItem>                    ItemToRepresent;                                          // 0x0210(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TWeakObjectPtr<class UFortItem>                    ItemToCompareWith;                                        // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FFortMultiSizeBrush                         RatingTypeIcon;                                           // 0x0220(0x0330) (BlueprintVisible, BlueprintReadOnly)
+	int                                                RatingValue;                                              // 0x0550(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortBuffState                                     ComparisonResult;                                         // 0x0554(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               ShouldAppearEnchanted;                                    // 0x0555(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x22];                                      // 0x0556(0x0022) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6685,17 +7831,17 @@ public:
 
 
 // Class FortniteUI.FortItemReceivedWidgetBase
-// 0x00B0 (0x04A0 - 0x03F0)
+// 0x0058 (0x0380 - 0x0328)
 class UFortItemReceivedWidgetBase : public UFortActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x70];                                      // 0x03F0(0x0070) MISSED OFFSET
-	TArray<struct FFortReceivedItemLootInfo>           ItemDefs;                                                 // 0x0460(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	class UFortGiftBoxItem*                            GiftBoxItem;                                              // 0x0470(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FString                                     FromUsername;                                             // 0x0478(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	class UHorizontalBox*                              HeaderContainer;                                          // 0x0488(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UScrollBox*                                  GiftScrollBox;                                            // 0x0490(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UClass*                                      ItemCardClass;                                            // 0x0498(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0328(0x0018) MISSED OFFSET
+	TArray<struct FFortReceivedItemLootInfo>           ItemDefs;                                                 // 0x0340(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UFortGiftBoxItem*                            GiftBoxItem;                                              // 0x0350(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FString                                     FromUsername;                                             // 0x0358(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UHorizontalBox*                              HeaderContainer;                                          // 0x0368(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UScrollBox*                                  GiftScrollBox;                                            // 0x0370(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UClass*                                      ItemCardClass;                                            // 0x0378(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -6707,19 +7853,52 @@ public:
 	void ShowGiftBox();
 	void SetGiftBoxItem(class UFortGiftBoxItem* GiftBoxItem);
 	void SetAlignmentOnSlots(class UScrollBox* Widget);
+	void SetAlignmentOnSlot(class UScrollBox* Widget, int Index);
 	void OnGiftBoxItemSetInternal();
 	void OnGiftBoxItemSet();
 	class UFortItem* GetTemporaryInstance(const struct FFortReceivedItemLootInfo& ItemReference);
 };
 
 
+// Class FortniteUI.FortItemReceivedScreen
+// 0x0010 (0x0390 - 0x0380)
+class UFortItemReceivedScreen : public UFortItemReceivedWidgetBase
+{
+public:
+	struct FScriptMulticastDelegate                    OnFinalGiftingComplete;                                   // 0x0380(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortItemReceivedScreen");
+		return ptr;
+	}
+
+};
+
+
+// Class FortniteUI.FortItemReceivedPrePrompt
+// 0x0010 (0x0390 - 0x0380)
+class UFortItemReceivedPrePrompt : public UFortItemReceivedWidgetBase
+{
+public:
+	struct FScriptMulticastDelegate                    OnPrePromptClosed;                                        // 0x0380(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortItemReceivedPrePrompt");
+		return ptr;
+	}
+
+};
+
+
 // Class FortniteUI.ItemReceivedHeaderBase
-// 0x0018 (0x0228 - 0x0210)
+// 0x0018 (0x0220 - 0x0208)
 class UItemReceivedHeaderBase : public UUserWidget
 {
 public:
-	class UFortGiftBoxItem*                            GiftBoxItem;                                              // 0x0210(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	struct FString                                     FromUsername;                                             // 0x0218(0x0010) (BlueprintVisible, ZeroConstructor)
+	class UFortGiftBoxItem*                            GiftBoxItem;                                              // 0x0208(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	struct FString                                     FromUsername;                                             // 0x0210(0x0010) (BlueprintVisible, ZeroConstructor)
 
 	static UClass* StaticClass()
 	{
@@ -6768,8 +7947,23 @@ public:
 };
 
 
+// Class FortniteUI.FortNullItem
+// 0x0000 (0x0078 - 0x0078)
+class UFortNullItem : public UFortItem
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortNullItem");
+		return ptr;
+	}
+
+};
+
+
 // Class FortniteUI.FortItemTransform
-// 0x0000 (0x03C0 - 0x03C0)
+// 0x0000 (0x02F8 - 0x02F8)
 class UFortItemTransform : public UCommonActivatablePanel
 {
 public:
@@ -6788,24 +7982,17 @@ public:
 
 
 // Class FortniteUI.FortItemView
-// 0x00E8 (0x0300 - 0x0218)
-class UFortItemView : public UCommonUserWidget
+// 0x0178 (0x01A0 - 0x0028)
+class UFortItemView : public UObject
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	TWeakObjectPtr<class UFortItem>                    ItemToRepresent;                                          // 0x0220(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FGameplayTagQuery                           InspectAnimationTag;                                      // 0x0228(0x0048) (Edit, DisableEditOnInstance)
-	float                                              AnalogRotateSpeed;                                        // 0x0270(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              DragRotateSpeed;                                          // 0x0274(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              MouseWheelZoomSpeed;                                      // 0x0278(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              TriggerZoomSpeed;                                         // 0x027C(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              MaxZoomDistance;                                          // 0x0280(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x4];                                       // 0x0284(0x0004) MISSED OFFSET
-	TArray<EFortItemType>                              ItemTypesThatAllowRotate;                                 // 0x0288(0x0010) (Edit, ZeroConstructor, DisableEditOnInstance)
-	TArray<EFortItemType>                              ItemTypesThatAllowZoom;                                   // 0x0298(0x0010) (Edit, ZeroConstructor, DisableEditOnInstance)
-	TArray<EFortItemType>                              ItemTypesToUseVaultCamera;                                // 0x02A8(0x0010) (Edit, ZeroConstructor, DisableEditOnInstance)
-	EFortItemInspectionMode                            CurrentInspectMode;                                       // 0x02B8(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x47];                                      // 0x02B9(0x0047) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0028(0x0008) MISSED OFFSET
+	struct FDataTableRowHandle                         UnifiedZoomInputAction;                                   // 0x0030(0x0010) (Edit, DisableEditOnInstance)
+	struct FDataTableRowHandle                         ZoomOutInputAction;                                       // 0x0040(0x0010) (Edit, DisableEditOnInstance)
+	struct FDataTableRowHandle                         ZoomInInputAction;                                        // 0x0050(0x0010) (Edit, DisableEditOnInstance)
+	struct FDataTableRowHandle                         RotateInputAction;                                        // 0x0060(0x0010) (Edit, DisableEditOnInstance)
+	unsigned char                                      UnknownData01[0x120];                                     // 0x0070(0x0120) MISSED OFFSET
+	TArray<struct FDataTableRowHandle>                 RegisteredInputActions;                                   // 0x0190(0x0010) (ZeroConstructor)
 
 	static UClass* StaticClass()
 	{
@@ -6814,10 +8001,13 @@ public:
 	}
 
 
-	bool ZoomAllowed();
-	void SetItemToRepresent(class UFortItem* NewItemToRepresent);
-	void SetInspectMode(EFortItemInspectionMode NewInspectMode);
-	bool RotateAllowed();
+	void UnregisterInputActions();
+	void SetSettings(const struct FFortItemViewSettings& Settings);
+	void SetSceneComponentToAffect(class USceneComponent* Component);
+	void SetOwningPanel(class UCommonActivatablePanel* Panel);
+	void RestoreInitialTransform();
+	void RegisterInputActions();
+	struct FFortItemViewSettings GetSettings();
 };
 
 
@@ -6837,18 +8027,18 @@ public:
 
 
 // Class FortniteUI.FortItemWidget
-// 0x0038 (0x0820 - 0x07E8)
+// 0x0038 (0x0818 - 0x07E0)
 class UFortItemWidget : public UFortBaseButton
 {
 public:
-	struct FScriptDelegate                             OnGetItemToCompareDelegate;                               // 0x07E8(0x0010) (ZeroConstructor, InstancedReference)
-	struct FName                                       CooldownMaterialParameterName;                            // 0x07F8(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UMaterialInstanceDynamic*                    CooldownMaterial;                                         // 0x0800(0x0008) (ZeroConstructor, IsPlainOldData)
-	int                                                LastCooldownTimeInSeconds;                                // 0x0808(0x0004) (ZeroConstructor, IsPlainOldData)
-	float                                              LastCooldownPct;                                          // 0x080C(0x0004) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      LastIsActivatable : 1;                                    // 0x0810(0x0001)
-	unsigned char                                      UnknownData00[0xB];                                       // 0x0811(0x000B) MISSED OFFSET
-	int                                                QuantityOverride;                                         // 0x081C(0x0004) (ZeroConstructor, IsPlainOldData)
+	struct FScriptDelegate                             OnGetItemToCompareDelegate;                               // 0x07E0(0x0010) (ZeroConstructor, InstancedReference)
+	struct FName                                       CooldownMaterialParameterName;                            // 0x07F0(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UMaterialInstanceDynamic*                    CooldownMaterial;                                         // 0x07F8(0x0008) (ZeroConstructor, IsPlainOldData)
+	int                                                LastCooldownTimeInSeconds;                                // 0x0800(0x0004) (ZeroConstructor, IsPlainOldData)
+	float                                              LastCooldownPct;                                          // 0x0804(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      LastIsActivatable : 1;                                    // 0x0808(0x0001)
+	unsigned char                                      UnknownData00[0xB];                                       // 0x0809(0x000B) MISSED OFFSET
+	int                                                QuantityOverride;                                         // 0x0814(0x0004) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -6890,11 +8080,11 @@ public:
 
 
 // Class FortniteUI.FortJournalQuestDetails
-// 0x0008 (0x0220 - 0x0218)
+// 0x0008 (0x0218 - 0x0210)
 class UFortJournalQuestDetails : public UCommonUserWidget
 {
 public:
-	class UFortQuestItem*                              CurrentQuest;                                             // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UFortQuestItem*                              CurrentQuest;                                             // 0x0210(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -6916,12 +8106,12 @@ public:
 
 
 // Class FortniteUI.FortJournalQuestProgressBar
-// 0x0010 (0x0228 - 0x0218)
+// 0x0010 (0x0220 - 0x0210)
 class UFortJournalQuestProgressBar : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	TWeakObjectPtr<class UFortQuestObjectiveInfo>      QuestObjectiveInfo;                                       // 0x0220(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	TWeakObjectPtr<class UFortQuestObjectiveInfo>      QuestObjectiveInfo;                                       // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -6930,30 +8120,32 @@ public:
 	}
 
 
-	void HandleNewQuestObjectiveBP();
 	void GetProgressDetails(struct FText* OutNumerator, struct FText* OutDenominator, float* OutFraction);
 };
 
 
 // Class FortniteUI.FortKeybindWidget
-// 0x0058 (0x0270 - 0x0218)
+// 0x0070 (0x0280 - 0x0210)
 class UFortKeybindWidget : public UCommonUserWidget
 {
 public:
-	struct FName                                       BoundAction;                                              // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bForcedHoldKeybind;                                       // 0x0220(0x0001) (ZeroConstructor, Deprecated, IsPlainOldData)
-	EFortKeybindForcedHoldStatus                       ForcedHoldKeybindStatus;                                  // 0x0221(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bIsHoldKeybind;                                           // 0x0222(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               bShowKeybindBorder;                                       // 0x0223(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bShowTimeCountDown;                                       // 0x0224(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0225(0x0003) MISSED OFFSET
-	struct FKey                                        BoundKey;                                                 // 0x0228(0x0018) (BlueprintVisible, BlueprintReadOnly)
-	class UImage*                                      HoldKeybindImage;                                         // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            TextCountdown;                                            // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UWidgetSwitcher*                             KeyCountdownSwitcher;                                     // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	struct FName                                       PercentageMaterialParameterName;                          // 0x0258(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UMaterialInstanceDynamic*                    ProgressPercentageMID;                                    // 0x0260(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0268(0x0008) MISSED OFFSET
+	struct FName                                       BoundAction;                                              // 0x0210(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FKey                                        BoundKeyFallback;                                         // 0x0218(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	ECommonInputType                                   InputTypeOverride;                                        // 0x0230(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	ECommonGamepadType                                 GamepadTypeOverride;                                      // 0x0231(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bForcedHoldKeybind;                                       // 0x0232(0x0001) (ZeroConstructor, Deprecated, IsPlainOldData)
+	EFortKeybindForcedHoldStatus                       ForcedHoldKeybindStatus;                                  // 0x0233(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bIsHoldKeybind;                                           // 0x0234(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               bShowKeybindBorder;                                       // 0x0235(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bShowTimeCountDown;                                       // 0x0236(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x1];                                       // 0x0237(0x0001) MISSED OFFSET
+	struct FKey                                        BoundKey;                                                 // 0x0238(0x0018) (BlueprintVisible, BlueprintReadOnly)
+	class UImage*                                      HoldKeybindImage;                                         // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            TextCountdown;                                            // 0x0258(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UWidgetSwitcher*                             KeyCountdownSwitcher;                                     // 0x0260(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FName                                       PercentageMaterialParameterName;                          // 0x0268(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UMaterialInstanceDynamic*                    ProgressPercentageMID;                                    // 0x0270(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x0278(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -6972,6 +8164,24 @@ public:
 	void SetBoundAction(const struct FName& NewBoundAction);
 	bool IsHoldKeybind();
 	bool GetBrushForKey(TEnumAsByte<EFortBrushSize> BrushSize, struct FSlateBrush* Brush);
+};
+
+
+// Class FortniteUI.FortLayoutQuestNode
+// 0x0020 (0x0230 - 0x0210)
+class UFortLayoutQuestNode : public UCommonUserWidget
+{
+public:
+	class UFortQuestMapQuestTile*                      QuestTile;                                                // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	int                                                QuestNodeIndex;                                           // 0x0218(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x14];                                      // 0x021C(0x0014) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortLayoutQuestNode");
+		return ptr;
+	}
+
 };
 
 
@@ -6995,12 +8205,12 @@ public:
 
 
 // Class FortniteUI.FortLeaderboardEntryWidget
-// 0x0010 (0x0818 - 0x0808)
+// 0x0010 (0x0898 - 0x0888)
 class UFortLeaderboardEntryWidget : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	class UObject*                                     LeaderboardEntryObject;                                   // 0x0810(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UObject*                                     LeaderboardEntryObject;                                   // 0x0890(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -7008,8 +8218,6 @@ public:
 		return ptr;
 	}
 
-
-	void OnLeaderboardEntryDataSet();
 };
 
 
@@ -7076,69 +8284,8 @@ public:
 };
 
 
-// Class FortniteUI.FortListItem
-// 0x0000 (0x0220 - 0x0220)
-class UFortListItem : public UFortUserWidget
-{
-public:
-
-	static UClass* StaticClass()
-	{
-		static auto ptr = UObject::FindClass("Class FortniteUI.FortListItem");
-		return ptr;
-	}
-
-
-	void ToggleExpansion();
-	void SetSelected(bool bSelected);
-	void SetIndexInList(int InIndexInList);
-	void SetData(class UObject* InData);
-	void Private_OnExpanderArrowShiftClicked();
-	bool IsItemExpanded();
-	TEnumAsByte<ESelectionMode> GetSelectionMode();
-	int GetIndentLevel();
-	int DoesItemHaveChildren();
-};
-
-
-// Class FortniteUI.FortListView
-// 0x0068 (0x0168 - 0x0100)
-class UFortListView : public UTableViewBase
-{
-public:
-	struct FScriptMulticastDelegate                    OnItemClicked;                                            // 0x0100(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnItemSelected;                                           // 0x0110(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptDelegate                             OnGenerateRowEvent;                                       // 0x0120(0x0010) (Edit, ZeroConstructor, InstancedReference)
-	float                                              ItemHeight;                                               // 0x0130(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x0134(0x0004) MISSED OFFSET
-	TArray<class UObject*>                             DataProvider;                                             // 0x0138(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	TEnumAsByte<ESelectionMode>                        SelectionMode;                                            // 0x0148(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EConsumeMouseWheel                                 ConsumeMouseWheel;                                        // 0x0149(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x6];                                       // 0x014A(0x0006) MISSED OFFSET
-	class UClass*                                      ListItemClass;                                            // 0x0150(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x10];                                      // 0x0158(0x0010) MISSED OFFSET
-
-	static UClass* StaticClass()
-	{
-		static auto ptr = UObject::FindClass("Class FortniteUI.FortListView");
-		return ptr;
-	}
-
-
-	bool SetItemSelected(class UObject* Item);
-	bool SetIndexSelected(int Index);
-	void SetDataProvider(TArray<class UObject*> NewData);
-	void RemoveItemAt(int Index);
-	class UObject* GetItemAt(int Index);
-	int GetIndexForItem(class UObject* Item);
-	void ClearSelection();
-	void Clear();
-	void AddItem(class UObject* NewItem);
-};
-
-
 // Class FortniteUI.FortLiveStreamGrantWindowExpires
-// 0x0000 (0x0218 - 0x0218)
+// 0x0000 (0x0210 - 0x0210)
 class UFortLiveStreamGrantWindowExpires : public UCommonUserWidget
 {
 public:
@@ -7153,13 +8300,12 @@ public:
 
 
 // Class FortniteUI.FortLobby
-// 0x0050 (0x0410 - 0x03C0)
+// 0x0018 (0x0310 - 0x02F8)
 class UFortLobby : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x40];                                      // 0x03C0(0x0040) MISSED OFFSET
-	class UOverlay*                                    OverlayMain;                                              // 0x0400(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0408(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x02F8(0x0010) MISSED OFFSET
+	class UOverlay*                                    OverlayMain;                                              // 0x0308(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -7177,19 +8323,20 @@ public:
 
 
 // Class FortniteUI.FortLoginCredentialSelect
-// 0x0100 (0x04C0 - 0x03C0)
+// 0x0080 (0x0378 - 0x02F8)
 class UFortLoginCredentialSelect : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0xC0];                                      // 0x03C0(0x00C0) MISSED OFFSET
-	class UCommonButton*                               Button_Epic;                                              // 0x0480(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Facebook;                                          // 0x0488(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Google;                                            // 0x0490(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_PS;                                                // 0x0498(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_XB;                                                // 0x04A0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_CreateAccount;                                     // 0x04A8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_NoXB;                                              // 0x04B0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_NoSony;                                            // 0x04B8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x38];                                      // 0x02F8(0x0038) MISSED OFFSET
+	class UCommonButton*                               Button_Epic;                                              // 0x0330(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Facebook;                                          // 0x0338(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Google;                                            // 0x0340(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_PS;                                                // 0x0348(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_XB;                                                // 0x0350(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Erebus;                                            // 0x0358(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_CreateAccount;                                     // 0x0360(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_NoXB;                                              // 0x0368(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_NoSony;                                            // 0x0370(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -7197,28 +8344,21 @@ public:
 		return ptr;
 	}
 
-
-	void HandleXBClicked(class UCommonButton* Button);
-	void HandlePSClicked(class UCommonButton* Button);
-	void HandleGoogleClicked(class UCommonButton* Button);
-	void HandleFacebookClicked(class UCommonButton* Button);
-	void HandleEpicClicked(class UCommonButton* Button);
-	void HandleCreateAccountClicked(class UCommonButton* Button);
 };
 
 
 // Class FortniteUI.FortLoginResultWidget
-// 0x0070 (0x0430 - 0x03C0)
+// 0x0040 (0x0338 - 0x02F8)
 class UFortLoginResultWidget : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x40];                                      // 0x03C0(0x0040) MISSED OFFSET
-	class UClass*                                      ErrorStyle;                                               // 0x0400(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UClass*                                      NoErrorStyle;                                             // 0x0408(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0410(0x0008) MISSED OFFSET
-	class UCommonTextBlock*                            Text_Title;                                               // 0x0418(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_Description;                                         // 0x0420(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Continue;                                          // 0x0428(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x02F8(0x0010) MISSED OFFSET
+	class UClass*                                      ErrorStyle;                                               // 0x0308(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      NoErrorStyle;                                             // 0x0310(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x0318(0x0008) MISSED OFFSET
+	class UCommonTextBlock*                            Text_Title;                                               // 0x0320(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_Description;                                         // 0x0328(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Continue;                                          // 0x0330(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -7226,19 +8366,18 @@ public:
 		return ptr;
 	}
 
-
-	void HandleContinueClicked(class UCommonButton* Button);
 };
 
 
 // Class FortniteUI.FortLoginStatus
-// 0x0020 (0x0238 - 0x0218)
-class UFortLoginStatus : public UCommonUserWidget
+// 0x0028 (0x0320 - 0x02F8)
+class UFortLoginStatus : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0218(0x0010) MISSED OFFSET
-	class UCommonTextBlock*                            Text_Title;                                               // 0x0228(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_Status;                                              // 0x0230(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x02F8(0x0010) MISSED OFFSET
+	class UCommonTextBlock*                            Text_Title;                                               // 0x0308(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_Status;                                              // 0x0310(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Status;                                            // 0x0318(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -7253,17 +8392,17 @@ public:
 
 
 // Class FortniteUI.FortLoginUnavailable
-// 0x0078 (0x0290 - 0x0218)
+// 0x0078 (0x0288 - 0x0210)
 class UFortLoginUnavailable : public UCommonUserWidget
 {
 public:
-	struct FText                                       DisableMessage;                                           // 0x0218(0x0018) (Edit)
-	struct FText                                       DisableButtonMsg;                                         // 0x0230(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FText                                       InviteClosedMessage;                                      // 0x0248(0x0018) (Edit)
-	struct FText                                       InviteButtonMsg;                                          // 0x0260(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0278(0x0008) MISSED OFFSET
-	class UCommonTextBlock*                            Text_Title;                                               // 0x0280(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_DisplayMsg;                                          // 0x0288(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FText                                       DisableMessage;                                           // 0x0210(0x0018) (Edit)
+	struct FText                                       DisableButtonMsg;                                         // 0x0228(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       InviteClosedMessage;                                      // 0x0240(0x0018) (Edit)
+	struct FText                                       InviteButtonMsg;                                          // 0x0258(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0270(0x0008) MISSED OFFSET
+	class UCommonTextBlock*                            Text_Title;                                               // 0x0278(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_DisplayMsg;                                          // 0x0280(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -7278,14 +8417,14 @@ public:
 
 
 // Class FortniteUI.FortMainTabsScreenBase
-// 0x0070 (0x0430 - 0x03C0)
+// 0x0068 (0x0360 - 0x02F8)
 class UFortMainTabsScreenBase : public UCommonActivatablePanel
 {
 public:
-	TMap<EFortUIFeature, struct FName>                 FeaturesTabsMap;                                          // 0x03C0(0x0050) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	class UHorizontalBox*                              TopTabContainer;                                          // 0x0410(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortTabListWidgetBase*                      TopTabList;                                               // 0x0418(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0420(0x0010) MISSED OFFSET
+	TMap<EFortUIFeature, struct FName>                 FeaturesTabsMap;                                          // 0x02F8(0x0050) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UHorizontalBox*                              TopTabContainer;                                          // 0x0348(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortTabListWidgetBase*                      TopTabList;                                               // 0x0350(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0358(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -7322,18 +8461,18 @@ public:
 
 
 // Class FortniteUI.FortMaterialProgressBar
-// 0x0158 (0x0370 - 0x0218)
+// 0x0158 (0x0368 - 0x0210)
 class UFortMaterialProgressBar : public UCommonUserWidget
 {
 public:
-	class UClass*                                      Style;                                                    // 0x0218(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	struct FName                                       BackgroundColorParamName;                                 // 0x0220(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	struct FLinearColor                                BackgroundColor;                                          // 0x0228(0x0010) (Edit, IsPlainOldData)
-	EFortMaterialProgressBarSectionOverflowBehavior    OverflowBehavior;                                         // 0x0238(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0239(0x0007) MISSED OFFSET
-	struct FFortMaterialProgressBarSectionInfo         BarSectionInfo[0x4];                                      // 0x0240(0x0048) (Edit)
-	class UCommonBorder*                               ProgressBar;                                              // 0x0360(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UMaterialInstanceDynamic*                    ProgressBarMID;                                           // 0x0368(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UClass*                                      Style;                                                    // 0x0210(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	struct FName                                       BackgroundColorParamName;                                 // 0x0218(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	struct FLinearColor                                BackgroundColor;                                          // 0x0220(0x0010) (Edit, IsPlainOldData)
+	EFortMaterialProgressBarSectionOverflowBehavior    OverflowBehavior;                                         // 0x0230(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0231(0x0007) MISSED OFFSET
+	struct FFortMaterialProgressBarSectionInfo         BarSectionInfo[0x4];                                      // 0x0238(0x0048) (Edit)
+	class UCommonBorder*                               ProgressBar;                                              // 0x0358(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UMaterialInstanceDynamic*                    ProgressBarMID;                                           // 0x0360(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -7350,11 +8489,11 @@ public:
 
 
 // Class FortniteUI.FortMicIndicatorWidget
-// 0x0038 (0x0250 - 0x0218)
+// 0x0038 (0x0248 - 0x0210)
 class UFortMicIndicatorWidget : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x38];                                      // 0x0218(0x0038) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x38];                                      // 0x0210(0x0038) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -7370,11 +8509,65 @@ public:
 };
 
 
+// Class FortniteUI.FortMissionActivationInfo
+// 0x0040 (0x0068 - 0x0028)
+class UFortMissionActivationInfo : public UObject
+{
+public:
+	bool                                               bIsMissionActivationVoteActive;                           // 0x0028(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bIsDifficultyIncreaseVoteActive;                          // 0x0029(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x26];                                      // 0x002A(0x0026) MISSED OFFSET
+	class AFortPlayerController*                       FortPC;                                                   // 0x0050(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class AFortGameStateZone*                          GameStateZone;                                            // 0x0058(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UCurveFloat*                                 DifficultyIncreaseBluGloCurve;                            // 0x0060(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortMissionActivationInfo");
+		return ptr;
+	}
+
+
+	struct FText TimeSecondsToText(float InSeconds);
+	bool IsPlayerVoteInstigator(EFortVoteType VoteType);
+	void HandleMissionActivationVoteUpdate(EFortVoteType VoteType, EFortVoteStatus VoteStatus, int VoteResult, TArray<struct FVoter> Voters);
+	void HandleDifficultyIncreaseVoteUpdate(EFortVoteType VoteType, EFortVoteStatus VoteStatus, int VoteResult, TArray<struct FVoter> Voters);
+	int GetStartObjectiveBluGloRequirement();
+	class UFortMissionInfo* GetPrimaryMissionInfo();
+	class AFortMission* GetPrimaryMission();
+	int GetIncreaseDifficultyBluGloRequirement();
+	void GetDeltaRewards(int BaseDifficultyIncreaseTier, int ComparedDifficultyIncreaseTier, TArray<struct FFortItemDelta>* DeltaRewards);
+	bool DoesPrimaryMissionContainTags(const struct FGameplayTagContainer& Tags);
+};
+
+
+// Class FortniteUI.FortMissionActivationWidgetPanel
+// 0x0008 (0x0218 - 0x0210)
+class UFortMissionActivationWidgetPanel : public UCommonUserWidget
+{
+public:
+	class UFortMissionActivationInfo*                  InfoObject;                                               // 0x0210(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortMissionActivationWidgetPanel");
+		return ptr;
+	}
+
+
+	void SetInfoObject(class UFortMissionActivationInfo* NewInfoObject);
+	void InfoObjectUpdated();
+};
+
+
 // Class FortniteUI.FortMissionActivationWidget
-// 0x0000 (0x03F0 - 0x03F0)
+// 0x0018 (0x0340 - 0x0328)
 class UFortMissionActivationWidget : public UFortActivatablePanel
 {
 public:
+	class UFortMissionActivationInfo*                  InfoObject;                                               // 0x0328(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	class UCurveFloat*                                 DifficultyIncreaseBluGloCurve;                            // 0x0330(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0338(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -7382,16 +8575,20 @@ public:
 		return ptr;
 	}
 
+
+	void SetState(EFortMissionActivationWidgetState NewState, bool bForceUpdate);
+	void OnStateUpdated(EFortMissionActivationWidgetState ActiveState, EFortMissionActivationWidgetState PreviousState);
+	EFortMissionActivationWidgetState GetCurrentState();
 };
 
 
 // Class FortniteUI.FortMissionSelect
-// 0x0050 (0x0410 - 0x03C0)
+// 0x0020 (0x0318 - 0x02F8)
 class UFortMissionSelect : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x40];                                      // 0x03C0(0x0040) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnNavigation;                                             // 0x0400(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x02F8(0x0010) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnNavigation;                                             // 0x0308(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
 
 	static UClass* StaticClass()
 	{
@@ -7405,19 +8602,19 @@ public:
 
 
 // Class FortniteUI.FortMissionTracker
-// 0x0030 (0x0270 - 0x0240)
+// 0x0030 (0x0268 - 0x0238)
 class UFortMissionTracker : public UFortHUDElementWidget
 {
 public:
-	class UFortMissionTrackerList*                     MissionTrackerList;                                       // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortQuestTrackerList*                       MainQuestList;                                            // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortQuestTrackerList*                       PinnedQuestsList;                                         // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UWidget*                                     AdditionalEntriesIndicator;                               // 0x0258(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonNumericTextBlock*                     DebugHeightEstimate;                                      // 0x0260(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	float                                              AllowedSize;                                              // 0x0268(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bEnforceHeightLimit;                                      // 0x026C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bSizeEstimateNeedsRefresh;                                // 0x026D(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x2];                                       // 0x026E(0x0002) MISSED OFFSET
+	class UFortMissionTrackerList*                     MissionTrackerList;                                       // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortQuestTrackerList*                       MainQuestList;                                            // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortQuestTrackerList*                       PinnedQuestsList;                                         // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UWidget*                                     AdditionalEntriesIndicator;                               // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonNumericTextBlock*                     DebugHeightEstimate;                                      // 0x0258(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	float                                              AllowedSize;                                              // 0x0260(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bEnforceHeightLimit;                                      // 0x0264(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bSizeEstimateNeedsRefresh;                                // 0x0265(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x2];                                       // 0x0266(0x0002) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -7433,22 +8630,22 @@ public:
 
 
 // Class FortniteUI.FortMissionTrackerEntry
-// 0x00A8 (0x02C0 - 0x0218)
+// 0x00A8 (0x02B8 - 0x0210)
 class UFortMissionTrackerEntry : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnMissionEntryVisibilityChanged;                          // 0x0220(0x0010) (ZeroConstructor, InstancedReference)
-	class UClass*                                      SubEntryClass;                                            // 0x0230(0x0008) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	bool                                               bConfigureAsHUD;                                          // 0x0238(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bHiddenByHeightConstraint;                                // 0x0239(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x6];                                       // 0x023A(0x0006) MISSED OFFSET
-	class UCommonTextBlock*                            MissionNameText;                                          // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UVerticalBox*                                ObjectivesListBox;                                        // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      UpperSeparator;                                           // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class AFortMission*                                TrackedMission;                                           // 0x0258(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FScriptMulticastDelegate                    OnSizeEstimateChangedDelegate;                            // 0x0260(0x0010) (ZeroConstructor, InstancedReference)
-	unsigned char                                      UnknownData02[0x50];                                      // 0x0270(0x0050) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnMissionEntryVisibilityChanged;                          // 0x0218(0x0010) (ZeroConstructor, InstancedReference)
+	class UClass*                                      SubEntryClass;                                            // 0x0228(0x0008) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	bool                                               bConfigureAsHUD;                                          // 0x0230(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bHiddenByHeightConstraint;                                // 0x0231(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x6];                                       // 0x0232(0x0006) MISSED OFFSET
+	class UCommonTextBlock*                            MissionNameText;                                          // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UVerticalBox*                                ObjectivesListBox;                                        // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      UpperSeparator;                                           // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class AFortMission*                                TrackedMission;                                           // 0x0250(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FScriptMulticastDelegate                    OnSizeEstimateChangedDelegate;                            // 0x0258(0x0010) (ZeroConstructor, InstancedReference)
+	unsigned char                                      UnknownData02[0x50];                                      // 0x0268(0x0050) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -7465,18 +8662,18 @@ public:
 
 
 // Class FortniteUI.FortMissionTrackerList
-// 0x0090 (0x02A8 - 0x0218)
+// 0x0090 (0x02A0 - 0x0210)
 class UFortMissionTrackerList : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	class UClass*                                      MissionEntryClass;                                        // 0x0220(0x0008) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	bool                                               bConfigureAsHUD;                                          // 0x0228(0x0001) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0229(0x0007) MISSED OFFSET
-	class UVerticalBox*                                MissionsListBox;                                          // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	struct FScriptMulticastDelegate                    OnMissionTrackerListVisibilityChanged;                    // 0x0238(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnSizeEstimateChangedDelegate;                            // 0x0248(0x0010) (ZeroConstructor, InstancedReference)
-	unsigned char                                      UnknownData02[0x50];                                      // 0x0258(0x0050) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	class UClass*                                      MissionEntryClass;                                        // 0x0218(0x0008) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	bool                                               bConfigureAsHUD;                                          // 0x0220(0x0001) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
+	class UVerticalBox*                                MissionsListBox;                                          // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FScriptMulticastDelegate                    OnMissionTrackerListVisibilityChanged;                    // 0x0230(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnSizeEstimateChangedDelegate;                            // 0x0240(0x0010) (ZeroConstructor, InstancedReference)
+	unsigned char                                      UnknownData02[0x50];                                      // 0x0250(0x0050) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -7492,17 +8689,17 @@ public:
 
 
 // Class FortniteUI.FortMissionTrackerSubEntry
-// 0x0038 (0x0250 - 0x0218)
+// 0x0038 (0x0248 - 0x0210)
 class UFortMissionTrackerSubEntry : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnMissionSubEntryVisibilityChanged;                       // 0x0220(0x0010) (ZeroConstructor, InstancedReference)
-	bool                                               bConfigureAsHUD;                                          // 0x0230(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bHiddenByHeightConstraint;                                // 0x0231(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x6];                                       // 0x0232(0x0006) MISSED OFFSET
-	class AFortObjectiveBase*                          TrackedObjective;                                         // 0x0238(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FScriptMulticastDelegate                    OnSizeEstimateChangedDelegate;                            // 0x0240(0x0010) (ZeroConstructor, InstancedReference)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnMissionSubEntryVisibilityChanged;                       // 0x0218(0x0010) (ZeroConstructor, InstancedReference)
+	bool                                               bConfigureAsHUD;                                          // 0x0228(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bHiddenByHeightConstraint;                                // 0x0229(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x6];                                       // 0x022A(0x0006) MISSED OFFSET
+	class AFortObjectiveBase*                          TrackedObjective;                                         // 0x0230(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FScriptMulticastDelegate                    OnSizeEstimateChangedDelegate;                            // 0x0238(0x0010) (ZeroConstructor, InstancedReference)
 
 	static UClass* StaticClass()
 	{
@@ -7559,15 +8756,15 @@ public:
 
 
 // Class FortniteUI.FortMOTDWidget
-// 0x0060 (0x0420 - 0x03C0)
+// 0x0030 (0x0328 - 0x02F8)
 class UFortMOTDWidget : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x40];                                      // 0x03C0(0x0040) MISSED OFFSET
-	class UCommonTextBlock*                            Text_Header;                                              // 0x0400(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_Body;                                                // 0x0408(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Close;                                             // 0x0410(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UScrollBox*                                  ScrollBox;                                                // 0x0418(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x02F8(0x0010) MISSED OFFSET
+	class UCommonTextBlock*                            Text_Header;                                              // 0x0308(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_Body;                                                // 0x0310(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Close;                                             // 0x0318(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UScrollBox*                                  ScrollBox;                                                // 0x0320(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -7575,20 +8772,18 @@ public:
 		return ptr;
 	}
 
-
-	void HandleClosedClicked(class UCommonButton* Button);
 };
 
 
 // Class FortniteUI.FortMovieWidget
-// 0x0028 (0x0248 - 0x0220)
+// 0x0028 (0x0240 - 0x0218)
 class UFortMovieWidget : public UFortUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnMediaOpened;                                            // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UMediaPlayer*                                MediaPlayer;                                              // 0x0230(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	class UMediaTexture*                               MediaTexture;                                             // 0x0238(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	class UMediaSoundComponent*                        SoundComponent;                                           // 0x0240(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	struct FScriptMulticastDelegate                    OnMediaOpened;                                            // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	class UMediaPlayer*                                MediaPlayer;                                              // 0x0228(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UMediaTexture*                               MediaTexture;                                             // 0x0230(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UMediaSoundComponent*                        SoundComponent;                                           // 0x0238(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -7597,7 +8792,7 @@ public:
 	}
 
 
-	void SetMediaSource(class UMediaSource* InMediaSource);
+	bool SetMediaSource(class UMediaSource* InMediaSource);
 	void RequestStopMovie();
 	void RequestPlayMovie(bool bShouldRewind);
 	void MediaDimensionsUpdated(float NewWidth, float NewHeight);
@@ -7609,16 +8804,20 @@ public:
 
 
 // Class FortniteUI.FortMtxOfferData
-// 0x01D8 (0x0208 - 0x0030)
+// 0x0230 (0x0260 - 0x0030)
 class UFortMtxOfferData : public UPrimaryDataAsset
 {
 public:
-	struct FSlateBrush                                 TileImage;                                                // 0x0030(0x0088) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FSlateBrush                                 BadgeImage;                                               // 0x00B8(0x0088) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FSlateBrush                                 DetailsImage;                                             // 0x0140(0x0088) (Edit, BlueprintVisible, BlueprintReadOnly)
-	TArray<struct FFortMtxDetailsAttribute>            DetailsAttributes;                                        // 0x01C8(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	struct FFortMtxGradient                            Gradient;                                                 // 0x01D8(0x0020) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FLinearColor                                Background;                                               // 0x01F8(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	struct FText                                       DisplayName;                                              // 0x0030(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       ShortDisplayName;                                         // 0x0048(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       ShortDescription;                                         // 0x0060(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	TArray<struct FFortItemQuantityPair>               GrantOverride;                                            // 0x0078(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	struct FSlateBrush                                 TileImage;                                                // 0x0088(0x0088) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FSlateBrush                                 BadgeImage;                                               // 0x0110(0x0088) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FSlateBrush                                 DetailsImage;                                             // 0x0198(0x0088) (Edit, BlueprintVisible, BlueprintReadOnly)
+	TArray<struct FFortMtxDetailsAttribute>            DetailsAttributes;                                        // 0x0220(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	struct FFortMtxGradient                            Gradient;                                                 // 0x0230(0x0020) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FLinearColor                                Background;                                               // 0x0250(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -7630,13 +8829,12 @@ public:
 
 
 // Class FortniteUI.FortMtxOfferDetailsBase
-// 0x00B0 (0x04A0 - 0x03F0)
+// 0x00A8 (0x03D0 - 0x0328)
 class UFortMtxOfferDetailsBase : public UFortActivatablePanel
 {
 public:
-	class UFortMtxOfferData*                           OfferDisplayAsset;                                        // 0x03F0(0x0008) (ZeroConstructor, IsPlainOldData)
-	struct FMtxPackage                                 MtxOffer;                                                 // 0x03F8(0x00A0) (Transient)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0498(0x0008) MISSED OFFSET
+	class UFortMtxOfferData*                           OfferDisplayAsset;                                        // 0x0328(0x0008) (ZeroConstructor, IsPlainOldData)
+	struct FMtxPackage                                 MtxOffer;                                                 // 0x0330(0x00A0) (Transient)
 
 	static UClass* StaticClass()
 	{
@@ -7663,12 +8861,12 @@ public:
 
 
 // Class FortniteUI.FortMtxStoreOfferBase
-// 0x00A8 (0x08B0 - 0x0808)
+// 0x00A8 (0x0930 - 0x0888)
 class UFortMtxStoreOfferBase : public UCommonButton
 {
 public:
-	class UFortMtxOfferData*                           OfferDisplayAsset;                                        // 0x0808(0x0008) (ZeroConstructor, IsPlainOldData)
-	struct FMtxPackage                                 MtxOffer;                                                 // 0x0810(0x00A0) (Transient)
+	class UFortMtxOfferData*                           OfferDisplayAsset;                                        // 0x0888(0x0008) (ZeroConstructor, IsPlainOldData)
+	struct FMtxPackage                                 MtxOffer;                                                 // 0x0890(0x00A0) (Transient)
 
 	static UClass* StaticClass()
 	{
@@ -7694,15 +8892,15 @@ public:
 
 
 // Class FortniteUI.FortMtxStoreRootBase
-// 0x0050 (0x0410 - 0x03C0)
+// 0x0048 (0x0340 - 0x02F8)
 class UFortMtxStoreRootBase : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x03C0(0x0008) MISSED OFFSET
-	class UClass*                                      MtxOfferWidgetClass;                                      // 0x03C8(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	TArray<struct FString>                             StorefrontNames;                                          // 0x03D0(0x0010) (Edit, BlueprintVisible, ZeroConstructor)
-	TArray<struct FMtxPackage>                         MtxOffers;                                                // 0x03E0(0x0010) (ZeroConstructor, Transient)
-	unsigned char                                      UnknownData01[0x20];                                      // 0x03F0(0x0020) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x02F8(0x0008) MISSED OFFSET
+	class UClass*                                      MtxOfferWidgetClass;                                      // 0x0300(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	TArray<struct FString>                             StorefrontNames;                                          // 0x0308(0x0010) (Edit, BlueprintVisible, ZeroConstructor)
+	TArray<struct FMtxPackage>                         MtxOffers;                                                // 0x0318(0x0010) (ZeroConstructor, Transient)
+	unsigned char                                      UnknownData01[0x18];                                      // 0x0328(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -7711,6 +8909,7 @@ public:
 	}
 
 
+	void OnUpdateOtherPlatformMTXMessage(bool HasOtherPlatformCurrency, const struct FText& CurrencyMessageLocText);
 	void OnStartReadingOffers();
 	void OnOffersGenerated();
 	void OnMtxOfferGenerated(class UFortMtxStoreOfferBase* MtxOffer);
@@ -7723,7 +8922,7 @@ public:
 
 
 // Class FortniteUI.FortMulchItemTileButton
-// 0x0000 (0x0838 - 0x0838)
+// 0x0000 (0x08B8 - 0x08B8)
 class UFortMulchItemTileButton : public UFortItemTileButton
 {
 public:
@@ -7740,14 +8939,14 @@ public:
 
 
 // Class FortniteUI.FortMulchConfirmationModalWidget
-// 0x0020 (0x0410 - 0x03F0)
+// 0x0020 (0x0348 - 0x0328)
 class UFortMulchConfirmationModalWidget : public UFortActivatablePanel
 {
 public:
-	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x03F0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTileView*                             RecycleItemTileView;                                      // 0x03F8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortItemManagementMulchDetailsPanel*        RecycleDetailsPanel;                                      // 0x0400(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0408(0x0008) MISSED OFFSET
+	TWeakObjectPtr<class UFortItemManagementScreen>    HostItemManagementScreen;                                 // 0x0328(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTileView*                             RecycleItemTileView;                                      // 0x0330(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemManagementMulchDetailsPanel*        RecycleDetailsPanel;                                      // 0x0338(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0340(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -7764,16 +8963,16 @@ public:
 
 
 // Class FortniteUI.FortMultiFactorAuthWidget
-// 0x00C0 (0x0480 - 0x03C0)
+// 0x0058 (0x0350 - 0x02F8)
 class UFortMultiFactorAuthWidget : public UCommonActivatablePanel
 {
 public:
-	struct FText                                       PromptText;                                               // 0x03C0(0x0018) (BlueprintVisible, BlueprintReadOnly)
-	class UCommonButton*                               Button_Continue;                                          // 0x03D8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Cancel;                                            // 0x03E0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_Error;                                               // 0x03E8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UEditableText*                               EditText_MultiFactorCode;                                 // 0x03F0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x88];                                      // 0x03F8(0x0088) MISSED OFFSET
+	struct FText                                       PromptText;                                               // 0x02F8(0x0018) (BlueprintVisible, BlueprintReadOnly)
+	class UCommonButton*                               Button_Continue;                                          // 0x0310(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Cancel;                                            // 0x0318(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_Error;                                               // 0x0320(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UEditableText*                               EditText_MultiFactorCode;                                 // 0x0328(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x20];                                      // 0x0330(0x0020) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -7783,8 +8982,6 @@ public:
 
 
 	void HandleTextCommitted(const struct FText& Text, TEnumAsByte<ETextCommit> CommitMethod);
-	void HandleContinueSelected(class UCommonButton* Button);
-	void HandleCancelSelected(class UCommonButton* Button);
 };
 
 
@@ -7821,13 +9018,13 @@ public:
 
 
 // Class FortniteUI.FortNewAccountWarning
-// 0x0090 (0x0450 - 0x03C0)
+// 0x0030 (0x0328 - 0x02F8)
 class UFortNewAccountWarning : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x80];                                      // 0x03C0(0x0080) MISSED OFFSET
-	class UCommonButton*                               Button_NewAccount;                                        // 0x0440(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Back;                                              // 0x0448(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x20];                                      // 0x02F8(0x0020) MISSED OFFSET
+	class UCommonButton*                               Button_NewAccount;                                        // 0x0318(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Back;                                              // 0x0320(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -7835,27 +9032,49 @@ public:
 		return ptr;
 	}
 
+};
 
-	void HandleNewAccountClicked(class UCommonButton* Button);
-	void HandleBackClicked(class UCommonButton* Button);
+
+// Class FortniteUI.FortniteUserInterfaceSettings
+// 0x04B0 (0x04E8 - 0x0038)
+class UFortniteUserInterfaceSettings : public UDeveloperSettings
+{
+public:
+	struct FRuntimeFloatCurve                          WidthScaleCurve;                                          // 0x0038(0x0078) (Edit, Config)
+	struct FRuntimeFloatCurve                          HeightScaleCurve;                                         // 0x00B0(0x0078) (Edit, Config)
+	struct FRuntimeFloatCurve                          WidthScaleCurve_iOS_InGame;                               // 0x0128(0x0078) (Edit, Config)
+	struct FRuntimeFloatCurve                          HeightScaleCurve_iOS_InGame;                              // 0x01A0(0x0078) (Edit, Config)
+	struct FRuntimeFloatCurve                          WidthScaleCurve_iOS_FrontEnd;                             // 0x0218(0x0078) (Edit, Config)
+	struct FRuntimeFloatCurve                          HeightScaleCurve_iOS_FrontEnd;                            // 0x0290(0x0078) (Edit, Config)
+	struct FRuntimeFloatCurve                          WidthScaleCurve_Android_InGame;                           // 0x0308(0x0078) (Edit, Config)
+	struct FRuntimeFloatCurve                          HeightScaleCurve_Android_InGame;                          // 0x0380(0x0078) (Edit, Config)
+	struct FRuntimeFloatCurve                          WidthScaleCurve_Android_FrontEnd;                         // 0x03F8(0x0078) (Edit, Config)
+	struct FRuntimeFloatCurve                          HeightScaleCurve_Android_FrontEnd;                        // 0x0470(0x0078) (Edit, Config)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortniteUserInterfaceSettings");
+		return ptr;
+	}
+
 };
 
 
 // Class FortniteUI.FortBaseCanvasEntity
-// 0x0040 (0x0260 - 0x0220)
+// 0x0040 (0x0258 - 0x0218)
 class UFortBaseCanvasEntity : public UFortUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0220(0x0008) MISSED OFFSET
-	struct FName                                       NodeID;                                                   // 0x0228(0x0008) (Edit, ZeroConstructor, EditConst, IsPlainOldData)
-	bool                                               bConsideredInSizeCalculation;                             // 0x0230(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x3];                                       // 0x0231(0x0003) MISSED OFFSET
-	float                                              MovementMultiplier;                                       // 0x0234(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FDataTableRowHandle                         NodeStyleData;                                            // 0x0238(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      UnknownData02[0x8];                                       // 0x0248(0x0008) MISSED OFFSET
-	struct FVector2D                                   BasePos;                                                  // 0x0250(0x0008) (IsPlainOldData)
-	bool                                               HasHadBasePosSet;                                         // 0x0258(0x0001) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x7];                                       // 0x0259(0x0007) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
+	struct FName                                       NodeID;                                                   // 0x0220(0x0008) (Edit, ZeroConstructor, EditConst, IsPlainOldData)
+	bool                                               bConsideredInSizeCalculation;                             // 0x0228(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x0229(0x0003) MISSED OFFSET
+	float                                              MovementMultiplier;                                       // 0x022C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FDataTableRowHandle                         NodeStyleData;                                            // 0x0230(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      UnknownData02[0x8];                                       // 0x0240(0x0008) MISSED OFFSET
+	struct FVector2D                                   BasePos;                                                  // 0x0248(0x0008) (IsPlainOldData)
+	bool                                               HasHadBasePosSet;                                         // 0x0250(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x7];                                       // 0x0251(0x0007) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -7870,15 +9089,15 @@ public:
 
 
 // Class FortniteUI.FortBaseCanvasNode
-// 0x0028 (0x0288 - 0x0260)
+// 0x0028 (0x0280 - 0x0258)
 class UFortBaseCanvasNode : public UFortBaseCanvasEntity
 {
 public:
-	class UMediaSource*                                PreviewMediaSource;                                       // 0x0260(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bShouldHideConnectorsToDependents;                        // 0x0268(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0269(0x0007) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnNodeStateChangedEvent;                                  // 0x0270(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0280(0x0008) MISSED OFFSET
+	class UMediaSource*                                PreviewMediaSource;                                       // 0x0258(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bShouldHideConnectorsToDependents;                        // 0x0260(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0261(0x0007) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnNodeStateChangedEvent;                                  // 0x0268(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x0278(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -7961,11 +9180,11 @@ public:
 
 
 // Class FortniteUI.FortNodePrerequisitesWidget
-// 0x0010 (0x0230 - 0x0220)
+// 0x0010 (0x0228 - 0x0218)
 class UFortNodePrerequisitesWidget : public UFortUserWidget
 {
 public:
-	struct FDataTableRowHandle                         NodeStyleData;                                            // 0x0220(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         NodeStyleData;                                            // 0x0218(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
 
 	static UClass* StaticClass()
 	{
@@ -7981,20 +9200,20 @@ public:
 
 
 // Class FortniteUI.FortNumericTextBlock
-// 0x0050 (0x0270 - 0x0220)
+// 0x0050 (0x0268 - 0x0218)
 class UFortNumericTextBlock : public UTextBlock
 {
 public:
-	struct FScriptMulticastDelegate                    CountFinished;                                            // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	int                                                StartingValue;                                            // 0x0230(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                DestValue;                                                // 0x0234(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bUseGrouping;                                             // 0x0238(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bAsCurrency;                                              // 0x0239(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x2];                                       // 0x023A(0x0002) MISSED OFFSET
-	float                                              EaseOutExp;                                               // 0x023C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              UpdateInterval;                                           // 0x0240(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	float                                              ShrinkTime;                                               // 0x0244(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x28];                                      // 0x0248(0x0028) MISSED OFFSET
+	struct FScriptMulticastDelegate                    CountFinished;                                            // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	int                                                StartingValue;                                            // 0x0228(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                DestValue;                                                // 0x022C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bUseGrouping;                                             // 0x0230(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bAsCurrency;                                              // 0x0231(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x2];                                       // 0x0232(0x0002) MISSED OFFSET
+	float                                              EaseOutExp;                                               // 0x0234(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              UpdateInterval;                                           // 0x0238(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              ShrinkTime;                                               // 0x023C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x28];                                      // 0x0240(0x0028) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -8011,7 +9230,7 @@ public:
 
 
 // Class FortniteUI.FortOptionsMenu
-// 0x0000 (0x03F0 - 0x03F0)
+// 0x0000 (0x0328 - 0x0328)
 class UFortOptionsMenu : public UFortActivatablePanel
 {
 public:
@@ -8045,8 +9264,24 @@ public:
 };
 
 
+// Class FortniteUI.FortOptionsMenuData
+// 0x0050 (0x0080 - 0x0030)
+class UFortOptionsMenuData : public UDataAsset
+{
+public:
+	TMap<ESettingTab, struct FOptionsTabData>          TabDatas;                                                 // 0x0030(0x0050) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortOptionsMenuData");
+		return ptr;
+	}
+
+};
+
+
 // Class FortniteUI.FortOptionsMenuInputData
-// 0x0060 (0x0090 - 0x0030)
+// 0x00C0 (0x00F0 - 0x0030)
 class UFortOptionsMenuInputData : public UDataAsset
 {
 public:
@@ -8057,6 +9292,7 @@ public:
 	int                                                ElementNumber;                                            // 0x0080(0x0004) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x4];                                       // 0x0084(0x0004) MISSED OFFSET
 	class UCommonTextBlock*                            TabText;                                                  // 0x0088(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FFortActionKeyMapping                       ActionKeyMapping;                                         // 0x0090(0x0060)
 
 	static UClass* StaticClass()
 	{
@@ -8068,12 +9304,12 @@ public:
 
 
 // Class FortniteUI.FortOptionsMenuSetting
-// 0x0010 (0x0228 - 0x0218)
+// 0x0010 (0x0220 - 0x0210)
 class UFortOptionsMenuSetting : public UCommonUserWidget
 {
 public:
-	ESettingType                                       SettingType;                                              // 0x0218(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0xF];                                       // 0x0219(0x000F) MISSED OFFSET
+	ESettingType                                       SettingType;                                              // 0x0210(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0xF];                                       // 0x0211(0x000F) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -8082,6 +9318,7 @@ public:
 	}
 
 
+	void TouchVerticalSensitivityValueChanged(float NewValue);
 	void TouchTargetingMultiplierValueChanged(float NewValue);
 	void TouchLookSensitivityChanged(float NewValue);
 	void TouchDragScopedSensitivityValueChanged(float NewValue);
@@ -8096,8 +9333,12 @@ public:
 	void ScopedMultiplierValueChanged(float NewValue);
 	void SafeZoneChanged(float NewValue);
 	void RegionChanged(int NewRegion);
+	void PowerSaverModeChanged(bool bInChecked);
 	void PeripheralLightingChanged(bool bInChecked);
+	void OnUseTapToShootChanged(bool bInChecked);
 	void OnTurboBuildChanged(bool bInChecked);
+	void OnShowGlobalChatEnabledChanged(bool bInChecked);
+	void OnShadowPlayHighlightsChanged(bool bInChecked);
 	void OnReplayRecordingPreferenceChanged(bool bInChecked);
 	void OnLargeTeamsReplayRecordingPreferenceChanged(bool bInChecked);
 	void OnHUDScaleChanged(float bInHUDScale);
@@ -8105,14 +9346,21 @@ public:
 	void OnForceFeedbackChanged(bool bInChecked);
 	void OnFocusOnFirstBuildingPieceWhenQuickbarSwappedChangedAthena(bool bInChecked);
 	void OnFocusOnFirstBuildingPieceWhenQuickbarSwappedChanged(bool bInChecked);
+	void OnEditModeAimAssistChanged(bool bInChecked);
 	void OnCrossplayPreferenceChanged(bool bInChecked);
+	void OnAutoPickupWeaponsConsolePCChanged(bool bInChecked);
+	void OnAutoPickupWeaponsChanged(bool bInChecked);
+	void OnAutoOpenDoorsChanged(bool bInChecked);
 	void OnAutoChangeMaterialChanged(bool bInChecked);
 	void OnAimAssistChanged(bool bInChecked);
-	void MouseSensitivityChanged(float NewValue);
+	void MouseSensitivityYChanged(float NewValue);
+	void MouseSensitivityXChanged(float NewValue);
 	void LookInversionChanged(bool bInChecked);
 	void LanguageChanged(int NewMode);
 	void InvertAcceptAndBackChanged(int NewMode);
+	bool GetUseTapToShoot();
 	bool GetTurboBuild();
+	float GetTouchVerticalSensitivityValue();
 	float GetTouchTargetingMultiplierValue();
 	float GetTouchLookSensitivityValue();
 	float GetTouchDragScopedSensitivityValue();
@@ -8125,15 +9373,18 @@ public:
 	bool GetShowViewerCountEnabled();
 	bool GetShowHeroHeadAccessories();
 	bool GetShowHeroBackpack();
+	bool GetShowGlobalChatEnabled();
+	bool GetShadowPlayHighlightsEnabled();
 	float GetSettingValue();
 	TArray<struct FText> GetSettingDisplayNames();
 	float GetScopedMultiplierValue();
 	float GetSafeZoneValue();
 	bool GetReplayRecordingEnabled();
 	TArray<struct FText> GetRegionDisplayNames();
+	bool GetPowerSaverMode();
 	TArray<struct FText> GetPossibleLanguages();
 	bool GetPeripheralLightingEnabled();
-	float GetMouseSensitivityValue();
+	struct FVector2D GetMouseSensitivityValue();
 	bool GetLookInversionState();
 	bool GetLargeTeamsReplayRecordingEnabled();
 	bool GetInvertAcceptAndBack();
@@ -8146,10 +9397,14 @@ public:
 	bool GetFocusOnFirstBuildingPieceWhenQuickbarSwappedStateAthena();
 	bool GetFocusOnFirstBuildingPieceWhenQuickbarSwappedState();
 	bool GetFirstPersonCameraState();
+	bool GetEditModeAimAssistState();
 	int GetCurrentRegion();
 	int GetCurrentLanguage();
 	bool GetCrossplayPreference();
 	bool GetConsoleUnlockedFPSState();
+	bool GetAutoPickupWeaponsConsolePC();
+	bool GetAutoPickupWeapons();
+	bool GetAutoOpenDoors();
 	bool GetAutoEquipState();
 	bool GetAutoChangeMaterial();
 	bool GetAimAssistState();
@@ -8164,7 +9419,7 @@ public:
 
 
 // Class FortniteUI.FortSettingInfo
-// 0x0038 (0x0060 - 0x0028)
+// 0x0040 (0x0068 - 0x0028)
 class UFortSettingInfo : public UObject
 {
 public:
@@ -8175,6 +9430,7 @@ public:
 	bool                                               SliderUseDecimal;                                         // 0x005A(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
 	bool                                               SliderMinZero;                                            // 0x005B(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
 	unsigned char                                      UnknownData00[0x4];                                       // 0x005C(0x0004) MISSED OFFSET
+	class UClass*                                      SettingEntryClass;                                        // 0x0060(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -8186,11 +9442,11 @@ public:
 
 
 // Class FortniteUI.FortOutpostStorageItemPicker
-// 0x0060 (0x02E0 - 0x0280)
+// 0x0068 (0x0310 - 0x02A8)
 class UFortOutpostStorageItemPicker : public UFortItemPickerBase
 {
 public:
-	unsigned char                                      UnknownData00[0x60];                                      // 0x0280(0x0060) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x68];                                      // 0x02A8(0x0068) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -8205,14 +9461,13 @@ public:
 
 
 // Class FortniteUI.FortPartyFinderBase
-// 0x0020 (0x0410 - 0x03F0)
+// 0x0018 (0x0340 - 0x0328)
 class UFortPartyFinderBase : public UFortActivatablePanel
 {
 public:
-	class UCommonBorder*                               CommonBorder_PartyServicesDegredationWarning;             // 0x03F0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTreeView*                             TreeView_Social;                                          // 0x03F8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Close;                                             // 0x0400(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0408(0x0008) MISSED OFFSET
+	class UCommonBorder*                               CommonBorder_PartyServicesDegredationWarning;             // 0x0328(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTreeView*                             TreeView_Social;                                          // 0x0330(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Close;                                             // 0x0338(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -8221,23 +9476,19 @@ public:
 	}
 
 
-	void RefreshSocialList(TArray<class UFortSocialItem*> SocialItems);
-	void OnCloseButtonClicked(class UCommonButton* ClickedButton);
 	void HandleSocialListChanged(TArray<class UFortSocialItem*> SocialItems);
 	void HandlePartyServicesDegredationChanged(bool bAreServicesDegredated);
-	TArray<class UObject*> HandleGetChildrenForCategory(class UObject* Item);
 	void ClosePartyFinder();
 };
 
 
 // Class FortniteUI.FortPartyTreeItemBase
-// 0x0018 (0x0820 - 0x0808)
+// 0x0010 (0x0898 - 0x0888)
 class UFortPartyTreeItemBase : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	class UFortSocialItem*                             SocialItem;                                               // 0x0810(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0818(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UFortSocialItem*                             SocialItem;                                               // 0x0890(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -8245,26 +9496,23 @@ public:
 		return ptr;
 	}
 
-
-	void OnSocialItemSet();
-	void ExpansionChanged(bool bExpanded);
 };
 
 
 // Class FortniteUI.FortPerksWidget_NUI
-// 0x0098 (0x02B0 - 0x0218)
+// 0x0098 (0x02A8 - 0x0210)
 class UFortPerksWidget_NUI : public UCommonUserWidget
 {
 public:
-	class UFortHero*                                   Hero;                                                     // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortPerksWidgetState                              State;                                                    // 0x0220(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
-	class UFortHero*                                   EvolutionOption;                                          // 0x0228(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UClass*                                      PerkTierWidgetType;                                       // 0x0230(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UClass*                                      PerkWidgetType;                                           // 0x0238(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UFortTooltipContext*                         TooltipContext;                                           // 0x0240(0x0008) (ZeroConstructor, IsPlainOldData)
-	class UCommonLoadGuard*                            PerksListLoadGuard;                                       // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x60];                                      // 0x0250(0x0060) MISSED OFFSET
+	class UFortHero*                                   Hero;                                                     // 0x0210(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortPerksWidgetState                              State;                                                    // 0x0218(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0219(0x0007) MISSED OFFSET
+	class UFortHero*                                   EvolutionOption;                                          // 0x0220(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      PerkTierWidgetType;                                       // 0x0228(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      PerkWidgetType;                                           // 0x0230(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UFortTooltipContext*                         TooltipContext;                                           // 0x0238(0x0008) (ZeroConstructor, IsPlainOldData)
+	class UCommonLoadGuard*                            PerksListLoadGuard;                                       // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x60];                                      // 0x0248(0x0060) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -8286,13 +9534,13 @@ public:
 
 
 // Class FortniteUI.FortPerkTierWidget_NUI
-// 0x0050 (0x0268 - 0x0218)
+// 0x0050 (0x0260 - 0x0210)
 class UFortPerkTierWidget_NUI : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	struct FFortUIPerkTier                             FortPerkTier;                                             // 0x0220(0x0020) (BlueprintVisible)
-	unsigned char                                      UnknownData01[0x28];                                      // 0x0240(0x0028) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	struct FFortUIPerkTier                             FortPerkTier;                                             // 0x0218(0x0020) (BlueprintVisible)
+	unsigned char                                      UnknownData01[0x28];                                      // 0x0238(0x0028) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -8307,15 +9555,15 @@ public:
 
 
 // Class FortniteUI.FortPerkWidget_NUI
-// 0x00C8 (0x02E0 - 0x0218)
+// 0x00C8 (0x02D8 - 0x0210)
 class UFortPerkWidget_NUI : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	struct FFortUIPerk                                 Perk;                                                     // 0x0220(0x0098) (BlueprintVisible)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x02B8(0x0008) MISSED OFFSET
-	class UFortTooltipContext*                         CachedTooltipContext;                                     // 0x02C0(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x18];                                      // 0x02C8(0x0018) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	struct FFortUIPerk                                 Perk;                                                     // 0x0218(0x0098) (BlueprintVisible)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x02B0(0x0008) MISSED OFFSET
+	class UFortTooltipContext*                         CachedTooltipContext;                                     // 0x02B8(0x0008) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x18];                                      // 0x02C0(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -8345,7 +9593,7 @@ public:
 
 
 // Class FortniteUI.FortPickerContext
-// 0x0110 (0x0138 - 0x0028)
+// 0x0180 (0x01A8 - 0x0028)
 class UFortPickerContext : public UBlueprintContextBase
 {
 public:
@@ -8362,7 +9610,11 @@ public:
 	unsigned char                                      UnknownData01[0x8];                                       // 0x0110(0x0008) MISSED OFFSET
 	class UFortPickerData*                             PickerData;                                               // 0x0118(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
 	TArray<class UFortSchematicItem*>                  AccountTrapSchematics;                                    // 0x0120(0x0010) (ZeroConstructor, Transient)
-	unsigned char                                      UnknownData02[0x8];                                       // 0x0130(0x0008) MISSED OFFSET
+	TArray<struct FFortPickerTemporaryWheel>           AvailableWheels;                                          // 0x0130(0x0010) (ZeroConstructor, Transient)
+	int                                                CurrentWheelIndex;                                        // 0x0140(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData02[0xC];                                       // 0x0144(0x000C) MISSED OFFSET
+	TMap<class UObject*, int>                          ConsumableStackCount;                                     // 0x0150(0x0050) (ZeroConstructor, Transient)
+	unsigned char                                      UnknownData03[0x8];                                       // 0x01A0(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -8372,17 +9624,20 @@ public:
 
 
 	bool UseLeftThumbstick();
-	void ShowSquadQuickChatPicker();
-	void ShowSprayPicker();
-	void ShowEmotePicker();
+	void SwitchToAdjacentWheel(int SelectionDirection);
+	void ShowRadialPickerMenu(EFortPickerToDisplay PickerType, int WheelIndex, class UObject* ContextObject);
 	void SetFortPickerData(class UFortPickerData* Data);
 	void RestoreInputAxes();
 	void PickerOptionAccepted(int Option);
 	void PickerCanceled();
 	void GetRadialPickerOptionItem(int Index, class UFortItem** Item, bool* bOptionEnabled);
 	void GetRadialPickerOptionImageAndLabel(int Index, struct FText* Label, struct FSlateBrush* Brush, bool* bOptionEnabled);
+	void GetPickerWheelAdjacency(bool* bCanPageLeft, bool* bCanPageRight);
 	int GetNumPickerOptions();
 	class UFortItem* GetListPickerOption(int Index);
+	int GetCurrentWheelIndex();
+	struct FText GetCurrentPickerDisplayName();
+	void GetAdjacentPickerWheelInformation(int Direction, struct FText* AdjacentTitle, bool* bCanPageThisDirection);
 	bool DoesRadialCloseOnRelease();
 };
 
@@ -8415,14 +9670,13 @@ public:
 
 
 // Class FortniteUI.FortPlayedBeforeSelect
-// 0x0060 (0x0420 - 0x03C0)
+// 0x0028 (0x0320 - 0x02F8)
 class UFortPlayedBeforeSelect : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x48];                                      // 0x03C0(0x0048) MISSED OFFSET
-	class UCommonButton*                               Button_Yes;                                               // 0x0408(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_No;                                                // 0x0410(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0418(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x18];                                      // 0x02F8(0x0018) MISSED OFFSET
+	class UCommonButton*                               Button_Yes;                                               // 0x0310(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_No;                                                // 0x0318(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -8430,27 +9684,39 @@ public:
 		return ptr;
 	}
 
+};
 
-	void HandleYesClicked(class UCommonButton* Button);
-	void HandleNoClicked(class UCommonButton* Button);
+
+// Class FortniteUI.FortPlayerBanned
+// 0x0000 (0x0328 - 0x0328)
+class UFortPlayerBanned : public UFortActivatablePanel
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortPlayerBanned");
+		return ptr;
+	}
+
 };
 
 
 // Class FortniteUI.FortPlayerProfileBannerEditor
-// 0x0188 (0x03A0 - 0x0218)
+// 0x00B8 (0x02C8 - 0x0210)
 class UFortPlayerProfileBannerEditor : public UCommonUserWidget
 {
 public:
-	ESaveProfileForBanners                             ProfileToSave;                                            // 0x0218(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0218(0x0003) FIX WRONG TYPE SIZE OF PREVIOUS PROPERTY
-	unsigned char                                      UnknownData01[0x4];                                       // 0x021C(0x0004) MISSED OFFSET
-	struct FFortSwipeDetector                          SwipeDetector;                                            // 0x0220(0x0140) (Edit, BlueprintVisible, BlueprintReadOnly)
-	TArray<struct FName>                               IconCategories;                                           // 0x0360(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient)
-	TArray<struct FName>                               ColorCategories;                                          // 0x0370(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient)
-	struct FName                                       ChosenIcon;                                               // 0x0380(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	struct FName                                       ChosenIconCategory;                                       // 0x0388(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	struct FName                                       ChosenColor;                                              // 0x0390(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	struct FName                                       ChosenColorCategory;                                      // 0x0398(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	ESaveProfileForBanners                             ProfileToSave;                                            // 0x0210(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x0210(0x0003) FIX WRONG TYPE SIZE OF PREVIOUS PROPERTY
+	unsigned char                                      UnknownData01[0x4];                                       // 0x0214(0x0004) MISSED OFFSET
+	struct FFortSwipeDetector                          SwipeDetector;                                            // 0x0218(0x0070) (Edit, BlueprintVisible, BlueprintReadOnly)
+	TArray<struct FName>                               IconCategories;                                           // 0x0288(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient)
+	TArray<struct FName>                               ColorCategories;                                          // 0x0298(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient)
+	struct FName                                       ChosenIcon;                                               // 0x02A8(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	struct FName                                       ChosenIconCategory;                                       // 0x02B0(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	struct FName                                       ChosenColor;                                              // 0x02B8(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	struct FName                                       ChosenColorCategory;                                      // 0x02C0(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -8471,12 +9737,12 @@ public:
 
 
 // Class FortniteUI.FortPlayerProfileBannerEditorTile
-// 0x0010 (0x0818 - 0x0808)
+// 0x0010 (0x0898 - 0x0888)
 class UFortPlayerProfileBannerEditorTile : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	TWeakObjectPtr<class UFortItem>                    Item;                                                     // 0x0810(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	TWeakObjectPtr<class UFortItem>                    Item;                                                     // 0x0890(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -8488,7 +9754,7 @@ public:
 
 
 // Class FortniteUI.FortPlayerProfileModalWidget
-// 0x0000 (0x03F0 - 0x03F0)
+// 0x0000 (0x0328 - 0x0328)
 class UFortPlayerProfileModalWidget : public UFortActivatablePanel
 {
 public:
@@ -8503,17 +9769,17 @@ public:
 
 
 // Class FortniteUI.FortPlayerTrackerBase
-// 0x0040 (0x0258 - 0x0218)
+// 0x0040 (0x0250 - 0x0210)
 class UFortPlayerTrackerBase : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	struct FUniqueNetIdRepl                            UniqueId;                                                 // 0x0220(0x0028) (BlueprintVisible, BlueprintReadOnly)
-	TWeakObjectPtr<class UFortRegisteredPlayerInfo>    PlayerInfo;                                               // 0x0248(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                PartyIndex;                                               // 0x0250(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               IsLocalPlayer;                                            // 0x0254(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               ShouldDeferAttributesChangedEvents;                       // 0x0255(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x2];                                       // 0x0256(0x0002) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	struct FUniqueNetIdRepl                            UniqueId;                                                 // 0x0218(0x0028) (BlueprintVisible, BlueprintReadOnly)
+	TWeakObjectPtr<class UFortRegisteredPlayerInfo>    PlayerInfo;                                               // 0x0240(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                PartyIndex;                                               // 0x0248(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               IsLocalPlayer;                                            // 0x024C(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               ShouldDeferAttributesChangedEvents;                       // 0x024D(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x2];                                       // 0x024E(0x0002) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -8559,16 +9825,16 @@ public:
 
 
 // Class FortniteUI.FortPrivacyBase
-// 0x0080 (0x0470 - 0x03F0)
+// 0x0080 (0x03A8 - 0x0328)
 class UFortPrivacyBase : public UFortActivatablePanel
 {
 public:
-	struct FScriptMulticastDelegate                    OnPrivacyChanged;                                         // 0x03F0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UCommonButton*                               AllowFriendsOfFriendsButton;                              // 0x0400(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UPanelWidget*                                AllowFriendsOfFriendsContainer;                           // 0x0408(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButtonGroup*                          ButtonGroup;                                              // 0x0410(0x0008) (ZeroConstructor, IsPlainOldData)
-	TMap<class UCommonButton*, EPartyType>             PrivacyButtonMap;                                         // 0x0418(0x0050) (ZeroConstructor)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0468(0x0008) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnPrivacyChanged;                                         // 0x0328(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	class UCommonButton*                               AllowFriendsOfFriendsButton;                              // 0x0338(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UPanelWidget*                                AllowFriendsOfFriendsContainer;                           // 0x0340(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButtonGroup*                          ButtonGroup;                                              // 0x0348(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	TMap<class UCommonButton*, EPartyType>             PrivacyButtonMap;                                         // 0x0350(0x0050) (ZeroConstructor, Transient)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x03A0(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -8579,18 +9845,118 @@ public:
 
 	void SetTencentBuild(bool bInIsTencentBuild);
 	void HandlePrivacyButtonSelected(class UCommonButton* SelectedPrivacyButton, int ButtonIndex);
-	void HandleAllowFriendsButtonClicked(class UCommonButton* SelectedPrivacyButton);
 	void ApplyPrivacySetting();
 	void AddPrivacyButton(class UCommonButton* PrivacyButton, EPartyType PartyType);
 };
 
 
+// Class FortniteUI.FortPurchaseHistoryEntry
+// 0x0020 (0x08A8 - 0x0888)
+class UFortPurchaseHistoryEntry : public UCommonButton
+{
+public:
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UCommonTextBlock*                            Text_Name;                                                // 0x0890(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortMultiSizeItemCard*                      Card_PurchasedItem;                                       // 0x0898(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortMultiSizeItemCard*                      Card_SecondaryItem;                                       // 0x08A0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortPurchaseHistoryEntry");
+		return ptr;
+	}
+
+
+	void SetRefundState(const struct FText& PurchaseText, EItemRefundability Refundability);
+	void SetPurchaseText(const struct FText& PurchaseText, bool bHasBeenRefunded);
+};
+
+
+// Class FortniteUI.FortPurchaseHistoryListView
+// 0x00B8 (0x02C0 - 0x0208)
+class UFortPurchaseHistoryListView : public UListViewBase
+{
+public:
+	unsigned char                                      UnknownData00[0xB8];                                      // 0x0208(0x00B8) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortPurchaseHistoryListView");
+		return ptr;
+	}
+
+};
+
+
+// Class FortniteUI.ReturnReasonDataWrapper
+// 0x0018 (0x0040 - 0x0028)
+class UReturnReasonDataWrapper : public UObject
+{
+public:
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0028(0x0018) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.ReturnReasonDataWrapper");
+		return ptr;
+	}
+
+};
+
+
+// Class FortniteUI.FortPurchaseHistoryScreen
+// 0x00D8 (0x03D0 - 0x02F8)
+class UFortPurchaseHistoryScreen : public UCommonActivatablePanel
+{
+public:
+	struct FDataTableRowHandle                         PreviousStepRowHandle;                                    // 0x02F8(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	class UClass*                                      RefundConfirmationClass;                                  // 0x0308(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortRefundConfirmation*                     RefundConfirmationWidget;                                 // 0x0310(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	TArray<struct FText>                               ReturnReasons;                                            // 0x0318(0x0010) (Edit, ZeroConstructor)
+	TArray<class UReturnReasonDataWrapper*>            WrapperArray;                                             // 0x0328(0x0010) (ZeroConstructor)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0338(0x0010) MISSED OFFSET
+	TArray<class UFortItemDefinition*>                 SelectedItemDefs;                                         // 0x0348(0x0010) (ZeroConstructor, Transient)
+	unsigned char                                      UnknownData01[0x18];                                      // 0x0358(0x0018) MISSED OFFSET
+	class UCommonButtonGroup*                          TabButtonGroup;                                           // 0x0370(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	bool                                               bRefundConfirmationProcessing;                            // 0x0378(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x7];                                       // 0x0379(0x0007) MISSED OFFSET
+	class UFortPurchaseHistoryListView*                ListView_Purchases;                                       // 0x0380(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonListView*                             ListView_Reasons;                                         // 0x0388(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_Desc;                                                // 0x0390(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_RefundCount;                                         // 0x0398(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_RequestRefund;                                     // 0x03A0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortRichTextBlock*                          RichText_WarningMsg;                                      // 0x03A8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_RefundItem1;                                         // 0x03B0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_RefundItem2;                                         // 0x03B8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_RefundValue;                                         // 0x03C0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_RefundReason;                                        // 0x03C8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortPurchaseHistoryScreen");
+		return ptr;
+	}
+
+
+	void OnPopulateView(EPurchaseReturnStep CurrentStep);
+	void OnNoPurchasesAvailable();
+	void OnItemRefresh(const struct FMtxPurchaseHistory& PurchaseHistory);
+	void OnEndRefundSubmission(bool bSuccess, int MtxRefunded, class UFortItemDefinition* ReturnedItem, int TicketIndex);
+	void OnBeginRefundSubmission();
+	void InitializeTickets(int NumTicketsAvailableToUse);
+	void HandleTabButtonClicked(EPurchaseReturnStep ClickedStep);
+	void HandlePreviousStepAction(bool* bPassThrough);
+	EPurchaseReturnStep GetCurrentStep();
+	void ConsumeComplete();
+};
+
+
 // Class FortniteUI.FortPvPMinimapWidget
-// 0x0020 (0x0240 - 0x0220)
+// 0x0020 (0x0238 - 0x0218)
 class UFortPvPMinimapWidget : public UFortUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x20];                                      // 0x0220(0x0020) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x20];                                      // 0x0218(0x0020) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -8602,12 +9968,12 @@ public:
 
 
 // Class FortniteUI.FortQuestExpiresWidget
-// 0x0010 (0x0228 - 0x0218)
+// 0x0010 (0x0220 - 0x0210)
 class UFortQuestExpiresWidget : public UCommonUserWidget
 {
 public:
-	TWeakObjectPtr<class UFortQuestItem>               Item;                                                     // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0220(0x0008) MISSED OFFSET
+	TWeakObjectPtr<class UFortQuestItem>               Item;                                                     // 0x0210(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -8621,13 +9987,152 @@ public:
 };
 
 
+// Class FortniteUI.FortQuestMapDetailsPanel
+// 0x0010 (0x0220 - 0x0210)
+class UFortQuestMapDetailsPanel : public UCommonUserWidget
+{
+public:
+	struct FDataTableRowHandle                         PlayButtonTriggeringAction;                               // 0x0210(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortQuestMapDetailsPanel");
+		return ptr;
+	}
+
+
+	void DisplayInactiveQuest(class UFortQuestItemDefinition* QuestDef);
+	void DisplayActiveQuest(class UFortQuestItem* QuestItem);
+};
+
+
+// Class FortniteUI.FortQuestMapNodeLayout
+// 0x0058 (0x0260 - 0x0208)
+class UFortQuestMapNodeLayout : public UUserWidget
+{
+public:
+	class UCommonButton*                               ButtonPrevious;                                           // 0x0208(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               ButtonNext;                                               // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UPanelWidget*                                LayoutPanel;                                              // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0220(0x0010) MISSED OFFSET
+	class UCommonButtonGroup*                          QuestButtonGroup;                                         // 0x0230(0x0008) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x20];                                      // 0x0238(0x0020) MISSED OFFSET
+	class UFortQuestMapScreen*                         ParentScreen;                                             // 0x0258(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortQuestMapNodeLayout");
+		return ptr;
+	}
+
+
+	void SetParentScreen(class UFortQuestMapScreen* Parent);
+	void SetLayoutPanel(class UPanelWidget* Value);
+	void HandleQuestButtonSelected(class UCommonButton* SelectedQuestButton, int ButtonIndex);
+	struct FFortQuestMapPage GetQuestPageData();
+	void DisposeLayout();
+};
+
+
+// Class FortniteUI.FortQuestMapQuestTile
+// 0x0018 (0x0228 - 0x0210)
+class UFortQuestMapQuestTile : public UCommonUserWidget
+{
+public:
+	class UCommonButton*                               QuestButton;                                              // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0218(0x0010) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortQuestMapQuestTile");
+		return ptr;
+	}
+
+
+	void HandleSelectedChange(bool Selected);
+	void HandleQuestDataChangedBP();
+	struct FFortQuestMapNode GetQuestNodeData();
+};
+
+
+// Class FortniteUI.FortQuestMapScreen
+// 0x0078 (0x0370 - 0x02F8)
+class UFortQuestMapScreen : public UCommonActivatablePanel
+{
+public:
+	class UFortQuestMapDetailsPanel*                   CampaignDetailsPanel;                                     // 0x02F8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortQuestMapDetailsPanel*                   EventDetailsPanel;                                        // 0x0300(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortQuestMapViewer*                         QuestMapViewer;                                           // 0x0308(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	EQuestMapScreenMode                                CurrentMode;                                              // 0x0310(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bUseSpecialEventsCamera;                                  // 0x0311(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x6];                                       // 0x0312(0x0006) MISSED OFFSET
+	struct FString                                     ActiveEventFlag;                                          // 0x0318(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	struct FFortQuestMapDataEntry                      CampaignQuestMapDataTable;                                // 0x0328(0x0010) (BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	struct FFortQuestMapDataEntry                      EventQuestMapDataTable;                                   // 0x0338(0x0010) (BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	class UFortQuestItemDefinition*                    CutoffQuest;                                              // 0x0348(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FFortQuestMapDataEntry                      CurrentQuestMapDataTable;                                 // 0x0350(0x0010) (IsPlainOldData)
+	unsigned char                                      UnknownData01[0x10];                                      // 0x0360(0x0010) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortQuestMapScreen");
+		return ptr;
+	}
+
+
+	void UpdateQuestMapMode(EQuestMapScreenMode QuestMapMode);
+	void ToggleQuestMapState();
+	void SetQuestMapViewer(class UFortQuestMapViewer* Value);
+	void SetFindCurrentActionVisibility(EInputActionState ActionVisibility);
+	void SetBeyondCutoffQuest(bool bBeyondCutoff);
+	bool IsBeyondCutoffQuest();
+	void InitializeQuestData();
+	void HandleRequestCurrentQuestNavigation();
+	void HandleMapViewerSelectedQuestIndexChanged();
+	void HandleMapViewerNavigationRequest(EViewerNavigationDirection Direction);
+	bool GetBeyondCutoffQuest();
+};
+
+
+// Class FortniteUI.FortQuestMapViewer
+// 0x0070 (0x02F0 - 0x0280)
+class UFortQuestMapViewer : public UFortCampaignMap
+{
+public:
+	class UCanvasPanel*                                CosmeticCanvasPanel;                                      // 0x0280(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class USizeBox*                                    FullQuestMap;                                             // 0x0288(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortQuestMapScreen*                         ParentScreen;                                             // 0x0290(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x48];                                      // 0x0298(0x0048) MISSED OFFSET
+	class UFortQuestMapNodeLayout*                     NodeLayout;                                               // 0x02E0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x02E8(0x0008) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortQuestMapViewer");
+		return ptr;
+	}
+
+
+	void SetQuestMapNodeLayout(class UFortQuestMapNodeLayout* Value);
+	void PlayLayoutOutroAnimation(EViewerNavigationDirection TravelDirection);
+	void PlayLayoutFadeInAnimation();
+	void NavigateToPage(EViewerNavigationDirection Direction);
+	void NavigateToCurrentQuest();
+	void HandleQuestMapDataChangedBP();
+	void HandleLayoutSelectedIndexChanged();
+	void HandleLayoutOutroAnimationFinished();
+	struct FFortQuestMapPage GetQuestMapData();
+	struct FFortQuestMapPageCosmetics GetQuestMapCosmeticData();
+	void DisposeQuestMap();
+};
+
+
 // Class FortniteUI.FortQuestNotificationHandler
-// 0x0010 (0x01E0 - 0x01D0)
+// 0x0008 (0x01A8 - 0x01A0)
 class UFortQuestNotificationHandler : public UFortDialogNotificationHandler
 {
 public:
-	class UFortQuestItem*                              Quest;                                                    // 0x01D0(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x01D8(0x0008) MISSED OFFSET
+	class UFortQuestItem*                              Quest;                                                    // 0x01A0(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -8638,20 +10143,41 @@ public:
 };
 
 
+// Class FortniteUI.FortQuestObjectiveEntry
+// 0x0020 (0x0230 - 0x0210)
+class UFortQuestObjectiveEntry : public UCommonUserWidget
+{
+public:
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnFinishedDisplaying;                                     // 0x0218(0x0010) (ZeroConstructor, InstancedReference)
+	class UFortQuestObjectiveInfo*                     MyObjectiveInfo;                                          // 0x0228(0x0008) (ZeroConstructor, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortQuestObjectiveEntry");
+		return ptr;
+	}
+
+
+	void StartDisplayingObjective();
+	void ObjectiveInfoSet(class UFortQuestObjectiveInfo* ObjectiveInfo, bool IsAnnouncement);
+};
+
+
 // Class FortniteUI.FortQuestTrackerEntry
-// 0x0060 (0x0278 - 0x0218)
+// 0x0060 (0x0270 - 0x0210)
 class UFortQuestTrackerEntry : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0218(0x0010) MISSED OFFSET
-	class UCommonTextBlock*                            QuestNameText;                                            // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonListView*                             ObjectivesList;                                           // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortQuestItem*                              TrackedQuest;                                             // 0x0238(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FScriptMulticastDelegate                    OnHUDQuestFinalObjectiveHiddenDelegate;                   // 0x0240(0x0010) (ZeroConstructor, InstancedReference)
-	TArray<class UFortQuestObjectiveInfo*>             HUDCachedObjectiveInfos;                                  // 0x0250(0x0010) (ZeroConstructor)
-	bool                                               bConfigureAsHUD;                                          // 0x0260(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0261(0x0007) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnSizeEstimateChangedDelegate;                            // 0x0268(0x0010) (ZeroConstructor, InstancedReference)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0210(0x0010) MISSED OFFSET
+	class UCommonTextBlock*                            QuestNameText;                                            // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonListView*                             ObjectivesList;                                           // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortQuestItem*                              TrackedQuest;                                             // 0x0230(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FScriptMulticastDelegate                    OnHUDQuestFinalObjectiveHiddenDelegate;                   // 0x0238(0x0010) (ZeroConstructor, InstancedReference)
+	TArray<class UFortQuestObjectiveInfo*>             HUDCachedObjectiveInfos;                                  // 0x0248(0x0010) (ZeroConstructor)
+	bool                                               bConfigureAsHUD;                                          // 0x0258(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0259(0x0007) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnSizeEstimateChangedDelegate;                            // 0x0260(0x0010) (ZeroConstructor, InstancedReference)
 
 	static UClass* StaticClass()
 	{
@@ -8661,22 +10187,21 @@ public:
 
 
 	void OnSetup();
-	void HandleObjectiveEntryCreated(class UUserWidget* Widget);
 	void HandleHUDObjectiveCompletion(class UFortQuestObjectiveInfo* QuestObjective);
 };
 
 
 // Class FortniteUI.FortQuestTrackerList
-// 0x0038 (0x0250 - 0x0218)
+// 0x0038 (0x0248 - 0x0210)
 class UFortQuestTrackerList : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	bool                                               bConfigureAsHUD;                                          // 0x0220(0x0001) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
-	class UCommonListView*                             QuestList;                                                // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TArray<class UFortQuestItem*>                      HUDCachedQuests;                                          // 0x0230(0x0010) (ZeroConstructor)
-	struct FScriptMulticastDelegate                    OnSizeEstimateChangedDelegate;                            // 0x0240(0x0010) (ZeroConstructor, InstancedReference)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	bool                                               bConfigureAsHUD;                                          // 0x0218(0x0001) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0219(0x0007) MISSED OFFSET
+	class UCommonListView*                             QuestList;                                                // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TArray<class UFortQuestItem*>                      HUDCachedQuests;                                          // 0x0228(0x0010) (ZeroConstructor)
+	struct FScriptMulticastDelegate                    OnSizeEstimateChangedDelegate;                            // 0x0238(0x0010) (ZeroConstructor, InstancedReference)
 
 	static UClass* StaticClass()
 	{
@@ -8687,7 +10212,6 @@ public:
 
 	void HandleSizeEstimateChanged(class UObject* ChangedElement);
 	void HandleQuestsUpdated();
-	void HandleQuestEntryCreated(class UUserWidget* Widget);
 	void HandlePinnedQuestsChanged();
 	void HandleHUDFinalObjectiveHidden(class UFortQuestItem* QuestItem);
 	TArray<class UFortQuestItem*> GetQuestsToDisplay();
@@ -8695,16 +10219,16 @@ public:
 
 
 // Class FortniteUI.FortQuestTrackerSubEntry
-// 0x0040 (0x0258 - 0x0218)
+// 0x0040 (0x0250 - 0x0210)
 class UFortQuestTrackerSubEntry : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0218(0x0010) MISSED OFFSET
-	class UFortQuestObjectiveInfo*                     TrackedObjective;                                         // 0x0228(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	struct FScriptMulticastDelegate                    OnSizeEstimateChangedDelegate;                            // 0x0230(0x0010) (ZeroConstructor, InstancedReference)
-	struct FScriptMulticastDelegate                    OnHUDQuestObjectiveCompletedDelegate;                     // 0x0240(0x0010) (ZeroConstructor, InstancedReference)
-	bool                                               bConfigureAsHUD;                                          // 0x0250(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0251(0x0007) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0210(0x0010) MISSED OFFSET
+	class UFortQuestObjectiveInfo*                     TrackedObjective;                                         // 0x0220(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FScriptMulticastDelegate                    OnSizeEstimateChangedDelegate;                            // 0x0228(0x0010) (ZeroConstructor, InstancedReference)
+	struct FScriptMulticastDelegate                    OnHUDQuestObjectiveCompletedDelegate;                     // 0x0238(0x0010) (ZeroConstructor, InstancedReference)
+	bool                                               bConfigureAsHUD;                                          // 0x0248(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0249(0x0007) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -8722,12 +10246,12 @@ public:
 
 
 // Class FortniteUI.FortQuestTreeItemWidget
-// 0x0010 (0x0818 - 0x0808)
+// 0x0010 (0x0898 - 0x0888)
 class UFortQuestTreeItemWidget : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	TWeakObjectPtr<class UObject>                      QuestOrCategory;                                          // 0x0810(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	TWeakObjectPtr<class UObject>                      QuestOrCategory;                                          // 0x0890(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -8740,52 +10264,107 @@ public:
 	void SetupAsCategory(class UFortQuestCategory* Category);
 	void OnQuestsUpdated();
 	void HandleQuestsUpdated();
-	void ExpansionChanged(bool bExpanded);
+};
+
+
+// Class FortniteUI.FortQuestUpdateEntry
+// 0x0030 (0x0240 - 0x0210)
+class UFortQuestUpdateEntry : public UCommonUserWidget
+{
+public:
+	class UClass*                                      SubEntryClass;                                            // 0x0210(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	struct FScriptMulticastDelegate                    FinishedDisplayingQuests;                                 // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	class UVerticalBox*                                ObjectivesBox;                                            // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0230(0x0010) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortQuestUpdateEntry");
+		return ptr;
+	}
+
+
+	void StartQuestOutro();
+	void StartQuestIntro();
+	void SetupAsAnnouncement();
+	void SetQuestItem(class UFortQuestObjectiveInfo* ObjectiveInfo, bool IsAnnouncement);
+	void QuestItemSet(class UFortQuestItem* QuestItemToCheck);
+	int GetNumDisplayedObjectives();
+	void FinishQuestOutro();
+	void FinishQuestIntro();
+	void CurrentlyDisplayedObjectiveFinished(class UFortQuestObjectiveEntry* QuestObjective);
+	bool CanAddObjective(class UFortQuestItem* QuestItemToCheck);
+};
+
+
+// Class FortniteUI.FortQuestUpdatesLog
+// 0x0040 (0x0278 - 0x0238)
+class UFortQuestUpdatesLog : public UFortHUDElementWidget
+{
+public:
+	class UClass*                                      QuestEntryClass;                                          // 0x0238(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	int                                                MaxDisplayedQuestUpdates;                                 // 0x0240(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	int                                                MaxDisplayedQuestObjectives;                              // 0x0244(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	class UVerticalBox*                                QuestUpdatesBox;                                          // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0250(0x0010) MISSED OFFSET
+	TArray<class UFortQuestUpdateEntry*>               QuestUpdateWidgets;                                       // 0x0260(0x0010) (ExportObject, ZeroConstructor)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x0270(0x0008) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortQuestUpdatesLog");
+		return ptr;
+	}
+
+
+	void HandleQuestUpdateFinished(class UFortQuestUpdateEntry* QuestEntryFinished);
+	void HandleDisplayDynamicQuestUpdate(class UFortQuestObjectiveInfo* QuestObjective, bool DisplayStatusUpdate, bool DisplayAnnouncementUpdate);
+	void CreateAnnouncementUpdate(class UFortQuestObjectiveInfo* QuestItemToCheck);
 };
 
 
 // Class FortniteUI.FortQuickBarSlotBase
-// 0x00D8 (0x02F0 - 0x0218)
+// 0x00D8 (0x02E8 - 0x0210)
 class UFortQuickBarSlotBase : public UCommonUserWidget
 {
 public:
-	class UCommonWidgetSwitcher*                       SwitcherTopComboSwitcher;                                 // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonWidgetSwitcher*                       SwitcherBottomComboSwitcher;                              // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortKeybindWidget*                          KeybindTop;                                               // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortKeybindWidget*                          KeybindBottom;                                            // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortKeybindWidget*                          KeybindBottomCombo1;                                      // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortKeybindWidget*                          KeybindBottomCombo2;                                      // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortKeybindWidget*                          KeybindTopComboArrow1;                                    // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortKeybindWidget*                          KeybindTopComboArrow2;                                    // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortKeybindWidget*                          KeybindBottomComboArrow1;                                 // 0x0258(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortKeybindWidget*                          KeybindBottomComboArrow2;                                 // 0x0260(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            BottomHoldText;                                           // 0x0268(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      TopLeftArrowImage;                                        // 0x0270(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      TopLeftArrowImage2;                                       // 0x0278(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      TopRightArrowImage;                                       // 0x0280(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      TopRightArrowImage2;                                      // 0x0288(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      BottomLeftArrowImage;                                     // 0x0290(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      BottomLeftArrowImage2;                                    // 0x0298(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      BottomRightArrowImage;                                    // 0x02A0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      BottomRightArrowImage2;                                   // 0x02A8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      EmptyImage;                                               // 0x02B0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortMultiSizeItemCard*                      ItemCardMaximized;                                        // 0x02B8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortMultiSizeItemCard*                      ItemCardMinimized;                                        // 0x02C0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortItemCooldownWidget*                     QuickbarSlotCooldown;                                     // 0x02C8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      SlotInteraction;                                          // 0x02D0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	int                                                SlotIndex;                                                // 0x02D8(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	EFortQuickBars                                     QuickBarType;                                             // 0x02DC(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      bShowBottomArrows : 1;                                    // 0x02DD(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      bShowTopArrows : 1;                                       // 0x02DD(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      bHideKeybindsWhenAbilityUnavailable : 1;                  // 0x02DD(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      bShouldCollapseItemWidgetBorder : 1;                      // 0x02DD(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      DoNotPlaySelectionAnimation : 1;                          // 0x02DD(0x0001) (Edit, BlueprintVisible)
-	unsigned char                                      bIsAthenaQuickBar : 1;                                    // 0x02DD(0x0001) (Edit, BlueprintVisible)
-	unsigned char                                      bKeybindsHidden : 1;                                      // 0x02DD(0x0001) (Edit, BlueprintVisible, DisableEditOnInstance)
-	EFortItemCardSize                                  ItemCardSize;                                             // 0x02DE(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x1];                                       // 0x02DF(0x0001) MISSED OFFSET
-	class UFortItem*                                   Item;                                                     // 0x02E0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	class UFortInputData*                              InputData;                                                // 0x02E8(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UCommonWidgetSwitcher*                       SwitcherTopComboSwitcher;                                 // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonWidgetSwitcher*                       SwitcherBottomComboSwitcher;                              // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortKeybindWidget*                          KeybindTop;                                               // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortKeybindWidget*                          KeybindBottom;                                            // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortKeybindWidget*                          KeybindBottomCombo1;                                      // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortKeybindWidget*                          KeybindBottomCombo2;                                      // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortKeybindWidget*                          KeybindTopComboArrow1;                                    // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortKeybindWidget*                          KeybindTopComboArrow2;                                    // 0x0248(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortKeybindWidget*                          KeybindBottomComboArrow1;                                 // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortKeybindWidget*                          KeybindBottomComboArrow2;                                 // 0x0258(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            BottomHoldText;                                           // 0x0260(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      TopLeftArrowImage;                                        // 0x0268(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      TopLeftArrowImage2;                                       // 0x0270(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      TopRightArrowImage;                                       // 0x0278(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      TopRightArrowImage2;                                      // 0x0280(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      BottomLeftArrowImage;                                     // 0x0288(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      BottomLeftArrowImage2;                                    // 0x0290(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      BottomRightArrowImage;                                    // 0x0298(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      BottomRightArrowImage2;                                   // 0x02A0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      EmptyImage;                                               // 0x02A8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortMultiSizeItemCard*                      ItemCardMaximized;                                        // 0x02B0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortMultiSizeItemCard*                      ItemCardMinimized;                                        // 0x02B8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItemCooldownWidget*                     QuickbarSlotCooldown;                                     // 0x02C0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      SlotInteraction;                                          // 0x02C8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	int                                                SlotIndex;                                                // 0x02D0(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	EFortQuickBars                                     QuickBarType;                                             // 0x02D4(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      bShowBottomArrows : 1;                                    // 0x02D5(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      bShowTopArrows : 1;                                       // 0x02D5(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      bHideKeybindsWhenAbilityUnavailable : 1;                  // 0x02D5(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      bShouldCollapseItemWidgetBorder : 1;                      // 0x02D5(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      DoNotPlaySelectionAnimation : 1;                          // 0x02D5(0x0001) (Edit, BlueprintVisible)
+	unsigned char                                      bIsAthenaQuickBar : 1;                                    // 0x02D5(0x0001) (Edit, BlueprintVisible)
+	unsigned char                                      bKeybindsHidden : 1;                                      // 0x02D5(0x0001) (Edit, BlueprintVisible, DisableEditOnInstance)
+	EFortItemCardSize                                  ItemCardSize;                                             // 0x02D6(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x1];                                       // 0x02D7(0x0001) MISSED OFFSET
+	class UFortItem*                                   Item;                                                     // 0x02D8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	class UFortInputData*                              InputData;                                                // 0x02E0(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -8798,9 +10377,13 @@ public:
 	void UpdateKeyBindingText();
 	void UpdateItemCardsVisibility();
 	void SetTopComboSwitcherVisibility(ESlateVisibility InVisibility);
+	void SetSlotSelected(bool bSelected);
 	void SetBottomComboSwitcherVisibility(ESlateVisibility InVisibility);
 	void Resize(EFortItemCardSize CardSize);
 	void RefreshItem();
+	void OnRefreshItem();
+	void MinimizeSlot(bool bShouldSkipAnimation);
+	void MaximizeSlot(bool bShouldSkipAnimation);
 	struct FName GetKeyBindingActionKeyboard();
 	struct FName GetKeyBindingActionGamepad();
 	struct FName GetKeyBindingAction();
@@ -8808,7 +10391,7 @@ public:
 
 
 // Class FortniteUI.FortRedeemCodeBase
-// 0x0000 (0x03F0 - 0x03F0)
+// 0x0000 (0x0328 - 0x0328)
 class UFortRedeemCodeBase : public UFortActivatablePanel
 {
 public:
@@ -8826,16 +10409,15 @@ public:
 
 
 // Class FortniteUI.FortRedirectToEpicAccountWidget
-// 0x0050 (0x0410 - 0x03C0)
+// 0x0048 (0x0340 - 0x02F8)
 class UFortRedirectToEpicAccountWidget : public UCommonActivatablePanel
 {
 public:
-	TArray<struct FPlatformSupportDesc>                SupportedPlatforms;                                       // 0x03C0(0x0010) (Edit, ZeroConstructor)
-	struct FPlatformSupportDesc                        DefaultValues;                                            // 0x03D0(0x0020) (Edit)
-	class UCommonTextBlock*                            Text_Title;                                               // 0x03F0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_Desc;                                                // 0x03F8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_CreateAccount;                                     // 0x0400(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0408(0x0008) MISSED OFFSET
+	TArray<struct FPlatformSupportDesc>                SupportedPlatforms;                                       // 0x02F8(0x0010) (Edit, ZeroConstructor)
+	struct FPlatformSupportDesc                        DefaultValues;                                            // 0x0308(0x0020) (Edit)
+	class UCommonTextBlock*                            Text_Title;                                               // 0x0328(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_Desc;                                                // 0x0330(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_CreateAccount;                                     // 0x0338(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -8845,17 +10427,38 @@ public:
 
 
 	void SetLoginType(EFortLoginAccountType LoginType);
-	void HandleCreateAccountClicked(class UCommonButton* Button);
+};
+
+
+// Class FortniteUI.FortRefundConfirmation
+// 0x0030 (0x0328 - 0x02F8)
+class UFortRefundConfirmation : public UCommonActivatablePanel
+{
+public:
+	unsigned char                                      UnknownData00[0x10];                                      // 0x02F8(0x0010) MISSED OFFSET
+	class UCommonTextBlock*                            Text_AreYouSure;                                          // 0x0308(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_RefundsRemaining;                                    // 0x0310(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Yes;                                               // 0x0318(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_No;                                                // 0x0320(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortRefundConfirmation");
+		return ptr;
+	}
+
+
+	void SetRefundsRemainingText(int RefundsRemaining, int TotalRefunds);
 };
 
 
 // Class FortniteUI.FortRejoinWindowBase
-// 0x0010 (0x03D0 - 0x03C0)
+// 0x0010 (0x0308 - 0x02F8)
 class UFortRejoinWindowBase : public UCommonActivatablePanel
 {
 public:
-	class UCommonTextBlock*                            RejoinTime;                                               // 0x03C0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x03C8(0x0008) MISSED OFFSET
+	class UCommonTextBlock*                            RejoinTime;                                               // 0x02F8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0300(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -8871,11 +10474,11 @@ public:
 
 
 // Class FortniteUI.FortReplayBase
-// 0x0008 (0x0248 - 0x0240)
+// 0x0008 (0x0240 - 0x0238)
 class UFortReplayBase : public UFortHUDElementWidget
 {
 public:
-	class UFortReplayContext*                          ReplayContext;                                            // 0x0240(0x0008) (ZeroConstructor, IsPlainOldData)
+	class UFortReplayContext*                          ReplayContext;                                            // 0x0238(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -8892,12 +10495,11 @@ public:
 
 
 // Class FortniteUI.FortReplayViewSettingsTabBase
-// 0x0010 (0x0400 - 0x03F0)
+// 0x0008 (0x0330 - 0x0328)
 class UFortReplayViewSettingsTabBase : public UFortActivatablePanel
 {
 public:
-	class AFortReplaySpectator*                        FortReplaySpectator;                                      // 0x03F0(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x03F8(0x0008) MISSED OFFSET
+	class AFortPlayerControllerSpectating*             SpectatingPC;                                             // 0x0328(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -8914,8 +10516,23 @@ public:
 };
 
 
+// Class FortniteUI.FortReportActioned
+// 0x0000 (0x0328 - 0x0328)
+class UFortReportActioned : public UFortActivatablePanel
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortReportActioned");
+		return ptr;
+	}
+
+};
+
+
 // Class FortniteUI.FortResultsSummaryScreenWidget
-// 0x0000 (0x0218 - 0x0218)
+// 0x0000 (0x0210 - 0x0210)
 class UFortResultsSummaryScreenWidget : public UCommonUserWidget
 {
 public:
@@ -8932,12 +10549,12 @@ public:
 
 
 // Class FortniteUI.FortResultsTeleportScreenWidget
-// 0x0068 (0x0280 - 0x0218)
+// 0x0028 (0x0238 - 0x0210)
 class UFortResultsTeleportScreenWidget : public UCommonUserWidget
 {
 public:
-	float                                              ExitTime;                                                 // 0x0218(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x64];                                      // 0x021C(0x0064) MISSED OFFSET
+	float                                              ExitTime;                                                 // 0x0210(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x24];                                      // 0x0214(0x0024) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -8954,17 +10571,17 @@ public:
 
 
 // Class FortniteUI.FortResultsWidget
-// 0x00C0 (0x0480 - 0x03C0)
+// 0x00C0 (0x03B8 - 0x02F8)
 class UFortResultsWidget : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x78];                                      // 0x03C0(0x0078) MISSED OFFSET
-	int                                                AdditionalGrantedMissionPoints;                           // 0x0438(0x0004) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x4];                                       // 0x043C(0x0004) MISSED OFFSET
-	TArray<class UFortItem*>                           RewardedBadges;                                           // 0x0440(0x0010) (ZeroConstructor)
-	TArray<class UFortItem*>                           MissedBadges;                                             // 0x0450(0x0010) (ZeroConstructor)
-	TArray<class UFortItem*>                           RewardedItems;                                            // 0x0460(0x0010) (ZeroConstructor)
-	TArray<class UFortItem*>                           RewardedAccountItems;                                     // 0x0470(0x0010) (ZeroConstructor)
+	unsigned char                                      UnknownData00[0x78];                                      // 0x02F8(0x0078) MISSED OFFSET
+	int                                                AdditionalGrantedMissionPoints;                           // 0x0370(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x4];                                       // 0x0374(0x0004) MISSED OFFSET
+	TArray<class UFortItem*>                           RewardedBadges;                                           // 0x0378(0x0010) (ZeroConstructor)
+	TArray<class UFortItem*>                           MissedBadges;                                             // 0x0388(0x0010) (ZeroConstructor)
+	TArray<class UFortItem*>                           RewardedItems;                                            // 0x0398(0x0010) (ZeroConstructor)
+	TArray<class UFortItem*>                           RewardedAccountItems;                                     // 0x03A8(0x0010) (ZeroConstructor)
 
 	static UClass* StaticClass()
 	{
@@ -8987,11 +10604,11 @@ public:
 
 
 // Class FortniteUI.FortReticle
-// 0x0028 (0x0268 - 0x0240)
+// 0x0028 (0x0260 - 0x0238)
 class UFortReticle : public UFortHUDElementWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x28];                                      // 0x0240(0x0028) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0238(0x0028) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9004,6 +10621,24 @@ public:
 	void OnReticleColorChanged();
 	void OnPawnSet();
 	void OnContextualReticleChanged();
+};
+
+
+// Class FortniteUI.FortReturnReasonEntry
+// 0x0018 (0x08A0 - 0x0888)
+class UFortReturnReasonEntry : public UCommonButton
+{
+public:
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UObject*                                     InternalData;                                             // 0x0890(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UCommonTextBlock*                            Text_Name;                                                // 0x0898(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortReturnReasonEntry");
+		return ptr;
+	}
+
 };
 
 
@@ -9045,13 +10680,13 @@ public:
 
 
 // Class FortniteUI.FortRewardNotificationSubWidget
-// 0x0028 (0x0240 - 0x0218)
+// 0x0028 (0x0238 - 0x0210)
 class UFortRewardNotificationSubWidget : public UCommonUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnTransitionInComplete;                                   // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnTransitionOutComplete;                                  // 0x0228(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0238(0x0008) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnTransitionInComplete;                                   // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnTransitionOutComplete;                                  // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0230(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9086,7 +10721,7 @@ public:
 
 
 // Class FortniteUI.FortRewardConversationWidget
-// 0x0000 (0x0240 - 0x0240)
+// 0x0000 (0x0238 - 0x0238)
 class UFortRewardConversationWidget : public UFortRewardNotificationSubWidget
 {
 public:
@@ -9155,12 +10790,12 @@ public:
 
 
 // Class FortniteUI.FortRewardExpeditionWidget
-// 0x0068 (0x02A8 - 0x0240)
+// 0x0068 (0x02A0 - 0x0238)
 class UFortRewardExpeditionWidget : public UFortRewardNotificationSubWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnMcpError;                                               // 0x0240(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData00[0x58];                                      // 0x0250(0x0058) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnMcpError;                                               // 0x0238(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData00[0x58];                                      // 0x0248(0x0058) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9193,16 +10828,16 @@ public:
 
 
 // Class FortniteUI.FortRewardInfoButton
-// 0x0020 (0x0828 - 0x0808)
+// 0x0020 (0x08A8 - 0x0888)
 class UFortRewardInfoButton : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	class UPanelWidget*                                ItemCardPanel;                                            // 0x0810(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	EFortItemCardSize                                  ItemCardSize;                                             // 0x0818(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bDisplayAsRewardCard;                                     // 0x0819(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x6];                                       // 0x081A(0x0006) MISSED OFFSET
-	class UFortItem*                                   ItemInstance;                                             // 0x0820(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	class UPanelWidget*                                ItemCardPanel;                                            // 0x0890(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	EFortItemCardSize                                  ItemCardSize;                                             // 0x0898(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bDisplayAsRewardCard;                                     // 0x0899(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x6];                                       // 0x089A(0x0006) MISSED OFFSET
+	class UFortItem*                                   ItemInstance;                                             // 0x08A0(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -9221,22 +10856,22 @@ public:
 
 
 // Class FortniteUI.FortRewardInfoWidget
-// 0x0088 (0x02A0 - 0x0218)
+// 0x0088 (0x0298 - 0x0210)
 class UFortRewardInfoWidget : public UCommonUserWidget
 {
 public:
-	class UPanelWidget*                                RewardListWidget;                                         // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	struct FMargin                                     RewardWidgetPadding;                                      // 0x0220(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
-	TEnumAsByte<EHorizontalAlignment>                  HorizontalAlignment;                                      // 0x0230(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	TEnumAsByte<EVerticalAlignment>                    VerticalAlignment;                                        // 0x0231(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bShowDescription;                                         // 0x0232(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bAllowItemInteraction;                                    // 0x0233(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x0234(0x0004) MISSED OFFSET
-	class UClass*                                      OrWidgetType;                                             // 0x0238(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UClass*                                      RewardInfoButtonType;                                     // 0x0240(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x20];                                      // 0x0248(0x0020) MISSED OFFSET
-	class UCommonButtonGroup*                          ButtonGroup;                                              // 0x0268(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x30];                                      // 0x0270(0x0030) MISSED OFFSET
+	class UPanelWidget*                                RewardListWidget;                                         // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FMargin                                     RewardWidgetPadding;                                      // 0x0218(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	TEnumAsByte<EHorizontalAlignment>                  HorizontalAlignment;                                      // 0x0228(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	TEnumAsByte<EVerticalAlignment>                    VerticalAlignment;                                        // 0x0229(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bShowDescription;                                         // 0x022A(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bAllowItemInteraction;                                    // 0x022B(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                MaxNumRewardsShown;                                       // 0x022C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      OrWidgetType;                                             // 0x0230(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      RewardInfoButtonType;                                     // 0x0238(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x20];                                      // 0x0240(0x0020) MISSED OFFSET
+	class UCommonButtonGroup*                          ButtonGroup;                                              // 0x0260(0x0008) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x30];                                      // 0x0268(0x0030) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9245,8 +10880,26 @@ public:
 	}
 
 
-	void SetReward(const struct FFortRewardInfo& RewardsIn);
+	void SetRewards(const struct FFortRewardInfo& RewardsIn);
+	void SetReward(const struct FFortItemQuantityPair& RewardIn);
 	void SetButtonGroup(class UCommonButtonGroup* InButtonGroup);
+	bool ContainsReward(const struct FString& TemplateIdToCheck);
+};
+
+
+// Class FortniteUI.FortRewardItemCacheData
+// 0x0008 (0x0038 - 0x0030)
+class UFortRewardItemCacheData : public UFortRewardNotificationData
+{
+public:
+	class UFortItem*                                   ItemCache;                                                // 0x0030(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortRewardItemCacheData");
+		return ptr;
+	}
+
 };
 
 
@@ -9281,7 +10934,7 @@ public:
 
 
 // Class FortniteUI.FortRewardNewQuestWidget
-// 0x0000 (0x0240 - 0x0240)
+// 0x0000 (0x0238 - 0x0238)
 class UFortRewardNewQuestWidget : public UFortRewardNotificationSubWidget
 {
 public:
@@ -9299,16 +10952,15 @@ public:
 
 
 // Class FortniteUI.FortRewardNotificationWidget
-// 0x01C0 (0x0580 - 0x03C0)
+// 0x00B8 (0x03B0 - 0x02F8)
 class UFortRewardNotificationWidget : public UCommonActivatablePanel
 {
 public:
-	TArray<class UFortRewardNotificationData*>         NotificationDataList;                                     // 0x03C0(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	unsigned char                                      UnknownData00[0x40];                                      // 0x03D0(0x0040) MISSED OFFSET
-	class UOverlay*                                    OverlayMain;                                              // 0x0410(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0418(0x0008) MISSED OFFSET
-	struct FFortSwipeDetector                          SwipeDetector;                                            // 0x0420(0x0140) (Edit, BlueprintVisible, BlueprintReadOnly)
-	unsigned char                                      UnknownData02[0x20];                                      // 0x0560(0x0020) MISSED OFFSET
+	TArray<class UFortRewardNotificationData*>         NotificationDataList;                                     // 0x02F8(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0308(0x0010) MISSED OFFSET
+	class UOverlay*                                    OverlayMain;                                              // 0x0318(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FFortSwipeDetector                          SwipeDetector;                                            // 0x0320(0x0070) (Edit, BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      UnknownData01[0x20];                                      // 0x0390(0x0020) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9335,6 +10987,7 @@ public:
 	void AddQuestData(class UFortQuestItem* Quest);
 	void AddMissionData();
 	void AddMissionAlertData();
+	void AddItemCacheRewardData(class UFortItem* ItemCache);
 	void AddGiftBoxData();
 	void AddExpeditionData(class UFortExpeditionItem* ExpeditionItem);
 	void AddEpicQuestData(class UFortQuestItem* Quest);
@@ -9362,7 +11015,7 @@ public:
 
 
 // Class FortniteUI.FortRichTextBlock
-// 0x0990 (0x0A90 - 0x0100)
+// 0x0998 (0x0A98 - 0x0100)
 class UFortRichTextBlock : public UWidget
 {
 public:
@@ -9375,8 +11028,10 @@ public:
 	unsigned char                                      UnknownData00[0x2];                                       // 0x0136(0x0002) MISSED OFFSET
 	struct FButtonStyle                                HyperlinkButtonStyle;                                     // 0x0138(0x0278) (Edit)
 	struct FScrollBarStyle                             ScrollBarStyle;                                           // 0x03B0(0x04D0) (Edit)
-	class UClass*                                      KeybindWidgetClass;                                       // 0x0880(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x208];                                     // 0x0888(0x0208) MISSED OFFSET
+	bool                                               AllowContextMenu;                                         // 0x0880(0x0001) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0881(0x0007) MISSED OFFSET
+	class UClass*                                      KeybindWidgetClass;                                       // 0x0888(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x208];                                     // 0x0890(0x0208) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9390,17 +11045,17 @@ public:
 
 
 // Class FortniteUI.FortSignInConsole
-// 0x0070 (0x0430 - 0x03C0)
+// 0x0040 (0x0338 - 0x02F8)
 class UFortSignInConsole : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x40];                                      // 0x03C0(0x0040) MISSED OFFSET
-	class UEditableText*                               Email;                                                    // 0x0400(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_SendCode;                                          // 0x0408(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UEditableText*                               Passcode;                                                 // 0x0410(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Text_Error;                                               // 0x0418(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_SubmitCode;                                        // 0x0420(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UWidgetSwitcher*                             Switcher_Main;                                            // 0x0428(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x02F8(0x0010) MISSED OFFSET
+	class UEditableText*                               Email;                                                    // 0x0308(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_SendCode;                                          // 0x0310(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UEditableText*                               Passcode;                                                 // 0x0318(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_Error;                                               // 0x0320(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_SubmitCode;                                        // 0x0328(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UWidgetSwitcher*                             Switcher_Main;                                            // 0x0330(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -9412,27 +11067,25 @@ public:
 	void UpdatePasscodeStatus(const struct FText& Text);
 	void UpdateEmailStatus(const struct FText& Text);
 	void HandleTextCommitted(const struct FText& Text, TEnumAsByte<ETextCommit> CommitMethod);
-	void HandleSendCodeClicked(class UCommonButton* Button);
-	void HandlePasscodeSubmitted(class UCommonButton* Button);
 };
 
 
 // Class FortniteUI.FortSignInWidget
-// 0x00A0 (0x0460 - 0x03C0)
+// 0x0070 (0x0368 - 0x02F8)
 class UFortSignInWidget : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x40];                                      // 0x03C0(0x0040) MISSED OFFSET
-	class UClass*                                      NormalBorderStyle;                                        // 0x0400(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UClass*                                      HighlightBorderStyle;                                     // 0x0408(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x10];                                      // 0x0410(0x0010) MISSED OFFSET
-	struct FString                                     ForgotPasswordURL;                                        // 0x0420(0x0010) (Edit, ZeroConstructor)
-	class UEditableText*                               Email;                                                    // 0x0430(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UEditableText*                               Password;                                                 // 0x0438(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonBorder*                               EmailBorder;                                              // 0x0440(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonBorder*                               PasswordBorder;                                           // 0x0448(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               SignInButton;                                             // 0x0450(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_ForgotPassword;                                    // 0x0458(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x02F8(0x0010) MISSED OFFSET
+	class UClass*                                      NormalBorderStyle;                                        // 0x0308(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      HighlightBorderStyle;                                     // 0x0310(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	struct FString                                     ForgotPasswordURL;                                        // 0x0318(0x0010) (Edit, ZeroConstructor)
+	unsigned char                                      UnknownData01[0x10];                                      // 0x0328(0x0010) MISSED OFFSET
+	class UEditableText*                               Email;                                                    // 0x0338(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UEditableText*                               Password;                                                 // 0x0340(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonBorder*                               EmailBorder;                                              // 0x0348(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonBorder*                               PasswordBorder;                                           // 0x0350(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               SignInButton;                                             // 0x0358(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_ForgotPassword;                                    // 0x0360(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -9443,24 +11096,20 @@ public:
 
 	void UpdateSignInButton(const struct FText& Text);
 	void StartSignIn();
-	void OnVirtualKeyboardShown();
-	void OnVirtualKeyboardHidden();
 	void HandleTextCommitted(const struct FText& Text, TEnumAsByte<ETextCommit> CommitMethod);
-	void HandleSignInRequest(class UCommonButton* Button);
-	void HandleForgotPassword(class UCommonButton* Button);
 };
 
 
 // Class FortniteUI.FortSkillTreeCanvas
-// 0x01A8 (0x02C0 - 0x0118)
+// 0x00E8 (0x0200 - 0x0118)
 class UFortSkillTreeCanvas : public UPanelWidget
 {
 public:
 	unsigned char                                      UnknownData00[0x8];                                       // 0x0118(0x0008) MISSED OFFSET
 	struct FVector2D                                   OriginForParallaxEffect;                                  // 0x0120(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
-	unsigned char                                      UnknownData01[0xF0];                                      // 0x0128(0x00F0) MISSED OFFSET
-	class UCommonButtonGroup*                          NodeButtonGroup;                                          // 0x0218(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData02[0xA0];                                      // 0x0220(0x00A0) MISSED OFFSET
+	unsigned char                                      UnknownData01[0x38];                                      // 0x0128(0x0038) MISSED OFFSET
+	class UCommonButtonGroup*                          NodeButtonGroup;                                          // 0x0160(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x98];                                      // 0x0168(0x0098) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9469,7 +11118,6 @@ public:
 	}
 
 
-	void HandleNodeButtonClicked(class UCommonButton* Button);
 	void HandleButtonGroupSelectionCleared();
 	void HandleButtonGroupSelectionChanged(class UCommonButton* SelectedButton, int ButtonIndex);
 };
@@ -9491,15 +11139,15 @@ public:
 
 
 // Class FortniteUI.FortSkillTreeCanvasNode
-// 0x0028 (0x0830 - 0x0808)
+// 0x0028 (0x08B0 - 0x0888)
 class UFortSkillTreeCanvasNode : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0808(0x0008) MISSED OFFSET
-	struct FName                                       PageId;                                                   // 0x0810(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, EditConst, IsPlainOldData)
-	struct FName                                       NodeID;                                                   // 0x0818(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, EditConst, IsPlainOldData)
-	bool                                               ShouldHideConnectorsToDependents;                         // 0x0820(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0xF];                                       // 0x0821(0x000F) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	struct FName                                       PageId;                                                   // 0x0890(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, EditConst, IsPlainOldData)
+	struct FName                                       NodeID;                                                   // 0x0898(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, EditConst, IsPlainOldData)
+	bool                                               ShouldHideConnectorsToDependents;                         // 0x08A0(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0xF];                                       // 0x08A1(0x000F) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9559,13 +11207,13 @@ public:
 
 
 // Class FortniteUI.FortSkillTreePageSelectorButton
-// 0x0018 (0x0820 - 0x0808)
+// 0x0018 (0x08A0 - 0x0888)
 class UFortSkillTreePageSelectorButton : public UCommonButton
 {
 public:
-	struct FName                                       SkillTreePageId;                                          // 0x0808(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UClass*                                      SkillTreeViewerType;                                      // 0x0810(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0818(0x0008) MISSED OFFSET
+	struct FName                                       SkillTreePageId;                                          // 0x0888(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      SkillTreeViewerType;                                      // 0x0890(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0898(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9584,12 +11232,12 @@ public:
 
 
 // Class FortniteUI.FortSkillTreeLandingPage
-// 0x0020 (0x03E0 - 0x03C0)
+// 0x0020 (0x0318 - 0x02F8)
 class UFortSkillTreeLandingPage : public UCommonActivatablePanel
 {
 public:
-	TArray<struct FDataTableRowHandle>                 SkillsToLinkTo;                                           // 0x03C0(0x0010) (Edit, ZeroConstructor)
-	TArray<struct FDataTableRowHandle>                 ResearchToLinkTo;                                         // 0x03D0(0x0010) (Edit, ZeroConstructor)
+	TArray<struct FDataTableRowHandle>                 SkillsToLinkTo;                                           // 0x02F8(0x0010) (Edit, ZeroConstructor)
+	TArray<struct FDataTableRowHandle>                 ResearchToLinkTo;                                         // 0x0308(0x0010) (Edit, ZeroConstructor)
 
 	static UClass* StaticClass()
 	{
@@ -9605,12 +11253,12 @@ public:
 
 
 // Class FortniteUI.FortSkillTreeNodeDetailsPanel
-// 0x0010 (0x0228 - 0x0218)
+// 0x0010 (0x0220 - 0x0210)
 class UFortSkillTreeNodeDetailsPanel : public UCommonUserWidget
 {
 public:
-	struct FName                                       IdOfSkillTreeNodeToRepresent;                             // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0220(0x0008) MISSED OFFSET
+	struct FName                                       IdOfSkillTreeNodeToRepresent;                             // 0x0210(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9647,13 +11295,13 @@ public:
 
 
 // Class FortniteUI.FortSkillTreePageWidget
-// 0x00F8 (0x0310 - 0x0218)
+// 0x0048 (0x0258 - 0x0210)
 class UFortSkillTreePageWidget : public UCommonUserWidget
 {
 public:
-	struct FName                                       SkillTreePageId;                                          // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0xE8];                                      // 0x0220(0x00E8) MISSED OFFSET
-	class UFortSkillTreeCanvas*                        SkillTreeCanvas;                                          // 0x0308(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FName                                       SkillTreePageId;                                          // 0x0210(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x38];                                      // 0x0218(0x0038) MISSED OFFSET
+	class UFortSkillTreeCanvas*                        SkillTreeCanvas;                                          // 0x0250(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -9686,18 +11334,18 @@ public:
 
 
 // Class FortniteUI.FortSkillTreeViewer
-// 0x00D0 (0x0490 - 0x03C0)
+// 0x00C8 (0x03C0 - 0x02F8)
 class UFortSkillTreeViewer : public UCommonActivatablePanel
 {
 public:
-	struct FScriptMulticastDelegate                    OnNodeSelectionChangedEvent;                              // 0x03C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FMargin                                     PageDisplayAreaMargins;                                   // 0x03D0(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
-	class UFortSkillTreePageWidget*                    CurrentPageWidget;                                        // 0x03E0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UOverlay*                                    PageHostOverlay;                                          // 0x03E8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	struct FDataTableRowHandle                         BackOutInputAction;                                       // 0x03F0(0x0010) (Edit)
-	TMap<struct FName, class UFortSkillTreePageWidget*> PageIdToWidgetCache;                                      // 0x0400(0x0050) (ExportObject, ZeroConstructor, Transient)
-	float                                              ZoomLevel;                                                // 0x0450(0x0004) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3C];                                      // 0x0454(0x003C) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnNodeSelectionChangedEvent;                              // 0x02F8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FMargin                                     PageDisplayAreaMargins;                                   // 0x0308(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	class UFortSkillTreePageWidget*                    CurrentPageWidget;                                        // 0x0318(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UOverlay*                                    PageHostOverlay;                                          // 0x0320(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FDataTableRowHandle                         BackOutInputAction;                                       // 0x0328(0x0010) (Edit)
+	TMap<struct FName, class UFortSkillTreePageWidget*> PageIdToWidgetCache;                                      // 0x0338(0x0050) (ExportObject, ZeroConstructor, Transient)
+	float                                              ZoomLevel;                                                // 0x0388(0x0004) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x34];                                      // 0x038C(0x0034) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9727,15 +11375,15 @@ public:
 
 
 // Class FortniteUI.FortSocialImportButton
-// 0x0030 (0x0838 - 0x0808)
+// 0x0030 (0x08B8 - 0x0888)
 class UFortSocialImportButton : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x18];                                      // 0x0808(0x0018) MISSED OFFSET
-	class UFortSocialImportPanel*                      ActivePanel;                                              // 0x0820(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	ESocialImportPanelType                             DesiredPanelType;                                         // 0x0828(0x0001) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0829(0x0007) MISSED OFFSET
-	class UClass*                                      SocialImportPanelClass;                                   // 0x0830(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0888(0x0018) MISSED OFFSET
+	class UFortSocialImportPanel*                      ActivePanel;                                              // 0x08A0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	ESocialImportPanelType                             DesiredPanelType;                                         // 0x08A8(0x0001) (Edit, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x08A9(0x0007) MISSED OFFSET
+	class UClass*                                      SocialImportPanelClass;                                   // 0x08B0(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -9745,23 +11393,23 @@ public:
 
 
 	void OnCaptionGenerated(const struct FText& Caption);
-	void DynamicHandleClicked(class UCommonButton* Source);
+	void HandleDynamicSocialImportDialogClosed();
 };
 
 
 // Class FortniteUI.FortSocialImportPanel
-// 0x00D0 (0x04C0 - 0x03F0)
+// 0x0068 (0x0390 - 0x0328)
 class UFortSocialImportPanel : public UFortActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x98];                                      // 0x03F0(0x0098) MISSED OFFSET
-	class UCommonButton*                               Button_Import;                                            // 0x0488(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Cancel;                                            // 0x0490(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_Claim;                                             // 0x0498(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_ErrorRetry;                                        // 0x04A0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonButton*                               Button_ErrorClose;                                        // 0x04A8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UOverlay*                                    Overlay_Error;                                            // 0x04B0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x04B8(0x0008) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnSocialImportPanelClosed;                                // 0x0328(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0338(0x0028) MISSED OFFSET
+	class UWidgetSwitcher*                             Switcher_AddFriends;                                      // 0x0360(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Import;                                            // 0x0368(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Cancel;                                            // 0x0370(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Yes;                                               // 0x0378(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_No;                                                // 0x0380(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_OptOut;                                            // 0x0388(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -9774,19 +11422,15 @@ public:
 	void OnWaitingViewRequested();
 	void OnPanelTypeSet(ESocialImportPanelType NewType);
 	void OnLauncherImportOpened();
+	void OnIncentivizedSet(bool bIncentivized);
 	void OnImportViewRequested();
 	void OnClaimViewRequested();
-	ESocialImportPanelPlatform GetSocialPlatform();
-	void DynamicHandleImportClicked(class UCommonButton* Button);
-	void DynamicHandleErrorRetryClicked(class UCommonButton* Button);
-	void DynamicHandleErrorCloseClicked(class UCommonButton* Button);
-	void DynamicHandleClaimClicked(class UCommonButton* Button);
-	void DynamicHandleCancelClicked(class UCommonButton* Button);
+	bool GetSocialPlatform(ESocialImportPanelPlatform* OutPlatform);
 };
 
 
 // Class FortniteUI.FortSocialItemWidget
-// 0x0000 (0x0220 - 0x0220)
+// 0x0000 (0x0218 - 0x0218)
 class UFortSocialItemWidget : public UFortUserWidget
 {
 public:
@@ -9803,7 +11447,7 @@ public:
 
 
 // Class FortniteUI.FortSocialListView
-// 0x0760 (0x0860 - 0x0100)
+// 0x0708 (0x0808 - 0x0100)
 class UFortSocialListView : public UWidget
 {
 public:
@@ -9811,7 +11455,7 @@ public:
 	class UClass*                                      SocialItemWidgetType;                                     // 0x0110(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 	struct FTableRowStyle                              ListRowStyle;                                             // 0x0118(0x06B8) (Edit, BlueprintVisible, BlueprintReadOnly)
 	TArray<class UFortSocialItem*>                     SocialList;                                               // 0x07D0(0x0010) (ZeroConstructor, Transient)
-	unsigned char                                      UnknownData00[0x80];                                      // 0x07E0(0x0080) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x28];                                      // 0x07E0(0x0028) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9825,13 +11469,12 @@ public:
 
 
 // Class FortniteUI.FortSocialMenuPanel
-// 0x0020 (0x0410 - 0x03F0)
+// 0x0018 (0x0340 - 0x0328)
 class UFortSocialMenuPanel : public UFortActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x03F0(0x0010) MISSED OFFSET
-	class UFortSocialMenuSlateWrapperWidget*           SlateWrapper_Social;                                      // 0x0400(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0408(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0328(0x0010) MISSED OFFSET
+	class UFortSocialMenuSlateWrapperWidget*           SlateWrapper_Social;                                      // 0x0338(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -9845,11 +11488,11 @@ public:
 
 
 // Class FortniteUI.FortSocialMenuSlateWrapperWidget
-// 0x0050 (0x0150 - 0x0100)
+// 0x0020 (0x0120 - 0x0100)
 class UFortSocialMenuSlateWrapperWidget : public UWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x50];                                      // 0x0100(0x0050) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x20];                                      // 0x0100(0x0020) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9878,11 +11521,11 @@ public:
 
 
 // Class FortniteUI.FortSplashScreenWidget
-// 0x0040 (0x0400 - 0x03C0)
+// 0x0010 (0x0308 - 0x02F8)
 class UFortSplashScreenWidget : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x40];                                      // 0x03C0(0x0040) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x02F8(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9894,14 +11537,14 @@ public:
 
 
 // Class FortniteUI.FortSquadIcon
-// 0x0018 (0x0230 - 0x0218)
+// 0x0018 (0x0228 - 0x0210)
 class UFortSquadIcon : public UCommonUserWidget
 {
 public:
-	struct FName                                       Name;                                                     // 0x0218(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	TEnumAsByte<EFortBrushSize>                        ImageSize;                                                // 0x0220(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
-	class UImage*                                      Icon;                                                     // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FName                                       Name;                                                     // 0x0210(0x0008) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	TEnumAsByte<EFortBrushSize>                        ImageSize;                                                // 0x0218(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0219(0x0007) MISSED OFFSET
+	class UImage*                                      Icon;                                                     // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -9916,12 +11559,12 @@ public:
 
 
 // Class FortniteUI.FortSquadLandingPageDefenderSquadDetails
-// 0x0010 (0x0228 - 0x0218)
+// 0x0010 (0x0220 - 0x0210)
 class UFortSquadLandingPageDefenderSquadDetails : public UCommonUserWidget
 {
 public:
-	class UCommonTextBlock*                            OutpostName;                                              // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonNumericTextBlock*                     PowerRating;                                              // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            OutpostName;                                              // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonNumericTextBlock*                     PowerRating;                                              // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -9937,11 +11580,11 @@ public:
 
 
 // Class FortniteUI.FortSquadLandingPageDefenderSquadDetailsLocked
-// 0x0008 (0x0220 - 0x0218)
+// 0x0008 (0x0218 - 0x0210)
 class UFortSquadLandingPageDefenderSquadDetailsLocked : public UCommonUserWidget
 {
 public:
-	class UCommonTextBlock*                            OutpostName;                                              // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            OutpostName;                                              // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -9955,11 +11598,11 @@ public:
 
 
 // Class FortniteUI.FortSquadLandingPageDefenderSummary
-// 0x0008 (0x0220 - 0x0218)
+// 0x0008 (0x0218 - 0x0210)
 class UFortSquadLandingPageDefenderSummary : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -9975,15 +11618,15 @@ public:
 
 
 // Class FortniteUI.FortSquadLandingPageSurvivorSummary
-// 0x0088 (0x02A0 - 0x0218)
+// 0x0088 (0x0298 - 0x0210)
 class UFortSquadLandingPageSurvivorSummary : public UCommonUserWidget
 {
 public:
-	class UFortSquadStatValueWithIcon*                 FortitudeStatValue;                                       // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortSquadStatValueWithIcon*                 OffenseStatValue;                                         // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortSquadStatValueWithIcon*                 ResistanceStatValue;                                      // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortSquadStatValueWithIcon*                 TechStatValue;                                            // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x68];                                      // 0x0238(0x0068) MISSED OFFSET
+	class UFortSquadStatValueWithIcon*                 FortitudeStatValue;                                       // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortSquadStatValueWithIcon*                 OffenseStatValue;                                         // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortSquadStatValueWithIcon*                 ResistanceStatValue;                                      // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortSquadStatValueWithIcon*                 TechStatValue;                                            // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x68];                                      // 0x0230(0x0068) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10078,14 +11721,14 @@ public:
 
 
 // Class FortniteUI.FortSquadSlotDetailsPanel
-// 0x0060 (0x0278 - 0x0218)
+// 0x0060 (0x0270 - 0x0210)
 class UFortSquadSlotDetailsPanel : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x28];                                      // 0x0218(0x0028) MISSED OFFSET
-	class UFortSquadSlotItemDetailsHostPanel*          ItemDetailsPanel;                                         // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x0248(0x0010) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x20];                                      // 0x0258(0x0020) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0210(0x0028) MISSED OFFSET
+	class UFortSquadSlotItemDetailsHostPanel*          ItemDetailsPanel;                                         // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x0240(0x0010) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x20];                                      // 0x0250(0x0020) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10108,11 +11751,11 @@ public:
 
 
 // Class FortniteUI.FortSquadSlotItemDetailElementWidget
-// 0x0028 (0x0288 - 0x0260)
+// 0x0028 (0x0280 - 0x0258)
 class UFortSquadSlotItemDetailElementWidget : public UFortItemDetailElementWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x28];                                      // 0x0260(0x0028) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0258(0x0028) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10130,11 +11773,11 @@ public:
 
 
 // Class FortniteUI.FortSquadSlotItemDetailsHostPanel
-// 0x0028 (0x02A8 - 0x0280)
+// 0x0028 (0x02A0 - 0x0278)
 class UFortSquadSlotItemDetailsHostPanel : public UFortItemDetailsHostPanel
 {
 public:
-	unsigned char                                      UnknownData00[0x28];                                      // 0x0280(0x0028) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0278(0x0028) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10151,13 +11794,13 @@ public:
 
 
 // Class FortniteUI.FortSquadSlotItemPicker
-// 0x01E0 (0x0460 - 0x0280)
+// 0x00D0 (0x0378 - 0x02A8)
 class UFortSquadSlotItemPicker : public UFortItemPickerBase
 {
 public:
-	unsigned char                                      UnknownData00[0xA0];                                      // 0x0280(0x00A0) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnSortChanged;                                            // 0x0320(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData01[0x130];                                     // 0x0330(0x0130) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x40];                                      // 0x02A8(0x0040) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnSortChanged;                                            // 0x02E8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData01[0x80];                                      // 0x02F8(0x0080) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10175,11 +11818,11 @@ public:
 
 
 // Class FortniteUI.FortSquadSlotItemPickerTileButton
-// 0x0018 (0x0850 - 0x0838)
+// 0x0018 (0x08D0 - 0x08B8)
 class UFortSquadSlotItemPickerTileButton : public UFortItemPickerButton
 {
 public:
-	unsigned char                                      UnknownData00[0x18];                                      // 0x0838(0x0018) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x18];                                      // 0x08B8(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10195,7 +11838,7 @@ public:
 
 
 // Class FortniteUI.FortSquadSlotSelectorPopupMenu
-// 0x0000 (0x03E0 - 0x03E0)
+// 0x0000 (0x0318 - 0x0318)
 class UFortSquadSlotSelectorPopupMenu : public UFortPopupMenu
 {
 public:
@@ -10212,19 +11855,19 @@ public:
 
 
 // Class FortniteUI.FortSquadSlotSurvivorTraitMatchesDetailWidget
-// 0x0028 (0x02B0 - 0x0288)
+// 0x0028 (0x02A8 - 0x0280)
 class UFortSquadSlotSurvivorTraitMatchesDetailWidget : public UFortSquadSlotItemDetailElementWidget
 {
 public:
-	bool                                               IsSquadLeaderSlot;                                        // 0x0288(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               LeaderMatchesSquadType;                                   // 0x0289(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x2];                                       // 0x028A(0x0002) MISSED OFFSET
-	int                                                SubordinatePersonalityMatchCount;                         // 0x028C(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               MatchesLeaderPersonality;                                 // 0x0290(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x3];                                       // 0x0291(0x0003) MISSED OFFSET
-	int                                                MatchingSetBonusCount;                                    // 0x0294(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	int                                                SetBonusSize;                                             // 0x0298(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x14];                                      // 0x029C(0x0014) MISSED OFFSET
+	bool                                               IsSquadLeaderSlot;                                        // 0x0280(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               LeaderMatchesSquadType;                                   // 0x0281(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x2];                                       // 0x0282(0x0002) MISSED OFFSET
+	int                                                SubordinatePersonalityMatchCount;                         // 0x0284(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               MatchesLeaderPersonality;                                 // 0x0288(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x0289(0x0003) MISSED OFFSET
+	int                                                MatchingSetBonusCount;                                    // 0x028C(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	int                                                SetBonusSize;                                             // 0x0290(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x14];                                      // 0x0294(0x0014) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10238,17 +11881,17 @@ public:
 
 
 // Class FortniteUI.FortSquadSlotSelectorButton
-// 0x0080 (0x0888 - 0x0808)
+// 0x0080 (0x0908 - 0x0888)
 class UFortSquadSlotSelectorButton : public UCommonButton
 {
 public:
-	unsigned char                                      UnknownData00[0x28];                                      // 0x0808(0x0028) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnRequestOpenSquadSlotEvent;                              // 0x0830(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnRequestViewInAllEvent;                                  // 0x0840(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	class UFortSquadSlotWidget*                        SquadSlotWidget;                                          // 0x0850(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UMenuAnchor*                                 PopupMenuAnchor;                                          // 0x0858(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x0860(0x0010) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x18];                                      // 0x0870(0x0018) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0888(0x0028) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnRequestOpenSquadSlotEvent;                              // 0x08B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnRequestViewInAllEvent;                                  // 0x08C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	class UFortSquadSlotWidget*                        SquadSlotWidget;                                          // 0x08D0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UMenuAnchor*                                 PopupMenuAnchor;                                          // 0x08D8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x08E0(0x0010) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x18];                                      // 0x08F0(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10271,23 +11914,23 @@ public:
 
 
 // Class FortniteUI.FortSquadSlotsView
-// 0x00E8 (0x0300 - 0x0218)
+// 0x00E8 (0x02F8 - 0x0210)
 class UFortSquadSlotsView : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0218(0x0010) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnDifferentSquadSlotSelectedEvent;                        // 0x0228(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnRequestOpenSquadSlotEvent;                              // 0x0238(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnRequestViewInAllEvent;                                  // 0x0248(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	int                                                IndexOfSelectedSquadSlot;                                 // 0x0258(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bSlotButtonsRequireSelection;                             // 0x025C(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bInPreviewMode;                                           // 0x025D(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x2];                                       // 0x025E(0x0002) MISSED OFFSET
-	TMap<ESquadSlotType, struct FSquadSlotSortTypes>   SquadSlotSortTypesMap;                                    // 0x0260(0x0050) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	class UFortCommittableButtonGroup*                 SquadSlotButtonGroup;                                     // 0x02B0(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x30];                                      // 0x02B8(0x0030) MISSED OFFSET
-	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x02E8(0x0010) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x8];                                       // 0x02F8(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0210(0x0010) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnDifferentSquadSlotSelectedEvent;                        // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnRequestOpenSquadSlotEvent;                              // 0x0230(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnRequestViewInAllEvent;                                  // 0x0240(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	int                                                IndexOfSelectedSquadSlot;                                 // 0x0250(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bSlotButtonsRequireSelection;                             // 0x0254(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bInPreviewMode;                                           // 0x0255(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x2];                                       // 0x0256(0x0002) MISSED OFFSET
+	TMap<ESquadSlotType, struct FSquadSlotSortTypes>   SquadSlotSortTypesMap;                                    // 0x0258(0x0050) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UFortCommittableButtonGroup*                 SquadSlotButtonGroup;                                     // 0x02A8(0x0008) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x30];                                      // 0x02B0(0x0030) MISSED OFFSET
+	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x02E0(0x0010) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x8];                                       // 0x02F0(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10316,17 +11959,17 @@ public:
 
 
 // Class FortniteUI.FortSquadSlotWidget
-// 0x00F0 (0x01F0 - 0x0100)
+// 0x0098 (0x0198 - 0x0100)
 class UFortSquadSlotWidget : public UWidget
 {
 public:
 	unsigned char                                      UnknownData00[0x28];                                      // 0x0100(0x0028) MISSED OFFSET
 	EFortItemCardSize                                  ItemCardSize;                                             // 0x0128(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x97];                                      // 0x0129(0x0097) MISSED OFFSET
-	class UFortMultiSizeItemCard*                      SlottedItemCard;                                          // 0x01C0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x8];                                       // 0x01C8(0x0008) MISSED OFFSET
-	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x01D0(0x0010) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x10];                                      // 0x01E0(0x0010) MISSED OFFSET
+	unsigned char                                      UnknownData01[0x3F];                                      // 0x0129(0x003F) MISSED OFFSET
+	class UFortMultiSizeItemCard*                      SlottedItemCard;                                          // 0x0168(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x8];                                       // 0x0170(0x0008) MISSED OFFSET
+	TScriptInterface<class UFortItemViewContextInterface> ItemViewContext;                                          // 0x0178(0x0010) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x10];                                      // 0x0188(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10344,13 +11987,13 @@ public:
 
 
 // Class FortniteUI.FortSquadStatsWidgetBase
-// 0x0038 (0x0250 - 0x0218)
+// 0x0038 (0x0248 - 0x0210)
 class UFortSquadStatsWidgetBase : public UCommonUserWidget
 {
 public:
-	TArray<class UFortAttributeListItem_NUI*>          OverviewStats;                                            // 0x0218(0x0010) (BlueprintVisible, ExportObject, ZeroConstructor)
-	class UFortAttributeList_NUI*                      DetailedStats;                                            // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x20];                                      // 0x0230(0x0020) MISSED OFFSET
+	TArray<class UFortAttributeListItem_NUI*>          OverviewStats;                                            // 0x0210(0x0010) (BlueprintVisible, ExportObject, ZeroConstructor)
+	class UFortAttributeList_NUI*                      DetailedStats;                                            // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x20];                                      // 0x0228(0x0020) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10367,16 +12010,16 @@ public:
 
 
 // Class FortniteUI.FortSquadStatValueWithIcon
-// 0x0058 (0x0270 - 0x0218)
+// 0x0058 (0x0268 - 0x0210)
 class UFortSquadStatValueWithIcon : public UCommonUserWidget
 {
 public:
-	struct FGameplayAttribute                          Attribute;                                                // 0x0218(0x0020) (Edit, BlueprintVisible)
-	struct FGameplayAttribute                          TeamAttribute;                                            // 0x0238(0x0020) (Edit, BlueprintVisible)
-	TEnumAsByte<EFortBrushSize>                        ImageSize;                                                // 0x0258(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0259(0x0007) MISSED OFFSET
-	class UCommonNumericTextBlock*                     Value;                                                    // 0x0260(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UImage*                                      Icon;                                                     // 0x0268(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FGameplayAttribute                          Attribute;                                                // 0x0210(0x0020) (Edit, BlueprintVisible)
+	struct FGameplayAttribute                          TeamAttribute;                                            // 0x0230(0x0020) (Edit, BlueprintVisible)
+	TEnumAsByte<EFortBrushSize>                        ImageSize;                                                // 0x0250(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0251(0x0007) MISSED OFFSET
+	class UCommonNumericTextBlock*                     Value;                                                    // 0x0258(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      Icon;                                                     // 0x0260(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -10390,17 +12033,17 @@ public:
 
 
 // Class FortniteUI.FortSquadTypeLandingPageBase
-// 0x0040 (0x0430 - 0x03F0)
+// 0x0040 (0x0368 - 0x0328)
 class UFortSquadTypeLandingPageBase : public UFortActivatablePanel
 {
 public:
-	EFortHomebaseSquadType                             SquadType;                                                // 0x03F0(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x03F1(0x0007) MISSED OFFSET
-	struct FDataTableRowHandle                         ManageInputActionRowHandle;                               // 0x03F8(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	struct FDataTableRowHandle                         BackInputActionRowHandle;                                 // 0x0408(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
-	EFortFrontendInventoryFilter                       ItemManagementScreenFilter;                               // 0x0418(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x7];                                       // 0x0419(0x0007) MISSED OFFSET
-	TArray<TWeakObjectPtr<class UFortSquadSelectorButton>> SquadSelectorButtons;                                     // 0x0420(0x0010) (ExportObject, ZeroConstructor)
+	EFortHomebaseSquadType                             SquadType;                                                // 0x0328(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0329(0x0007) MISSED OFFSET
+	struct FDataTableRowHandle                         ManageInputActionRowHandle;                               // 0x0330(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FDataTableRowHandle                         BackInputActionRowHandle;                                 // 0x0340(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly)
+	EFortFrontendInventoryFilter                       ItemManagementScreenFilter;                               // 0x0350(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0351(0x0007) MISSED OFFSET
+	TArray<TWeakObjectPtr<class UFortSquadSelectorButton>> SquadSelectorButtons;                                     // 0x0358(0x0010) (ExportObject, ZeroConstructor)
 
 	static UClass* StaticClass()
 	{
@@ -10417,14 +12060,14 @@ public:
 
 
 // Class FortniteUI.FortStatIcon
-// 0x0030 (0x0248 - 0x0218)
+// 0x0030 (0x0240 - 0x0210)
 class UFortStatIcon : public UCommonUserWidget
 {
 public:
-	struct FGameplayAttribute                          Attribute;                                                // 0x0218(0x0020) (Edit, BlueprintVisible)
-	TEnumAsByte<EFortBrushSize>                        ImageSize;                                                // 0x0238(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0239(0x0007) MISSED OFFSET
-	class UImage*                                      Icon;                                                     // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FGameplayAttribute                          Attribute;                                                // 0x0210(0x0020) (Edit, BlueprintVisible)
+	TEnumAsByte<EFortBrushSize>                        ImageSize;                                                // 0x0230(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0231(0x0007) MISSED OFFSET
+	class UImage*                                      Icon;                                                     // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -10503,7 +12146,7 @@ public:
 
 
 // Class FortniteUI.FortStorefront
-// 0x0000 (0x0220 - 0x0220)
+// 0x0000 (0x0218 - 0x0218)
 class UFortStorefront : public UFortUserWidget
 {
 public:
@@ -10518,11 +12161,11 @@ public:
 
 
 // Class FortniteUI.FortStoreRootBase
-// 0x0010 (0x03D0 - 0x03C0)
+// 0x0008 (0x0300 - 0x02F8)
 class UFortStoreRootBase : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x03C0(0x0010) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x02F8(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10530,6 +12173,8 @@ public:
 		return ptr;
 	}
 
+
+	void OnUpdateOtherPlatformMTXMessage(bool HasOtherPlatformCurrency, const struct FText& CurrencyMessageLocText);
 };
 
 
@@ -10550,13 +12195,12 @@ public:
 
 
 // Class FortniteUI.FortStoreSummary
-// 0x0020 (0x03E0 - 0x03C0)
+// 0x0018 (0x0310 - 0x02F8)
 class UFortStoreSummary : public UCommonActivatablePanel
 {
 public:
-	TArray<class UStoreCardObject*>                    StoreCardObjects;                                         // 0x03C0(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	class UCommonTileView*                             TileView;                                                 // 0x03D0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x03D8(0x0008) MISSED OFFSET
+	TArray<class UStoreCardObject*>                    StoreCardObjects;                                         // 0x02F8(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	class UCommonTileView*                             TileView;                                                 // 0x0308(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -10570,7 +12214,7 @@ public:
 
 
 // Class FortniteUI.FortSubGameSelectBase
-// 0x0000 (0x03C0 - 0x03C0)
+// 0x0000 (0x02F8 - 0x02F8)
 class UFortSubGameSelectBase : public UCommonActivatablePanel
 {
 public:
@@ -10591,7 +12235,7 @@ public:
 
 
 // Class FortniteUI.FortSubGameSelectButtonBase
-// 0x0000 (0x0218 - 0x0218)
+// 0x0000 (0x0210 - 0x0210)
 class UFortSubGameSelectButtonBase : public UCommonUserWidget
 {
 public:
@@ -10607,13 +12251,30 @@ public:
 };
 
 
+// Class FortniteUI.FortSupportCenter
+// 0x0010 (0x0308 - 0x02F8)
+class UFortSupportCenter : public UCommonActivatablePanel
+{
+public:
+	class UCommonButton*                               Button_OnlineSupport;                                     // 0x02F8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_Forums;                                            // 0x0300(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortSupportCenter");
+		return ptr;
+	}
+
+};
+
+
 // Class FortniteUI.FortSurvivorSquadManagementScreen
-// 0x00E0 (0x05E0 - 0x0500)
+// 0x00D8 (0x0510 - 0x0438)
 class UFortSurvivorSquadManagementScreen : public UFortSquadManagementScreenBase
 {
 public:
-	class UFortSurvivorSquadStatMatchesBase*           StatMatchesWidget;                                        // 0x0500(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0xD8];                                      // 0x0508(0x00D8) MISSED OFFSET
+	class UFortSurvivorSquadStatMatchesBase*           StatMatchesWidget;                                        // 0x0438(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0xD0];                                      // 0x0440(0x00D0) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10628,12 +12289,12 @@ public:
 
 
 // Class FortniteUI.FortSurvivorSquadSelectorButton
-// 0x0020 (0x0848 - 0x0828)
+// 0x0020 (0x08C8 - 0x08A8)
 class UFortSurvivorSquadSelectorButton : public UFortSquadSelectorButton
 {
 public:
-	TArray<struct FGameplayAttribute>                  FortStatAttributes;                                       // 0x0828(0x0010) (Edit, BlueprintVisible, ZeroConstructor)
-	TArray<struct FGameplayAttribute>                  FortTeamStatAttributes;                                   // 0x0838(0x0010) (Edit, BlueprintVisible, ZeroConstructor)
+	TArray<struct FGameplayAttribute>                  FortStatAttributes;                                       // 0x08A8(0x0010) (Edit, BlueprintVisible, ZeroConstructor)
+	TArray<struct FGameplayAttribute>                  FortTeamStatAttributes;                                   // 0x08B8(0x0010) (Edit, BlueprintVisible, ZeroConstructor)
 
 	static UClass* StaticClass()
 	{
@@ -10649,12 +12310,12 @@ public:
 
 
 // Class FortniteUI.FortSurvivorSquadStatMatchBase
-// 0x0378 (0x0590 - 0x0218)
+// 0x0378 (0x0588 - 0x0210)
 class UFortSurvivorSquadStatMatchBase : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	struct FFortUISurvivorSquadStatMatch               StatMatch;                                                // 0x0220(0x0370) (BlueprintVisible, BlueprintReadOnly)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	struct FFortUISurvivorSquadStatMatch               StatMatch;                                                // 0x0218(0x0370) (BlueprintVisible, BlueprintReadOnly)
 
 	static UClass* StaticClass()
 	{
@@ -10668,15 +12329,15 @@ public:
 
 
 // Class FortniteUI.FortSurvivorSquadStatMatchesBase
-// 0x0030 (0x0278 - 0x0248)
+// 0x0030 (0x0270 - 0x0240)
 class UFortSurvivorSquadStatMatchesBase : public UFortSquadStatDetailsWidget
 {
 public:
-	class UClass*                                      StatMatchClass;                                           // 0x0248(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bSummaryView;                                             // 0x0250(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0251(0x0007) MISSED OFFSET
-	TArray<class UFortSurvivorSquadStatMatchBase*>     StatMatches;                                              // 0x0258(0x0010) (ExportObject, ZeroConstructor)
-	unsigned char                                      UnknownData01[0x10];                                      // 0x0268(0x0010) MISSED OFFSET
+	class UClass*                                      StatMatchClass;                                           // 0x0240(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bSummaryView;                                             // 0x0248(0x0001) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0249(0x0007) MISSED OFFSET
+	TArray<class UFortSurvivorSquadStatMatchBase*>     StatMatches;                                              // 0x0250(0x0010) (ExportObject, ZeroConstructor)
+	unsigned char                                      UnknownData01[0x10];                                      // 0x0260(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10695,15 +12356,15 @@ public:
 
 
 // Class FortniteUI.FortSurvivorSquadSummaryStatItem
-// 0x0020 (0x0238 - 0x0218)
+// 0x0020 (0x0230 - 0x0210)
 class UFortSurvivorSquadSummaryStatItem : public UCommonUserWidget
 {
 public:
-	TEnumAsByte<EFortBrushSize>                        ImageSize;                                                // 0x0218(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0219(0x0007) MISSED OFFSET
-	class UImage*                                      Icon;                                                     // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Value;                                                    // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UCommonTextBlock*                            Name;                                                     // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TEnumAsByte<EFortBrushSize>                        ImageSize;                                                // 0x0210(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0211(0x0007) MISSED OFFSET
+	class UImage*                                      Icon;                                                     // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Value;                                                    // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Name;                                                     // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -10717,20 +12378,19 @@ public:
 
 
 // Class FortniteUI.FortSwipePanel
-// 0x01A8 (0x02C0 - 0x0118)
+// 0x00D0 (0x01E8 - 0x0118)
 class UFortSwipePanel : public UContentWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0118(0x0008) MISSED OFFSET
-	struct FFortSwipeDetector                          SwipeDetector;                                            // 0x0120(0x0140) (Edit, BlueprintVisible, BlueprintReadOnly)
-	bool                                               bBeginSwipeOnPointerEnter;                                // 0x0260(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               bConsumePointerInput;                                     // 0x0261(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x6];                                       // 0x0262(0x0006) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnSwipeLeft;                                              // 0x0268(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnSwipeRight;                                             // 0x0278(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnSwipeUp;                                                // 0x0288(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnSwipeDown;                                              // 0x0298(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData02[0x18];                                      // 0x02A8(0x0018) MISSED OFFSET
+	struct FFortSwipeDetector                          SwipeDetector;                                            // 0x0118(0x0070) (Edit, BlueprintVisible, BlueprintReadOnly)
+	bool                                               bBeginSwipeOnPointerEnter;                                // 0x0188(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bConsumePointerInput;                                     // 0x0189(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x6];                                       // 0x018A(0x0006) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnSwipeLeft;                                              // 0x0190(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnSwipeRight;                                             // 0x01A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnSwipeUp;                                                // 0x01B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnSwipeDown;                                              // 0x01C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData01[0x18];                                      // 0x01D0(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10801,14 +12461,14 @@ public:
 
 
 // Class FortniteUI.FortTabListWidgetBase
-// 0x0078 (0x0358 - 0x02E0)
+// 0x0078 (0x0350 - 0x02D8)
 class UFortTabListWidgetBase : public UCommonTabListWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnTabContentCreated;                                      // 0x02E0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	TArray<struct FFortTabListRegistrationInfo>        PreregisteredTabInfoArray;                                // 0x02F0(0x0010) (Edit, ZeroConstructor)
-	TMap<struct FName, struct FFortTabButtonLabelInfo> PendingTabLabelInfoMap;                                   // 0x0300(0x0050) (ZeroConstructor)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0350(0x0008) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnTabContentCreated;                                      // 0x02D8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	TArray<struct FFortTabListRegistrationInfo>        PreregisteredTabInfoArray;                                // 0x02E8(0x0010) (Edit, ZeroConstructor)
+	TMap<struct FName, struct FFortTabButtonLabelInfo> PendingTabLabelInfoMap;                                   // 0x02F8(0x0050) (ZeroConstructor)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0348(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10830,11 +12490,11 @@ public:
 
 
 // Class FortniteUI.FortTextStyleList
-// 0x0008 (0x0220 - 0x0218)
+// 0x0008 (0x0218 - 0x0210)
 class UFortTextStyleList : public UCommonUserWidget
 {
 public:
-	struct FName                                       TextStylesPath;                                           // 0x0218(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	struct FName                                       TextStylesPath;                                           // 0x0210(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -10848,13 +12508,12 @@ public:
 
 
 // Class FortniteUI.FortTheaterSelect
-// 0x0050 (0x0410 - 0x03C0)
+// 0x0018 (0x0310 - 0x02F8)
 class UFortTheaterSelect : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x40];                                      // 0x03C0(0x0040) MISSED OFFSET
-	class UOverlay*                                    OverlayMain;                                              // 0x0400(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x0408(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x02F8(0x0010) MISSED OFFSET
+	class UOverlay*                                    OverlayMain;                                              // 0x0308(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -10897,12 +12556,11 @@ public:
 
 
 // Class FortniteUI.FortTimelineBase
-// 0x0010 (0x0400 - 0x03F0)
+// 0x0008 (0x0330 - 0x0328)
 class UFortTimelineBase : public UFortActivatablePanel
 {
 public:
-	class UFortReplayContext*                          ReplayContext;                                            // 0x03F0(0x0008) (BlueprintVisible, ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x03F8(0x0008) MISSED OFFSET
+	class UFortReplayContext*                          ReplayContext;                                            // 0x0328(0x0008) (BlueprintVisible, ZeroConstructor, Transient, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -10911,9 +12569,9 @@ public:
 	}
 
 
-	void RemoveMarker(const struct FFortTimelineMarkerId& IdToRemove);
 	class UWidget* GetProgressBarWidget();
-	struct FFortTimelineMarkerId AddMarker(struct FFortTimelineMarker* MarkerToAdd);
+	void ClearTimelineMarkers();
+	void AddReplayEventToTimeline(EFortReplayEventType EventType, float RelativeTime);
 };
 
 
@@ -10944,11 +12602,11 @@ public:
 
 
 // Class FortniteUI.FortTopBarPanel
-// 0x0010 (0x0400 - 0x03F0)
+// 0x0008 (0x0330 - 0x0328)
 class UFortTopBarPanel : public UFortActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x03F0(0x0010) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0328(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -10962,48 +12620,45 @@ public:
 
 
 // Class FortniteUI.FortTouchControlRegion
-// 0x03E8 (0x0600 - 0x0218)
+// 0x0110 (0x0320 - 0x0210)
 class UFortTouchControlRegion : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x50];                                      // 0x0218(0x0050) MISSED OFFSET
-	class UFortHUDElementWidget*                       Lockbar;                                                  // 0x0268(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UMaterialInstanceDynamic*                    LockbarMaterial;                                          // 0x0270(0x0008) (BlueprintVisible, ZeroConstructor, Transient, IsPlainOldData)
-	class UFortTouchMoveStick*                         TouchMoveStick;                                           // 0x0278(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortTouchLookStick*                         TouchLookStick;                                           // 0x0280(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UWidget*                                     AutoRunZone;                                              // 0x0288(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	bool                                               LastLookTouchWasTap;                                      // 0x0290(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x3];                                       // 0x0291(0x0003) MISSED OFFSET
-	struct FVector2D                                   MovePlayerRegionTouchOrigin;                              // 0x0294(0x0008) (BlueprintVisible, IsPlainOldData)
-	struct FVector2D                                   MovePlayerRegionTouchEndPos;                              // 0x029C(0x0008) (BlueprintVisible, IsPlainOldData)
-	bool                                               MoveStickIsTouched;                                       // 0x02A4(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x3];                                       // 0x02A5(0x0003) MISSED OFFSET
-	struct FVector                                     MoveVector;                                               // 0x02A8(0x000C) (BlueprintVisible, IsPlainOldData)
-	struct FVector2D                                   MoveStickPos;                                             // 0x02B4(0x0008) (BlueprintVisible, IsPlainOldData)
-	float                                              MoveStickLockMagnitudeThreshold;                          // 0x02BC(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              MoveStickLockAngleBegin;                                  // 0x02C0(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              MoveStickLockAngleEnd;                                    // 0x02C4(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              MoveStickLockAccumulator;                                 // 0x02C8(0x0004) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	bool                                               MoveStickIsLocked;                                        // 0x02CC(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x3];                                       // 0x02CD(0x0003) MISSED OFFSET
-	float                                              MoveStickLockTimeToHold;                                  // 0x02D0(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              MoveStickLastTouchTime;                                   // 0x02D4(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UMaterialInstanceDynamic*                    LockBar_MID;                                              // 0x02D8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	struct FVector2D                                   MovePlayerRegionLastTouchPos;                             // 0x02E0(0x0008) (BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
-	struct FVector2D                                   RotateCameraRegionTouchStartPos;                          // 0x02E8(0x0008) (BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
-	struct FVector2D                                   RotateCameraRegionLastTouchPos;                           // 0x02F0(0x0008) (BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
-	struct FVector2D                                   RotateCameraPlayerRegionLastTouchDiff;                    // 0x02F8(0x0008) (BlueprintVisible, IsPlainOldData)
-	float                                              RotateCameraLastTouchTime;                                // 0x0300(0x0004) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData04[0x27C];                                     // 0x0304(0x027C) MISSED OFFSET
-	class UCurveFloat*                                 RotateInertiaCurve;                                       // 0x0580(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               IsFiring;                                                 // 0x0588(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	bool                                               LookStickIsTouched;                                       // 0x0589(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	bool                                               IsLockedOn;                                               // 0x058A(0x0001) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData05[0x1];                                       // 0x058B(0x0001) MISSED OFFSET
-	struct FVector2D                                   LockOnStickOrigin;                                        // 0x058C(0x0008) (BlueprintVisible, IsPlainOldData)
-	struct FVector2D                                   LockOnStickCurrentPos;                                    // 0x0594(0x0008) (BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
-	struct FVector2D                                   LockOnBarOffset;                                          // 0x059C(0x0008) (Edit, BlueprintVisible, IsPlainOldData)
-	unsigned char                                      UnknownData06[0x5C];                                      // 0x05A4(0x005C) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x40];                                      // 0x0210(0x0040) MISSED OFFSET
+	class UFortAutorunLockZone*                        AutoRunLockTarget;                                        // 0x0250(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FTimerHandle                                AutorunLockDelayHandle;                                   // 0x0258(0x0008)
+	class UFortTouchMoveStick*                         TouchMoveStick;                                           // 0x0260(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortTouchLookStick*                         TouchLookStick;                                           // 0x0268(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UWidget*                                     AutoRunTapZone;                                           // 0x0270(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FVector2D                                   MovePlayerRegionTouchOrigin;                              // 0x0278(0x0008) (BlueprintVisible, IsPlainOldData)
+	struct FVector2D                                   MovePlayerRegionTouchEndPos;                              // 0x0280(0x0008) (BlueprintVisible, IsPlainOldData)
+	struct FVector                                     MoveVector;                                               // 0x0288(0x000C) (BlueprintVisible, IsPlainOldData)
+	struct FVector2D                                   MoveStickPos;                                             // 0x0294(0x0008) (BlueprintVisible, IsPlainOldData)
+	float                                              MoveStickLockMagnitudeThreshold;                          // 0x029C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              MoveStickLockAngleBegin;                                  // 0x02A0(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              MoveStickLockAngleEnd;                                    // 0x02A4(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              MoveStickLockAccumulator;                                 // 0x02A8(0x0004) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      bLastLookTouchWasTap : 1;                                 // 0x02AC(0x0001) (BlueprintVisible)
+	unsigned char                                      bMoveStickIsTouched : 1;                                  // 0x02AC(0x0001) (BlueprintVisible)
+	unsigned char                                      bMoveStickIsLocked : 1;                                   // 0x02AC(0x0001) (BlueprintVisible)
+	unsigned char                                      bLookStickIsTouched : 1;                                  // 0x02AC(0x0001) (BlueprintVisible)
+	unsigned char                                      bIsLockedOn : 1;                                          // 0x02AC(0x0001) (BlueprintVisible)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x02AD(0x0003) MISSED OFFSET
+	float                                              MoveStickLockTimeToHold;                                  // 0x02B0(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              MoveStickLastTouchTime;                                   // 0x02B4(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UMaterialInstanceDynamic*                    LockBar_MID;                                              // 0x02B8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              MovePlayerRegionLastTouchTime;                            // 0x02C0(0x0004) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	struct FVector2D                                   MovePlayerRegionLastTouchPos;                             // 0x02C4(0x0008) (BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	struct FVector2D                                   RotateCameraRegionTouchStartPos;                          // 0x02CC(0x0008) (BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	struct FVector2D                                   RotateCameraRegionLastTouchPos;                           // 0x02D4(0x0008) (BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	struct FVector2D                                   RotateCameraPlayerRegionLastTouchDiff;                    // 0x02DC(0x0008) (BlueprintVisible, IsPlainOldData)
+	float                                              RotateCameraLastTouchTime;                                // 0x02E4(0x0004) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x8];                                       // 0x02E8(0x0008) MISSED OFFSET
+	class UCurveFloat*                                 RotateInertiaCurve;                                       // 0x02F0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FVector2D                                   LockOnStickOrigin;                                        // 0x02F8(0x0008) (BlueprintVisible, IsPlainOldData)
+	struct FVector2D                                   LockOnStickCurrentPos;                                    // 0x0300(0x0008) (BlueprintVisible, BlueprintReadOnly, IsPlainOldData)
+	struct FVector2D                                   LockOnBarOffset;                                          // 0x0308(0x0008) (Edit, BlueprintVisible, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x10];                                      // 0x0310(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -11018,34 +12673,42 @@ public:
 	void SetMoveStickPos(const struct FVector2D& NewMoveStickPos);
 	void SetLockOnStickPosition(const struct FVector2D& LocalPos);
 	void SetFeedbackPosition(const struct FGeometry& InGeometry, const struct FPointerEvent& InGestureEvent);
+	void ResetTouchState();
 	void OnRotatePlayerRegionTouchStarted(const struct FGeometry& InGeometry, const struct FPointerEvent& InGestureEvent);
 	void OnRotatePlayerRegionTouchMoved(const struct FGeometry& InGeometry, const struct FPointerEvent& InGestureEvent, const struct FVector2D& MoveDelta);
-	void OnRotatePlayerRegionTouchLost();
+	void OnRotatePlayerRegionTouchLost(int PointerIndex);
 	void OnRotatePlayerRegionTouchEnded(const struct FGeometry& InGeometry, const struct FPointerEvent& InGestureEvent);
 	void OnRegionTouchStarted(EFortTouchControlRegion Region, const struct FGeometry& InGeometry, const struct FPointerEvent& InGestureEvent);
 	void OnRegionTouchMoved(EFortTouchControlRegion Region, const struct FGeometry& InGeometry, const struct FPointerEvent& InGestureEvent, const struct FVector2D& MoveDelta);
 	void OnRegionTouchEnded(EFortTouchControlRegion Region, const struct FGeometry& InGeometry, const struct FPointerEvent& InGestureEvent);
 	void OnMovePlayerRegionTouchStarted(const struct FGeometry& InGeometry, const struct FPointerEvent& InGestureEvent);
 	void OnMovePlayerRegionTouchMoved(const struct FGeometry& InGeometry, const struct FPointerEvent& InGestureEvent);
-	void OnMovePlayerRegionTouchLost();
+	void OnMovePlayerRegionTouchLost(int PointerIndex);
 	void OnMovePlayerRegionTouchEnded(const struct FGeometry& InGeometry, const struct FPointerEvent& InGestureEvent);
 	void OnCursorModeChanged(bool bCursorModeEnabled, const struct FName& ActionName, class UUserWidget* CustomWidget);
+	void OnAdditionalTouchStarted(const struct FGeometry& InGeometry, const struct FPointerEvent& InGestureEvent);
+	void OnAdditionalTouchLost(int PointerIndex);
+	void OnAdditionalTouchEnded(const struct FGeometry& InGeometry, const struct FPointerEvent& InGestureEvent);
 	bool MoveStickIsInSprintThreshold();
 	bool MoveStickIsInLockPosition();
 	void MovePlayerRegionTick(const struct FGeometry& InGeometry, float DeltaTime);
 	bool IsRotatePlayerRegionTouched();
 	bool IsMovePlayerRegionTouched();
+	bool IsFiring();
+	float GetMoveStickRange();
 	bool CanLockMoveStick();
 };
 
 
 // Class FortniteUI.FortTouchLookStick
-// 0x0030 (0x0288 - 0x0258)
+// 0x0050 (0x03A0 - 0x0350)
 class UFortTouchLookStick : public UBacchusHUDElement
 {
 public:
-	unsigned char                                      UnknownData00[0x28];                                      // 0x0258(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortTouchLookStick.FireImageRef
-	struct FVector2D                                   FireImageAbsoluteOffset;                                  // 0x0280(0x0008) (Edit, BlueprintVisible, IsPlainOldData)
+	class USizeBox*                                    MainSizeBox;                                              // 0x0350(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x28];                                      // 0x0358(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortTouchLookStick.FireImageRef
+	struct FVector2D                                   FireImageAbsoluteOffset;                                  // 0x0380(0x0008) (Edit, BlueprintVisible, IsPlainOldData)
+	struct FText                                       SizePropertyName;                                         // 0x0388(0x0018) (Edit, BlueprintVisible)
 
 	static UClass* StaticClass()
 	{
@@ -11056,18 +12719,23 @@ public:
 
 	void SetTouchStickPositionLocal(const struct FVector2D& TouchPosition);
 	void SetTouchStickPositionAbsolute(const struct FVector2D& TouchPosition);
+	void SetSize(float NewSize);
 	void SetFiringState(bool IsFiring);
 	bool IsFireButtonUnderTouch(const struct FVector2D& TouchPosition);
+	float GetSize();
 };
 
 
 // Class FortniteUI.FortTouchMoveStick
-// 0x0008 (0x0260 - 0x0258)
+// 0x0028 (0x0378 - 0x0350)
 class UFortTouchMoveStick : public UBacchusHUDElement
 {
 public:
-	bool                                               bIsTouched;                                               // 0x0258(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0259(0x0007) MISSED OFFSET
+	bool                                               bIsTouched;                                               // 0x0350(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0351(0x0007) MISSED OFFSET
+	struct FText                                       AlwaysShowPropertyName;                                   // 0x0358(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	bool                                               bAlwaysShowWhenTouched;                                   // 0x0370(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0371(0x0007) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -11101,11 +12769,11 @@ public:
 
 
 // Class FortniteUI.FortTransformKeyPicker
-// 0x0060 (0x02E0 - 0x0280)
+// 0x0068 (0x0310 - 0x02A8)
 class UFortTransformKeyPicker : public UFortItemPickerBase
 {
 public:
-	unsigned char                                      UnknownData00[0x60];                                      // 0x0280(0x0060) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x68];                                      // 0x02A8(0x0068) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -11119,7 +12787,7 @@ public:
 
 
 // Class FortniteUI.FortTransformKeyPickerTileButton
-// 0x0000 (0x0838 - 0x0838)
+// 0x0000 (0x08B8 - 0x08B8)
 class UFortTransformKeyPickerTileButton : public UFortItemPickerButton
 {
 public:
@@ -11134,11 +12802,11 @@ public:
 
 
 // Class FortniteUI.FortTransformSlotItemPicker
-// 0x0008 (0x0288 - 0x0280)
+// 0x0008 (0x02B0 - 0x02A8)
 class UFortTransformSlotItemPicker : public UFortItemPickerBase
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0280(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x02A8(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -11152,7 +12820,7 @@ public:
 
 
 // Class FortniteUI.FortTransformSlotItemPickerTileButton
-// 0x0000 (0x0838 - 0x0838)
+// 0x0000 (0x08B8 - 0x08B8)
 class UFortTransformSlotItemPickerTileButton : public UFortItemPickerButton
 {
 public:
@@ -11167,13 +12835,13 @@ public:
 
 
 // Class FortniteUI.FortTrapDefenderItemPicker
-// 0x0070 (0x02F0 - 0x0280)
+// 0x0078 (0x0320 - 0x02A8)
 class UFortTrapDefenderItemPicker : public UFortItemPickerBase
 {
 public:
-	class UFortItemDetailsHostPanel*                   DetailsPanel;                                             // 0x0280(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TWeakObjectPtr<class ABuildingTrapDefender>        DefenderTrap;                                             // 0x0288(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x60];                                      // 0x0290(0x0060) MISSED OFFSET
+	class UFortItemDetailsHostPanel*                   DetailsPanel;                                             // 0x02A8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TWeakObjectPtr<class ABuildingTrapDefender>        DefenderTrap;                                             // 0x02B0(0x0008) (BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x68];                                      // 0x02B8(0x0068) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -11183,6 +12851,27 @@ public:
 
 
 	void HandleSelectionCommittedBP(class UFortItem* CommittedItem);
+};
+
+
+// Class FortniteUI.FortTravelLogMap
+// 0x0030 (0x0238 - 0x0208)
+class UFortTravelLogMap : public UUserWidget
+{
+public:
+	float                                              MapSize;                                                  // 0x0208(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	float                                              CurrentTimeFraction;                                      // 0x020C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	int                                                DistanceToCoalescePositions;                              // 0x0210(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x24];                                      // 0x0214(0x0024) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortTravelLogMap");
+		return ptr;
+	}
+
+
+	void InitializeFromTravelRecord(const struct FAthenaTravelRecord& Record);
 };
 
 
@@ -11219,13 +12908,13 @@ public:
 
 
 // Class FortniteUI.FortTwitchLogin
-// 0x0050 (0x0268 - 0x0218)
+// 0x0050 (0x0260 - 0x0210)
 class UFortTwitchLogin : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x20];                                      // 0x0218(0x0020) MISSED OFFSET
-	unsigned char                                      UnknownData01[0x28];                                      // 0x0218(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortTwitchLogin.TwitchLoginModalWidgetClass
-	class UFortTwitchLoginModalWidget*                 ActiveLoginModal;                                         // 0x0260(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x20];                                      // 0x0210(0x0020) MISSED OFFSET
+	unsigned char                                      UnknownData01[0x28];                                      // 0x0210(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortTwitchLogin.TwitchLoginModalWidgetClass
+	class UFortTwitchLoginModalWidget*                 ActiveLoginModal;                                         // 0x0258(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -11249,12 +12938,11 @@ public:
 
 
 // Class FortniteUI.FortTwitchLoginModalWidget
-// 0x0010 (0x0400 - 0x03F0)
+// 0x0008 (0x0330 - 0x0328)
 class UFortTwitchLoginModalWidget : public UFortActivatablePanel
 {
 public:
-	class UNativeWidgetHost*                           NativeHost;                                               // 0x03F0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x03F8(0x0008) MISSED OFFSET
+	class UNativeWidgetHost*                           NativeHost;                                               // 0x0328(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -11291,142 +12979,158 @@ public:
 
 
 // Class FortniteUI.FortUIDataConfiguration
-// 0x30A8 (0x30D8 - 0x0030)
+// 0x31D0 (0x3200 - 0x0030)
 class UFortUIDataConfiguration : public UPrimaryDataAsset
 {
 public:
 	struct FString                                     DefaultUIDataConfigurationPath;                           // 0x0030(0x0010) (ZeroConstructor, Config)
 	struct FString                                     MobileUIDataConfigurationPath;                            // 0x0040(0x0010) (ZeroConstructor, Config)
 	struct FString                                     BROnlyUIDataConfigurationPath;                            // 0x0050(0x0010) (ZeroConstructor, Config)
-	unsigned char                                      UnknownData00[0x1E0];                                     // 0x0060(0x01E0) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.StateWidgetClasses
-	unsigned char                                      UnknownData01[0x10];                                      // 0x0240(0x0010) UNKNOWN PROPERTY: ArrayProperty FortniteUI.FortUIDataConfiguration.CachedWidgetClasses
-	TMap<TEnumAsByte<EFortBrushSize>, int>             StandardImageBrushSizes;                                  // 0x0250(0x0050) (Edit, ZeroConstructor, DisableEditOnInstance)
-	unsigned char                                      UnknownData02[0x28];                                      // 0x02A0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.PowerRatingIconMultiSizeBrush
-	struct FLinearColor                                PowerRatingEnchantedPositiveColorOverride;                // 0x02C8(0x0010) (Edit, DisableEditOnInstance, IsPlainOldData)
-	struct FLinearColor                                PowerRatingEnchantedNegativeColorOverride;                // 0x02D8(0x0010) (Edit, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x28];                                      // 0x02E8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.FilledTierPipMultiSizeBrush
-	unsigned char                                      UnknownData04[0x28];                                      // 0x0310(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UnfilledTierPipMultiSizeBrush
-	unsigned char                                      UnknownData05[0x28];                                      // 0x0338(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.PreviewingTierPipMultiSizeBrush
-	unsigned char                                      UnknownData06[0x28];                                      // 0x0360(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UpgradeArrowMultiSizeBrush
-	unsigned char                                      UnknownData07[0x28];                                      // 0x0388(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ComparisonUpArrowMultiSizeBrush
-	struct FLinearColor                                BetterComparisonResultColor;                              // 0x03B0(0x0010) (Edit, DisableEditOnInstance, IsPlainOldData)
-	struct FLinearColor                                WorseComparisonResultColor;                               // 0x03C0(0x0010) (Edit, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData08[0x28];                                      // 0x03D0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.InventoryOverflowIndicatorMultiSizeBrush
-	unsigned char                                      UnknownData09[0x28];                                      // 0x03F8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.TrackedSchematicIndicatorMultiSizeBrush
-	unsigned char                                      UnknownData10[0x28];                                      // 0x0420(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.FavoritedItemIndicatorMultiSizeBrush
-	bool                                               bEnableSocialFeatures;                                    // 0x0448(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               bEnableChat;                                              // 0x0449(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               bEnablePartyFeatures;                                     // 0x044A(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData11[0x5];                                       // 0x044B(0x0005) MISSED OFFSET
-	unsigned char                                      UnknownData12[0x28];                                      // 0x044B(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UnlockedSquadSlotBorderMultiSizeBrush
-	unsigned char                                      UnknownData13[0x28];                                      // 0x0478(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.LockedSquadSlotBorderMultiSizeBrush
-	unsigned char                                      UnknownData14[0x28];                                      // 0x04A0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ReadOnlySquadSlotBorderMultiSizeBrush
-	unsigned char                                      UnknownData15[0x28];                                      // 0x04C8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.DefenderIconMultiSizeBrush
-	unsigned char                                      UnknownData16[0x28];                                      // 0x04F0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.AssaultDefenderIconMultiSizeBrush
-	unsigned char                                      UnknownData17[0x28];                                      // 0x0518(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.PistolDefenderIconMultiSizeBrush
-	unsigned char                                      UnknownData18[0x28];                                      // 0x0540(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.MeleeDefenderIconMultiSizeBrush
-	unsigned char                                      UnknownData19[0x28];                                      // 0x0568(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.SniperDefenderIconMultiSizeBrush
-	unsigned char                                      UnknownData20[0x28];                                      // 0x0590(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ShotgunDefenderIconMultiSizeBrush
-	unsigned char                                      UnknownData21[0x28];                                      // 0x05B8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.LeadSurvivorIconMultiSizeBrush
-	unsigned char                                      UnknownData22[0x28];                                      // 0x05E0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.SurvivorIconMultiSizeBrush
-	unsigned char                                      UnknownData23[0x28];                                      // 0x0608(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.TrapIconMultiSizeBrush
-	unsigned char                                      UnknownData24[0x28];                                      // 0x0630(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.KeybindWidgetClass
-	unsigned char                                      UnknownData25[0x28];                                      // 0x0658(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.HiddenCursorWidget
-	unsigned char                                      UnknownData26[0x28];                                      // 0x0680(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.VirtualCursorWidget
-	struct FRuntimeFloatCurve                          UIScaleCurve;                                             // 0x06A8(0x0078) (Edit, Config)
-	struct FRuntimeFloatCurve                          FrontEndUIScaleCurve;                                     // 0x0720(0x0078) (Edit, Config)
-	EFortReturnToFrontendBehavior                      ReturnToFrontendBehavior;                                 // 0x0798(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData27[0x3];                                       // 0x0799(0x0003) MISSED OFFSET
-	float                                              SkillTreeMinimumZoomLevel;                                // 0x079C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              SkillTreeMaximumZoomLevel;                                // 0x07A0(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              SkillTreeZoomLevelIncrement;                              // 0x07A4(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              SkillTreeZoomLevelIncrementController;                    // 0x07A8(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              SkillTreeZoomLevelIncrementMobile;                        // 0x07AC(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	struct FFortSkillTreeCanvasStyle                   SkillTreeCanvasStyle;                                     // 0x07B0(0x0034) (Edit, DisableEditOnInstance)
-	unsigned char                                      UnknownData28[0x4];                                       // 0x07E4(0x0004) MISSED OFFSET
-	unsigned char                                      UnknownData29[0x28];                                      // 0x07E4(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.DefaultSkillTreeNodeWidgetType
-	unsigned char                                      UnknownData30[0x50];                                      // 0x0810(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.SkillTreeNodeWidgetTypeMap
-	unsigned char                                      UnknownData31[0x28];                                      // 0x0860(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.SkillTreeNodeDisplayDataRegistry
-	TMap<TEnumAsByte<EFortBrushSize>, class UClass*>   ItemCardPowerRatingTextStylesByBrushSize;                 // 0x0888(0x0050) (Edit, EditFixedSize, ZeroConstructor, DisableEditOnInstance)
-	TMap<TEnumAsByte<EFortBrushSize>, class UClass*>   ItemCardStackCountTextStylesByBrushSize;                  // 0x08D8(0x0050) (Edit, EditFixedSize, ZeroConstructor, DisableEditOnInstance)
-	unsigned char                                      UnknownData32[0x28];                                      // 0x0928(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ItemCardLevelMeterMaterial
-	unsigned char                                      UnknownData33[0x28];                                      // 0x0950(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ItemCardDurabilityMeterMaterial
-	struct FSlateBrush                                 ItemCardBackgroundPlateBrush;                             // 0x0978(0x0088) (Edit, DisableEditOnInstance)
-	struct FSlateBrush                                 ItemCardRarityGradientBrush;                              // 0x0A00(0x0088) (Edit, DisableEditOnInstance)
-	struct FSlateBrush                                 ItemCardDefenderPortraitBackgroundBrush;                  // 0x0A88(0x0088) (Edit, DisableEditOnInstance)
-	struct FSlateBrush                                 ItemCardHeroPortraitBackgroundBrush;                      // 0x0B10(0x0088) (Edit, DisableEditOnInstance)
-	struct FSlateBrush                                 ItemCardLeadSurvivorPortraitBackgroundBrush;              // 0x0B98(0x0088) (Edit, DisableEditOnInstance)
-	struct FSlateBrush                                 ItemCardSchematicBackgroundBrush;                         // 0x0C20(0x0088) (Edit, DisableEditOnInstance)
-	unsigned char                                      UnknownData34[0x28];                                      // 0x0CA8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ItemCardRewardTraitsBackgroundMultiSizeBrush
-	unsigned char                                      UnknownData35[0x28];                                      // 0x0CD0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ItemCardSchematicTraitsBackgroundMultiSizeBrush
-	unsigned char                                      UnknownData36[0x28];                                      // 0x0CF8(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.FrontendItemManagementScreenType
-	unsigned char                                      UnknownData37[0x28];                                      // 0x0D20(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.FrontendItemInspectionScreenType
-	unsigned char                                      UnknownData38[0x28];                                      // 0x0D48(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.SkillTreeViewerScreenType
-	unsigned char                                      UnknownData39[0x28];                                      // 0x0D70(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.HeroSquadManagementScreenType
-	unsigned char                                      UnknownData40[0x28];                                      // 0x0D98(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.SurvivorSquadManagementScreenType
-	unsigned char                                      UnknownData41[0x28];                                      // 0x0DC0(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.DefenderSquadManagementScreenType
-	unsigned char                                      UnknownData42[0x28];                                      // 0x0DE8(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.MatchReadyDesktopPopupWidgetType
-	unsigned char                                      UnknownData43[0x28];                                      // 0x0E10(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.MainTabSet
-	bool                                               bLimitedToES2Features;                                    // 0x0E38(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData44[0x7];                                       // 0x0E39(0x0007) MISSED OFFSET
-	struct FWeightedBlendables                         FrontEndFFPostProcessMaterials;                           // 0x0E40(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	bool                                               bUseSpecificPinataWeapon;                                 // 0x0E50(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               bQuestVOEnabled;                                          // 0x0E51(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData45[0x6];                                       // 0x0E52(0x0006) MISSED OFFSET
-	TMap<EFortItemCardSize, struct FVector2D>          PersonnelAndSchematicCardSizes;                           // 0x0E58(0x0050) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance)
-	TMap<EFortItemCardSize, struct FVector2D>          OtherItemCardSizes;                                       // 0x0EA8(0x0050) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance)
-	unsigned char                                      UnknownData46[0x50];                                      // 0x0EF8(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.PersonnelAndSchematicItemCardMaterial
-	unsigned char                                      UnknownData47[0x50];                                      // 0x0F48(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.CardPackItemCardMaterial
-	unsigned char                                      UnknownData48[0x50];                                      // 0x0F98(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.InstanceItemCardMaterial
-	unsigned char                                      UnknownData49[0x50];                                      // 0x0FE8(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.TransformKeyItemCardMaterial
-	unsigned char                                      UnknownData50[0x50];                                      // 0x1038(0x0050) UNKNOWN PROPERTY: SetProperty FortniteUI.FortUIDataConfiguration.ItemTypesThatShouldUseCosmeticItemCardMaterials
-	unsigned char                                      UnknownData51[0x50];                                      // 0x1088(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.CosmeticItemCardMaterial
-	TArray<EFortItemType>                              ItemTypesWhoseImagesReplaceCardBackgrounds;               // 0x10D8(0x0010) (Edit, ZeroConstructor, DisableEditOnInstance)
-	unsigned char                                      UnknownData52[0x50];                                      // 0x10E8(0x0050) UNKNOWN PROPERTY: SetProperty FortniteUI.FortUIDataConfiguration.ItemTypesToHideCountWhenCountEqualsOne
-	unsigned char                                      UnknownData53[0x50];                                      // 0x1138(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.ItemCardDetailAreaMaterial
-	unsigned char                                      UnknownData54[0x28];                                      // 0x1188(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.FavoriteBookmarkMultiSizeBrush
-	unsigned char                                      UnknownData55[0x28];                                      // 0x11B0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.PermanentTransformKeykMultiSizeBrush
-	unsigned char                                      UnknownData56[0x28];                                      // 0x11D8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ConsumableTransformKeykMultiSizeBrush
-	unsigned char                                      UnknownData57[0x50];                                      // 0x1200(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.DefenderSubtypeWeaponTextures
-	unsigned char                                      UnknownData58[0x50];                                      // 0x1250(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.EnchantedCustomRatingBlockBackgroundMaterial
-	unsigned char                                      UnknownData59[0x50];                                      // 0x12A0(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.NormalCustomRatingBlockBackgroundMaterial
-	struct FMargin                                     CustomRatingBlockBackgroundBrushMargin;                   // 0x12F0(0x0010) (Edit, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData60[0x28];                                      // 0x1300(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UniversalItemCardDurabilityMeterMaterial
-	unsigned char                                      UnknownData61[0x28];                                      // 0x1328(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UniversalItemCardLevelMeterMaterial
-	unsigned char                                      UnknownData62[0x28];                                      // 0x1350(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UniversalItemCardTraitIconMaterial
-	unsigned char                                      UnknownData63[0x28];                                      // 0x1378(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UniversalItemCardUnearnedTierIconMaterial
-	unsigned char                                      UnknownData64[0x28];                                      // 0x13A0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UniversalItemCardAvailableTierIconMaterial
-	unsigned char                                      UnknownData65[0x28];                                      // 0x13C8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UniversalItemCardEarnedTierIconMaterial
-	unsigned char                                      UnknownData66[0x28];                                      // 0x13F0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.MysteryItemDefinition
-	struct FFortItemCard_XL_PersonnelAndSchematics_Configuration ItemCardConfig_XXL_PersonnelAndSchematics;                // 0x1418(0x0350) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_XL_ItemInstance_Configuration ItemCardConfig_XXL_ItemInstance;                          // 0x1768(0x01B0) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_XL_TransformKey_Configuration ItemCardConfig_XXL_TransformKey;                          // 0x1918(0x0048) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_XL_PersonnelAndSchematics_Configuration ItemCardConfig_XL_PersonnelAndSchematics;                 // 0x1960(0x0350) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_XL_ItemInstance_Configuration ItemCardConfig_XL_ItemInstance;                           // 0x1CB0(0x01B0) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_XL_TransformKey_Configuration ItemCardConfig_XL_TransformKey;                           // 0x1E60(0x0048) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_L_PersonnelAndSchematics_Configuration ItemCardConfig_L_PersonnelAndSchematics;                  // 0x1EA8(0x02C8) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_L_ItemInstance_Configuration  ItemCardConfig_L_ItemInstance;                            // 0x2170(0x01B0) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_L_TransformKey_Configuration  ItemCardConfig_L_TransformKey;                            // 0x2320(0x0048) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_M_PersonnelAndSchematics_Configuration ItemCardConfig_M_PersonnelAndSchematics;                  // 0x2368(0x02C8) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_M_ItemInstance_Configuration  ItemCardConfig_M_ItemInstance;                            // 0x2630(0x01B0) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_M_TransformKey_Configuration  ItemCardConfig_M_TransformKey;                            // 0x27E0(0x0048) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_S_PersonnelAndSchematics_Configuration ItemCardConfig_S_PersonnelAndSchematics;                  // 0x2828(0x02C8) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_S_ItemInstance_Configuration  ItemCardConfig_S_ItemInstance;                            // 0x2AF0(0x01A0) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_S_TransformKey_Configuration  ItemCardConfig_S_TransformKey;                            // 0x2C90(0x0048) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_XS_PersonnelAndSchematics_Configuration ItemCardConfig_XS_PersonnelAndSchematics;                 // 0x2CD8(0x0034) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	unsigned char                                      UnknownData67[0x4];                                       // 0x2D0C(0x0004) MISSED OFFSET
-	struct FFortItemCard_XS_ItemInstance_Configuration ItemCardConfig_XS_ItemInstance;                           // 0x2D10(0x0188) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_XS_TransformKey_Configuration ItemCardConfig_XS_TransformKey;                           // 0x2E98(0x0048) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_XS_PersonnelAndSchematics_Configuration ItemCardConfig_XXS_PersonnelAndSchematics;                // 0x2EE0(0x0034) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	unsigned char                                      UnknownData68[0x4];                                       // 0x2F14(0x0004) MISSED OFFSET
-	struct FFortItemCard_XXS_ItemInstance_Configuration ItemCardConfig_XXS_ItemInstance;                          // 0x2F18(0x0030) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	struct FFortItemCard_XS_TransformKey_Configuration ItemCardConfig_XXS_TransformKey;                          // 0x2F48(0x0048) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
-	unsigned char                                      UnknownData69[0x28];                                      // 0x2F90(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.HealthyGamingDataTable
-	class UFortTooltipDisplayStatsLookupTable*         ObjClassToTooltipStatsMap;                                // 0x2FB8(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData70[0x28];                                      // 0x2FC0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ActorCanvasArrowBrush
-	TMap<struct FString, struct FPlatformPrefixIconList> PlatformPrefixIconMap;                                    // 0x2FE8(0x0050) (Edit, ZeroConstructor, Config, DisableEditOnInstance)
-	unsigned char                                      UnknownData71[0x50];                                      // 0x3038(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.LegacyNativeUIBrushMap
-	unsigned char                                      UnknownData72[0x50];                                      // 0x3088(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.LegacyNativeUIAssetMap
+	struct FString                                     ErebusUIDataConfigurationPath;                            // 0x0060(0x0010) (ZeroConstructor, Config)
+	unsigned char                                      UnknownData00[0x208];                                     // 0x0070(0x0208) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.StateWidgetClasses
+	unsigned char                                      UnknownData01[0x10];                                      // 0x0278(0x0010) UNKNOWN PROPERTY: ArrayProperty FortniteUI.FortUIDataConfiguration.CachedWidgetClasses
+	TMap<TEnumAsByte<EFortBrushSize>, int>             StandardImageBrushSizes;                                  // 0x0288(0x0050) (Edit, ZeroConstructor, DisableEditOnInstance)
+	unsigned char                                      UnknownData02[0x28];                                      // 0x02D8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.PowerRatingIconMultiSizeBrush
+	struct FLinearColor                                PowerRatingEnchantedPositiveColorOverride;                // 0x0300(0x0010) (Edit, DisableEditOnInstance, IsPlainOldData)
+	struct FLinearColor                                PowerRatingEnchantedNegativeColorOverride;                // 0x0310(0x0010) (Edit, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x28];                                      // 0x0320(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.FilledTierPipMultiSizeBrush
+	unsigned char                                      UnknownData04[0x28];                                      // 0x0348(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UnfilledTierPipMultiSizeBrush
+	unsigned char                                      UnknownData05[0x28];                                      // 0x0370(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.PreviewingTierPipMultiSizeBrush
+	unsigned char                                      UnknownData06[0x28];                                      // 0x0398(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UpgradeArrowMultiSizeBrush
+	unsigned char                                      UnknownData07[0x28];                                      // 0x03C0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ComparisonUpArrowMultiSizeBrush
+	struct FLinearColor                                BetterComparisonResultColor;                              // 0x03E8(0x0010) (Edit, DisableEditOnInstance, IsPlainOldData)
+	struct FLinearColor                                WorseComparisonResultColor;                               // 0x03F8(0x0010) (Edit, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData08[0x28];                                      // 0x0408(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.InventoryOverflowIndicatorMultiSizeBrush
+	unsigned char                                      UnknownData09[0x28];                                      // 0x0430(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.TrackedSchematicIndicatorMultiSizeBrush
+	unsigned char                                      UnknownData10[0x28];                                      // 0x0458(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.FavoritedItemIndicatorMultiSizeBrush
+	TMap<struct FGameplayTag, struct FFortUIStatStyle> ProfileStatStyles;                                        // 0x0480(0x0050) (Edit, ZeroConstructor, DisableEditOnInstance)
+	TArray<class UFortUIDataProfileStats*>             ProfileStatStyleSets;                                     // 0x04D0(0x0010) (Edit, ZeroConstructor, DisableEditOnInstance)
+	TMap<class UClass*, class UClass*>                 VariantToWidgetMaping;                                    // 0x04E0(0x0050) (Edit, ZeroConstructor, DisableEditOnInstance)
+	bool                                               bEnableSocialFeatures;                                    // 0x0530(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               bEnableChat;                                              // 0x0531(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               bEnablePartyFeatures;                                     // 0x0532(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData11[0x5];                                       // 0x0533(0x0005) MISSED OFFSET
+	unsigned char                                      UnknownData12[0x28];                                      // 0x0533(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UnlockedSquadSlotBorderMultiSizeBrush
+	unsigned char                                      UnknownData13[0x28];                                      // 0x0560(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.LockedSquadSlotBorderMultiSizeBrush
+	unsigned char                                      UnknownData14[0x28];                                      // 0x0588(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ReadOnlySquadSlotBorderMultiSizeBrush
+	unsigned char                                      UnknownData15[0x28];                                      // 0x05B0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.DefenderIconMultiSizeBrush
+	unsigned char                                      UnknownData16[0x28];                                      // 0x05D8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.AssaultDefenderIconMultiSizeBrush
+	unsigned char                                      UnknownData17[0x28];                                      // 0x0600(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.PistolDefenderIconMultiSizeBrush
+	unsigned char                                      UnknownData18[0x28];                                      // 0x0628(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.MeleeDefenderIconMultiSizeBrush
+	unsigned char                                      UnknownData19[0x28];                                      // 0x0650(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.SniperDefenderIconMultiSizeBrush
+	unsigned char                                      UnknownData20[0x28];                                      // 0x0678(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ShotgunDefenderIconMultiSizeBrush
+	unsigned char                                      UnknownData21[0x28];                                      // 0x06A0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.LeadSurvivorIconMultiSizeBrush
+	unsigned char                                      UnknownData22[0x28];                                      // 0x06C8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.SurvivorIconMultiSizeBrush
+	unsigned char                                      UnknownData23[0x28];                                      // 0x06F0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.TrapIconMultiSizeBrush
+	unsigned char                                      UnknownData24[0x28];                                      // 0x0718(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.KeybindWidgetClass
+	unsigned char                                      UnknownData25[0x28];                                      // 0x0740(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.HiddenCursorWidget
+	unsigned char                                      UnknownData26[0x28];                                      // 0x0768(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.VirtualCursorWidget
+	struct FRuntimeFloatCurve                          UIScaleCurve;                                             // 0x0790(0x0078) (Edit, Config)
+	struct FRuntimeFloatCurve                          FrontEndUIScaleCurve;                                     // 0x0808(0x0078) (Edit, Config)
+	EFortReturnToFrontendBehavior                      ReturnToFrontendBehavior;                                 // 0x0880(0x0001) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData27[0x3];                                       // 0x0881(0x0003) MISSED OFFSET
+	float                                              SkillTreeMinimumZoomLevel;                                // 0x0884(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              SkillTreeMaximumZoomLevel;                                // 0x0888(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              SkillTreeZoomLevelIncrement;                              // 0x088C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              SkillTreeZoomLevelIncrementController;                    // 0x0890(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              SkillTreeZoomLevelIncrementMobile;                        // 0x0894(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FFortSkillTreeCanvasStyle                   SkillTreeCanvasStyle;                                     // 0x0898(0x0034) (Edit, DisableEditOnInstance)
+	unsigned char                                      UnknownData28[0x4];                                       // 0x08CC(0x0004) MISSED OFFSET
+	unsigned char                                      UnknownData29[0x28];                                      // 0x08CC(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.DefaultSkillTreeNodeWidgetType
+	unsigned char                                      UnknownData30[0x50];                                      // 0x08F8(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.SkillTreeNodeWidgetTypeMap
+	unsigned char                                      UnknownData31[0x28];                                      // 0x0948(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.SkillTreeNodeDisplayDataRegistry
+	TMap<TEnumAsByte<EFortBrushSize>, class UClass*>   ItemCardPowerRatingTextStylesByBrushSize;                 // 0x0970(0x0050) (Edit, EditFixedSize, ZeroConstructor, DisableEditOnInstance)
+	TMap<TEnumAsByte<EFortBrushSize>, class UClass*>   ItemCardStackCountTextStylesByBrushSize;                  // 0x09C0(0x0050) (Edit, EditFixedSize, ZeroConstructor, DisableEditOnInstance)
+	unsigned char                                      UnknownData32[0x28];                                      // 0x0A10(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ItemCardLevelMeterMaterial
+	unsigned char                                      UnknownData33[0x28];                                      // 0x0A38(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ItemCardDurabilityMeterMaterial
+	struct FSlateBrush                                 ItemCardBackgroundPlateBrush;                             // 0x0A60(0x0088) (Edit, DisableEditOnInstance)
+	struct FSlateBrush                                 ItemCardRarityGradientBrush;                              // 0x0AE8(0x0088) (Edit, DisableEditOnInstance)
+	struct FSlateBrush                                 ItemCardDefenderPortraitBackgroundBrush;                  // 0x0B70(0x0088) (Edit, DisableEditOnInstance)
+	struct FSlateBrush                                 ItemCardHeroPortraitBackgroundBrush;                      // 0x0BF8(0x0088) (Edit, DisableEditOnInstance)
+	struct FSlateBrush                                 ItemCardLeadSurvivorPortraitBackgroundBrush;              // 0x0C80(0x0088) (Edit, DisableEditOnInstance)
+	struct FSlateBrush                                 ItemCardSchematicBackgroundBrush;                         // 0x0D08(0x0088) (Edit, DisableEditOnInstance)
+	unsigned char                                      UnknownData34[0x28];                                      // 0x0D90(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ItemCardRewardTraitsBackgroundMultiSizeBrush
+	unsigned char                                      UnknownData35[0x28];                                      // 0x0DB8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ItemCardSchematicTraitsBackgroundMultiSizeBrush
+	unsigned char                                      UnknownData36[0x28];                                      // 0x0DE0(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.FrontendItemManagementScreenType
+	unsigned char                                      UnknownData37[0x28];                                      // 0x0E08(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.FrontendItemInspectionScreenType
+	unsigned char                                      UnknownData38[0x28];                                      // 0x0E30(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.SkillTreeViewerScreenType
+	unsigned char                                      UnknownData39[0x28];                                      // 0x0E58(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.HeroSquadManagementScreenType
+	unsigned char                                      UnknownData40[0x28];                                      // 0x0E80(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.SurvivorSquadManagementScreenType
+	unsigned char                                      UnknownData41[0x28];                                      // 0x0EA8(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.DefenderSquadManagementScreenType
+	unsigned char                                      UnknownData42[0x28];                                      // 0x0ED0(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.MatchReadyDesktopPopupWidgetType
+	unsigned char                                      UnknownData43[0x28];                                      // 0x0EF8(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.MainTabSet
+	bool                                               bLimitedToES2Features;                                    // 0x0F20(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData44[0x7];                                       // 0x0F21(0x0007) MISSED OFFSET
+	struct FWeightedBlendables                         FrontEndFFPostProcessMaterials;                           // 0x0F28(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	bool                                               bUseSpecificPinataWeapon;                                 // 0x0F38(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               bQuestVOEnabled;                                          // 0x0F39(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData45[0x6];                                       // 0x0F3A(0x0006) MISSED OFFSET
+	TMap<EFortItemCardSize, struct FVector2D>          PersonnelAndSchematicCardSizes;                           // 0x0F40(0x0050) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance)
+	TMap<EFortItemCardSize, struct FVector2D>          OtherItemCardSizes;                                       // 0x0F90(0x0050) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance)
+	unsigned char                                      UnknownData46[0x50];                                      // 0x0FE0(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.PersonnelAndSchematicItemCardMaterial
+	unsigned char                                      UnknownData47[0x50];                                      // 0x1030(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.CardPackItemCardMaterial
+	unsigned char                                      UnknownData48[0x50];                                      // 0x1080(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.InstanceItemCardMaterial
+	unsigned char                                      UnknownData49[0x50];                                      // 0x10D0(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.TransformKeyItemCardMaterial
+	unsigned char                                      UnknownData50[0x50];                                      // 0x1120(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.CosmeticItemCardMaterial
+	TArray<EFortItemType>                              ItemTypesWhoseImagesReplaceCardBackgrounds;               // 0x1170(0x0010) (Edit, ZeroConstructor, DisableEditOnInstance)
+	unsigned char                                      UnknownData51[0x50];                                      // 0x1180(0x0050) UNKNOWN PROPERTY: SetProperty FortniteUI.FortUIDataConfiguration.ItemTypesToHideCountWhenCountEqualsOne
+	unsigned char                                      UnknownData52[0x50];                                      // 0x11D0(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.ItemCardDetailAreaMaterial
+	unsigned char                                      UnknownData53[0x28];                                      // 0x1220(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.FavoriteBookmarkMultiSizeBrush
+	unsigned char                                      UnknownData54[0x28];                                      // 0x1248(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.PermanentTransformKeykMultiSizeBrush
+	unsigned char                                      UnknownData55[0x28];                                      // 0x1270(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ConsumableTransformKeykMultiSizeBrush
+	unsigned char                                      UnknownData56[0x50];                                      // 0x1298(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.DefenderSubtypeWeaponTextures
+	unsigned char                                      UnknownData57[0x50];                                      // 0x12E8(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.EnchantedCustomRatingBlockBackgroundMaterial
+	unsigned char                                      UnknownData58[0x50];                                      // 0x1338(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.NormalCustomRatingBlockBackgroundMaterial
+	struct FMargin                                     CustomRatingBlockBackgroundBrushMargin;                   // 0x1388(0x0010) (Edit, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData59[0x28];                                      // 0x1398(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UniversalItemCardDurabilityMeterMaterial
+	unsigned char                                      UnknownData60[0x28];                                      // 0x13C0(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UniversalItemCardLevelMeterMaterial
+	unsigned char                                      UnknownData61[0x28];                                      // 0x13E8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UniversalItemCardTraitIconMaterial
+	unsigned char                                      UnknownData62[0x28];                                      // 0x1410(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UniversalItemCardUnearnedTierIconMaterial
+	unsigned char                                      UnknownData63[0x28];                                      // 0x1438(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UniversalItemCardAvailableTierIconMaterial
+	unsigned char                                      UnknownData64[0x28];                                      // 0x1460(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.UniversalItemCardEarnedTierIconMaterial
+	unsigned char                                      UnknownData65[0x28];                                      // 0x1488(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.MysteryItemDefinition
+	struct FFortItemCard_XL_PersonnelAndSchematics_Configuration ItemCardConfig_XXL_PersonnelAndSchematics;                // 0x14B0(0x0350) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_XL_ItemInstance_Configuration ItemCardConfig_XXL_ItemInstance;                          // 0x1800(0x01B0) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_XL_TransformKey_Configuration ItemCardConfig_XXL_TransformKey;                          // 0x19B0(0x0048) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_XL_PersonnelAndSchematics_Configuration ItemCardConfig_XL_PersonnelAndSchematics;                 // 0x19F8(0x0350) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_XL_ItemInstance_Configuration ItemCardConfig_XL_ItemInstance;                           // 0x1D48(0x01B0) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_XL_TransformKey_Configuration ItemCardConfig_XL_TransformKey;                           // 0x1EF8(0x0048) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_L_PersonnelAndSchematics_Configuration ItemCardConfig_L_PersonnelAndSchematics;                  // 0x1F40(0x02C8) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_L_ItemInstance_Configuration  ItemCardConfig_L_ItemInstance;                            // 0x2208(0x01B0) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_L_TransformKey_Configuration  ItemCardConfig_L_TransformKey;                            // 0x23B8(0x0048) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_M_PersonnelAndSchematics_Configuration ItemCardConfig_M_PersonnelAndSchematics;                  // 0x2400(0x02C8) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_M_ItemInstance_Configuration  ItemCardConfig_M_ItemInstance;                            // 0x26C8(0x01B0) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_M_TransformKey_Configuration  ItemCardConfig_M_TransformKey;                            // 0x2878(0x0048) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_S_PersonnelAndSchematics_Configuration ItemCardConfig_S_PersonnelAndSchematics;                  // 0x28C0(0x02C8) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_S_ItemInstance_Configuration  ItemCardConfig_S_ItemInstance;                            // 0x2B88(0x01A0) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_S_TransformKey_Configuration  ItemCardConfig_S_TransformKey;                            // 0x2D28(0x0048) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_XS_PersonnelAndSchematics_Configuration ItemCardConfig_XS_PersonnelAndSchematics;                 // 0x2D70(0x0034) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	unsigned char                                      UnknownData66[0x4];                                       // 0x2DA4(0x0004) MISSED OFFSET
+	struct FFortItemCard_XS_ItemInstance_Configuration ItemCardConfig_XS_ItemInstance;                           // 0x2DA8(0x0188) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_XS_TransformKey_Configuration ItemCardConfig_XS_TransformKey;                           // 0x2F30(0x0048) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_XS_PersonnelAndSchematics_Configuration ItemCardConfig_XXS_PersonnelAndSchematics;                // 0x2F78(0x0034) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	unsigned char                                      UnknownData67[0x4];                                       // 0x2FAC(0x0004) MISSED OFFSET
+	struct FFortItemCard_XXS_ItemInstance_Configuration ItemCardConfig_XXS_ItemInstance;                          // 0x2FB0(0x0030) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	struct FFortItemCard_XS_TransformKey_Configuration ItemCardConfig_XXS_TransformKey;                          // 0x2FE0(0x0048) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	unsigned char                                      UnknownData68[0x28];                                      // 0x3028(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.HealthyGamingDataTable
+	class UFortTooltipDisplayStatsLookupTable*         ObjClassToTooltipStatsMap;                                // 0x3050(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData69[0x28];                                      // 0x3058(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.LoadingScreenBacchusTutorialWidget
+	unsigned char                                      UnknownData70[0x28];                                      // 0x3080(0x0028) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIDataConfiguration.LoadingScreenVBuckScamWarning
+	unsigned char                                      UnknownData71[0x28];                                      // 0x30A8(0x0028) UNKNOWN PROPERTY: SoftObjectProperty FortniteUI.FortUIDataConfiguration.ActorCanvasArrowBrush
+	TMap<struct FString, struct FPlatformPrefixIconList> PlatformPrefixIconMap;                                    // 0x30D0(0x0050) (Edit, ZeroConstructor, Config, DisableEditOnInstance)
+	class UFortOptionsMenuData*                        GameOptionsMenuData;                                      // 0x3120(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData72[0x50];                                      // 0x3128(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.LegacyNativeUIBrushMap
+	unsigned char                                      UnknownData73[0x50];                                      // 0x3178(0x0050) UNKNOWN PROPERTY: MapProperty FortniteUI.FortUIDataConfiguration.LegacyNativeUIAssetMap
+	float                                              AnalogRotateSpeed;                                        // 0x31C8(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              DragRotateSpeed;                                          // 0x31CC(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              TouchSwipeRotateRate;                                     // 0x31D0(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              MouseWheelZoomSpeed;                                      // 0x31D4(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              DragZoomSpeed;                                            // 0x31D8(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              TriggerZoomSpeed;                                         // 0x31DC(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              TouchZoomPinchRate;                                       // 0x31E0(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              ItemViewCompetingAxisInputThreshold;                      // 0x31E4(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	TArray<EFortItemType>                              ItemTypesToUseVaultCamera;                                // 0x31E8(0x0010) (Edit, ZeroConstructor, DisableEditOnInstance)
+	class UClass*                                      FrontendItemViewSettingsManager;                          // 0x31F8(0x0008) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -11458,34 +13162,51 @@ public:
 	bool IsQuestVOEnabled();
 	bool IsLimitedToES2Features();
 	bool IsChatEnabled();
+	TArray<EFortItemType> GetItemTypesToUseVaultCamera();
 	struct FPostProcessSettings GetFrontEndFFSettings();
 	bool AreSocialFeaturesEnabled();
 	bool ArePartyFeaturesEnabled();
 };
 
 
+// Class FortniteUI.FortUIDataProfileStats
+// 0x0050 (0x0080 - 0x0030)
+class UFortUIDataProfileStats : public UDataAsset
+{
+public:
+	TMap<struct FGameplayTag, struct FFortUIStatStyle> ProfileStatStyles;                                        // 0x0030(0x0050) (Edit, ZeroConstructor, DisableEditOnInstance)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortUIDataProfileStats");
+		return ptr;
+	}
+
+};
+
+
 // Class FortniteUI.FortUIManagerWidget
-// 0x02F0 (0x0510 - 0x0220)
+// 0x02B8 (0x04D0 - 0x0218)
 class UFortUIManagerWidget : public UFortUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0220(0x0008) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnBeginSpokenDialog;                                      // 0x0228(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnEndSpokenDialog;                                        // 0x0238(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	unsigned char                                      UnknownData01[0x1E0];                                     // 0x0248(0x01E0) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIManagerWidget.StateWidgets
-	EFortUIState                                       CurrentState;                                             // 0x0428(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	EFortUIState                                       PendingState;                                             // 0x0429(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x6];                                       // 0x042A(0x0006) MISSED OFFSET
-	class UFortUIStateWidget*                          CurrentStateWidget;                                       // 0x0430(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	TArray<class UClass*>                              LoadedStateWidgetClasses;                                 // 0x0438(0x0010) (ZeroConstructor, Transient)
-	TArray<class UFortUIStateTrigger*>                 StateTriggers;                                            // 0x0448(0x0010) (ZeroConstructor, Transient)
-	TArray<class UFortActionHandlerPanel*>             ActionHandlerPanels;                                      // 0x0458(0x0010) (ExportObject, ZeroConstructor, Transient)
-	unsigned char                                      UnknownData03[0x8];                                       // 0x0468(0x0008) MISSED OFFSET
-	class UFortNotificationQueue*                      UINotificationQueues[0x3];                                // 0x0470(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	bool                                               bIsStateContentDisplayed;                                 // 0x0488(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData04[0x7];                                       // 0x0489(0x0007) MISSED OFFSET
-	class UFortUINavigationManager*                    NavigationManager;                                        // 0x0490(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData05[0x78];                                      // 0x0498(0x0078) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnBeginSpokenDialog;                                      // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnEndSpokenDialog;                                        // 0x0230(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData01[0x208];                                     // 0x0240(0x0208) UNKNOWN PROPERTY: SoftClassProperty FortniteUI.FortUIManagerWidget.StateWidgets
+	EFortUIState                                       CurrentState;                                             // 0x0448(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	EFortUIState                                       PendingState;                                             // 0x0449(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x6];                                       // 0x044A(0x0006) MISSED OFFSET
+	class UFortUIStateWidget*                          CurrentStateWidget;                                       // 0x0450(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	TArray<class UClass*>                              LoadedStateWidgetClasses;                                 // 0x0458(0x0010) (ZeroConstructor, Transient)
+	TArray<class UFortUIStateTrigger*>                 StateTriggers;                                            // 0x0468(0x0010) (ZeroConstructor, Transient)
+	TArray<class UFortActionHandlerPanel*>             ActionHandlerPanels;                                      // 0x0478(0x0010) (ExportObject, ZeroConstructor, Transient)
+	unsigned char                                      UnknownData03[0x8];                                       // 0x0488(0x0008) MISSED OFFSET
+	class UFortNotificationQueue*                      UINotificationQueues[0x3];                                // 0x0490(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	bool                                               bIsStateContentDisplayed;                                 // 0x04A8(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData04[0x7];                                       // 0x04A9(0x0007) MISSED OFFSET
+	class UFortUINavigationManager*                    NavigationManager;                                        // 0x04B0(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData05[0x18];                                      // 0x04B8(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -11496,7 +13217,7 @@ public:
 
 	void UpdateStateWidgetContent(class UFortUIStateWidget* StateWidget);
 	void UnregisterStateTrigger(class UFortUIStateTrigger* TriggerToRemove);
-	void STATIC_ShowErrorDialog(class UObject* WorldContextObject, const struct FText& OperationDesc, const struct FText& DisplayMessage, const struct FString& ErrorCode);
+	void STATIC_ShowErrorDialog(class UObject* WorldContextObject, const struct FText& OperationDesc, const struct FText& DisplayMessage, const struct FString& ErrorCode, EFortErrorSeverity ErrorSeverity);
 	void SetStateContentDisplayed(bool bDisplay);
 	void ReleaseNotification(class UFortUINotification* Notification);
 	void RegisterStateTrigger(class UFortUIStateTrigger* StateTrigger);
@@ -11521,31 +13242,32 @@ public:
 
 
 // Class FortniteUI.FortUIManagerWidget_NUI
-// 0x01C8 (0x03E0 - 0x0218)
+// 0x0170 (0x0380 - 0x0210)
 class UFortUIManagerWidget_NUI : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
-	struct FScriptMulticastDelegate                    OnBeginSpokenDialog;                                      // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnEndSpokenDialog;                                        // 0x0230(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnShouldBlockSubtitlePortraitChanged;                     // 0x0240(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	EFortUIState                                       CurrentState;                                             // 0x0250(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	EFortUIState                                       PendingState;                                             // 0x0251(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x6];                                       // 0x0252(0x0006) MISSED OFFSET
-	class UFortUIStateWidget_NUI*                      CurrentStateWidget;                                       // 0x0258(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x10];                                      // 0x0260(0x0010) MISSED OFFSET
-	TArray<class UFortUIStateTrigger*>                 StateTriggers;                                            // 0x0270(0x0010) (ZeroConstructor, Transient)
-	unsigned char                                      UnknownData03[0x8];                                       // 0x0280(0x0008) MISSED OFFSET
-	TArray<class UFortUINotificationQueue*>            UINotificationQueues;                                     // 0x0288(0x0010) (ZeroConstructor, Transient)
-	bool                                               bIsStateContentDisplayed;                                 // 0x0298(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData04[0x7];                                       // 0x0299(0x0007) MISSED OFFSET
-	class UFortUINavigationManager*                    NavigationManager;                                        // 0x02A0(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	TMap<class UClass*, class UUserWidget*>            TypedWidgetCache;                                         // 0x02A8(0x0050) (ExportObject, ZeroConstructor, Transient)
-	unsigned char                                      UnknownData05[0xC8];                                      // 0x02F8(0x00C8) MISSED OFFSET
-	bool                                               bSupressErrors;                                           // 0x03C0(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData06[0x17];                                      // 0x03C1(0x0017) MISSED OFFSET
-	int                                                BlockSubtitlePortraitRefcount;                            // 0x03D8(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
-	unsigned char                                      UnknownData07[0x4];                                       // 0x03DC(0x0004) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnBeginSpokenDialog;                                      // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnEndSpokenDialog;                                        // 0x0228(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnShouldBlockSubtitlePortraitChanged;                     // 0x0238(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	EFortUIState                                       CurrentState;                                             // 0x0248(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	EFortUIState                                       PendingState;                                             // 0x0249(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x6];                                       // 0x024A(0x0006) MISSED OFFSET
+	class UFortUIStateWidget_NUI*                      CurrentStateWidget;                                       // 0x0250(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x10];                                      // 0x0258(0x0010) MISSED OFFSET
+	TArray<class UFortUIStateTrigger*>                 StateTriggers;                                            // 0x0268(0x0010) (ZeroConstructor, Transient)
+	unsigned char                                      UnknownData03[0x8];                                       // 0x0278(0x0008) MISSED OFFSET
+	TArray<class UFortUINotificationQueue*>            UINotificationQueues;                                     // 0x0280(0x0010) (ZeroConstructor, Transient)
+	bool                                               bIsStateContentDisplayed;                                 // 0x0290(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData04[0x7];                                       // 0x0291(0x0007) MISSED OFFSET
+	class UFortUINavigationManager*                    NavigationManager;                                        // 0x0298(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	TMap<class UClass*, class UUserWidget*>            TypedWidgetCache;                                         // 0x02A0(0x0050) (ExportObject, ZeroConstructor, Transient)
+	unsigned char                                      UnknownData05[0x68];                                      // 0x02F0(0x0068) MISSED OFFSET
+	bool                                               bSupressErrors;                                           // 0x0358(0x0001) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData06[0x17];                                      // 0x0359(0x0017) MISSED OFFSET
+	class UClass*                                      PlayerBannedScreen;                                       // 0x0370(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	int                                                BlockSubtitlePortraitRefcount;                            // 0x0378(0x0004) (ZeroConstructor, Transient, IsPlainOldData)
+	unsigned char                                      UnknownData07[0x4];                                       // 0x037C(0x0004) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -11556,7 +13278,7 @@ public:
 
 	void UpdateStateWidgetContent(class UFortUIStateWidget_NUI* StateWidget);
 	void UnregisterStateTrigger(class UFortUIStateTrigger* TriggerToRemove);
-	void STATIC_ShowErrorDialog(class UObject* WorldContextObject, const struct FText& OperationDesc, const struct FText& DisplayMessage, const struct FString& ErrorCode);
+	void STATIC_ShowErrorDialog(class UObject* WorldContextObject, const struct FText& OperationDesc, const struct FText& DisplayMessage, const struct FString& ErrorNote, EFortErrorSeverity ErrorSeverity);
 	bool ShouldBlockSubtitlePortrait();
 	void SetStateContentDisplayed(bool bDisplay);
 	void SetFrontEndVisibility(bool bHideHeader, bool bHideFooter, bool bHideChatWidget);
@@ -11598,17 +13320,17 @@ public:
 
 
 // Class FortniteUI.FortUIMessageItemWidget
-// 0x0048 (0x0260 - 0x0218)
+// 0x0048 (0x0258 - 0x0210)
 class UFortUIMessageItemWidget : public UCommonUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnMessageDisplayed;                                       // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnMessageRemoved;                                         // 0x0228(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FName                                       MessageID;                                                // 0x0238(0x0008) (BlueprintVisible, ZeroConstructor, Transient, IsPlainOldData)
-	int                                                StackSize;                                                // 0x0240(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
-	float                                              DisplayDuration;                                          // 0x0244(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              RemoveDuration;                                           // 0x0248(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x14];                                      // 0x024C(0x0014) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnMessageDisplayed;                                       // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnMessageRemoved;                                         // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FName                                       MessageID;                                                // 0x0230(0x0008) (BlueprintVisible, ZeroConstructor, Transient, IsPlainOldData)
+	int                                                StackSize;                                                // 0x0238(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, Transient, IsPlainOldData)
+	float                                              DisplayDuration;                                          // 0x023C(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              RemoveDuration;                                           // 0x0240(0x0004) (Edit, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x14];                                      // 0x0244(0x0014) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -11649,16 +13371,15 @@ public:
 
 
 // Class FortniteUI.FortUIMessagesPageBase
-// 0x0030 (0x03F0 - 0x03C0)
+// 0x0028 (0x0320 - 0x02F8)
 class UFortUIMessagesPageBase : public UCommonActivatablePanel
 {
 public:
-	int                                                MaximumMessagesShown;                                     // 0x03C0(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x03C4(0x0004) MISSED OFFSET
-	class UCommonListView*                             MessagesList;                                             // 0x03C8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x03D0(0x0008) MISSED OFFSET
-	TArray<class UFortUINotification*>                 MessagesShown;                                            // 0x03D8(0x0010) (ZeroConstructor, Transient)
-	unsigned char                                      UnknownData02[0x8];                                       // 0x03E8(0x0008) MISSED OFFSET
+	int                                                MaximumMessagesShown;                                     // 0x02F8(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x02FC(0x0004) MISSED OFFSET
+	class UCommonListView*                             MessagesList;                                             // 0x0300(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x8];                                       // 0x0308(0x0008) MISSED OFFSET
+	TArray<class UFortUINotification*>                 MessagesShown;                                            // 0x0310(0x0010) (ZeroConstructor, Transient)
 
 	static UClass* StaticClass()
 	{
@@ -11752,7 +13473,7 @@ public:
 	bool CanAccessSkillTreeNode(const struct FName& SkillTreeNodeId);
 	bool CanAccessItemManagementScreen(EFortFrontendInventoryFilter ItemManagementFilter);
 	bool CanAccessCollectionBook();
-	void AttemptPlayQuest(class UFortQuestItem* Quest);
+	bool AttemptPlayQuest(class UFortQuestItem* Quest);
 	bool AttemptMatchmakeForQuest(class UFortQuestItem* Quest, bool* OutContentNotDownloaded);
 };
 
@@ -11869,6 +13590,21 @@ public:
 };
 
 
+// Class FortniteUI.FortUIStateTrigger_AthenaReplay
+// 0x0000 (0x0030 - 0x0030)
+class UFortUIStateTrigger_AthenaReplay : public UFortUIStateTrigger
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortUIStateTrigger_AthenaReplay");
+		return ptr;
+	}
+
+};
+
+
 // Class FortniteUI.FortUIStateTrigger_AthenaSpectator
 // 0x0000 (0x0030 - 0x0030)
 class UFortUIStateTrigger_AthenaSpectator : public UFortUIStateTrigger
@@ -11930,7 +13666,7 @@ public:
 
 
 // Class FortniteUI.FortUIStateWidget
-// 0x0000 (0x0248 - 0x0248)
+// 0x0000 (0x0240 - 0x0240)
 class UFortUIStateWidget : public UFortActionHandlerPanel
 {
 public:
@@ -11948,11 +13684,13 @@ public:
 
 
 // Class FortniteUI.FortUIStateWidget_Frontend
-// 0x0010 (0x03F0 - 0x03E0)
+// 0x0028 (0x0338 - 0x0310)
 class UFortUIStateWidget_Frontend : public UFortUIStateWidget_NUI
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x03E0(0x0010) MISSED OFFSET
+	class UFortGiftBoxItem*                            NextGiftBox;                                              // 0x0310(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UClass*                                      ItemReceivedScreenClass;                                  // 0x0318(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0320(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -11962,57 +13700,65 @@ public:
 
 
 	void OnMatchmakingV2Changed(bool matchmakingActive);
-	void OnGiftNotifyReceived();
-	void OnGiftBoxRemoved(bool bSuccess);
+	bool NeedSeeTrailerMovie();
+	void MarkTrailerMovieSeen();
 	void Internal_OnInventoryUpdated(int64_t ProfileRevision);
-	void CheckForGifts();
+	void HandleGiftingComplete();
+	void HandleGiftBoxRemoved(bool bSuccess);
+	bool CheckForGifts();
+	void CheckBanStatus(bool bBanned);
 };
 
 
 // Class FortniteUI.FortUIStateWidget_Login
-// 0x0170 (0x0550 - 0x03E0)
+// 0x01A8 (0x04B8 - 0x0310)
 class UFortUIStateWidget_Login : public UFortUIStateWidget_NUI
 {
 public:
-	class UFortLoginStatus*                            StatusScreenWidget;                                       // 0x03E0(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      SplashScreenClass;                                        // 0x03E8(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortSplashScreenWidget*                     SplashScreenWidget;                                       // 0x03F0(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      HaveInviteClass;                                          // 0x03F8(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortHaveInviteSelect*                       HaveInviteWidget;                                         // 0x0400(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      PlayedBeforeClass;                                        // 0x0408(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortPlayedBeforeSelect*                     PlayedBeforeWidget;                                       // 0x0410(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      CredentialSelectClass;                                    // 0x0418(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortLoginCredentialSelect*                  CredentialSelectWidget;                                   // 0x0420(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      InviteRequestClass;                                       // 0x0428(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortInviteRequest*                          InviteRequestWidget;                                      // 0x0430(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      SignInScreenClass;                                        // 0x0438(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortSignInWidget*                           SignInScreenWidget;                                       // 0x0440(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      SignInConsoleClass;                                       // 0x0448(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortSignInWidget*                           SignInConsoleWidget;                                      // 0x0450(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      RedirectToEpicClass;                                      // 0x0458(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortRedirectToEpicAccountWidget*            RedirectToEpicWidget;                                     // 0x0460(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      NewAccountWarningClass;                                   // 0x0468(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortNewAccountWarning*                      NewAccountWarningWidget;                                  // 0x0470(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      LoginResultClass;                                         // 0x0478(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortLoginResultWidget*                      LoginResultWIdget;                                        // 0x0480(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      AccountNotFoundClass;                                     // 0x0488(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortAccountNotFound*                        AccountNotFoundWidget;                                    // 0x0490(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      DisplayNameClass;                                         // 0x0498(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortDisplayNameWidget*                      DisplayNameWidget;                                        // 0x04A0(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      MultiFactorAuthWidgetClass;                               // 0x04A8(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortMultiFactorAuthWidget*                  MultiFactorAuthWidget;                                    // 0x04B0(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      WebLoginWidgetClass;                                      // 0x04B8(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UClass*                                      HealthWarningClass;                                       // 0x04C0(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortHealthWarningBase*                      HealthWarningWidget;                                      // 0x04C8(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      EulaClass;                                                // 0x04D0(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortEulaWidget*                             EulaWidget;                                               // 0x04D8(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	struct FText                                       BenchmarkDialogTitle;                                     // 0x04E0(0x0018) (Edit)
-	struct FText                                       BenchmarkDialogMessage;                                   // 0x04F8(0x0018) (Edit)
-	class UClass*                                      MOTDClass;                                                // 0x0510(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UFortMOTDWidget*                             MOTDWidget;                                               // 0x0518(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
-	class UClass*                                      LoginUnavailableClass;                                    // 0x0520(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x20];                                      // 0x0528(0x0020) MISSED OFFSET
-	class UCommonWidgetStack*                          LoginFlowStack;                                           // 0x0548(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UClass*                                      StatusScreenClass;                                        // 0x0310(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortLoginStatus*                            StatusScreenWidget;                                       // 0x0318(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      SplashScreenClass;                                        // 0x0320(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortSplashScreenWidget*                     SplashScreenWidget;                                       // 0x0328(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      HaveInviteClass;                                          // 0x0330(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortHaveInviteSelect*                       HaveInviteWidget;                                         // 0x0338(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      PlayedBeforeClass;                                        // 0x0340(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortPlayedBeforeSelect*                     PlayedBeforeWidget;                                       // 0x0348(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      CredentialSelectClass;                                    // 0x0350(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortLoginCredentialSelect*                  CredentialSelectWidget;                                   // 0x0358(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      InviteRequestClass;                                       // 0x0360(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortInviteRequest*                          InviteRequestWidget;                                      // 0x0368(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      SignInScreenClass;                                        // 0x0370(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortSignInWidget*                           SignInScreenWidget;                                       // 0x0378(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      SignInConsoleClass;                                       // 0x0380(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortSignInWidget*                           SignInConsoleWidget;                                      // 0x0388(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      RedirectToEpicClass;                                      // 0x0390(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortRedirectToEpicAccountWidget*            RedirectToEpicWidget;                                     // 0x0398(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      NewAccountWarningClass;                                   // 0x03A0(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortNewAccountWarning*                      NewAccountWarningWidget;                                  // 0x03A8(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      LoginResultClass;                                         // 0x03B0(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortLoginResultWidget*                      LoginResultWIdget;                                        // 0x03B8(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      AccountNotFoundClass;                                     // 0x03C0(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortAccountNotFound*                        AccountNotFoundWidget;                                    // 0x03C8(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      DisplayNameClass;                                         // 0x03D0(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortDisplayNameWidget*                      DisplayNameWidget;                                        // 0x03D8(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      MultiFactorAuthWidgetClass;                               // 0x03E0(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortMultiFactorAuthWidget*                  MultiFactorAuthWidget;                                    // 0x03E8(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      WebLoginWidgetClass;                                      // 0x03F0(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      HealthWarningClass;                                       // 0x03F8(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortHealthWarningBase*                      HealthWarningWidget;                                      // 0x0400(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	class UClass*                                      EulaClass;                                                // 0x0408(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortEulaWidget*                             EulaWidget;                                               // 0x0410(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	struct FText                                       BenchmarkDialogTitle;                                     // 0x0418(0x0018) (Edit)
+	struct FText                                       BenchmarkDialogMessage;                                   // 0x0430(0x0018) (Edit)
+	class UClass*                                      AccountLinkingWindowClass;                                // 0x0448(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortAccountLinkingWindow*                   AccountLinkingWidget;                                     // 0x0450(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	struct FDataTableRowHandle                         BackButtonRowHandle;                                      // 0x0458(0x0010) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	class UClass*                                      MOTDClass;                                                // 0x0468(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UFortMOTDWidget*                             MOTDWidget;                                               // 0x0470(0x0008) (ExportObject, ZeroConstructor, Transient, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0478(0x0008) MISSED OFFSET
+	class UClass*                                      LoginUnavailableClass;                                    // 0x0480(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x28];                                      // 0x0488(0x0028) MISSED OFFSET
+	class UCommonWidgetStack*                          LoginFlowStack;                                           // 0x04B0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -12021,17 +13767,11 @@ public:
 	}
 
 
-	bool StartAutoLogin();
-	void ShowStatusWindow(const struct FText& StatusText);
-	void ShowSignInWindow();
-	void ShowSignInConsoleWindow();
-	void ShowResultWindow(const struct FText& Title, const struct FText& Description, bool bShowError, bool bLoggedOut);
 	void ShowBackBar();
+	void SetConsoleWidgetDisplayName();
 	void SafePopFlowStackNoReturn();
 	class UWidget* SafePopFlowStack();
-	void RollbackStackToSplashScreen();
 	void PushWidgetOntoFlowStack(class UWidget* Widget);
-	void OnNeedsPurchaseOrAccountLinking(bool bLinkedAccountNeedsPurchase);
 	void OnDisplayWebLogin(class UWidget* WebWidget);
 	void OnDisplayWebAccountCreation(class UWidget* WebWidget);
 	void HideTopBarOptions();
@@ -12055,7 +13795,7 @@ public:
 
 
 // Class FortniteUI.FortUserChoiceWidget
-// 0x0000 (0x0220 - 0x0220)
+// 0x0000 (0x0218 - 0x0218)
 class UFortUserChoiceWidget : public UFortUserWidget
 {
 public:
@@ -12071,12 +13811,155 @@ public:
 };
 
 
+// Class FortniteUI.FortVariantEditorWidgetBase
+// 0x0060 (0x0270 - 0x0210)
+class UFortVariantEditorWidgetBase : public UCommonUserWidget
+{
+public:
+	unsigned char                                      UnknownData00[0x60];                                      // 0x0210(0x0060) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortVariantEditorWidgetBase");
+		return ptr;
+	}
+
+};
+
+
+// Class FortniteUI.FortVariantEntryBox
+// 0x0050 (0x0220 - 0x01D0)
+class UFortVariantEntryBox : public UDynamicEntryBox
+{
+public:
+	class UAthenaCosmeticAccountItem*                  CurrentItem;                                              // 0x01D0(0x0008) (ZeroConstructor, IsPlainOldData)
+	class UAthenaCosmeticItemDefinition*               CurrentItemDef;                                           // 0x01D8(0x0008) (ZeroConstructor, IsPlainOldData)
+	TArray<struct FMcpVariantChannelInfo>              CurrentItemVariants;                                      // 0x01E0(0x0010) (ZeroConstructor)
+	unsigned char                                      UnknownData00[0x30];                                      // 0x01F0(0x0030) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortVariantEntryBox");
+		return ptr;
+	}
+
+};
+
+
+// Class FortniteUI.FortVariantNumericalPicker
+// 0x0048 (0x02B8 - 0x0270)
+class UFortVariantNumericalPicker : public UFortVariantEditorWidgetBase
+{
+public:
+	int                                                MinNum;                                                   // 0x0270(0x0004) (ZeroConstructor, IsPlainOldData)
+	int                                                MaxNum;                                                   // 0x0274(0x0004) (ZeroConstructor, IsPlainOldData)
+	int                                                NumericDelta;                                             // 0x0278(0x0004) (ZeroConstructor, IsPlainOldData)
+	int                                                CurrentNumber;                                            // 0x027C(0x0004) (ZeroConstructor, IsPlainOldData)
+	class UFortCosmeticNumericalVariant*               NumericalVariant;                                         // 0x0280(0x0008) (ZeroConstructor, IsPlainOldData)
+	class UCommonButton*                               Button_ZeroDigitUp;                                       // 0x0288(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_ZeroDigitDown;                                     // 0x0290(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_TenDigitUp;                                        // 0x0298(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonButton*                               Button_TenDigitDown;                                      // 0x02A0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_NumericalValue;                                      // 0x02A8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_VariantName;                                         // 0x02B0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortVariantNumericalPicker");
+		return ptr;
+	}
+
+};
+
+
+// Class FortniteUI.FortVariantPicker
+// 0x0020 (0x0230 - 0x0210)
+class UFortVariantPicker : public UCommonUserWidget
+{
+public:
+	struct FScriptMulticastDelegate                    OnVariantChanged;                                         // 0x0210(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	class UScrollBox*                                  ScrollBox_Variants;                                       // 0x0220(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortVariantEntryBox*                        EntryBox_VariantOptions;                                  // 0x0228(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortVariantPicker");
+		return ptr;
+	}
+
+
+	void InitFromCosmeticItemDef(class UAthenaCosmeticItemDefinition* InCosmeticItemDef);
+	void InitFromCosmeticItem(class UAthenaCosmeticAccountItem* InCosmeticItem);
+};
+
+
+// Class FortniteUI.VariantObject
+// 0x0020 (0x0048 - 0x0028)
+class UVariantObject : public UObject
+{
+public:
+	struct FGameplayTag                                VariantChannel;                                           // 0x0028(0x0008)
+	struct FGameplayTag                                VariantTag;                                               // 0x0030(0x0008)
+	bool                                               bOwned;                                                   // 0x0038(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0039(0x0007) MISSED OFFSET
+	class UAthenaCosmeticItemDefinition*               CosmeticDef;                                              // 0x0040(0x0008) (ZeroConstructor, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.VariantObject");
+		return ptr;
+	}
+
+};
+
+
+// Class FortniteUI.FortVariantTileButton
+// 0x0040 (0x08C8 - 0x0888)
+class UFortVariantTileButton : public UCommonButton
+{
+public:
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0888(0x0008) MISSED OFFSET
+	struct FLinearColor                                LockedTintColor;                                          // 0x0890(0x0010) (Edit, IsPlainOldData)
+	struct FName                                       IconParamName;                                            // 0x08A0(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UVariantObject*                              SourceObject;                                             // 0x08A8(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	class UImage*                                      Image_VariantDisplay;                                     // 0x08B0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      Image_Locked;                                             // 0x08B8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      Image_Active;                                             // 0x08C0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortVariantTileButton");
+		return ptr;
+	}
+
+};
+
+
+// Class FortniteUI.FortVariantTileSelector
+// 0x0020 (0x0290 - 0x0270)
+class UFortVariantTileSelector : public UFortVariantEditorWidgetBase
+{
+public:
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0270(0x0008) MISSED OFFSET
+	class UCommonTileView*                             Tile_VariantOptions;                                      // 0x0278(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_VariantName;                                         // 0x0280(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UVariantObject*                              CurrentSelectedVariant;                                   // 0x0288(0x0008) (ZeroConstructor, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.FortVariantTileSelector");
+		return ptr;
+	}
+
+};
+
+
 // Class FortniteUI.FortVideoOptions
-// 0x0060 (0x0288 - 0x0228)
+// 0x0060 (0x0280 - 0x0220)
 class UFortVideoOptions : public UFortOptionsTab
 {
 public:
-	unsigned char                                      UnknownData00[0x60];                                      // 0x0228(0x0060) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x60];                                      // 0x0220(0x0060) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -12110,23 +13993,26 @@ public:
 	TArray<struct FText> GetPossibleDisplayResolutions();
 	int GetOverallQualityLevel();
 	bool GetMotionBlur();
+	int GetMaxQualityLevel();
 	int GetEffectsQuality();
 	int GetCurrentWindowMode();
 	int GetCurrentFPS();
 	int GetCurrentDisplayResolution();
 	int GetAntiAliasingQuality();
+	bool GetAllowLowPower();
 	void FrameRateLimitChanged(int FrameRateLimit);
 	void EffectsQualityChanged(int ButtonId);
 	void AntiAliasingQualityChanged(int ButtonId);
+	void AllowLowPowerChanged(bool IsChecked);
 };
 
 
 // Class FortniteUI.FortWebLoginWidget
-// 0x0010 (0x03D0 - 0x03C0)
+// 0x0008 (0x0300 - 0x02F8)
 class UFortWebLoginWidget : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x03C0(0x0010) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x02F8(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -12141,14 +14027,14 @@ public:
 
 
 // Class FortniteUI.FortWorkerSetBonusIcon
-// 0x0018 (0x0230 - 0x0218)
+// 0x0018 (0x0228 - 0x0210)
 class UFortWorkerSetBonusIcon : public UCommonUserWidget
 {
 public:
-	struct FGameplayTag                                GameplayTag;                                              // 0x0218(0x0008) (Edit, BlueprintVisible)
-	TEnumAsByte<EFortBrushSize>                        ImageSize;                                                // 0x0220(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
-	class UImage*                                      Icon;                                                     // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	struct FGameplayTag                                GameplayTag;                                              // 0x0210(0x0008) (Edit, BlueprintVisible)
+	TEnumAsByte<EFortBrushSize>                        ImageSize;                                                // 0x0218(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0219(0x0007) MISSED OFFSET
+	class UImage*                                      Icon;                                                     // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -12163,7 +14049,7 @@ public:
 
 
 // Class FortniteUI.FriendCodeEntryBase
-// 0x0000 (0x0808 - 0x0808)
+// 0x0000 (0x0888 - 0x0888)
 class UFriendCodeEntryBase : public UCommonButton
 {
 public:
@@ -12178,7 +14064,7 @@ public:
 
 
 // Class FortniteUI.FriendCodeListBase
-// 0x0000 (0x03C0 - 0x03C0)
+// 0x0000 (0x02F8 - 0x02F8)
 class UFriendCodeListBase : public UCommonActivatablePanel
 {
 public:
@@ -12193,15 +14079,15 @@ public:
 
 
 // Class FortniteUI.FriendCodeShareButtonBase
-// 0x0038 (0x0840 - 0x0808)
+// 0x0038 (0x08C0 - 0x0888)
 class UFriendCodeShareButtonBase : public UCommonButton
 {
 public:
-	TArray<struct FFriendCode>                         BacchusFriendCodes;                                       // 0x0808(0x0010) (ZeroConstructor)
-	class UClass*                                      FriendCodeListClass;                                      // 0x0818(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UCommonTextBlock*                            NumSharesRemainingText;                                   // 0x0820(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UTextBlock*                                  InviteCodeMessage;                                        // 0x0828(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0830(0x0010) MISSED OFFSET
+	TArray<struct FFriendCode>                         BacchusFriendCodes;                                       // 0x0888(0x0010) (ZeroConstructor)
+	class UClass*                                      FriendCodeListClass;                                      // 0x0898(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UCommonTextBlock*                            NumSharesRemainingText;                                   // 0x08A0(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UTextBlock*                                  InviteCodeMessage;                                        // 0x08A8(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x08B0(0x0010) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -12216,12 +14102,143 @@ public:
 };
 
 
+// Class FortniteUI.HUDLayoutToolButtonLayer
+// 0x0030 (0x0240 - 0x0210)
+class UHUDLayoutToolButtonLayer : public UCommonUserWidget
+{
+public:
+	class UCanvasPanel*                                CanvasPanel_Combat;                                       // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCanvasPanel*                                CanvasPanel_Build;                                        // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCanvasPanel*                                CanvasPanel_Persistent;                                   // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class USizeBox*                                    InternalSizeBox;                                          // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TArray<class UHUDLayoutToolPlacementWidget*>       PlacementWidgets;                                         // 0x0230(0x0010) (ExportObject, ZeroConstructor)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.HUDLayoutToolButtonLayer");
+		return ptr;
+	}
+
+
+	void OnBuildMode(bool bBuildMode);
+};
+
+
+// Class FortniteUI.HUDLayoutToolContext
+// 0x0160 (0x0188 - 0x0028)
+class UHUDLayoutToolContext : public UBlueprintContextBase
+{
+public:
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0028(0x0008) MISSED OFFSET
+	struct FScriptMulticastDelegate                    OnPropertyMenuStateChangeDelegate;                        // 0x0030(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnCloseLayoutTool;                                        // 0x0040(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnOpenLayoutToolDelegate;                                 // 0x0050(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnRecenterPressedDelegate;                                // 0x0060(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnViewOffsetUpdatedDelegate;                              // 0x0070(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnNewViewOffsetLerpDelegate;                              // 0x0080(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnHUDLayoutModeChangeDelegate;                            // 0x0090(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnWidgetSelectedDelegate;                                 // 0x00A0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnOpenCloseFireModePanelDelegate;                         // 0x00B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	unsigned char                                      UnknownData01[0xC8];                                      // 0x00C0(0x00C8) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.HUDLayoutToolContext");
+		return ptr;
+	}
+
+
+	void StartLerping(const struct FVector2D& NewViewOffset);
+	bool ShouldShowSelectedWidgetProperties();
+	void SetSelectedWidget(class UHUDLayoutToolPlacementWidget* NewSelectedWidget);
+	void SetPropertyMenuState(bool bNewlyOpen);
+	void SetInBuildMode(bool bNewInBuildMode);
+	void SetFireModeOpenState(bool bNewlyOpened);
+	void SetFireMode(EFireModeType NewFireMode);
+	void SaveLayout(ELayoutDataType LayoutType, const struct FString& Reason);
+	void ResetSelectedWidgetProperties();
+	void ResetAllWidgets();
+	void OnViewOffsetUpdated();
+	void OnToolOpened(const struct FString& Reason);
+	void OnRecenterPressed();
+	void OnPanZoomWidgetClick();
+	void LoadLayout(ELayoutDataType LayoutType, const struct FString& Reason);
+	bool IsSelectedWidgetUnderPanel();
+	bool IsLayoutDirty();
+	bool IsCentered();
+	bool HasSelectedWidget();
+	bool HasSavedLayout(ELayoutDataType LayoutType);
+	bool GetPropertyMenuState();
+	bool GetIsPanning();
+	bool GetIsLerping();
+	bool GetInBuildMode();
+	bool GetFireModeOpenState();
+	struct FVector2D GetCurrentOffset();
+	void CloseLayoutTool(const struct FString& Reason);
+	void ClearLayout(ELayoutDataType LayoutType, const struct FString& Reason);
+};
+
+
+// Class FortniteUI.HUDLayoutToolFireModePanel
+// 0x0000 (0x02F8 - 0x02F8)
+class UHUDLayoutToolFireModePanel : public UCommonActivatablePanel
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.HUDLayoutToolFireModePanel");
+		return ptr;
+	}
+
+
+	void SetOpenState(bool bNewOpenState);
+};
+
+
+// Class FortniteUI.HUDLayoutToolFireModeButton
+// 0x0040 (0x0250 - 0x0210)
+class UHUDLayoutToolFireModeButton : public UCommonUserWidget
+{
+public:
+	EFireModeType                                      FireModeType;                                             // 0x0210(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0211(0x0007) MISSED OFFSET
+	struct FText                                       FireModeName;                                             // 0x0218(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	struct FText                                       FireModeDescription;                                      // 0x0230(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly)
+	class UTexture2D*                                  FireModeImage;                                            // 0x0248(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.HUDLayoutToolFireModeButton");
+		return ptr;
+	}
+
+};
+
+
+// Class FortniteUI.HUDLayoutToolInterface
+// 0x0000 (0x0028 - 0x0028)
+class UHUDLayoutToolInterface : public UInterface
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.HUDLayoutToolInterface");
+		return ptr;
+	}
+
+};
+
+
 // Class FortniteUI.HUDLayoutToolPanZoomWidget
-// 0x0010 (0x0128 - 0x0118)
+// 0x00C0 (0x01D8 - 0x0118)
 class UHUDLayoutToolPanZoomWidget : public UContentWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0118(0x0010) MISSED OFFSET
+	float                                              LerpSpeed;                                                // 0x0118(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	float                                              RecenterRadius;                                           // 0x011C(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0xB8];                                      // 0x0120(0x00B8) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -12229,6 +14246,10 @@ public:
 		return ptr;
 	}
 
+
+	void StopOffsetLerp();
+	void StartOffsetLerp(const struct FVector2D& NewTargetOffset);
+	void Recenter();
 };
 
 
@@ -12248,16 +14269,106 @@ public:
 };
 
 
+// Class FortniteUI.HUDLayoutToolPlacementWidget
+// 0x0180 (0x0390 - 0x0210)
+class UHUDLayoutToolPlacementWidget : public UCommonUserWidget
+{
+public:
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0210(0x0008) MISSED OFFSET
+	bool                                               bCanMoveWidget;                                           // 0x0218(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x7];                                       // 0x0219(0x0007) MISSED OFFSET
+	class UClass*                                      HUDElementClass;                                          // 0x0220(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               bIsBlockingWidget;                                        // 0x0228(0x0001) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x7];                                       // 0x0229(0x0007) MISSED OFFSET
+	class UBorder*                                     SelectionBorder;                                          // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UBorder*                                     DisplayScaleBorder;                                       // 0x0238(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UOverlay*                                    MainOverlay;                                              // 0x0240(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	float                                              Property_1;                                               // 0x0248(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	float                                              Property_2;                                               // 0x024C(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	float                                              Property_3;                                               // 0x0250(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	float                                              Property_4;                                               // 0x0254(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, DisableEditOnTemplate, IsPlainOldData)
+	struct FHUDLayoutDataEntry                         DefaultEntry;                                             // 0x0258(0x00D0) (Transient)
+	class UBacchusHUDElement*                          BacchusHUDElement;                                        // 0x0328(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x60];                                      // 0x0330(0x0060) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.HUDLayoutToolPlacementWidget");
+		return ptr;
+	}
+
+
+	void OnWidgetSelected(class UHUDLayoutToolPlacementWidget* InSelectedWidget);
+	void OnInsideGridStateChange(bool bInsideGrid);
+	bool IsInsideGrid();
+	bool GetIsOverlapping();
+	struct FGameplayTag BP_GetMobileVisualType();
+};
+
+
+// Class FortniteUI.HUDLayoutToolPropertyPanel
+// 0x0030 (0x0240 - 0x0210)
+class UHUDLayoutToolPropertyPanel : public UCommonUserWidget
+{
+public:
+	struct FText                                       DefaultTitle;                                             // 0x0210(0x0018) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	class UCommonTextBlock*                            PanelTitle;                                               // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0230(0x0010) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.HUDLayoutToolPropertyPanel");
+		return ptr;
+	}
+
+
+	void OnWidgetSelected(class UHUDLayoutToolPlacementWidget* NewlySelectedWidget);
+	void OnOpen();
+	void OnMenuStateChange(bool bNewlyOpen);
+	void OnClose();
+	bool GetIsOpen();
+};
+
+
+// Class FortniteUI.HUDLayoutToolPropertyWidget
+// 0x0030 (0x0240 - 0x0210)
+class UHUDLayoutToolPropertyWidget : public UCommonUserWidget
+{
+public:
+	class UAnalogSlider*                               MySlider;                                                 // 0x0210(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_PropertyName;                                        // 0x0218(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UCommonTextBlock*                            Text_PropertyValue;                                       // 0x0220(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	int                                                PropertyIndex;                                            // 0x0228(0x0004) (Edit, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x14];                                      // 0x022C(0x0014) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.HUDLayoutToolPropertyWidget");
+		return ptr;
+	}
+
+
+	void SetPropertyType(ELayoutPropertyType NewPropertyType);
+	void SetBoolValue(bool bNewValue);
+	void RefreshProperties();
+	void OnWidgetSelected(class UHUDLayoutToolPlacementWidget* NewlySelectedWidget);
+	void OnNewSliderValue(float NormalizedValue);
+	void OnNewBoolValue(bool bNewValue);
+	bool GetCurrentValueAsBool();
+	float GetCurrentValue();
+};
+
+
 // Class FortniteUI.FortItemGroupSlotPicker
-// 0x0030 (0x0250 - 0x0220)
+// 0x0030 (0x0248 - 0x0218)
 class UFortItemGroupSlotPicker : public UFortUserWidget
 {
 public:
-	struct FScriptMulticastDelegate                    OnItemPickerSelectionCommittedEvent;                      // 0x0220(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	TWeakObjectPtr<class UFortItemGroupSlotWidget>     HostItemGroupSlotWidget;                                  // 0x0230(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UContentWidget*                              SlottedItemDetailsContainer;                              // 0x0238(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TWeakObjectPtr<class UWidget>                      SlottedItemDetailsWidget;                                 // 0x0240(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UFortItem*                                   UpgradedItemForPreview;                                   // 0x0248(0x0008) (ZeroConstructor, IsPlainOldData)
+	struct FScriptMulticastDelegate                    OnItemPickerSelectionCommittedEvent;                      // 0x0218(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	TWeakObjectPtr<class UFortItemGroupSlotWidget>     HostItemGroupSlotWidget;                                  // 0x0228(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UContentWidget*                              SlottedItemDetailsContainer;                              // 0x0230(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TWeakObjectPtr<class UWidget>                      SlottedItemDetailsWidget;                                 // 0x0238(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UFortItem*                                   UpgradedItemForPreview;                                   // 0x0240(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -12286,25 +14397,25 @@ public:
 
 
 // Class FortniteUI.FortItemGroupSlotWidget
-// 0x00D8 (0x02F8 - 0x0220)
+// 0x00D8 (0x02F0 - 0x0218)
 class UFortItemGroupSlotWidget : public UFortUserWidget
 {
 public:
-	int                                                SlotIndexInGroup;                                         // 0x0220(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	bool                                               IsLocked;                                                 // 0x0224(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x3];                                       // 0x0225(0x0003) MISSED OFFSET
-	TMap<struct FGameplayAttribute, float>             AttributeBonusValues;                                     // 0x0228(0x0050) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	bool                                               HasSetBonusMatch;                                         // 0x0278(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x3];                                       // 0x0279(0x0003) MISSED OFFSET
-	TWeakObjectPtr<class UFortItem>                    SlottedItem;                                              // 0x027C(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x4];                                       // 0x0284(0x0004) MISSED OFFSET
-	TArray<EFortItemType>                              ItemTypeFilters;                                          // 0x0288(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
-	struct FGameplayTagContainer                       ItemTagFilter;                                            // 0x0298(0x0020) (BlueprintVisible, BlueprintReadOnly)
-	struct FScriptMulticastDelegate                    OnItemSlotLockedStateChangedEvent;                        // 0x02B8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnItemSetEvent;                                           // 0x02C8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	struct FScriptMulticastDelegate                    OnAttributeBonusValueChangedEvent;                        // 0x02D8(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
-	TWeakObjectPtr<class UFortItemGroupWidget>         HostItemGroupWidget;                                      // 0x02E8(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UClass*                                      ItemPickerWidgetType;                                     // 0x02F0(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	int                                                SlotIndexInGroup;                                         // 0x0218(0x0004) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	bool                                               IsLocked;                                                 // 0x021C(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x3];                                       // 0x021D(0x0003) MISSED OFFSET
+	TMap<struct FGameplayAttribute, float>             AttributeBonusValues;                                     // 0x0220(0x0050) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	bool                                               HasSetBonusMatch;                                         // 0x0270(0x0001) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x3];                                       // 0x0271(0x0003) MISSED OFFSET
+	TWeakObjectPtr<class UFortItem>                    SlottedItem;                                              // 0x0274(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x4];                                       // 0x027C(0x0004) MISSED OFFSET
+	TArray<EFortItemType>                              ItemTypeFilters;                                          // 0x0280(0x0010) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor)
+	struct FGameplayTagContainer                       ItemTagFilter;                                            // 0x0290(0x0020) (BlueprintVisible, BlueprintReadOnly)
+	struct FScriptMulticastDelegate                    OnItemSlotLockedStateChangedEvent;                        // 0x02B0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnItemSetEvent;                                           // 0x02C0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	struct FScriptMulticastDelegate                    OnAttributeBonusValueChangedEvent;                        // 0x02D0(0x0010) (ZeroConstructor, InstancedReference, BlueprintAssignable)
+	TWeakObjectPtr<class UFortItemGroupWidget>         HostItemGroupWidget;                                      // 0x02E0(0x0008) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UClass*                                      ItemPickerWidgetType;                                     // 0x02E8(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -12337,14 +14448,14 @@ public:
 
 
 // Class FortniteUI.FortItemGroupWidget
-// 0x0028 (0x0248 - 0x0220)
+// 0x0028 (0x0240 - 0x0218)
 class UFortItemGroupWidget : public UFortUserWidget
 {
 public:
-	struct FName                                       SquadId;                                                  // 0x0220(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
-	class UClass*                                      ItemSlotWidgetType;                                       // 0x0228(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UPanelWidget*                                ItemSlotsContainer;                                       // 0x0230(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TArray<class UFortItemGroupSlotWidget*>            SlotWidgets;                                              // 0x0238(0x0010) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor)
+	struct FName                                       SquadId;                                                  // 0x0218(0x0008) (BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      ItemSlotWidgetType;                                       // 0x0220(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UPanelWidget*                                ItemSlotsContainer;                                       // 0x0228(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TArray<class UFortItemGroupSlotWidget*>            SlotWidgets;                                              // 0x0230(0x0010) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor)
 
 	static UClass* StaticClass()
 	{
@@ -12364,8 +14475,68 @@ public:
 };
 
 
+// Class FortniteUI.MassiveGadgetEquippedWidget
+// 0x0000 (0x0210 - 0x0210)
+class UMassiveGadgetEquippedWidget : public UCommonUserWidget
+{
+public:
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.MassiveGadgetEquippedWidget");
+		return ptr;
+	}
+
+
+	void HandleMassiveTagChanged(const struct FGameplayTag& Tag, int Count);
+};
+
+
+// Class FortniteUI.MobileHUDVisual
+// 0x0010 (0x0220 - 0x0210)
+class UMobileHUDVisual : public UCommonUserWidget
+{
+public:
+	struct FGameplayTag                                VisualType;                                               // 0x0210(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, DisableEditOnInstance)
+	float                                              Opacity;                                                  // 0x0218(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x021C(0x0004) MISSED OFFSET
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.MobileHUDVisual");
+		return ptr;
+	}
+
+
+	struct FGameplayTag GetVisualType();
+};
+
+
+// Class FortniteUI.MobileHUDButtonVisual
+// 0x0028 (0x0248 - 0x0220)
+class UMobileHUDButtonVisual : public UMobileHUDVisual
+{
+public:
+	float                                              ButtonSize;                                               // 0x0220(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	float                                              ButtonDisplayScale;                                       // 0x0224(0x0004) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class UPaperSprite*                                DefaultIcon;                                              // 0x0228(0x0008) (Edit, BlueprintVisible, BlueprintReadOnly, ZeroConstructor, IsPlainOldData)
+	class USizeBox*                                    OuterSizeBox;                                             // 0x0230(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class USizeBox*                                    InnerSizeBox;                                             // 0x0238(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UImage*                                      Image_Icon;                                               // 0x0240(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+
+	static UClass* StaticClass()
+	{
+		static auto ptr = UObject::FindClass("Class FortniteUI.MobileHUDButtonVisual");
+		return ptr;
+	}
+
+
+	void SetButtonSprite(class UPaperSprite* NewSprite);
+};
+
+
 // Class FortniteUI.FortQuestScreen
-// 0x0000 (0x03F0 - 0x03F0)
+// 0x0000 (0x0328 - 0x0328)
 class UFortQuestScreen : public UFortActivatablePanel
 {
 public:
@@ -12382,12 +14553,12 @@ public:
 
 
 // Class FortniteUI.RemoteControlledPawnExpirationWidget
-// 0x0010 (0x0228 - 0x0218)
+// 0x0010 (0x0220 - 0x0210)
 class URemoteControlledPawnExpirationWidget : public UCommonUserWidget
 {
 public:
-	class UImage*                                      ExpirationProgressImage;                                  // 0x0218(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x0220(0x0008) MISSED OFFSET
+	class UImage*                                      ExpirationProgressImage;                                  // 0x0210(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x8];                                       // 0x0218(0x0008) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -12430,12 +14601,12 @@ public:
 
 
 // Class FortniteUI.SeasonPassLevelWidget
-// 0x0018 (0x0230 - 0x0218)
+// 0x0018 (0x0228 - 0x0210)
 class USeasonPassLevelWidget : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x0218(0x0010) MISSED OFFSET
-	class UFortSeasonPassLevelInfo*                    LevelInfo;                                                // 0x0228(0x0008) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x10];                                      // 0x0210(0x0010) MISSED OFFSET
+	class UFortSeasonPassLevelInfo*                    LevelInfo;                                                // 0x0220(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -12455,13 +14626,12 @@ public:
 
 
 // Class FortniteUI.SeasonPassLevelPanel
-// 0x0020 (0x03E0 - 0x03C0)
+// 0x0018 (0x0310 - 0x02F8)
 class USeasonPassLevelPanel : public UCommonActivatablePanel
 {
 public:
-	unsigned char                                      UnknownData00[0x10];                                      // 0x03C0(0x0010) MISSED OFFSET
-	class UFortSeasonPassLevelInfo*                    LevelInfo;                                                // 0x03D0(0x0008) (ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x8];                                       // 0x03D8(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x10];                                      // 0x02F8(0x0010) MISSED OFFSET
+	class UFortSeasonPassLevelInfo*                    LevelInfo;                                                // 0x0308(0x0008) (ZeroConstructor, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{
@@ -12478,11 +14648,11 @@ public:
 
 
 // Class FortniteUI.SeasonPassPageWidget
-// 0x0048 (0x0260 - 0x0218)
+// 0x0018 (0x0228 - 0x0210)
 class USeasonPassPageWidget : public UCommonUserWidget
 {
 public:
-	unsigned char                                      UnknownData00[0x48];                                      // 0x0218(0x0048) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x18];                                      // 0x0210(0x0018) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{
@@ -12503,14 +14673,14 @@ public:
 
 
 // Class FortniteUI.SeasonPassScreenBase
-// 0x0070 (0x04C0 - 0x0450)
-class USeasonPassScreenBase : public UFortDirectAcquisitionWidgetBase
+// 0x0070 (0x0430 - 0x03C0)
+class USeasonPassScreenBase : public UFortActivatablePanelWithItemPreview
 {
 public:
-	class UAthenaSeasonItemDefinition*                 SeasonData;                                               // 0x0450(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
-	TArray<class USeasonPassLevelWidget*>              LevelWidgets;                                             // 0x0458(0x0010) (ExportObject, ZeroConstructor, Transient)
-	TMap<int, class UFortSeasonPassLevelInfo*>         LevelInfos;                                               // 0x0468(0x0050) (ZeroConstructor, Transient)
-	unsigned char                                      UnknownData00[0x8];                                       // 0x04B8(0x0008) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x8];                                       // 0x03C0(0x0008) MISSED OFFSET
+	class UAthenaSeasonItemDefinition*                 SeasonData;                                               // 0x03C8(0x0008) (ZeroConstructor, Transient, IsPlainOldData)
+	TArray<class USeasonPassLevelWidget*>              LevelWidgets;                                             // 0x03D0(0x0010) (ExportObject, ZeroConstructor, Transient)
+	TMap<int, class UFortSeasonPassLevelInfo*>         LevelInfos;                                               // 0x03E0(0x0050) (ZeroConstructor, Transient)
 
 	static UClass* StaticClass()
 	{
@@ -12523,6 +14693,7 @@ public:
 	void ScrollPositive();
 	void ScrollNegative();
 	bool OwnsSeasonPass();
+	void OnSetGiftability(bool bIsGiftable);
 	void OnSeasonPassChanged();
 	void OnNoCurrentSeason();
 	void OnNavigateToLevel(int Level);
@@ -12538,15 +14709,15 @@ public:
 
 
 // Class FortniteUI.FortSquadPanelWidget
-// 0x0028 (0x0248 - 0x0220)
+// 0x0028 (0x0240 - 0x0218)
 class UFortSquadPanelWidget : public UFortUserWidget
 {
 public:
-	EFortHomebaseSquadType                             SquadTypeFilter;                                          // 0x0220(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x7];                                       // 0x0221(0x0007) MISSED OFFSET
-	class UClass*                                      SquadWidgetType;                                          // 0x0228(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
-	class UPanelWidget*                                SquadWidgetsContainer;                                    // 0x0230(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
-	TArray<class UFortItemGroupWidget*>                SquadWidgets;                                             // 0x0238(0x0010) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor)
+	EFortHomebaseSquadType                             SquadTypeFilter;                                          // 0x0218(0x0001) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x7];                                       // 0x0219(0x0007) MISSED OFFSET
+	class UClass*                                      SquadWidgetType;                                          // 0x0220(0x0008) (Edit, ZeroConstructor, IsPlainOldData)
+	class UPanelWidget*                                SquadWidgetsContainer;                                    // 0x0228(0x0008) (ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData)
+	TArray<class UFortItemGroupWidget*>                SquadWidgets;                                             // 0x0230(0x0010) (BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor)
 
 	static UClass* StaticClass()
 	{

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,40 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function ChallengeBundlePage.ChallengeBundlePage_C.Initial Reset
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UChallengeBundlePage_C::Initial_Reset()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function ChallengeBundlePage.ChallengeBundlePage_C.Initial Reset");
+
+	UChallengeBundlePage_C_Initial_Reset_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function ChallengeBundlePage.ChallengeBundlePage_C.Play Intro
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UChallengeBundlePage_C::Play_Intro()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function ChallengeBundlePage.ChallengeBundlePage_C.Play Intro");
+
+	UChallengeBundlePage_C_Play_Intro_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function ChallengeBundlePage.ChallengeBundlePage_C.HandleBack
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
@@ -124,23 +158,6 @@ void UChallengeBundlePage_C::UpdateBundle()
 }
 
 
-// Function ChallengeBundlePage.ChallengeBundlePage_C.Construct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
-
-void UChallengeBundlePage_C::Construct()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function ChallengeBundlePage.ChallengeBundlePage_C.Construct");
-
-	UChallengeBundlePage_C_Construct_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function ChallengeBundlePage.ChallengeBundlePage_C.OnBundleUpdated
 // (Event, Protected, BlueprintEvent)
 
@@ -243,6 +260,40 @@ void UChallengeBundlePage_C::BndEvt__SwipePanel_K2Node_ComponentBoundEvent_26_On
 	static auto fn = UObject::FindObject<UFunction>("Function ChallengeBundlePage.ChallengeBundlePage_C.BndEvt__SwipePanel_K2Node_ComponentBoundEvent_26_OnFortSwipeEvent__DelegateSignature");
 
 	UChallengeBundlePage_C_BndEvt__SwipePanel_K2Node_ComponentBoundEvent_26_OnFortSwipeEvent__DelegateSignature_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function ChallengeBundlePage.ChallengeBundlePage_C.OnActivated
+// (Event, Protected, BlueprintEvent)
+
+void UChallengeBundlePage_C::OnActivated()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function ChallengeBundlePage.ChallengeBundlePage_C.OnActivated");
+
+	UChallengeBundlePage_C_OnActivated_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function ChallengeBundlePage.ChallengeBundlePage_C.Construct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UChallengeBundlePage_C::Construct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function ChallengeBundlePage.ChallengeBundlePage_C.Construct");
+
+	UChallengeBundlePage_C_Construct_Params params;
 
 	auto flags = fn->FunctionFlags;
 

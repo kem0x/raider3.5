@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,11 +13,11 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // Class AssetRegistry.AssetRegistryImpl
-// 0x09F8 (0x0A20 - 0x0028)
+// 0x06D8 (0x0700 - 0x0028)
 class UAssetRegistryImpl : public UObject
 {
 public:
-	unsigned char                                      UnknownData00[0x9F8];                                     // 0x0028(0x09F8) MISSED OFFSET
+	unsigned char                                      UnknownData00[0x6D8];                                     // 0x0028(0x06D8) MISSED OFFSET
 
 	static UClass* StaticClass()
 	{

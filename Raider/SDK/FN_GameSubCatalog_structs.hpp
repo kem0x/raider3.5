@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -58,7 +56,8 @@ enum class EAppStore : uint8_t
 	KindleStore                    = 5,
 	PlayStationStore               = 6,
 	XboxLiveStore                  = 7,
-	MAX                            = 8
+	NintendoEShop                  = 8,
+	MAX                            = 9
 };
 
 
@@ -174,7 +173,7 @@ struct FCatalogGiftInfo
 };
 
 // ScriptStruct GameSubCatalog.CatalogOffer
-// 0x0210
+// 0x0228
 struct FCatalogOffer
 {
 	struct FString                                     OfferId;                                                  // 0x0000(0x0010) (Edit, ZeroConstructor, EditConst)
@@ -195,13 +194,15 @@ struct FCatalogOffer
 	struct FText                                       Title;                                                    // 0x00B0(0x0018) (Edit)
 	struct FText                                       ShortDescription;                                         // 0x00C8(0x0018) (Edit)
 	struct FText                                       Description;                                              // 0x00E0(0x0018) (Edit)
-	struct FString                                     AppStoreId[0x8];                                          // 0x00F8(0x0010) (Edit, ZeroConstructor)
-	struct FCatalogMetaAssetInfo                       MetaAssetInfo;                                            // 0x0178(0x0030)
-	struct FString                                     DisplayAssetPath;                                         // 0x01A8(0x0010) (ZeroConstructor)
-	TArray<struct FItemQuantity>                       ItemGrants;                                               // 0x01B8(0x0010) (ZeroConstructor)
-	TArray<struct FCatalogOfferRequirement>            Requirements;                                             // 0x01C8(0x0010) (ZeroConstructor)
-	struct FCatalogGiftInfo                            GiftInfo;                                                 // 0x01D8(0x0028)
-	TArray<struct FString>                             DenyItemTemplateIds;                                      // 0x0200(0x0010) (ZeroConstructor, Deprecated)
+	struct FString                                     AppStoreId[0x9];                                          // 0x00F8(0x0010) (Edit, ZeroConstructor)
+	struct FCatalogMetaAssetInfo                       MetaAssetInfo;                                            // 0x0188(0x0030)
+	struct FString                                     DisplayAssetPath;                                         // 0x01B8(0x0010) (ZeroConstructor)
+	TArray<struct FItemQuantity>                       ItemGrants;                                               // 0x01C8(0x0010) (ZeroConstructor)
+	TArray<struct FCatalogOfferRequirement>            Requirements;                                             // 0x01D8(0x0010) (ZeroConstructor)
+	struct FCatalogGiftInfo                            GiftInfo;                                                 // 0x01E8(0x0028)
+	bool                                               Refundable;                                               // 0x0210(0x0001) (ZeroConstructor, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x7];                                       // 0x0211(0x0007) MISSED OFFSET
+	TArray<struct FString>                             DenyItemTemplateIds;                                      // 0x0218(0x0010) (ZeroConstructor, Deprecated)
 };
 
 // ScriptStruct GameSubCatalog.Storefront

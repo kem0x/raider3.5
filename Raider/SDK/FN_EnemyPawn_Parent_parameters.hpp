@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -19,6 +19,17 @@ struct AEnemyPawn_Parent_C_Orphaned_Params
 {
 	bool                                               IsOrphaned;                                               // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
 	class AFortPawn*                                   AttachedPawn;                                             // (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function EnemyPawn_Parent.EnemyPawn_Parent_C.DeleteDuplicateCharacterMesh
+struct AEnemyPawn_Parent_C_DeleteDuplicateCharacterMesh_Params
+{
+};
+
+// Function EnemyPawn_Parent.EnemyPawn_Parent_C.RestorePreviousPhysMaterialOnCharacterMesh
+struct AEnemyPawn_Parent_C_RestorePreviousPhysMaterialOnCharacterMesh_Params
+{
+	float                                              Delay_in_Seconds;                                         // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function EnemyPawn_Parent.EnemyPawn_Parent_C.SetMinibossLightHiddenInGame
@@ -50,8 +61,8 @@ struct AEnemyPawn_Parent_C_TransformHitLocationWorldSpaceToPreskinnedLocalSpace_
 	struct FVector                                     PreskinnedLS;                                             // (Parm, OutParm, IsPlainOldData)
 };
 
-// Function EnemyPawn_Parent.EnemyPawn_Parent_C.SetParticlesOnCharacterMeshHiddenInGame
-struct AEnemyPawn_Parent_C_SetParticlesOnCharacterMeshHiddenInGame_Params
+// Function EnemyPawn_Parent.EnemyPawn_Parent_C.SetElementalParticlesHiddenInGame
+struct AEnemyPawn_Parent_C_SetElementalParticlesHiddenInGame_Params
 {
 	bool                                               Hidden;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
@@ -65,31 +76,7 @@ struct AEnemyPawn_Parent_C_SetDuplicateCharacterMeshHiddenInGame_Params
 // Function EnemyPawn_Parent.EnemyPawn_Parent_C.CreateDuplicateCharacterMesh
 struct AEnemyPawn_Parent_C_CreateDuplicateCharacterMesh_Params
 {
-	class UMaterialInterface*                          Material_to_Apply;                                        // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function EnemyPawn_Parent.EnemyPawn_Parent_C.RestoreMaterialMapToDefaults
-struct AEnemyPawn_Parent_C_RestoreMaterialMapToDefaults_Params
-{
-};
-
-// Function EnemyPawn_Parent.EnemyPawn_Parent_C.OverwriteKeysInMaterialMap
-struct AEnemyPawn_Parent_C_OverwriteKeysInMaterialMap_Params
-{
-	class UMaterialInterface*                          Fire;                                                     // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	class UMaterialInterface*                          Ice;                                                      // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	class UMaterialInterface*                          Lightning;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	class UMaterialInterface*                          Default;                                                  // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function EnemyPawn_Parent.EnemyPawn_Parent_C.OverrideMaterialFromMapByMeshTag
-struct AEnemyPawn_Parent_C_OverrideMaterialFromMapByMeshTag_Params
-{
-};
-
-// Function EnemyPawn_Parent.EnemyPawn_Parent_C.OnRep_SpecialEventHalloweenPumpkinHeadApplied
-struct AEnemyPawn_Parent_C_OnRep_SpecialEventHalloweenPumpkinHeadApplied_Params
-{
+	class UMaterialInterface*                          Material_To_Apply;                                        // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function EnemyPawn_Parent.EnemyPawn_Parent_C.SpecialEventHalloweenPumpkinHeadHusk
@@ -97,18 +84,6 @@ struct AEnemyPawn_Parent_C_SpecialEventHalloweenPumpkinHeadHusk_Params
 {
 	bool                                               ApplyPumpkinHeadMesh;                                     // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	bool                                               DebugApplicationOrRemoval_;                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function EnemyPawn_Parent.EnemyPawn_Parent_C.SpawnMeshAttachedToCharacter
-struct AEnemyPawn_Parent_C_SpawnMeshAttachedToCharacter_Params
-{
-	class UStaticMesh*                                 Static_Mesh;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	struct FName                                       Socket_Name;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	struct FTransform                                  Relative_Transform;                                       // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
-	bool                                               Absolute_Location;                                        // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	bool                                               Absolute_Rotation;                                        // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	bool                                               Absolute_Scale;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	class UStaticMeshComponent*                        Static_Mesh_Component_Reference;                          // (Parm, OutParm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 
 // Function EnemyPawn_Parent.EnemyPawn_Parent_C.RestorePreviousMaterialOnCharacterMesh
@@ -120,20 +95,6 @@ struct AEnemyPawn_Parent_C_RestorePreviousMaterialOnCharacterMesh_Params
 // Function EnemyPawn_Parent.EnemyPawn_Parent_C.CharacterSpawnInSafetyCheck
 struct AEnemyPawn_Parent_C_CharacterSpawnInSafetyCheck_Params
 {
-};
-
-// Function EnemyPawn_Parent.EnemyPawn_Parent_C.SetCharacterEyeColors
-struct AEnemyPawn_Parent_C_SetCharacterEyeColors_Params
-{
-	struct FLinearColor                                Eye_Color_Inner;                                          // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
-	struct FLinearColor                                Eye_Color_Outer;                                          // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
-};
-
-// Function EnemyPawn_Parent.EnemyPawn_Parent_C.SetCharacterFresnelGlowColors
-struct AEnemyPawn_Parent_C_SetCharacterFresnelGlowColors_Params
-{
-	struct FLinearColor                                Inner_Color;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
-	struct FLinearColor                                Outer_Color;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
 };
 
 // Function EnemyPawn_Parent.EnemyPawn_Parent_C.SpawnParticleSystemOnCharacterMesh
@@ -177,8 +138,8 @@ struct AEnemyPawn_Parent_C_PlayAdditiveHitReacts_Params
 	class UAnimMontage*                                Anim_Montage;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function EnemyPawn_Parent.EnemyPawn_Parent_C.SetActiveParticlesOnCharacterMesh
-struct AEnemyPawn_Parent_C_SetActiveParticlesOnCharacterMesh_Params
+// Function EnemyPawn_Parent.EnemyPawn_Parent_C.SetActiveElementalParticles
+struct AEnemyPawn_Parent_C_SetActiveElementalParticles_Params
 {
 	bool                                               Active;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	bool                                               Reset;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
@@ -195,7 +156,7 @@ struct AEnemyPawn_Parent_C_SetScalarParameterOnAllCharacterMIDs_Params
 struct AEnemyPawn_Parent_C_SetVectorParameterOnAllCharacterMIDs_Params
 {
 	struct FName                                       Parameter_Name;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	struct FLinearColor                                Linear_Color;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
+	struct FVector                                     Vector_Value;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
 };
 
 // Function EnemyPawn_Parent.EnemyPawn_Parent_C.PickColorFromAnArrayOfColors

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,84 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function GamepadMappingInfo.GamepadMappingInfo_C.SetButtonTextLabelsFromTextArray
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// TArray<struct FText>           Array                          (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
+
+void UGamepadMappingInfo_C::SetButtonTextLabelsFromTextArray(TArray<struct FText>* Array)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GamepadMappingInfo.GamepadMappingInfo_C.SetButtonTextLabelsFromTextArray");
+
+	UGamepadMappingInfo_C_SetButtonTextLabelsFromTextArray_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (Array != nullptr)
+		*Array = params.Array;
+}
+
+
+// Function GamepadMappingInfo.GamepadMappingInfo_C.InitializeListOfButtonTextForSTW_BuilderProBuild
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// TArray<struct FText>           ButtonTextLabels               (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
+
+void UGamepadMappingInfo_C::InitializeListOfButtonTextForSTW_BuilderProBuild(TArray<struct FText>* ButtonTextLabels)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GamepadMappingInfo.GamepadMappingInfo_C.InitializeListOfButtonTextForSTW_BuilderProBuild");
+
+	UGamepadMappingInfo_C_InitializeListOfButtonTextForSTW_BuilderProBuild_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (ButtonTextLabels != nullptr)
+		*ButtonTextLabels = params.ButtonTextLabels;
+}
+
+
+// Function GamepadMappingInfo.GamepadMappingInfo_C.GetLineImage
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, BlueprintPure)
+
+void UGamepadMappingInfo_C::GetLineImage()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GamepadMappingInfo.GamepadMappingInfo_C.GetLineImage");
+
+	UGamepadMappingInfo_C_GetLineImage_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function GamepadMappingInfo.GamepadMappingInfo_C.GetControllerImage
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, BlueprintPure)
+
+void UGamepadMappingInfo_C::GetControllerImage()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GamepadMappingInfo.GamepadMappingInfo_C.GetControllerImage");
+
+	UGamepadMappingInfo_C_GetControllerImage_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function GamepadMappingInfo.GamepadMappingInfo_C.ClearAllComboTextLines
 // (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
@@ -281,6 +359,46 @@ void UGamepadMappingInfo_C::Update_Displayed_Mapping(int Platform, int Mode, int
 }
 
 
+// Function GamepadMappingInfo.GamepadMappingInfo_C.OnLoaded_67B412844D12E60AF9677EAF507D3D57
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UObject*                 Loaded                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UGamepadMappingInfo_C::OnLoaded_67B412844D12E60AF9677EAF507D3D57(class UObject* Loaded)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GamepadMappingInfo.GamepadMappingInfo_C.OnLoaded_67B412844D12E60AF9677EAF507D3D57");
+
+	UGamepadMappingInfo_C_OnLoaded_67B412844D12E60AF9677EAF507D3D57_Params params;
+	params.Loaded = Loaded;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function GamepadMappingInfo.GamepadMappingInfo_C.OnLoaded_A196D7E54164016324DF5A9755C679BD
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UObject*                 Loaded                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UGamepadMappingInfo_C::OnLoaded_A196D7E54164016324DF5A9755C679BD(class UObject* Loaded)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GamepadMappingInfo.GamepadMappingInfo_C.OnLoaded_A196D7E54164016324DF5A9755C679BD");
+
+	UGamepadMappingInfo_C_OnLoaded_A196D7E54164016324DF5A9755C679BD_Params params;
+	params.Loaded = Loaded;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function GamepadMappingInfo.GamepadMappingInfo_C.Construct
 // (BlueprintCosmetic, Event, Public, BlueprintEvent)
 
@@ -298,8 +416,25 @@ void UGamepadMappingInfo_C::Construct()
 }
 
 
+// Function GamepadMappingInfo.GamepadMappingInfo_C.Update Controller Images
+// (BlueprintCallable, BlueprintEvent)
+
+void UGamepadMappingInfo_C::Update_Controller_Images()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function GamepadMappingInfo.GamepadMappingInfo_C.Update Controller Images");
+
+	UGamepadMappingInfo_C_Update_Controller_Images_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function GamepadMappingInfo.GamepadMappingInfo_C.ExecuteUbergraph_GamepadMappingInfo
-// ()
+// (HasDefaults)
 // Parameters:
 // int                            EntryPoint                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 

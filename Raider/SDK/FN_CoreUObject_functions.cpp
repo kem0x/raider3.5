@@ -6,8 +6,6 @@
 
 #include "../SDK.hpp"
 
-namespace SDK
-{
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
@@ -80,9 +78,6 @@ void UObject::ExecuteUbergraph(int EntryPoint)
 	UObject::ProcessEvent(fn, &params);
 
 	fn->FunctionFlags = flags;
-}
-
-
 }
 
 #ifdef _MSC_VER

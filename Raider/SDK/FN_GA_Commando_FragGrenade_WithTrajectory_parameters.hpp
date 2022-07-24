@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -139,13 +139,18 @@ struct UGA_Commando_FragGrenade_WithTrajectory_C_CleanupTrajectoryDisplay_Params
 {
 };
 
+// Function GA_Commando_FragGrenade_WithTrajectory.GA_Commando_FragGrenade_WithTrajectory_C.TossGrenade
+struct UGA_Commando_FragGrenade_WithTrajectory_C_TossGrenade_Params
+{
+};
+
 // Function GA_Commando_FragGrenade_WithTrajectory.GA_Commando_FragGrenade_WithTrajectory_C.K2_ActivateAbility
 struct UGA_Commando_FragGrenade_WithTrajectory_C_K2_ActivateAbility_Params
 {
 };
 
-// Function GA_Commando_FragGrenade_WithTrajectory.GA_Commando_FragGrenade_WithTrajectory_C.TossGrenade
-struct UGA_Commando_FragGrenade_WithTrajectory_C_TossGrenade_Params
+// Function GA_Commando_FragGrenade_WithTrajectory.GA_Commando_FragGrenade_WithTrajectory_C.CommitOnSever
+struct UGA_Commando_FragGrenade_WithTrajectory_C_CommitOnSever_Params
 {
 };
 

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,13 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function SupportHeroSquadBonusesDetailWidget.SupportHeroSquadBonusesDetailWidget_C.HandleSquadSlotChanged
+struct USupportHeroSquadBonusesDetailWidget_C_HandleSquadSlotChanged_Params
+{
+	struct FName                                       SquadName;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	int                                                SlotIndex;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function SupportHeroSquadBonusesDetailWidget.SupportHeroSquadBonusesDetailWidget_C.SetState
 struct USupportHeroSquadBonusesDetailWidget_C_SetState_Params
@@ -42,6 +49,11 @@ struct USupportHeroSquadBonusesDetailWidget_C_HandlePostDifferentSquadSlotSetBP_
 
 // Function SupportHeroSquadBonusesDetailWidget.SupportHeroSquadBonusesDetailWidget_C.Construct
 struct USupportHeroSquadBonusesDetailWidget_C_Construct_Params
+{
+};
+
+// Function SupportHeroSquadBonusesDetailWidget.SupportHeroSquadBonusesDetailWidget_C.Destruct
+struct USupportHeroSquadBonusesDetailWidget_C_Destruct_Params
 {
 };
 

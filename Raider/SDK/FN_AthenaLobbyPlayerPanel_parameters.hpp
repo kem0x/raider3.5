@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -49,6 +49,17 @@ struct UAthenaLobbyPlayerPanel_C_SetTeamMemberInfo_Params
 // Function AthenaLobbyPlayerPanel.AthenaLobbyPlayerPanel_C.Initialize
 struct UAthenaLobbyPlayerPanel_C_Initialize_Params
 {
+};
+
+// Function AthenaLobbyPlayerPanel.AthenaLobbyPlayerPanel_C.Construct
+struct UAthenaLobbyPlayerPanel_C_Construct_Params
+{
+};
+
+// Function AthenaLobbyPlayerPanel.AthenaLobbyPlayerPanel_C.ExecuteUbergraph_AthenaLobbyPlayerPanel
+struct UAthenaLobbyPlayerPanel_C_ExecuteUbergraph_AthenaLobbyPlayerPanel_Params
+{
+	int                                                EntryPoint;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function AthenaLobbyPlayerPanel.AthenaLobbyPlayerPanel_C.OnClosed__DelegateSignature

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,74 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function BattlePassDirectAcquisitionScreen.BattlePassDirectAcquisitionScreen_C.Intro Anim "Header"
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UBattlePassDirectAcquisitionScreen_C::Intro_Anim__Header_()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function BattlePassDirectAcquisitionScreen.BattlePassDirectAcquisitionScreen_C.Intro Anim "Header"");
+
+	UBattlePassDirectAcquisitionScreen_C_Intro_Anim__Header__Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function BattlePassDirectAcquisitionScreen.BattlePassDirectAcquisitionScreen_C.Intro Anim Reset
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UBattlePassDirectAcquisitionScreen_C::Intro_Anim_Reset()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function BattlePassDirectAcquisitionScreen.BattlePassDirectAcquisitionScreen_C.Intro Anim Reset");
+
+	UBattlePassDirectAcquisitionScreen_C_Intro_Anim_Reset_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function BattlePassDirectAcquisitionScreen.BattlePassDirectAcquisitionScreen_C.Intro Anim "Tiles"
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UBattlePassDirectAcquisitionScreen_C::Intro_Anim__Tiles_()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function BattlePassDirectAcquisitionScreen.BattlePassDirectAcquisitionScreen_C.Intro Anim "Tiles"");
+
+	UBattlePassDirectAcquisitionScreen_C_Intro_Anim__Tiles__Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function BattlePassDirectAcquisitionScreen.BattlePassDirectAcquisitionScreen_C.Intro Anim "OR"
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UBattlePassDirectAcquisitionScreen_C::Intro_Anim__OR_()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function BattlePassDirectAcquisitionScreen.BattlePassDirectAcquisitionScreen_C.Intro Anim "OR"");
+
+	UBattlePassDirectAcquisitionScreen_C_Intro_Anim__OR__Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function BattlePassDirectAcquisitionScreen.BattlePassDirectAcquisitionScreen_C.On_CommonBorderTouchToClose_MouseButtonUp
 // (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
@@ -192,6 +260,23 @@ void UBattlePassDirectAcquisitionScreen_C::BndEvt__PanelButton_K2Node_ComponentB
 
 	UBattlePassDirectAcquisitionScreen_C_BndEvt__PanelButton_K2Node_ComponentBoundEvent_97_CommonButtonClicked__DelegateSignature_Params params;
 	params.Button = Button;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function BattlePassDirectAcquisitionScreen.BattlePassDirectAcquisitionScreen_C.OnBeginIntro
+// (Event, Public, BlueprintEvent)
+
+void UBattlePassDirectAcquisitionScreen_C::OnBeginIntro()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function BattlePassDirectAcquisitionScreen.BattlePassDirectAcquisitionScreen_C.OnBeginIntro");
+
+	UBattlePassDirectAcquisitionScreen_C_OnBeginIntro_Params params;
 
 	auto flags = fn->FunctionFlags;
 

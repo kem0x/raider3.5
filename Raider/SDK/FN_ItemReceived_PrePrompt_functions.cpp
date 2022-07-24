@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -103,14 +103,14 @@ void UItemReceived_PrePrompt_C::OnGiftBoxItemSet()
 }
 
 
-// Function ItemReceived_PrePrompt.ItemReceived_PrePrompt_C.CustomEvent_0_1
+// Function ItemReceived_PrePrompt.ItemReceived_PrePrompt_C.CustomEvent_1
 // (BlueprintCallable, BlueprintEvent)
 
-void UItemReceived_PrePrompt_C::CustomEvent_0_1()
+void UItemReceived_PrePrompt_C::CustomEvent_1()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_PrePrompt.ItemReceived_PrePrompt_C.CustomEvent_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_PrePrompt.ItemReceived_PrePrompt_C.CustomEvent_1");
 
-	UItemReceived_PrePrompt_C_CustomEvent_0_1_Params params;
+	UItemReceived_PrePrompt_C_CustomEvent_1_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -131,23 +131,6 @@ void UItemReceived_PrePrompt_C::ExecuteUbergraph_ItemReceived_PrePrompt(int Entr
 
 	UItemReceived_PrePrompt_C_ExecuteUbergraph_ItemReceived_PrePrompt_Params params;
 	params.EntryPoint = EntryPoint;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function ItemReceived_PrePrompt.ItemReceived_PrePrompt_C.PreTest__DelegateSignature
-// (Public, Delegate, BlueprintCallable, BlueprintEvent)
-
-void UItemReceived_PrePrompt_C::PreTest__DelegateSignature()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function ItemReceived_PrePrompt.ItemReceived_PrePrompt_C.PreTest__DelegateSignature");
-
-	UItemReceived_PrePrompt_C_PreTest__DelegateSignature_Params params;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -115,17 +115,17 @@ void UPartyFinder_C::Handle_Nav_left(EUINavigation Navigation, class UWidget** W
 }
 
 
-// Function PartyFinder.PartyFinder_C.Handle_Nav_right
+// Function PartyFinder.PartyFinder_C.Handle_Nav_Right
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // EUINavigation                  Navigation                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // class UWidget*                 Widget                         (Parm, OutParm, ZeroConstructor, InstancedReference, IsPlainOldData)
 
-void UPartyFinder_C::Handle_Nav_right(EUINavigation Navigation, class UWidget** Widget)
+void UPartyFinder_C::Handle_Nav_Right(EUINavigation Navigation, class UWidget** Widget)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function PartyFinder.PartyFinder_C.Handle_Nav_right");
+	static auto fn = UObject::FindObject<UFunction>("Function PartyFinder.PartyFinder_C.Handle_Nav_Right");
 
-	UPartyFinder_C_Handle_Nav_right_Params params;
+	UPartyFinder_C_Handle_Nav_Right_Params params;
 	params.Navigation = Navigation;
 
 	auto flags = fn->FunctionFlags;

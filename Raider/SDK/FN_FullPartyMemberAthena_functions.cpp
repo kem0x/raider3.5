@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -51,8 +51,28 @@ void UFullPartyMemberAthena_C::OpenPartyFinder()
 }
 
 
+// Function FullPartyMemberAthena.FullPartyMemberAthena_C.OnFriendshipStatusDetermined
+// (Event, Public, BlueprintEvent)
+// Parameters:
+// EFortFriendRequestStatus*      RequestStatus                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UFullPartyMemberAthena_C::OnFriendshipStatusDetermined(EFortFriendRequestStatus* RequestStatus)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function FullPartyMemberAthena.FullPartyMemberAthena_C.OnFriendshipStatusDetermined");
+
+	UFullPartyMemberAthena_C_OnFriendshipStatusDetermined_Params params;
+	params.RequestStatus = RequestStatus;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function FullPartyMemberAthena.FullPartyMemberAthena_C.ExecuteUbergraph_FullPartyMemberAthena
-// ()
+// (HasDefaults)
 // Parameters:
 // int                            EntryPoint                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 

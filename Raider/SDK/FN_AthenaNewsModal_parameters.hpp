@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -14,8 +14,8 @@ namespace SDK
 //Parameters
 //---------------------------------------------------------------------------
 
-// Function AthenaNewsModal.AthenaNewsModal_C.OnMouseButtonDown_0_1
-struct UAthenaNewsModal_C_OnMouseButtonDown_0_1_Params
+// Function AthenaNewsModal.AthenaNewsModal_C.OnMouseButtonDown_1
+struct UAthenaNewsModal_C_OnMouseButtonDown_1_Params
 {
 	struct FGeometry                                   MyGeometry;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, IsPlainOldData)
 	struct FPointerEvent                               MouseEvent;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ReferenceParm)

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -248,14 +248,14 @@ void UBP_FortExpeditionIconTabButton_C::Construct()
 }
 
 
-// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.OnSelected
+// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void UBP_FortExpeditionIconTabButton_C::OnSelected()
+void UBP_FortExpeditionIconTabButton_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.BP_OnSelected");
 
-	UBP_FortExpeditionIconTabButton_C_OnSelected_Params params;
+	UBP_FortExpeditionIconTabButton_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -265,14 +265,14 @@ void UBP_FortExpeditionIconTabButton_C::OnSelected()
 }
 
 
-// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.OnDeselected
+// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.BP_OnDeselected
 // (Event, Protected, BlueprintEvent)
 
-void UBP_FortExpeditionIconTabButton_C::OnDeselected()
+void UBP_FortExpeditionIconTabButton_C::BP_OnDeselected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.OnDeselected");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.BP_OnDeselected");
 
-	UBP_FortExpeditionIconTabButton_C_OnDeselected_Params params;
+	UBP_FortExpeditionIconTabButton_C_BP_OnDeselected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -282,14 +282,14 @@ void UBP_FortExpeditionIconTabButton_C::OnDeselected()
 }
 
 
-// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.OnHovered
+// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UBP_FortExpeditionIconTabButton_C::OnHovered()
+void UBP_FortExpeditionIconTabButton_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.BP_OnHovered");
 
-	UBP_FortExpeditionIconTabButton_C_OnHovered_Params params;
+	UBP_FortExpeditionIconTabButton_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -299,14 +299,14 @@ void UBP_FortExpeditionIconTabButton_C::OnHovered()
 }
 
 
-// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.OnUnhovered
+// Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.BP_OnUnhovered
 // (Event, Protected, BlueprintEvent)
 
-void UBP_FortExpeditionIconTabButton_C::OnUnhovered()
+void UBP_FortExpeditionIconTabButton_C::BP_OnUnhovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.OnUnhovered");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_FortExpeditionIconTabButton.BP_FortExpeditionIconTabButton_C.BP_OnUnhovered");
 
-	UBP_FortExpeditionIconTabButton_C_OnUnhovered_Params params;
+	UBP_FortExpeditionIconTabButton_C_BP_OnUnhovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 

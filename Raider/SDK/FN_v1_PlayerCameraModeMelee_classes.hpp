@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,7 +13,7 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass v1_PlayerCameraModeMelee.v1_PlayerCameraModeMelee_C
-// 0x0000 (0x0118 - 0x0118)
+// 0x0000 (0x0C20 - 0x0C20)
 class Uv1_PlayerCameraModeMelee_C : public Uv1_PlayerCameraModeBase_C
 {
 public:

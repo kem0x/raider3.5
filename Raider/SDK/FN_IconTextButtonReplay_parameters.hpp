@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -126,23 +126,23 @@ struct UIconTextButtonReplay_C_Construct_Params
 {
 };
 
-// Function IconTextButtonReplay.IconTextButtonReplay_C.OnHovered
-struct UIconTextButtonReplay_C_OnHovered_Params
+// Function IconTextButtonReplay.IconTextButtonReplay_C.BP_OnHovered
+struct UIconTextButtonReplay_C_BP_OnHovered_Params
 {
 };
 
-// Function IconTextButtonReplay.IconTextButtonReplay_C.OnUnhovered
-struct UIconTextButtonReplay_C_OnUnhovered_Params
+// Function IconTextButtonReplay.IconTextButtonReplay_C.BP_OnUnhovered
+struct UIconTextButtonReplay_C_BP_OnUnhovered_Params
 {
 };
 
-// Function IconTextButtonReplay.IconTextButtonReplay_C.OnSelected
-struct UIconTextButtonReplay_C_OnSelected_Params
+// Function IconTextButtonReplay.IconTextButtonReplay_C.BP_OnSelected
+struct UIconTextButtonReplay_C_BP_OnSelected_Params
 {
 };
 
-// Function IconTextButtonReplay.IconTextButtonReplay_C.OnDeselected
-struct UIconTextButtonReplay_C_OnDeselected_Params
+// Function IconTextButtonReplay.IconTextButtonReplay_C.BP_OnDeselected
+struct UIconTextButtonReplay_C_BP_OnDeselected_Params
 {
 };
 

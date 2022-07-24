@@ -8,8 +8,6 @@
 
 #include "../SDK.hpp"
 
-namespace SDK
-{
 //---------------------------------------------------------------------------
 //Enums
 //---------------------------------------------------------------------------
@@ -825,8 +823,6 @@ struct FAutomationEvent
 	unsigned char                                      UnknownData01[0x4];                                       // 0x003C(0x0004) MISSED OFFSET
 	struct FDateTime                                   Timestamp;                                                // 0x0040(0x0008)
 };
-
-}
 
 #ifdef _MSC_VER
 	#pragma pack(pop)

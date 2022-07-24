@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -656,16 +656,16 @@ void UMainTabsScreen_C::Destruct()
 }
 
 
-// Function MainTabsScreen.MainTabsScreen_C.OnQuestSeen_Event_0_1
+// Function MainTabsScreen.MainTabsScreen_C.OnQuestSeen_Event_1
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // class UFortQuestItem*          Quest                          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UMainTabsScreen_C::OnQuestSeen_Event_0_1(class UFortQuestItem* Quest)
+void UMainTabsScreen_C::OnQuestSeen_Event_1(class UFortQuestItem* Quest)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function MainTabsScreen.MainTabsScreen_C.OnQuestSeen_Event_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function MainTabsScreen.MainTabsScreen_C.OnQuestSeen_Event_1");
 
-	UMainTabsScreen_C_OnQuestSeen_Event_0_1_Params params;
+	UMainTabsScreen_C_OnQuestSeen_Event_1_Params params;
 	params.Quest = Quest;
 
 	auto flags = fn->FunctionFlags;
@@ -676,14 +676,14 @@ void UMainTabsScreen_C::OnQuestSeen_Event_0_1(class UFortQuestItem* Quest)
 }
 
 
-// Function MainTabsScreen.MainTabsScreen_C.SquadSlotMarkedAsSeen_Event_0_1
+// Function MainTabsScreen.MainTabsScreen_C.SquadSlotMarkedAsSeen_Event_1
 // (BlueprintCallable, BlueprintEvent)
 
-void UMainTabsScreen_C::SquadSlotMarkedAsSeen_Event_0_1()
+void UMainTabsScreen_C::SquadSlotMarkedAsSeen_Event_1()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function MainTabsScreen.MainTabsScreen_C.SquadSlotMarkedAsSeen_Event_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function MainTabsScreen.MainTabsScreen_C.SquadSlotMarkedAsSeen_Event_1");
 
-	UMainTabsScreen_C_SquadSlotMarkedAsSeen_Event_0_1_Params params;
+	UMainTabsScreen_C_SquadSlotMarkedAsSeen_Event_1_Params params;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -32,14 +32,14 @@ void UItemTransformSlotScreen_C::Navigate_to_Button(int Index)
 }
 
 
-// Function ItemTransformSlotScreen.ItemTransformSlotScreen_C.NavigateToFirstItem
+// Function ItemTransformSlotScreen.ItemTransformSlotScreen_C.NavigateToSelectedItem
 // (Public, BlueprintCallable, BlueprintEvent)
 
-void UItemTransformSlotScreen_C::NavigateToFirstItem()
+void UItemTransformSlotScreen_C::NavigateToSelectedItem()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function ItemTransformSlotScreen.ItemTransformSlotScreen_C.NavigateToFirstItem");
+	static auto fn = UObject::FindObject<UFunction>("Function ItemTransformSlotScreen.ItemTransformSlotScreen_C.NavigateToSelectedItem");
 
-	UItemTransformSlotScreen_C_NavigateToFirstItem_Params params;
+	UItemTransformSlotScreen_C_NavigateToSelectedItem_Params params;
 
 	auto flags = fn->FunctionFlags;
 

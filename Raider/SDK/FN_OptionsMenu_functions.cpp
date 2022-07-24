@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,26 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function OptionsMenu.OptionsMenu_C.Update Header Text by Tab ID
+// (Public, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// struct FName                   TabId                          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UOptionsMenu_C::Update_Header_Text_by_Tab_ID(const struct FName& TabId)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenu.OptionsMenu_C.Update Header Text by Tab ID");
+
+	UOptionsMenu_C_Update_Header_Text_by_Tab_ID_Params params;
+	params.TabId = TabId;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function OptionsMenu.OptionsMenu_C.DoResetKBMToDefault
 // (Public, BlueprintCallable, BlueprintEvent)
@@ -404,8 +424,9 @@ void UOptionsMenu_C::SetBackground()
 // class UClass*                  WidgetClass                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // struct FText                   DisplayName                    (BlueprintVisible, BlueprintReadOnly, Parm)
 // struct FName                   NameId                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FSlateBrush             Icon                           (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void UOptionsMenu_C::AddTab(class UClass* WidgetClass, const struct FText& DisplayName, const struct FName& NameId)
+void UOptionsMenu_C::AddTab(class UClass* WidgetClass, const struct FText& DisplayName, const struct FName& NameId, const struct FSlateBrush& Icon)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenu.OptionsMenu_C.AddTab");
 
@@ -413,6 +434,7 @@ void UOptionsMenu_C::AddTab(class UClass* WidgetClass, const struct FText& Displ
 	params.WidgetClass = WidgetClass;
 	params.DisplayName = DisplayName;
 	params.NameId = NameId;
+	params.Icon = Icon;
 
 	auto flags = fn->FunctionFlags;
 
@@ -1287,6 +1309,23 @@ void UOptionsMenu_C::ResetVideoOptionsTimerDelegate()
 }
 
 
+// Function OptionsMenu.OptionsMenu_C.ShowResetCustomGamepadToDefaultMessage
+// (BlueprintCallable, BlueprintEvent)
+
+void UOptionsMenu_C::ShowResetCustomGamepadToDefaultMessage()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenu.OptionsMenu_C.ShowResetCustomGamepadToDefaultMessage");
+
+	UOptionsMenu_C_ShowResetCustomGamepadToDefaultMessage_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function OptionsMenu.OptionsMenu_C.BndEvt__CurrentTabSwitcher_K2Node_ComponentBoundEvent_13_OnActiveWidgetChanged__DelegateSignature
 // (BlueprintEvent)
 // Parameters:
@@ -1300,23 +1339,6 @@ void UOptionsMenu_C::BndEvt__CurrentTabSwitcher_K2Node_ComponentBoundEvent_13_On
 	UOptionsMenu_C_BndEvt__CurrentTabSwitcher_K2Node_ComponentBoundEvent_13_OnActiveWidgetChanged__DelegateSignature_Params params;
 	params.ActiveWidget = ActiveWidget;
 	params.ActiveWidgetIndex = ActiveWidgetIndex;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function OptionsMenu.OptionsMenu_C.ShowResetCustomGamepadToDefaultMessage
-// (BlueprintCallable, BlueprintEvent)
-
-void UOptionsMenu_C::ShowResetCustomGamepadToDefaultMessage()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenu.OptionsMenu_C.ShowResetCustomGamepadToDefaultMessage");
-
-	UOptionsMenu_C_ShowResetCustomGamepadToDefaultMessage_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -1431,6 +1453,26 @@ void UOptionsMenu_C::ShowResetKBMToDefaultMessage()
 	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenu.OptionsMenu_C.ShowResetKBMToDefaultMessage");
 
 	UOptionsMenu_C_ShowResetKBMToDefaultMessage_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function OptionsMenu.OptionsMenu_C.BndEvt__SettingsTabs_K2Node_ComponentBoundEvent_20_OnTabSelected__DelegateSignature
+// (BlueprintEvent)
+// Parameters:
+// struct FName                   TabId                          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UOptionsMenu_C::BndEvt__SettingsTabs_K2Node_ComponentBoundEvent_20_OnTabSelected__DelegateSignature(const struct FName& TabId)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenu.OptionsMenu_C.BndEvt__SettingsTabs_K2Node_ComponentBoundEvent_20_OnTabSelected__DelegateSignature");
+
+	UOptionsMenu_C_BndEvt__SettingsTabs_K2Node_ComponentBoundEvent_20_OnTabSelected__DelegateSignature_Params params;
+	params.TabId = TabId;
 
 	auto flags = fn->FunctionFlags;
 

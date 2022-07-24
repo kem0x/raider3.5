@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,7 +13,7 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass GA_Ranged_GenericProjectileExplosive_Athena.GA_Ranged_GenericProjectileExplosive_Athena_C
-// 0x0000 (0x0B38 - 0x0B38)
+// 0x0000 (0x0950 - 0x0950)
 class UGA_Ranged_GenericProjectileExplosive_Athena_C : public UGA_Ranged_GenericProjectileExplosive_C
 {
 public:

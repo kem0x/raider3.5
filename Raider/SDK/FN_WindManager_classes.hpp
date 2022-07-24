@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,44 +13,44 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // BlueprintGeneratedClass WindManager.WindManager_C
-// 0x0118 (0x06B8 - 0x05A0)
+// 0x0118 (0x0680 - 0x0568)
 class AWindManager_C : public AFortWindManager
 {
 public:
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x05A0(0x0008) (Transient, DuplicateTransient)
-	class UParticleSystemComponent*                    WaterInteractionParticle;                                 // 0x05A8(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class UStaticMeshComponent*                        EmptyStaticMesh;                                          // 0x05B0(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class USceneCaptureComponent2D*                    TopDownCaptureActorOfTheWorld;                            // 0x05B8(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class USceneCaptureComponent2D*                    SceneCaptureComponent2D01;                                // 0x05C0(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	class USceneComponent*                             DefaultSceneRoot;                                         // 0x05C8(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
-	float                                              SmallerRenderTargetOrthoWidth;                            // 0x05D0(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData00[0x4];                                       // 0x05D4(0x0004) MISSED OFFSET
-	TArray<class AActor*>                              External_Test_Actor;                                      // 0x05D8(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance)
-	TArray<class AFortStaticMeshActor*>                World_Terrain_Meshes;                                     // 0x05E8(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance)
-	struct FVector                                     Camera_Height_Offset;                                     // 0x05F8(0x000C) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
-	float                                              Particle_Z_Offset;                                        // 0x0604(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               Has_Water_Interaction_Enabled_Variable_Been_Set;          // 0x0608(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	bool                                               Is_Water_Interaction_Enabled;                             // 0x0609(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData01[0x6];                                       // 0x060A(0x0006) MISSED OFFSET
-	TArray<struct FStaticMeshMaterialArrayCombo>       WorldStaticMeshArray;                                     // 0x0610(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
-	struct FArrayOfWaterMeshWaterBlueprintPairs        Array_Of_Water_Assets;                                    // 0x0620(0x0010) (Edit, BlueprintVisible)
-	TArray<class UStaticMesh*>                         PrototypicalStaticMeshes;                                 // 0x0630(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
-	int                                                Current_Water_Mesh_Index;                                 // 0x0640(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData02[0x4];                                       // 0x0644(0x0004) MISSED OFFSET
-	TArray<struct FFlowMapMaterials>                   WaterVectorMatToDefaultMaterialPairing;                   // 0x0648(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
-	bool                                               MaterialPairingFound;                                     // 0x0658(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData03[0x3];                                       // 0x0659(0x0003) MISSED OFFSET
-	struct FLinearColor                                WorldBoundsMinMax;                                        // 0x065C(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData04[0x4];                                       // 0x066C(0x0004) MISSED OFFSET
-	class UMaterialInterface*                          Black_Scene_Capture_Material;                             // 0x0670(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	struct FBox                                        Max_level_bounds___used_to_isolate_the_level_from_the_vista;// 0x0678(0x001C) (Edit, BlueprintVisible, IsPlainOldData)
-	unsigned char                                      UnknownData05[0x4];                                       // 0x0694(0x0004) MISSED OFFSET
-	TArray<class UStaticMeshComponent*>                StormCylinderMeshes;                                      // 0x0698(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
-	bool                                               Storm_Cyl_Mesh_Match;                                     // 0x06A8(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	unsigned char                                      UnknownData06[0x3];                                       // 0x06A9(0x0003) MISSED OFFSET
-	int                                                Wind_Cyl_Mesh_Array_Match_Index;                          // 0x06AC(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	float                                              Delta_Wind_Falloff_in_World_Units;                        // 0x06B0(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
-	struct FFortWindImpulseHandle                      NewVar_1_2;                                               // 0x06B4(0x0004) (Edit, BlueprintVisible, DisableEditOnInstance)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0568(0x0008) (Transient, DuplicateTransient)
+	class UParticleSystemComponent*                    WaterInteractionParticle;                                 // 0x0570(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UStaticMeshComponent*                        EmptyStaticMesh;                                          // 0x0578(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class USceneCaptureComponent2D*                    TopDownCaptureActorOfTheWorld;                            // 0x0580(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class USceneCaptureComponent2D*                    SceneCaptureComponent2D01;                                // 0x0588(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class USceneComponent*                             DefaultSceneRoot;                                         // 0x0590(0x0008) (BlueprintVisible, ZeroConstructor, InstancedReference, IsPlainOldData)
+	float                                              SmallerRenderTargetOrthoWidth;                            // 0x0598(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData00[0x4];                                       // 0x059C(0x0004) MISSED OFFSET
+	TArray<class AActor*>                              External_Test_Actor;                                      // 0x05A0(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance)
+	TArray<class AFortStaticMeshActor*>                World_Terrain_Meshes;                                     // 0x05B0(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance)
+	struct FVector                                     Camera_Height_Offset;                                     // 0x05C0(0x000C) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
+	float                                              Particle_Z_Offset;                                        // 0x05CC(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               Has_Water_Interaction_Enabled_Variable_Been_Set;          // 0x05D0(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	bool                                               Is_Water_Interaction_Enabled;                             // 0x05D1(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData01[0x6];                                       // 0x05D2(0x0006) MISSED OFFSET
+	TArray<struct FStaticMeshMaterialArrayCombo>       WorldStaticMeshArray;                                     // 0x05D8(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
+	struct FArrayOfWaterMeshWaterBlueprintPairs        Array_Of_Water_Assets;                                    // 0x05E8(0x0010) (Edit, BlueprintVisible)
+	TArray<class UStaticMesh*>                         PrototypicalStaticMeshes;                                 // 0x05F8(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
+	int                                                Current_Water_Mesh_Index;                                 // 0x0608(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData02[0x4];                                       // 0x060C(0x0004) MISSED OFFSET
+	TArray<struct FFlowMapMaterials>                   WaterVectorMatToDefaultMaterialPairing;                   // 0x0610(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
+	bool                                               MaterialPairingFound;                                     // 0x0620(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData03[0x3];                                       // 0x0621(0x0003) MISSED OFFSET
+	struct FLinearColor                                WorldBoundsMinMax;                                        // 0x0624(0x0010) (Edit, BlueprintVisible, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData04[0x4];                                       // 0x0634(0x0004) MISSED OFFSET
+	class UMaterialInterface*                          Black_Scene_Capture_Material;                             // 0x0638(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FBox                                        Max_level_bounds___used_to_isolate_the_level_from_the_vista;// 0x0640(0x001C) (Edit, BlueprintVisible, IsPlainOldData)
+	unsigned char                                      UnknownData05[0x4];                                       // 0x065C(0x0004) MISSED OFFSET
+	TArray<class UStaticMeshComponent*>                StormCylinderMeshes;                                      // 0x0660(0x0010) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
+	bool                                               Storm_Cyl_Mesh_Match;                                     // 0x0670(0x0001) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	unsigned char                                      UnknownData06[0x3];                                       // 0x0671(0x0003) MISSED OFFSET
+	int                                                Wind_Cyl_Mesh_Array_Match_Index;                          // 0x0674(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	float                                              Delta_Wind_Falloff_in_World_Units;                        // 0x0678(0x0004) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, IsPlainOldData)
+	struct FFortWindImpulseHandle                      NewVar_2;                                                 // 0x067C(0x0004) (Edit, BlueprintVisible, DisableEditOnInstance)
 
 	static UClass* StaticClass()
 	{

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -202,17 +202,17 @@ void UGAB_Hunting_C::K2_OnEndAbility(bool* bWasCancelled)
 }
 
 
-// Function GAB_Hunting.GAB_Hunting_C.OnQueryFinishedEvent_Event_0_1
+// Function GAB_Hunting.GAB_Hunting_C.OnQueryFinishedEvent_Event_1
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // class UEnvQueryInstanceBlueprintWrapper* QueryInstance                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // TEnumAsByte<EEnvQueryStatus>   QueryStatus                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UGAB_Hunting_C::OnQueryFinishedEvent_Event_0_1(class UEnvQueryInstanceBlueprintWrapper* QueryInstance, TEnumAsByte<EEnvQueryStatus> QueryStatus)
+void UGAB_Hunting_C::OnQueryFinishedEvent_Event_1(class UEnvQueryInstanceBlueprintWrapper* QueryInstance, TEnumAsByte<EEnvQueryStatus> QueryStatus)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function GAB_Hunting.GAB_Hunting_C.OnQueryFinishedEvent_Event_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function GAB_Hunting.GAB_Hunting_C.OnQueryFinishedEvent_Event_1");
 
-	UGAB_Hunting_C_OnQueryFinishedEvent_Event_0_1_Params params;
+	UGAB_Hunting_C_OnQueryFinishedEvent_Event_1_Params params;
 	params.QueryInstance = QueryInstance;
 	params.QueryStatus = QueryStatus;
 
@@ -224,17 +224,17 @@ void UGAB_Hunting_C::OnQueryFinishedEvent_Event_0_1(class UEnvQueryInstanceBluep
 }
 
 
-// Function GAB_Hunting.GAB_Hunting_C.OnTargetPerceptionUpdated_Event_0_1
+// Function GAB_Hunting.GAB_Hunting_C.OnTargetPerceptionUpdated_Event_1
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // class AActor*                  Actor                          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // struct FAIStimulus             Stimulus                       (BlueprintVisible, BlueprintReadOnly, Parm)
 
-void UGAB_Hunting_C::OnTargetPerceptionUpdated_Event_0_1(class AActor* Actor, const struct FAIStimulus& Stimulus)
+void UGAB_Hunting_C::OnTargetPerceptionUpdated_Event_1(class AActor* Actor, const struct FAIStimulus& Stimulus)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function GAB_Hunting.GAB_Hunting_C.OnTargetPerceptionUpdated_Event_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function GAB_Hunting.GAB_Hunting_C.OnTargetPerceptionUpdated_Event_1");
 
-	UGAB_Hunting_C_OnTargetPerceptionUpdated_Event_0_1_Params params;
+	UGAB_Hunting_C_OnTargetPerceptionUpdated_Event_1_Params params;
 	params.Actor = Actor;
 	params.Stimulus = Stimulus;
 

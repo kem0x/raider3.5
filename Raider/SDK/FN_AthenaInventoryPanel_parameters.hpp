@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -198,6 +198,11 @@ struct UAthenaInventoryPanel_C_OnDeactivated_Params
 struct UAthenaInventoryPanel_C_RequestEquip_Params
 {
 	class UFortItem**                                  Item;                                                     // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AthenaInventoryPanel.AthenaInventoryPanel_C.PostActivate
+struct UAthenaInventoryPanel_C_PostActivate_Params
+{
 };
 
 // Function AthenaInventoryPanel.AthenaInventoryPanel_C.ExecuteUbergraph_AthenaInventoryPanel

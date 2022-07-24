@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -24,11 +24,10 @@ struct UBP_BannerEditorTile_C_Update_Bang_State_Params
 {
 };
 
-// Function BP_BannerEditorTile.BP_BannerEditorTile_C.SetData
-struct UBP_BannerEditorTile_C_SetData_Params
+// Function BP_BannerEditorTile.BP_BannerEditorTile_C.OnListItemObjectSet
+struct UBP_BannerEditorTile_C_OnListItemObjectSet_Params
 {
-	class UObject**                                    InData;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	class UCommonListView**                            OwningList;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UObject**                                    ListItemObject;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function BP_BannerEditorTile.BP_BannerEditorTile_C.Construct
@@ -42,13 +41,13 @@ struct UBP_BannerEditorTile_C_HandleBannerIconLoadGuardFinished_Params
 	class UObject*                                     Object;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function BP_BannerEditorTile.BP_BannerEditorTile_C.OnSelected
-struct UBP_BannerEditorTile_C_OnSelected_Params
+// Function BP_BannerEditorTile.BP_BannerEditorTile_C.BP_OnSelected
+struct UBP_BannerEditorTile_C_BP_OnSelected_Params
 {
 };
 
-// Function BP_BannerEditorTile.BP_BannerEditorTile_C.OnHovered
-struct UBP_BannerEditorTile_C_OnHovered_Params
+// Function BP_BannerEditorTile.BP_BannerEditorTile_C.BP_OnHovered
+struct UBP_BannerEditorTile_C_BP_OnHovered_Params
 {
 };
 

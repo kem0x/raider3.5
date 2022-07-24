@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,21 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function ItemManagementInventoryPanel.ItemManagementInventoryPanel_C.Population Anim
+struct UItemManagementInventoryPanel_C_Population_Anim_Params
+{
+};
+
+// Function ItemManagementInventoryPanel.ItemManagementInventoryPanel_C.Trigger Initial Population Reset
+struct UItemManagementInventoryPanel_C_Trigger_Initial_Population_Reset_Params
+{
+};
+
+// Function ItemManagementInventoryPanel.ItemManagementInventoryPanel_C.Trigger Population Anim
+struct UItemManagementInventoryPanel_C_Trigger_Population_Anim_Params
+{
+};
 
 // Function ItemManagementInventoryPanel.ItemManagementInventoryPanel_C.UpdateStorageTextVisbility
 struct UItemManagementInventoryPanel_C_UpdateStorageTextVisbility_Params

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,23 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function TabVideoOptions.TabVideoOptions_C.UpdateOverallQualityLevel
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UTabVideoOptions_C::UpdateOverallQualityLevel()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabVideoOptions.TabVideoOptions_C.UpdateOverallQualityLevel");
+
+	UTabVideoOptions_C_UpdateOverallQualityLevel_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function TabVideoOptions.TabVideoOptions_C.Initialize Display Resolutions
 // (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
@@ -223,16 +240,16 @@ void UTabVideoOptions_C::Window_Mode__Changed(int Selected_Index)
 }
 
 
-// Function TabVideoOptions.TabVideoOptions_C.CustomEvent_22_23
+// Function TabVideoOptions.TabVideoOptions_C.CustomEvent_23
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // int                            Selected_Index                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UTabVideoOptions_C::CustomEvent_22_23(int Selected_Index)
+void UTabVideoOptions_C::CustomEvent_23(int Selected_Index)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TabVideoOptions.TabVideoOptions_C.CustomEvent_22_23");
+	static auto fn = UObject::FindObject<UFunction>("Function TabVideoOptions.TabVideoOptions_C.CustomEvent_23");
 
-	UTabVideoOptions_C_CustomEvent_22_23_Params params;
+	UTabVideoOptions_C_CustomEvent_23_Params params;
 	params.Selected_Index = Selected_Index;
 
 	auto flags = fn->FunctionFlags;
@@ -243,16 +260,16 @@ void UTabVideoOptions_C::CustomEvent_22_23(int Selected_Index)
 }
 
 
-// Function TabVideoOptions.TabVideoOptions_C.CustomEvent_23_24
+// Function TabVideoOptions.TabVideoOptions_C.CustomEvent_24
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // int                            Selected_Index                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UTabVideoOptions_C::CustomEvent_23_24(int Selected_Index)
+void UTabVideoOptions_C::CustomEvent_24(int Selected_Index)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TabVideoOptions.TabVideoOptions_C.CustomEvent_23_24");
+	static auto fn = UObject::FindObject<UFunction>("Function TabVideoOptions.TabVideoOptions_C.CustomEvent_24");
 
-	UTabVideoOptions_C_CustomEvent_23_24_Params params;
+	UTabVideoOptions_C_CustomEvent_24_Params params;
 	params.Selected_Index = Selected_Index;
 
 	auto flags = fn->FunctionFlags;
@@ -377,16 +394,16 @@ void UTabVideoOptions_C::CustomEvent(int Selected_Index)
 }
 
 
-// Function TabVideoOptions.TabVideoOptions_C.CustomEvent_1_2
+// Function TabVideoOptions.TabVideoOptions_C.CustomEvent_2
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // int                            Selected_Index                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UTabVideoOptions_C::CustomEvent_1_2(int Selected_Index)
+void UTabVideoOptions_C::CustomEvent_2(int Selected_Index)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TabVideoOptions.TabVideoOptions_C.CustomEvent_1_2");
+	static auto fn = UObject::FindObject<UFunction>("Function TabVideoOptions.TabVideoOptions_C.CustomEvent_2");
 
-	UTabVideoOptions_C_CustomEvent_1_2_Params params;
+	UTabVideoOptions_C_CustomEvent_2_Params params;
 	params.Selected_Index = Selected_Index;
 
 	auto flags = fn->FunctionFlags;
@@ -462,6 +479,26 @@ void UTabVideoOptions_C::Destruct()
 	static auto fn = UObject::FindObject<UFunction>("Function TabVideoOptions.TabVideoOptions_C.Destruct");
 
 	UTabVideoOptions_C_Destruct_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function TabVideoOptions.TabVideoOptions_C.CustomEvent_1
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// int                            Selected_Index                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UTabVideoOptions_C::CustomEvent_1(int Selected_Index)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function TabVideoOptions.TabVideoOptions_C.CustomEvent_1");
+
+	UTabVideoOptions_C_CustomEvent_1_Params params;
+	params.Selected_Index = Selected_Index;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -76,14 +76,14 @@ void URotatorSelector_C::Update_Options(TArray<struct FText>* NewParam)
 }
 
 
-// Function RotatorSelector.RotatorSelector_C.Center on Widget
+// Function RotatorSelector.RotatorSelector_C.Center On Widget
 // (Public, BlueprintCallable, BlueprintEvent)
 
-void URotatorSelector_C::Center_on_Widget()
+void URotatorSelector_C::Center_On_Widget()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function RotatorSelector.RotatorSelector_C.Center on Widget");
+	static auto fn = UObject::FindObject<UFunction>("Function RotatorSelector.RotatorSelector_C.Center On Widget");
 
-	URotatorSelector_C_Center_on_Widget_Params params;
+	URotatorSelector_C_Center_On_Widget_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -251,6 +251,26 @@ void URotatorSelector_C::BndEvt__ButtonRight_K2Node_ComponentBoundEvent_15_Commo
 
 	URotatorSelector_C_BndEvt__ButtonRight_K2Node_ComponentBoundEvent_15_CommonButtonClicked__DelegateSignature_Params params;
 	params.Button = Button;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function RotatorSelector.RotatorSelector_C.PreConstruct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+// Parameters:
+// bool*                          IsDesignTime                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void URotatorSelector_C::PreConstruct(bool* IsDesignTime)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function RotatorSelector.RotatorSelector_C.PreConstruct");
+
+	URotatorSelector_C_PreConstruct_Params params;
+	params.IsDesignTime = IsDesignTime;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -39,8 +39,8 @@ struct UItemCardWidget_C_OnFocusLost_Params
 	struct FFocusEvent*                                InFocusEvent;                                             // (BlueprintVisible, BlueprintReadOnly, Parm)
 };
 
-// Function ItemCardWidget.ItemCardWidget_C.OnHovered
-struct UItemCardWidget_C_OnHovered_Params
+// Function ItemCardWidget.ItemCardWidget_C.BP_OnHovered
+struct UItemCardWidget_C_BP_OnHovered_Params
 {
 };
 

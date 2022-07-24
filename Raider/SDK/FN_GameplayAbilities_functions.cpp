@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -1589,16 +1589,18 @@ bool UAbilitySystemBlueprintLibrary::STATIC_DoesTargetDataContainActor(const str
 // (Final, Native, Static, Public, HasOutParms, BlueprintCallable, BlueprintPure)
 // Parameters:
 // struct FGameplayCueParameters  Parameters                     (Parm)
-// struct FGameplayTagRequirements SourceTagReqs                  (Parm, OutParm, ReferenceParm)
-// struct FGameplayTagRequirements TargetTagReqs                  (Parm, OutParm, ReferenceParm)
+// struct FGameplayTagRequirements SourceTagReqs                  (ConstParm, Parm, OutParm, ReferenceParm)
+// struct FGameplayTagRequirements TargetTagReqs                  (ConstParm, Parm, OutParm, ReferenceParm)
 // bool                           ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 
-bool UAbilitySystemBlueprintLibrary::STATIC_DoesGameplayCueMeetTagRequirements(const struct FGameplayCueParameters& Parameters, struct FGameplayTagRequirements* SourceTagReqs, struct FGameplayTagRequirements* TargetTagReqs)
+bool UAbilitySystemBlueprintLibrary::STATIC_DoesGameplayCueMeetTagRequirements(const struct FGameplayCueParameters& Parameters, const struct FGameplayTagRequirements& SourceTagReqs, const struct FGameplayTagRequirements& TargetTagReqs)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function GameplayAbilities.AbilitySystemBlueprintLibrary.DoesGameplayCueMeetTagRequirements");
 
 	UAbilitySystemBlueprintLibrary_DoesGameplayCueMeetTagRequirements_Params params;
 	params.Parameters = Parameters;
+	params.SourceTagReqs = SourceTagReqs;
+	params.TargetTagReqs = TargetTagReqs;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
@@ -1606,11 +1608,6 @@ bool UAbilitySystemBlueprintLibrary::STATIC_DoesGameplayCueMeetTagRequirements(c
 	UObject::ProcessEvent(fn, &params);
 
 	fn->FunctionFlags = flags;
-
-	if (SourceTagReqs != nullptr)
-		*SourceTagReqs = params.SourceTagReqs;
-	if (TargetTagReqs != nullptr)
-		*TargetTagReqs = params.TargetTagReqs;
 
 	return params.ReturnValue;
 }
@@ -3449,15 +3446,16 @@ struct FActiveGameplayEffectHandle UAbilitySystemComponent::BP_ApplyGameplayEffe
 // Function GameplayAbilities.AbilitySystemComponent.BP_ApplyGameplayEffectSpecToTarget
 // (Final, Native, Public, HasOutParms, BlueprintCallable)
 // Parameters:
-// struct FGameplayEffectSpecHandle SpecHandle                     (Parm, OutParm, ReferenceParm)
+// struct FGameplayEffectSpecHandle SpecHandle                     (ConstParm, Parm, OutParm, ReferenceParm)
 // class UAbilitySystemComponent* Target                         (Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 // struct FActiveGameplayEffectHandle ReturnValue                    (Parm, OutParm, ReturnParm)
 
-struct FActiveGameplayEffectHandle UAbilitySystemComponent::BP_ApplyGameplayEffectSpecToTarget(class UAbilitySystemComponent* Target, struct FGameplayEffectSpecHandle* SpecHandle)
+struct FActiveGameplayEffectHandle UAbilitySystemComponent::BP_ApplyGameplayEffectSpecToTarget(const struct FGameplayEffectSpecHandle& SpecHandle, class UAbilitySystemComponent* Target)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function GameplayAbilities.AbilitySystemComponent.BP_ApplyGameplayEffectSpecToTarget");
 
 	UAbilitySystemComponent_BP_ApplyGameplayEffectSpecToTarget_Params params;
+	params.SpecHandle = SpecHandle;
 	params.Target = Target;
 
 	auto flags = fn->FunctionFlags;
@@ -3467,9 +3465,6 @@ struct FActiveGameplayEffectHandle UAbilitySystemComponent::BP_ApplyGameplayEffe
 
 	fn->FunctionFlags = flags;
 
-	if (SpecHandle != nullptr)
-		*SpecHandle = params.SpecHandle;
-
 	return params.ReturnValue;
 }
 
@@ -3477,14 +3472,15 @@ struct FActiveGameplayEffectHandle UAbilitySystemComponent::BP_ApplyGameplayEffe
 // Function GameplayAbilities.AbilitySystemComponent.BP_ApplyGameplayEffectSpecToSelf
 // (Final, Native, Public, HasOutParms, BlueprintCallable)
 // Parameters:
-// struct FGameplayEffectSpecHandle SpecHandle                     (Parm, OutParm, ReferenceParm)
+// struct FGameplayEffectSpecHandle SpecHandle                     (ConstParm, Parm, OutParm, ReferenceParm)
 // struct FActiveGameplayEffectHandle ReturnValue                    (Parm, OutParm, ReturnParm)
 
-struct FActiveGameplayEffectHandle UAbilitySystemComponent::BP_ApplyGameplayEffectSpecToSelf(struct FGameplayEffectSpecHandle* SpecHandle)
+struct FActiveGameplayEffectHandle UAbilitySystemComponent::BP_ApplyGameplayEffectSpecToSelf(const struct FGameplayEffectSpecHandle& SpecHandle)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function GameplayAbilities.AbilitySystemComponent.BP_ApplyGameplayEffectSpecToSelf");
 
 	UAbilitySystemComponent_BP_ApplyGameplayEffectSpecToSelf_Params params;
+	params.SpecHandle = SpecHandle;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
@@ -3492,9 +3488,6 @@ struct FActiveGameplayEffectHandle UAbilitySystemComponent::BP_ApplyGameplayEffe
 	UObject::ProcessEvent(fn, &params);
 
 	fn->FunctionFlags = flags;
-
-	if (SpecHandle != nullptr)
-		*SpecHandle = params.SpecHandle;
 
 	return params.ReturnValue;
 }

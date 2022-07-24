@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -276,34 +276,14 @@ void UQuestTreeEntry_C::SetupAsQuest(class UFortQuestItem** Category)
 }
 
 
-// Function QuestTreeEntry.QuestTreeEntry_C.ExpansionChanged
-// (Event, Protected, BlueprintEvent)
-// Parameters:
-// bool*                          bExpanded                      (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void UQuestTreeEntry_C::ExpansionChanged(bool* bExpanded)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function QuestTreeEntry.QuestTreeEntry_C.ExpansionChanged");
-
-	UQuestTreeEntry_C_ExpansionChanged_Params params;
-	params.bExpanded = bExpanded;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
-// Function QuestTreeEntry.QuestTreeEntry_C.OnSelected
+// Function QuestTreeEntry.QuestTreeEntry_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void UQuestTreeEntry_C::OnSelected()
+void UQuestTreeEntry_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function QuestTreeEntry.QuestTreeEntry_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function QuestTreeEntry.QuestTreeEntry_C.BP_OnSelected");
 
-	UQuestTreeEntry_C_OnSelected_Params params;
+	UQuestTreeEntry_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -330,14 +310,14 @@ void UQuestTreeEntry_C::OnQuestsUpdated()
 }
 
 
-// Function QuestTreeEntry.QuestTreeEntry_C.OnHovered
+// Function QuestTreeEntry.QuestTreeEntry_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UQuestTreeEntry_C::OnHovered()
+void UQuestTreeEntry_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function QuestTreeEntry.QuestTreeEntry_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function QuestTreeEntry.QuestTreeEntry_C.BP_OnHovered");
 
-	UQuestTreeEntry_C_OnHovered_Params params;
+	UQuestTreeEntry_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -347,16 +327,16 @@ void UQuestTreeEntry_C::OnHovered()
 }
 
 
-// Function QuestTreeEntry.QuestTreeEntry_C.OnQuestSeen_Event_0_1
+// Function QuestTreeEntry.QuestTreeEntry_C.OnQuestSeen_Event_1
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
 // class UFortQuestItem*          Quest                          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void UQuestTreeEntry_C::OnQuestSeen_Event_0_1(class UFortQuestItem* Quest)
+void UQuestTreeEntry_C::OnQuestSeen_Event_1(class UFortQuestItem* Quest)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function QuestTreeEntry.QuestTreeEntry_C.OnQuestSeen_Event_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function QuestTreeEntry.QuestTreeEntry_C.OnQuestSeen_Event_1");
 
-	UQuestTreeEntry_C_OnQuestSeen_Event_0_1_Params params;
+	UQuestTreeEntry_C_OnQuestSeen_Event_1_Params params;
 	params.Quest = Quest;
 
 	auto flags = fn->FunctionFlags;
@@ -384,14 +364,34 @@ void UQuestTreeEntry_C::Destruct()
 }
 
 
-// Function QuestTreeEntry.QuestTreeEntry_C.OnDeselected
+// Function QuestTreeEntry.QuestTreeEntry_C.BP_OnDeselected
 // (Event, Protected, BlueprintEvent)
 
-void UQuestTreeEntry_C::OnDeselected()
+void UQuestTreeEntry_C::BP_OnDeselected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function QuestTreeEntry.QuestTreeEntry_C.OnDeselected");
+	static auto fn = UObject::FindObject<UFunction>("Function QuestTreeEntry.QuestTreeEntry_C.BP_OnDeselected");
 
-	UQuestTreeEntry_C_OnDeselected_Params params;
+	UQuestTreeEntry_C_BP_OnDeselected_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function QuestTreeEntry.QuestTreeEntry_C.BP_OnItemExpansionChanged
+// (Event, Protected, BlueprintEvent)
+// Parameters:
+// bool*                          bIsExpanded                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UQuestTreeEntry_C::BP_OnItemExpansionChanged(bool* bIsExpanded)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function QuestTreeEntry.QuestTreeEntry_C.BP_OnItemExpansionChanged");
+
+	UQuestTreeEntry_C_BP_OnItemExpansionChanged_Params params;
+	params.bIsExpanded = bIsExpanded;
 
 	auto flags = fn->FunctionFlags;
 

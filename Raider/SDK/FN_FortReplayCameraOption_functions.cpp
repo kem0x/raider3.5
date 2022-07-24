@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -12,14 +12,14 @@ namespace SDK
 //Functions
 //---------------------------------------------------------------------------
 
-// Function FortReplayCameraOption.FortReplayCameraOption_C.OnClicked
+// Function FortReplayCameraOption.FortReplayCameraOption_C.BP_OnClicked
 // (Event, Protected, BlueprintEvent)
 
-void UFortReplayCameraOption_C::OnClicked()
+void UFortReplayCameraOption_C::BP_OnClicked()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function FortReplayCameraOption.FortReplayCameraOption_C.OnClicked");
+	static auto fn = UObject::FindObject<UFunction>("Function FortReplayCameraOption.FortReplayCameraOption_C.BP_OnClicked");
 
-	UFortReplayCameraOption_C_OnClicked_Params params;
+	UFortReplayCameraOption_C_BP_OnClicked_Params params;
 
 	auto flags = fn->FunctionFlags;
 

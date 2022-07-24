@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,16 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function HeroSquadManagementScreen.HeroSquadManagementScreen_C.Intro
+struct UHeroSquadManagementScreen_C_Intro_Params
+{
+};
+
+// Function HeroSquadManagementScreen.HeroSquadManagementScreen_C.Intro Initial Reset
+struct UHeroSquadManagementScreen_C_Intro_Initial_Reset_Params
+{
+};
 
 // Function HeroSquadManagementScreen.HeroSquadManagementScreen_C.HandlePickerHideAni
 struct UHeroSquadManagementScreen_C_HandlePickerHideAni_Params
@@ -108,6 +118,11 @@ struct UHeroSquadManagementScreen_C_HandleSquadSlotPickerHidden_Params
 struct UHeroSquadManagementScreen_C_BndEvt__SquadSlotsView_K2Node_ComponentBoundEvent_2_OnDifferentSquadSlotSelected__DelegateSignature_Params
 {
 	int                                                SquadSlotIndex;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function HeroSquadManagementScreen.HeroSquadManagementScreen_C.OnBeginIntro
+struct UHeroSquadManagementScreen_C_OnBeginIntro_Params
+{
 };
 
 // Function HeroSquadManagementScreen.HeroSquadManagementScreen_C.ExecuteUbergraph_HeroSquadManagementScreen

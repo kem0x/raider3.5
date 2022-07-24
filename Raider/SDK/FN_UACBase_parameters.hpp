@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -31,6 +31,7 @@ struct UUACNetworkComponent_SendPacketToClient_Params
 // Function UACBase.UACNetworkComponent.SendClientHello
 struct UUACNetworkComponent_SendClientHello_Params
 {
+	uint32_t                                           SessionKey;                                               // (Parm, ZeroConstructor, IsPlainOldData)
 };
 
 }

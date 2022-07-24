@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -55,6 +55,11 @@ struct ULegalInfo_C_BndEvt__LegalOptions_K2Node_ComponentBoundEvent_101_OnTabBut
 
 // Function LegalInfo.LegalInfo_C.Close
 struct ULegalInfo_C_Close_Params
+{
+};
+
+// Function LegalInfo.LegalInfo_C.OnActivated
+struct ULegalInfo_C_OnActivated_Params
 {
 };
 

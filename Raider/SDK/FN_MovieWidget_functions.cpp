@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -155,6 +155,23 @@ void UMovieWidget_C::ExecuteUbergraph_MovieWidget(int EntryPoint)
 
 	UMovieWidget_C_ExecuteUbergraph_MovieWidget_Params params;
 	params.EntryPoint = EntryPoint;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function MovieWidget.MovieWidget_C.OnMediaFailedToOpen__DelegateSignature
+// (Public, Delegate, BlueprintCallable, BlueprintEvent)
+
+void UMovieWidget_C::OnMediaFailedToOpen__DelegateSignature()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MovieWidget.MovieWidget_C.OnMediaFailedToOpen__DelegateSignature");
+
+	UMovieWidget_C_OnMediaFailedToOpen__DelegateSignature_Params params;
 
 	auto flags = fn->FunctionFlags;
 

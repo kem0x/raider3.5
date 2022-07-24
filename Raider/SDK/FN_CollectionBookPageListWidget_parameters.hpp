@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -44,12 +44,6 @@ struct UCollectionBookPageListWidget_C_SetupAsPage_Params
 	class UFortCollectionBookPage**                    Page;                                                     // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function CollectionBookPageListWidget.CollectionBookPageListWidget_C.OnExpansionChanged
-struct UCollectionBookPageListWidget_C_OnExpansionChanged_Params
-{
-	bool*                                              bExpanded;                                                // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
 // Function CollectionBookPageListWidget.CollectionBookPageListWidget_C.PreConstruct
 struct UCollectionBookPageListWidget_C_PreConstruct_Params
 {
@@ -78,6 +72,12 @@ struct UCollectionBookPageListWidget_C_OnCategoryDetailsUpdated_Params
 	int*                                               AvailableSlots;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	int*                                               FilledSlots;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	int*                                               TotalSlots;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function CollectionBookPageListWidget.CollectionBookPageListWidget_C.BP_OnItemExpansionChanged
+struct UCollectionBookPageListWidget_C_BP_OnItemExpansionChanged_Params
+{
+	bool*                                              bIsExpanded;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function CollectionBookPageListWidget.CollectionBookPageListWidget_C.ExecuteUbergraph_CollectionBookPageListWidget

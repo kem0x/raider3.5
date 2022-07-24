@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,18 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function AthenaGameOverWidget.AthenaGameOverWidget_C.OnPlayerLost
+struct UAthenaGameOverWidget_C_OnPlayerLost_Params
+{
+	EEndOfMatchReason                                  LostReason;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function AthenaGameOverWidget.AthenaGameOverWidget_C.OnWinningScoreDetermined
+struct UAthenaGameOverWidget_C_OnWinningScoreDetermined_Params
+{
+	int                                                Score;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function AthenaGameOverWidget.AthenaGameOverWidget_C.Handle_CancelMatchmaking
 struct UAthenaGameOverWidget_C_Handle_CancelMatchmaking_Params

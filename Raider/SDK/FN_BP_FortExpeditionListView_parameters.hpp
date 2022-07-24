@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -35,6 +35,7 @@ struct UBP_FortExpeditionListView_C_BndEvt__ExpeditionListView_K2Node_ComponentB
 struct UBP_FortExpeditionListView_C_BndEvt__ExpeditionListView_K2Node_ComponentBoundEvent_6_OnListViewItemClicked__DelegateSignature_Params
 {
 	class UObject*                                     Item;                                                     // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	bool                                               bIsHovered;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function BP_FortExpeditionListView.BP_FortExpeditionListView_C.ExecuteUbergraph_BP_FortExpeditionListView

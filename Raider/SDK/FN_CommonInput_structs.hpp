@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -19,8 +17,9 @@ enum class ECommonGamepadType : uint8_t
 {
 	XboxOneController              = 0,
 	PS4Controller                  = 1,
-	Count                          = 2,
-	ECommonGamepadType_MAX         = 3
+	SwitchController               = 2,
+	Count                          = 3,
+	ECommonGamepadType_MAX         = 4
 };
 
 

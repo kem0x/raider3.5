@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -45,8 +45,8 @@ struct UPartyFinder_C_Handle_Nav_left_Params
 	class UWidget*                                     Widget;                                                   // (Parm, OutParm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 
-// Function PartyFinder.PartyFinder_C.Handle_Nav_right
-struct UPartyFinder_C_Handle_Nav_right_Params
+// Function PartyFinder.PartyFinder_C.Handle_Nav_Right
+struct UPartyFinder_C_Handle_Nav_Right_Params
 {
 	EUINavigation                                      Navigation;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	class UWidget*                                     Widget;                                                   // (Parm, OutParm, ZeroConstructor, InstancedReference, IsPlainOldData)

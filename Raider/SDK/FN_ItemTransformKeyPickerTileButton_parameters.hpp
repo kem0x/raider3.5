@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -48,20 +48,19 @@ struct UItemTransformKeyPickerTileButton_C_Update_Bang_State_Params
 {
 };
 
-// Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.SetData
-struct UItemTransformKeyPickerTileButton_C_SetData_Params
+// Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.OnListItemObjectSet
+struct UItemTransformKeyPickerTileButton_C_OnListItemObjectSet_Params
 {
-	class UObject**                                    InData;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-	class UCommonListView**                            OwningList;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
+	class UObject**                                    ListItemObject;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.OnSelected
-struct UItemTransformKeyPickerTileButton_C_OnSelected_Params
+// Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.BP_OnSelected
+struct UItemTransformKeyPickerTileButton_C_BP_OnSelected_Params
 {
 };
 
-// Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.OnHovered
-struct UItemTransformKeyPickerTileButton_C_OnHovered_Params
+// Function ItemTransformKeyPickerTileButton.ItemTransformKeyPickerTileButton_C.BP_OnHovered
+struct UItemTransformKeyPickerTileButton_C_BP_OnHovered_Params
 {
 };
 

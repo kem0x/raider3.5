@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -89,6 +89,8 @@ struct UTooltipLibrary_C_Create_Basic_Tooltip_Params
 	struct FText                                       Body_Text;                                                // (BlueprintVisible, BlueprintReadOnly, Parm)
 	struct FText                                       Header_Text;                                              // (BlueprintVisible, BlueprintReadOnly, Parm)
 	class USlateBrushAsset*                            Icon_Brush;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      Header_Style;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class UClass*                                      Body_Style;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	class UObject*                                     __WorldContext;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 	class UUserWidget*                                 Output;                                                   // (Parm, OutParm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };

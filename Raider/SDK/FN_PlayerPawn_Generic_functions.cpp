@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -133,7 +133,7 @@ void APlayerPawn_Generic_C::OnRep_On_Player_Built_Floor()
 // Function PlayerPawn_Generic.PlayerPawn_Generic_C.Setup FX Mesh Duplicates
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
 // Parameters:
-// class UMaterialInterface*      Material_to_Apply              (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm, IsPlainOldData)
+// class UMaterialInterface*      Material_To_Apply              (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm, IsPlainOldData)
 // TArray<class UMaterialInstanceDynamic*> Charm_MID_Array                (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
 // class USkeletalMeshComponent*  Charm_Mesh                     (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, InstancedReference, ReferenceParm, IsPlainOldData)
 // TArray<class UMaterialInstanceDynamic*> Head_MID_Array                 (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
@@ -143,7 +143,7 @@ void APlayerPawn_Generic_C::OnRep_On_Player_Built_Floor()
 // int                            Translucent_Sort_Order         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // bool                           Transfer_Material_Parameters   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void APlayerPawn_Generic_C::Setup_FX_Mesh_Duplicates(int Translucent_Sort_Order, bool Transfer_Material_Parameters, class UMaterialInterface** Material_to_Apply, TArray<class UMaterialInstanceDynamic*>* Charm_MID_Array, class USkeletalMeshComponent** Charm_Mesh, TArray<class UMaterialInstanceDynamic*>* Head_MID_Array, class USkeletalMeshComponent** Head_Mesh, TArray<class UMaterialInstanceDynamic*>* Body_MID_Array, class USkeletalMeshComponent** Body_Mesh)
+void APlayerPawn_Generic_C::Setup_FX_Mesh_Duplicates(int Translucent_Sort_Order, bool Transfer_Material_Parameters, class UMaterialInterface** Material_To_Apply, TArray<class UMaterialInstanceDynamic*>* Charm_MID_Array, class USkeletalMeshComponent** Charm_Mesh, TArray<class UMaterialInstanceDynamic*>* Head_MID_Array, class USkeletalMeshComponent** Head_Mesh, TArray<class UMaterialInstanceDynamic*>* Body_MID_Array, class USkeletalMeshComponent** Body_Mesh)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function PlayerPawn_Generic.PlayerPawn_Generic_C.Setup FX Mesh Duplicates");
 
@@ -157,8 +157,8 @@ void APlayerPawn_Generic_C::Setup_FX_Mesh_Duplicates(int Translucent_Sort_Order,
 
 	fn->FunctionFlags = flags;
 
-	if (Material_to_Apply != nullptr)
-		*Material_to_Apply = params.Material_to_Apply;
+	if (Material_To_Apply != nullptr)
+		*Material_To_Apply = params.Material_To_Apply;
 	if (Charm_MID_Array != nullptr)
 		*Charm_MID_Array = params.Charm_MID_Array;
 	if (Charm_Mesh != nullptr)
@@ -178,18 +178,18 @@ void APlayerPawn_Generic_C::Setup_FX_Mesh_Duplicates(int Translucent_Sort_Order,
 // (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // TEnumAsByte<EFortCustomPartType> BodyType                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// class UMaterialInterface*      Material_to_Apply              (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UMaterialInterface*      Material_To_Apply              (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // TArray<class UMaterialInstanceDynamic*> Empty_MID_Array                (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
 // int                            TranslucentSortPriority        (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // class UPoseableMeshComponent*  PoseableMesh                   (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, InstancedReference, ReferenceParm, IsPlainOldData)
 
-void APlayerPawn_Generic_C::Create_and_Duplicate_Effect_Poseable_Skeletal_Mesh(TEnumAsByte<EFortCustomPartType> BodyType, class UMaterialInterface* Material_to_Apply, int TranslucentSortPriority, TArray<class UMaterialInstanceDynamic*>* Empty_MID_Array, class UPoseableMeshComponent** PoseableMesh)
+void APlayerPawn_Generic_C::Create_and_Duplicate_Effect_Poseable_Skeletal_Mesh(TEnumAsByte<EFortCustomPartType> BodyType, class UMaterialInterface* Material_To_Apply, int TranslucentSortPriority, TArray<class UMaterialInstanceDynamic*>* Empty_MID_Array, class UPoseableMeshComponent** PoseableMesh)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function PlayerPawn_Generic.PlayerPawn_Generic_C.Create and Duplicate Effect Poseable Skeletal Mesh");
 
 	APlayerPawn_Generic_C_Create_and_Duplicate_Effect_Poseable_Skeletal_Mesh_Params params;
 	params.BodyType = BodyType;
-	params.Material_to_Apply = Material_to_Apply;
+	params.Material_To_Apply = Material_To_Apply;
 	params.TranslucentSortPriority = TranslucentSortPriority;
 
 	auto flags = fn->FunctionFlags;
@@ -322,17 +322,17 @@ void APlayerPawn_Generic_C::FindShieldOpacity()
 // Parameters:
 // TEnumAsByte<EFortCustomPartType> BodyType                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // class USkeletalMeshComponent*  DuplicatedSkeletalMeshComponent (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, InstancedReference, ReferenceParm, IsPlainOldData)
-// class UMaterialInterface*      Material_to_Apply              (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// class UMaterialInterface*      Material_To_Apply              (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // TArray<class UMaterialInstanceDynamic*> Empty_MID_Array                (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm)
 // int                            TranslucentSortPriority        (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void APlayerPawn_Generic_C::Create_and_Duplicate_Effect_Skeletal_Meshes_Parent(TEnumAsByte<EFortCustomPartType> BodyType, class UMaterialInterface* Material_to_Apply, int TranslucentSortPriority, class USkeletalMeshComponent** DuplicatedSkeletalMeshComponent, TArray<class UMaterialInstanceDynamic*>* Empty_MID_Array)
+void APlayerPawn_Generic_C::Create_and_Duplicate_Effect_Skeletal_Meshes_Parent(TEnumAsByte<EFortCustomPartType> BodyType, class UMaterialInterface* Material_To_Apply, int TranslucentSortPriority, class USkeletalMeshComponent** DuplicatedSkeletalMeshComponent, TArray<class UMaterialInstanceDynamic*>* Empty_MID_Array)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function PlayerPawn_Generic.PlayerPawn_Generic_C.Create and Duplicate Effect Skeletal Meshes Parent");
 
 	APlayerPawn_Generic_C_Create_and_Duplicate_Effect_Skeletal_Meshes_Parent_Params params;
 	params.BodyType = BodyType;
-	params.Material_to_Apply = Material_to_Apply;
+	params.Material_To_Apply = Material_To_Apply;
 	params.TranslucentSortPriority = TranslucentSortPriority;
 
 	auto flags = fn->FunctionFlags;
@@ -1276,6 +1276,23 @@ void APlayerPawn_Generic_C::Player_Creates_a_Splash(struct FTransform* NewTransf
 
 	APlayerPawn_Generic_C_Player_Creates_a_Splash_Params params;
 	params.NewTransform = NewTransform;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function PlayerPawn_Generic.PlayerPawn_Generic_C.ReinitializeWeaponMaterialArray
+// (BlueprintCallable, BlueprintEvent)
+
+void APlayerPawn_Generic_C::ReinitializeWeaponMaterialArray()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function PlayerPawn_Generic.PlayerPawn_Generic_C.ReinitializeWeaponMaterialArray");
+
+	APlayerPawn_Generic_C_ReinitializeWeaponMaterialArray_Params params;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -61,14 +61,14 @@ struct FEventReply UOptionsMenuSliderReplay_C::OnFocusReceived(struct FGeometry*
 }
 
 
-// Function OptionsMenuSliderReplay.OptionsMenuSliderReplay_C.Center on Widget
+// Function OptionsMenuSliderReplay.OptionsMenuSliderReplay_C.Center On Widget
 // (Public, BlueprintCallable, BlueprintEvent)
 
-void UOptionsMenuSliderReplay_C::Center_on_Widget()
+void UOptionsMenuSliderReplay_C::Center_On_Widget()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSliderReplay.OptionsMenuSliderReplay_C.Center on Widget");
+	static auto fn = UObject::FindObject<UFunction>("Function OptionsMenuSliderReplay.OptionsMenuSliderReplay_C.Center On Widget");
 
-	UOptionsMenuSliderReplay_C_Center_on_Widget_Params params;
+	UOptionsMenuSliderReplay_C_Center_On_Widget_Params params;
 
 	auto flags = fn->FunctionFlags;
 

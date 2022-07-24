@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -14,8 +14,8 @@ namespace SDK
 //Parameters
 //---------------------------------------------------------------------------
 
-// Function FriendCodeFrontEndShareButton.FriendCodeFrontEndShareButton_C.OnClicked
-struct UFriendCodeFrontEndShareButton_C_OnClicked_Params
+// Function FriendCodeFrontEndShareButton.FriendCodeFrontEndShareButton_C.BP_OnClicked
+struct UFriendCodeFrontEndShareButton_C_BP_OnClicked_Params
 {
 };
 

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -493,8 +493,8 @@ struct UAbilitySystemBlueprintLibrary_DoesTargetDataContainActor_Params
 struct UAbilitySystemBlueprintLibrary_DoesGameplayCueMeetTagRequirements_Params
 {
 	struct FGameplayCueParameters                      Parameters;                                               // (Parm)
-	struct FGameplayTagRequirements                    SourceTagReqs;                                            // (Parm, OutParm, ReferenceParm)
-	struct FGameplayTagRequirements                    TargetTagReqs;                                            // (Parm, OutParm, ReferenceParm)
+	struct FGameplayTagRequirements                    SourceTagReqs;                                            // (ConstParm, Parm, OutParm, ReferenceParm)
+	struct FGameplayTagRequirements                    TargetTagReqs;                                            // (ConstParm, Parm, OutParm, ReferenceParm)
 	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
 };
 
@@ -1063,7 +1063,7 @@ struct UAbilitySystemComponent_BP_ApplyGameplayEffectToSelf_Params
 // Function GameplayAbilities.AbilitySystemComponent.BP_ApplyGameplayEffectSpecToTarget
 struct UAbilitySystemComponent_BP_ApplyGameplayEffectSpecToTarget_Params
 {
-	struct FGameplayEffectSpecHandle                   SpecHandle;                                               // (Parm, OutParm, ReferenceParm)
+	struct FGameplayEffectSpecHandle                   SpecHandle;                                               // (ConstParm, Parm, OutParm, ReferenceParm)
 	class UAbilitySystemComponent*                     Target;                                                   // (Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 	struct FActiveGameplayEffectHandle                 ReturnValue;                                              // (Parm, OutParm, ReturnParm)
 };
@@ -1071,7 +1071,7 @@ struct UAbilitySystemComponent_BP_ApplyGameplayEffectSpecToTarget_Params
 // Function GameplayAbilities.AbilitySystemComponent.BP_ApplyGameplayEffectSpecToSelf
 struct UAbilitySystemComponent_BP_ApplyGameplayEffectSpecToSelf_Params
 {
-	struct FGameplayEffectSpecHandle                   SpecHandle;                                               // (Parm, OutParm, ReferenceParm)
+	struct FGameplayEffectSpecHandle                   SpecHandle;                                               // (ConstParm, Parm, OutParm, ReferenceParm)
 	struct FActiveGameplayEffectHandle                 ReturnValue;                                              // (Parm, OutParm, ReturnParm)
 };
 

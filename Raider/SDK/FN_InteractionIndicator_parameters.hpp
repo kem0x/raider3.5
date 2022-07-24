@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -23,12 +23,6 @@ struct UInteractionIndicator_C_UpdateKeybinds_Params
 struct UInteractionIndicator_C_ShowDefenderBeaconWidget_Params
 {
 	class ABuildingTrapDefender*                       BuildingTrap;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-};
-
-// Function InteractionIndicator.InteractionIndicator_C.HandleInteractionUpdated
-struct UInteractionIndicator_C_HandleInteractionUpdated_Params
-{
-	class UFortInteractContextInfo*                    Interaction;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function InteractionIndicator.InteractionIndicator_C.ShowBasicInteractionWidget

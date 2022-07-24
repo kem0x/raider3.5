@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -93,6 +93,13 @@ struct USubgameSelectScreen_C_DialogResult_9B87D67040B12081C9B651A92AD99EA4_Para
 	struct FName                                       ResultName;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
+// Function SubgameSelectScreen.SubgameSelectScreen_C.DialogResult_0A856DFB4C254288F2910E9EF8AC5903
+struct USubgameSelectScreen_C_DialogResult_0A856DFB4C254288F2910E9EF8AC5903_Params
+{
+	EFortDialogResult                                  Result;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	struct FName                                       ResultName;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
 // Function SubgameSelectScreen.SubgameSelectScreen_C.BndEvt__CampaignBtn_K2Node_ComponentBoundEvent_282_CommonButtonClicked__DelegateSignature
 struct USubgameSelectScreen_C_BndEvt__CampaignBtn_K2Node_ComponentBoundEvent_282_CommonButtonClicked__DelegateSignature_Params
 {
@@ -115,14 +122,14 @@ struct USubgameSelectScreen_C_Clear_Party_and_Matchmaking_Delegates_Params
 {
 };
 
-// Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_0_1
-struct USubgameSelectScreen_C_CustomEvent_0_1_Params
+// Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_1
+struct USubgameSelectScreen_C_CustomEvent_1_Params
 {
 	EMatchmakingCompleteResult                         Result;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_1_2
-struct USubgameSelectScreen_C_CustomEvent_1_2_Params
+// Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_2
+struct USubgameSelectScreen_C_CustomEvent_2_Params
 {
 };
 
@@ -160,8 +167,8 @@ struct USubgameSelectScreen_C_BndEvt__CampaignBtn_K2Node_ComponentBoundEvent_107
 	class UCommonButton*                               Button;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 
-// Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_2_3
-struct USubgameSelectScreen_C_CustomEvent_2_3_Params
+// Function SubgameSelectScreen.SubgameSelectScreen_C.CustomEvent_3
+struct USubgameSelectScreen_C_CustomEvent_3_Params
 {
 };
 
@@ -218,6 +225,12 @@ struct USubgameSelectScreen_C_BndEvt__ButtonRedeem_K2Node_ComponentBoundEvent_68
 // Function SubgameSelectScreen.SubgameSelectScreen_C.OnRedeemCodeComplete
 struct USubgameSelectScreen_C_OnRedeemCodeComplete_Params
 {
+};
+
+// Function SubgameSelectScreen.SubgameSelectScreen_C.OnInputModeChanged
+struct USubgameSelectScreen_C_OnInputModeChanged_Params
+{
+	bool*                                              bUsingGamepad;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function SubgameSelectScreen.SubgameSelectScreen_C.ExecuteUbergraph_SubgameSelectScreen

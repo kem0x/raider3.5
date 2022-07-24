@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -92,6 +92,12 @@ struct UAthenaHUDMenu_C_On_Player_Died_Params
 // Function AthenaHUDMenu.AthenaHUDMenu_C.PostBind_CheckConditions
 struct UAthenaHUDMenu_C_PostBind_CheckConditions_Params
 {
+};
+
+// Function AthenaHUDMenu.AthenaHUDMenu_C.OnPlayerLost
+struct UAthenaHUDMenu_C_OnPlayerLost_Params
+{
+	EEndOfMatchReason                                  LostReason;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function AthenaHUDMenu.AthenaHUDMenu_C.ExecuteUbergraph_AthenaHUDMenu

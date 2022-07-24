@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,11 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function OnlineSubsystemUtils.OnlineBeaconClient.ClientOnConnected
+struct AOnlineBeaconClient_ClientOnConnected_Params
+{
+};
 
 // Function OnlineSubsystemUtils.AchievementBlueprintLibrary.GetCachedAchievementProgress
 struct UAchievementBlueprintLibrary_GetCachedAchievementProgress_Params
@@ -227,11 +232,6 @@ struct ULogoutCallbackProxy_Logout_Params
 	class UObject*                                     WorldContextObject;                                       // (Parm, ZeroConstructor, IsPlainOldData)
 	class APlayerController*                           PlayerController;                                         // (Parm, ZeroConstructor, IsPlainOldData)
 	class ULogoutCallbackProxy*                        ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
-};
-
-// Function OnlineSubsystemUtils.OnlineBeaconClient.ClientOnConnected
-struct AOnlineBeaconClient_ClientOnConnected_Params
-{
 };
 
 // Function OnlineSubsystemUtils.PartyBeaconClient.ServerUpdateReservationRequest

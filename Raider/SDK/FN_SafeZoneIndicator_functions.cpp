@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -209,26 +209,6 @@ void ASafeZoneIndicator_C::Apply_Lowpass_to_Audio()
 }
 
 
-// Function SafeZoneIndicator.SafeZoneIndicator_C.ReceiveTick
-// (Event, Public, BlueprintEvent)
-// Parameters:
-// float*                         DeltaSeconds                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-
-void ASafeZoneIndicator_C::ReceiveTick(float* DeltaSeconds)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function SafeZoneIndicator.SafeZoneIndicator_C.ReceiveTick");
-
-	ASafeZoneIndicator_C_ReceiveTick_Params params;
-	params.DeltaSeconds = DeltaSeconds;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function SafeZoneIndicator.SafeZoneIndicator_C.ResetSafeZoneScale
 // (BlueprintCallable, BlueprintEvent)
 
@@ -246,14 +226,17 @@ void ASafeZoneIndicator_C::ResetSafeZoneScale()
 }
 
 
-// Function SafeZoneIndicator.SafeZoneIndicator_C.ReceiveBeginPlay
-// (Event, Protected, BlueprintEvent)
+// Function SafeZoneIndicator.SafeZoneIndicator_C.ReceiveTick
+// (Event, Public, BlueprintEvent)
+// Parameters:
+// float*                         DeltaSeconds                   (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void ASafeZoneIndicator_C::ReceiveBeginPlay()
+void ASafeZoneIndicator_C::ReceiveTick(float* DeltaSeconds)
 {
-	static auto fn = UObject::FindObject<UFunction>("Function SafeZoneIndicator.SafeZoneIndicator_C.ReceiveBeginPlay");
+	static auto fn = UObject::FindObject<UFunction>("Function SafeZoneIndicator.SafeZoneIndicator_C.ReceiveTick");
 
-	ASafeZoneIndicator_C_ReceiveBeginPlay_Params params;
+	ASafeZoneIndicator_C_ReceiveTick_Params params;
+	params.DeltaSeconds = DeltaSeconds;
 
 	auto flags = fn->FunctionFlags;
 
@@ -291,6 +274,40 @@ void ASafeZoneIndicator_C::ReceiveDestroyed()
 	static auto fn = UObject::FindObject<UFunction>("Function SafeZoneIndicator.SafeZoneIndicator_C.ReceiveDestroyed");
 
 	ASafeZoneIndicator_C_ReceiveDestroyed_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function SafeZoneIndicator.SafeZoneIndicator_C.OnBeginStartingStateEffectsEvent
+// (Event, Public, BlueprintEvent)
+
+void ASafeZoneIndicator_C::OnBeginStartingStateEffectsEvent()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function SafeZoneIndicator.SafeZoneIndicator_C.OnBeginStartingStateEffectsEvent");
+
+	ASafeZoneIndicator_C_OnBeginStartingStateEffectsEvent_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function SafeZoneIndicator.SafeZoneIndicator_C.ReceiveBeginPlay
+// (Event, Protected, BlueprintEvent)
+
+void ASafeZoneIndicator_C::ReceiveBeginPlay()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function SafeZoneIndicator.SafeZoneIndicator_C.ReceiveBeginPlay");
+
+	ASafeZoneIndicator_C_ReceiveBeginPlay_Params params;
 
 	auto flags = fn->FunctionFlags;
 

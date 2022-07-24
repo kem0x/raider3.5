@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -24,6 +24,12 @@ struct UFullPartyMemberAthena_C_SetBannerIconAndColor_Params
 // Function FullPartyMemberAthena.FullPartyMemberAthena_C.OpenPartyFinder
 struct UFullPartyMemberAthena_C_OpenPartyFinder_Params
 {
+};
+
+// Function FullPartyMemberAthena.FullPartyMemberAthena_C.OnFriendshipStatusDetermined
+struct UFullPartyMemberAthena_C_OnFriendshipStatusDetermined_Params
+{
+	EFortFriendRequestStatus*                          RequestStatus;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function FullPartyMemberAthena.FullPartyMemberAthena_C.ExecuteUbergraph_FullPartyMemberAthena

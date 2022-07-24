@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -627,7 +627,7 @@ void UBP_LocalPlayerBannerEditor_C::Set_Current_Category(const struct FName& Cur
 
 
 // Function BP_LocalPlayerBannerEditor.BP_LocalPlayerBannerEditor_C.Setup Tileview For Colorswatches
-// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // struct FName                   CategoryRowName                (BlueprintVisible, BlueprintReadOnly, Parm, OutParm, ZeroConstructor, ReferenceParm, IsPlainOldData)
 
@@ -961,14 +961,14 @@ void UBP_LocalPlayerBannerEditor_C::BndEvt__CommonTileView_0_K2Node_ComponentBou
 }
 
 
-// Function BP_LocalPlayerBannerEditor.BP_LocalPlayerBannerEditor_C.BannerTileBangUpdated_Event_0_1
+// Function BP_LocalPlayerBannerEditor.BP_LocalPlayerBannerEditor_C.BannerTileBangUpdated_Event_1
 // (BlueprintCallable, BlueprintEvent)
 
-void UBP_LocalPlayerBannerEditor_C::BannerTileBangUpdated_Event_0_1()
+void UBP_LocalPlayerBannerEditor_C::BannerTileBangUpdated_Event_1()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function BP_LocalPlayerBannerEditor.BP_LocalPlayerBannerEditor_C.BannerTileBangUpdated_Event_0_1");
+	static auto fn = UObject::FindObject<UFunction>("Function BP_LocalPlayerBannerEditor.BP_LocalPlayerBannerEditor_C.BannerTileBangUpdated_Event_1");
 
-	UBP_LocalPlayerBannerEditor_C_BannerTileBangUpdated_Event_0_1_Params params;
+	UBP_LocalPlayerBannerEditor_C_BannerTileBangUpdated_Event_1_Params params;
 
 	auto flags = fn->FunctionFlags;
 

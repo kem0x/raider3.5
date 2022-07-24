@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,17 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function QuestScreen.QuestScreen_C.CheckBan
+struct UQuestScreen_C_CheckBan_Params
+{
+	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function QuestScreen.QuestScreen_C.ConstructStreamingInstallProgressBar
+struct UQuestScreen_C_ConstructStreamingInstallProgressBar_Params
+{
+};
 
 // Function QuestScreen.QuestScreen_C.CalculateInitialQuestToSelect
 struct UQuestScreen_C_CalculateInitialQuestToSelect_Params
@@ -164,6 +175,27 @@ struct UQuestScreen_C_DialogResult_CE39442C4BCACCFD8414B495A3B27A21_Params
 	struct FName                                       ResultName;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
+// Function QuestScreen.QuestScreen_C.DialogResult_E0B996764ED97392157AE8A3D55F864D
+struct UQuestScreen_C_DialogResult_E0B996764ED97392157AE8A3D55F864D_Params
+{
+	EFortDialogResult                                  Result;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	struct FName                                       ResultName;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function QuestScreen.QuestScreen_C.DialogResult_C35A8CD244DE431DD7750FA526449983
+struct UQuestScreen_C_DialogResult_C35A8CD244DE431DD7750FA526449983_Params
+{
+	EFortDialogResult                                  Result;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	struct FName                                       ResultName;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function QuestScreen.QuestScreen_C.DialogResult_C0903C7A4B03E8635AF882BD10F7171B
+struct UQuestScreen_C_DialogResult_C0903C7A4B03E8635AF882BD10F7171B_Params
+{
+	EFortDialogResult                                  Result;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	struct FName                                       ResultName;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
 // Function QuestScreen.QuestScreen_C.BndEvt__HorizontalTabList_K2Node_ComponentBoundEvent_150_OnTabButtonCreated__DelegateSignature
 struct UQuestScreen_C_BndEvt__HorizontalTabList_K2Node_ComponentBoundEvent_150_OnTabButtonCreated__DelegateSignature_Params
 {
@@ -232,11 +264,6 @@ struct UQuestScreen_C_BndEvt__QuestsTreeView_K2Node_ComponentBoundEvent_23_OnLis
 	class UUserWidget*                                 Widget;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 };
 
-// Function QuestScreen.QuestScreen_C.Construct
-struct UQuestScreen_C_Construct_Params
-{
-};
-
 // Function QuestScreen.QuestScreen_C.OnItemSelected
 struct UQuestScreen_C_OnItemSelected_Params
 {
@@ -250,10 +277,26 @@ struct UQuestScreen_C_ShowAbandonQuestDialog_Params
 	class UFortQuestItem*                              QuestToAbandon;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
+// Function QuestScreen.QuestScreen_C.Construct
+struct UQuestScreen_C_Construct_Params
+{
+};
+
+// Function QuestScreen.QuestScreen_C.OnContentMissing
+struct UQuestScreen_C_OnContentMissing_Params
+{
+};
+
 // Function QuestScreen.QuestScreen_C.ExecuteUbergraph_QuestScreen
 struct UQuestScreen_C_ExecuteUbergraph_QuestScreen_Params
 {
 	int                                                EntryPoint;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function QuestScreen.QuestScreen_C.OnCheckingPatch__DelegateSignature
+struct UQuestScreen_C_OnCheckingPatch__DelegateSignature_Params
+{
+	bool                                               bStarted;                                                 // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function QuestScreen.QuestScreen_C.AbandonQuest__DelegateSignature

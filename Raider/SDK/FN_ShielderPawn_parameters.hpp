@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -85,11 +85,6 @@ struct AShielderPawn_C_AttachShielderToSpringArm_Params
 
 // Function ShielderPawn.ShielderPawn_C.AttachSpringArmToAttachPawn
 struct AShielderPawn_C_AttachSpringArmToAttachPawn_Params
-{
-};
-
-// Function ShielderPawn.ShielderPawn_C.OnRep_SpringArmTargetRotation
-struct AShielderPawn_C_OnRep_SpringArmTargetRotation_Params
 {
 };
 

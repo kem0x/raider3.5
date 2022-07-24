@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -226,23 +226,6 @@ void UItemTransformItemPicker_C::SetupItemPicker()
 }
 
 
-// Function ItemTransformItemPicker.ItemTransformItemPicker_C.Construct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
-
-void UItemTransformItemPicker_C::Construct()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function ItemTransformItemPicker.ItemTransformItemPicker_C.Construct");
-
-	UItemTransformItemPicker_C_Construct_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function ItemTransformItemPicker.ItemTransformItemPicker_C.PreConstruct
 // (BlueprintCosmetic, Event, Public, BlueprintEvent)
 // Parameters:
@@ -274,6 +257,23 @@ void UItemTransformItemPicker_C::BndEvt__FilterTabList_K2Node_ComponentBoundEven
 
 	UItemTransformItemPicker_C_BndEvt__FilterTabList_K2Node_ComponentBoundEvent_0_OnTabSelected__DelegateSignature_Params params;
 	params.TabId = TabId;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function ItemTransformItemPicker.ItemTransformItemPicker_C.Construct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UItemTransformItemPicker_C::Construct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function ItemTransformItemPicker.ItemTransformItemPicker_C.Construct");
+
+	UItemTransformItemPicker_C_Construct_Params params;
 
 	auto flags = fn->FunctionFlags;
 

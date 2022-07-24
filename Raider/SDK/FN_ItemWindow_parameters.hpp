@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -47,8 +47,8 @@ struct UItemWindow_C_AddInfo_Params
 	struct FText                                       Title;                                                    // (BlueprintVisible, BlueprintReadOnly, Parm)
 };
 
-// Function ItemWindow.ItemWindow_C.OnSelectedButtonChanged_Event_0_1
-struct UItemWindow_C_OnSelectedButtonChanged_Event_0_1_Params
+// Function ItemWindow.ItemWindow_C.OnSelectedButtonChanged_Event_1
+struct UItemWindow_C_OnSelectedButtonChanged_Event_1_Params
 {
 	class UCommonButton*                               AssociatedButton;                                         // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
 	int                                                ButtonIndex;                                              // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)

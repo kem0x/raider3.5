@@ -1,12 +1,10 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
 #endif
-
-#include "../SDK.hpp"
 
 namespace SDK
 {
@@ -15,17 +13,17 @@ namespace SDK
 //---------------------------------------------------------------------------
 
 // WidgetBlueprintGeneratedClass SpectatorPlayerSelectionUI.SpectatorPlayerSelectionUI_C
-// 0x05A8 (0x07B8 - 0x0210)
+// 0x05A8 (0x07B0 - 0x0208)
 class USpectatorPlayerSelectionUI_C : public UUserWidget
 {
 public:
-	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0210(0x0008) (Transient, DuplicateTransient)
-	class UScrollBox*                                  ScrollBox_151_152;                                        // 0x0218(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
-	struct FButtonStyle                                ButtonStyle;                                              // 0x0220(0x0278) (Edit, BlueprintVisible, DisableEditOnInstance)
-	TMap<class UButton*, class AFortPlayerState*>      ButtonToPlayerStateMap;                                   // 0x0498(0x0050) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
-	struct FButtonStyle                                FollowedButtonStyle;                                      // 0x04E8(0x0278) (Edit, BlueprintVisible, DisableEditOnInstance)
-	TMap<class AFortPlayerState*, class UButton*>      PlayerStateToButtonMap;                                   // 0x0760(0x0050) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance)
-	class UButton*                                     FollowedPlayerButton;                                     // 0x07B0(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
+	struct FPointerToUberGraphFrame                    UberGraphFrame;                                           // 0x0208(0x0008) (Transient, DuplicateTransient)
+	class UScrollBox*                                  ScrollBox_152;                                            // 0x0210(0x0008) (BlueprintVisible, ExportObject, ZeroConstructor, InstancedReference, IsPlainOldData, RepSkip, RepNotify, Interp, NonTransactional, EditorOnly, NoDestructor, AutoWeak, ContainsInstancedReference, AssetRegistrySearchable, SimpleDisplay, AdvancedDisplay, Protected, BlueprintCallable, BlueprintAuthorityOnly, TextExportTransient, NonPIEDuplicateTransient, ExposeOnSpawn, PersistentInstance, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic, NativeAccessSpecifierProtected, NativeAccessSpecifierPrivate)
+	struct FButtonStyle                                ButtonStyle;                                              // 0x0218(0x0278) (Edit, BlueprintVisible, DisableEditOnInstance)
+	TMap<class UButton*, class AFortPlayerState*>      ButtonToPlayerStateMap;                                   // 0x0490(0x0050) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance)
+	struct FButtonStyle                                FollowedButtonStyle;                                      // 0x04E0(0x0278) (Edit, BlueprintVisible, DisableEditOnInstance)
+	TMap<class AFortPlayerState*, class UButton*>      PlayerStateToButtonMap;                                   // 0x0758(0x0050) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnTemplate, DisableEditOnInstance)
+	class UButton*                                     FollowedPlayerButton;                                     // 0x07A8(0x0008) (Edit, BlueprintVisible, ZeroConstructor, DisableEditOnInstance, InstancedReference, IsPlainOldData)
 
 	static UClass* StaticClass()
 	{

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -70,23 +70,23 @@ struct UDefaultSkillNode_C_PreConstruct_Params
 	bool*                                              IsDesignTime;                                             // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
-// Function DefaultSkillNode.DefaultSkillNode_C.OnUnhovered
-struct UDefaultSkillNode_C_OnUnhovered_Params
+// Function DefaultSkillNode.DefaultSkillNode_C.BP_OnUnhovered
+struct UDefaultSkillNode_C_BP_OnUnhovered_Params
 {
 };
 
-// Function DefaultSkillNode.DefaultSkillNode_C.OnHovered
-struct UDefaultSkillNode_C_OnHovered_Params
+// Function DefaultSkillNode.DefaultSkillNode_C.BP_OnHovered
+struct UDefaultSkillNode_C_BP_OnHovered_Params
 {
 };
 
-// Function DefaultSkillNode.DefaultSkillNode_C.OnSelected
-struct UDefaultSkillNode_C_OnSelected_Params
+// Function DefaultSkillNode.DefaultSkillNode_C.BP_OnSelected
+struct UDefaultSkillNode_C_BP_OnSelected_Params
 {
 };
 
-// Function DefaultSkillNode.DefaultSkillNode_C.OnDeselected
-struct UDefaultSkillNode_C_OnDeselected_Params
+// Function DefaultSkillNode.DefaultSkillNode_C.BP_OnDeselected
+struct UDefaultSkillNode_C_BP_OnDeselected_Params
 {
 };
 

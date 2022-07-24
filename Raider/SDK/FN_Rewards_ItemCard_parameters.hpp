@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,12 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function Rewards_ItemCard.Rewards_ItemCard_C.SetItemLimitReachedNotification
+struct URewards_ItemCard_C_SetItemLimitReachedNotification_Params
+{
+	bool                                               ShouldShow;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
 
 // Function Rewards_ItemCard.Rewards_ItemCard_C.SetQuantityOverride
 struct URewards_ItemCard_C_SetQuantityOverride_Params

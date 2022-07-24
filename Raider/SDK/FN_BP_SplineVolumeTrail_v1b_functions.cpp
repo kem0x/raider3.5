@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -33,9 +33,9 @@ void ABP_SplineVolumeTrail_v1b_C::UpdateCheapSplinesWPOVectors()
 // (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent, BlueprintPure)
 // Parameters:
 // struct FName                   Socket_Name                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// struct FVector                 LocationWS                     (Parm, OutParm, IsPlainOldData)
+// struct FVector                 Location_WS                    (Parm, OutParm, IsPlainOldData)
 
-void ABP_SplineVolumeTrail_v1b_C::GetSocketLocationWS(const struct FName& Socket_Name, struct FVector* LocationWS)
+void ABP_SplineVolumeTrail_v1b_C::GetSocketLocationWS(const struct FName& Socket_Name, struct FVector* Location_WS)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function BP_SplineVolumeTrail_v1b.BP_SplineVolumeTrail_v1b_C.GetSocketLocationWS");
 
@@ -48,8 +48,8 @@ void ABP_SplineVolumeTrail_v1b_C::GetSocketLocationWS(const struct FName& Socket
 
 	fn->FunctionFlags = flags;
 
-	if (LocationWS != nullptr)
-		*LocationWS = params.LocationWS;
+	if (Location_WS != nullptr)
+		*Location_WS = params.Location_WS;
 }
 
 

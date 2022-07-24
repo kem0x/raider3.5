@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -91,21 +91,14 @@ void UTopMenu_HelpButton_C::Construct()
 }
 
 
-// Function TopMenu_HelpButton.TopMenu_HelpButton_C.OnFeatureStateChanged
-// (BlueprintCallable, BlueprintEvent)
-// Parameters:
-// EFortUIFeature                 ChangedFeature                 (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// EFortUIFeatureState            NewState                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
-// EFortUIFeatureStateReason      StateReason                    (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// Function TopMenu_HelpButton.TopMenu_HelpButton_C.Destruct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
 
-void UTopMenu_HelpButton_C::OnFeatureStateChanged(EFortUIFeature ChangedFeature, EFortUIFeatureState NewState, EFortUIFeatureStateReason StateReason)
+void UTopMenu_HelpButton_C::Destruct()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function TopMenu_HelpButton.TopMenu_HelpButton_C.OnFeatureStateChanged");
+	static auto fn = UObject::FindObject<UFunction>("Function TopMenu_HelpButton.TopMenu_HelpButton_C.Destruct");
 
-	UTopMenu_HelpButton_C_OnFeatureStateChanged_Params params;
-	params.ChangedFeature = ChangedFeature;
-	params.NewState = NewState;
-	params.StateReason = StateReason;
+	UTopMenu_HelpButton_C_Destruct_Params params;
 
 	auto flags = fn->FunctionFlags;
 

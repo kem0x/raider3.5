@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,40 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function B_Ranged_Generic.B_Ranged_Generic_C.StopScopedAudio
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void AB_Ranged_Generic_C::StopScopedAudio()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Ranged_Generic.B_Ranged_Generic_C.StopScopedAudio");
+
+	AB_Ranged_Generic_C_StopScopedAudio_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Ranged_Generic.B_Ranged_Generic_C.StartScopedAudio
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void AB_Ranged_Generic_C::StartScopedAudio()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Ranged_Generic.B_Ranged_Generic_C.StartScopedAudio");
+
+	AB_Ranged_Generic_C_StartScopedAudio_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function B_Ranged_Generic.B_Ranged_Generic_C.SetPostProcessParams
 // (Public, BlueprintCallable, BlueprintEvent)
@@ -933,12 +967,15 @@ void AB_Ranged_Generic_C::HideThirdPersonStuff()
 
 // Function B_Ranged_Generic.B_Ranged_Generic_C.UnhideFirstPersonStuffPart2
 // (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// int                            Which_Call                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 
-void AB_Ranged_Generic_C::UnhideFirstPersonStuffPart2()
+void AB_Ranged_Generic_C::UnhideFirstPersonStuffPart2(int Which_Call)
 {
 	static auto fn = UObject::FindObject<UFunction>("Function B_Ranged_Generic.B_Ranged_Generic_C.UnhideFirstPersonStuffPart2");
 
 	AB_Ranged_Generic_C_UnhideFirstPersonStuffPart2_Params params;
+	params.Which_Call = Which_Call;
 
 	auto flags = fn->FunctionFlags;
 
@@ -990,6 +1027,94 @@ void AB_Ranged_Generic_C::SetupScopePostProcess()
 	static auto fn = UObject::FindObject<UFunction>("Function B_Ranged_Generic.B_Ranged_Generic_C.SetupScopePostProcess");
 
 	AB_Ranged_Generic_C_SetupScopePostProcess_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Ranged_Generic.B_Ranged_Generic_C.BindFireRateChange
+// (BlueprintCallable, BlueprintEvent)
+
+void AB_Ranged_Generic_C::BindFireRateChange()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Ranged_Generic.B_Ranged_Generic_C.BindFireRateChange");
+
+	AB_Ranged_Generic_C_BindFireRateChange_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Ranged_Generic.B_Ranged_Generic_C.PitchUpOnRateOfFireChange
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// float                          NewRateOfFire                  (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void AB_Ranged_Generic_C::PitchUpOnRateOfFireChange(float NewRateOfFire)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Ranged_Generic.B_Ranged_Generic_C.PitchUpOnRateOfFireChange");
+
+	AB_Ranged_Generic_C_PitchUpOnRateOfFireChange_Params params;
+	params.NewRateOfFire = NewRateOfFire;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Ranged_Generic.B_Ranged_Generic_C.ShellEjectionFixOn
+// (BlueprintCallable, BlueprintEvent)
+
+void AB_Ranged_Generic_C::ShellEjectionFixOn()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Ranged_Generic.B_Ranged_Generic_C.ShellEjectionFixOn");
+
+	AB_Ranged_Generic_C_ShellEjectionFixOn_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Ranged_Generic.B_Ranged_Generic_C.Bind on Effects Quality
+// (BlueprintCallable, BlueprintEvent)
+
+void AB_Ranged_Generic_C::Bind_on_Effects_Quality()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Ranged_Generic.B_Ranged_Generic_C.Bind on Effects Quality");
+
+	AB_Ranged_Generic_C_Bind_on_Effects_Quality_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function B_Ranged_Generic.B_Ranged_Generic_C.ShellEjectionOff
+// (BlueprintCallable, BlueprintEvent)
+
+void AB_Ranged_Generic_C::ShellEjectionOff()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function B_Ranged_Generic.B_Ranged_Generic_C.ShellEjectionOff");
+
+	AB_Ranged_Generic_C_ShellEjectionOff_Params params;
 
 	auto flags = fn->FunctionFlags;
 

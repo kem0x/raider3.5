@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -53,6 +53,12 @@ struct UTabAccessibilityOptions_C_BndEvt__ColorBlindMode_K2Node_ComponentBoundEv
 
 // Function TabAccessibilityOptions.TabAccessibilityOptions_C.BndEvt__HearingImpairedMode_K2Node_ComponentBoundEvent_13_Selection Changed__DelegateSignature
 struct UTabAccessibilityOptions_C_BndEvt__HearingImpairedMode_K2Node_ComponentBoundEvent_13_Selection_Changed__DelegateSignature_Params
+{
+	int                                                Selected_Index;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function TabAccessibilityOptions.TabAccessibilityOptions_C.BndEvt__IgnoreGamepadInput_K2Node_ComponentBoundEvent_5_Selection Changed__DelegateSignature
+struct UTabAccessibilityOptions_C_BndEvt__IgnoreGamepadInput_K2Node_ComponentBoundEvent_5_Selection_Changed__DelegateSignature_Params
 {
 	int                                                Selected_Index;                                           // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };

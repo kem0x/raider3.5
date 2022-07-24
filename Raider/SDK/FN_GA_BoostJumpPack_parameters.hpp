@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -14,6 +14,42 @@ namespace SDK
 //Parameters
 //---------------------------------------------------------------------------
 
+// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Handle Jetpack Equipped
+struct UGA_BoostJumpPack_C_Handle_Jetpack_Equipped_Params
+{
+};
+
+// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Reasons To Reset on Transition
+struct UGA_BoostJumpPack_C_Reasons_To_Reset_on_Transition_Params
+{
+	struct FGameplayTag                                Tag;                                                      // (BlueprintVisible, BlueprintReadOnly, Parm)
+	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Get Player Pawn
+struct UGA_BoostJumpPack_C_Get_Player_Pawn_Params
+{
+	class UObject*                                     Object;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+	class AFortPlayerPawn*                             ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function GA_BoostJumpPack.GA_BoostJumpPack_C.IsCurrentlyDead
+struct UGA_BoostJumpPack_C_IsCurrentlyDead_Params
+{
+	struct FGameplayTag                                TagOne;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm)
+	bool                                               ReturnValue;                                              // (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+};
+
+// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Reengage Falling Movement
+struct UGA_BoostJumpPack_C_Reengage_Falling_Movement_Params
+{
+};
+
+// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Reengage Hovering Movement
+struct UGA_BoostJumpPack_C_Reengage_Hovering_Movement_Params
+{
+};
+
 // Function GA_BoostJumpPack.GA_BoostJumpPack_C.SavePlayerPawn
 struct UGA_BoostJumpPack_C_SavePlayerPawn_Params
 {
@@ -21,11 +57,6 @@ struct UGA_BoostJumpPack_C_SavePlayerPawn_Params
 
 // Function GA_BoostJumpPack.GA_BoostJumpPack_C.OnAbilityCanceled
 struct UGA_BoostJumpPack_C_OnAbilityCanceled_Params
-{
-};
-
-// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Cheat DBNO When Player Hits Exectute on Controller
-struct UGA_BoostJumpPack_C_Cheat_DBNO_When_Player_Hits_Exectute_on_Controller_Params
 {
 };
 
@@ -48,16 +79,6 @@ struct UGA_BoostJumpPack_C_Reset_Toggle_Input_State_Params
 struct UGA_BoostJumpPack_C_ProcessTriggerData_Params
 {
 	struct FGameplayTag                                TagOne;                                                   // (BlueprintVisible, BlueprintReadOnly, Parm)
-};
-
-// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Push Jetpack Input Component
-struct UGA_BoostJumpPack_C_Push_Jetpack_Input_Component_Params
-{
-};
-
-// Function GA_BoostJumpPack.GA_BoostJumpPack_C.Pop Jetpack Input Component
-struct UGA_BoostJumpPack_C_Pop_Jetpack_Input_Component_Params
-{
 };
 
 // Function GA_BoostJumpPack.GA_BoostJumpPack_C.Stop Regen Effect

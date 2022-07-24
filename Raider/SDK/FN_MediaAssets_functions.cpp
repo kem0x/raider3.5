@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -329,6 +329,27 @@ bool UMediaPlayer::SetTrackFormat(EMediaPlayerTrack TrackType, int TrackIndex, i
 	fn->FunctionFlags = flags;
 
 	return params.ReturnValue;
+}
+
+
+// Function MediaAssets.MediaPlayer.SetTimeDelay
+// (Final, Native, Public, HasDefaults, BlueprintCallable)
+// Parameters:
+// struct FTimespan               TimeDelay                      (Parm)
+
+void UMediaPlayer::SetTimeDelay(const struct FTimespan& TimeDelay)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MediaAssets.MediaPlayer.SetTimeDelay");
+
+	UMediaPlayer_SetTimeDelay_Params params;
+	params.TimeDelay = TimeDelay;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
 }
 
 
@@ -1155,6 +1176,28 @@ struct FText UMediaPlayer::GetTrackDisplayName(EMediaPlayerTrack TrackType, int 
 }
 
 
+// Function MediaAssets.MediaPlayer.GetTimeDelay
+// (Final, Native, Public, HasDefaults, BlueprintCallable, BlueprintPure, Const)
+// Parameters:
+// struct FTimespan               ReturnValue                    (Parm, OutParm, ReturnParm)
+
+struct FTimespan UMediaPlayer::GetTimeDelay()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MediaAssets.MediaPlayer.GetTimeDelay");
+
+	UMediaPlayer_GetTimeDelay_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
 // Function MediaAssets.MediaPlayer.GetTime
 // (Final, Native, Public, HasDefaults, BlueprintCallable, BlueprintPure, Const)
 // Parameters:
@@ -1929,6 +1972,28 @@ void UMediaSoundComponent::SetMediaPlayer(class UMediaPlayer* NewMediaPlayer)
 	UObject::ProcessEvent(fn, &params);
 
 	fn->FunctionFlags = flags;
+}
+
+
+// Function MediaAssets.MediaSoundComponent.GetMediaPlayer
+// (Final, Native, Public, BlueprintCallable, BlueprintPure, Const)
+// Parameters:
+// class UMediaPlayer*            ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+class UMediaPlayer* UMediaSoundComponent::GetMediaPlayer()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function MediaAssets.MediaSoundComponent.GetMediaPlayer");
+
+	UMediaSoundComponent_GetMediaPlayer_Params params;
+
+	auto flags = fn->FunctionFlags;
+	fn->FunctionFlags |= 0x400;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
 }
 
 

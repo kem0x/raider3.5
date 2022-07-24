@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,44 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function QuestScreen.QuestScreen_C.CheckBan
+// (Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData)
+
+bool UQuestScreen_C::CheckBan()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function QuestScreen.QuestScreen_C.CheckBan");
+
+	UQuestScreen_C_CheckBan_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function QuestScreen.QuestScreen_C.ConstructStreamingInstallProgressBar
+// (Public, BlueprintCallable, BlueprintEvent)
+
+void UQuestScreen_C::ConstructStreamingInstallProgressBar()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function QuestScreen.QuestScreen_C.ConstructStreamingInstallProgressBar");
+
+	UQuestScreen_C_ConstructStreamingInstallProgressBar_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function QuestScreen.QuestScreen_C.CalculateInitialQuestToSelect
 // (Public, BlueprintCallable, BlueprintEvent)
@@ -532,6 +570,72 @@ void UQuestScreen_C::DialogResult_CE39442C4BCACCFD8414B495A3B27A21(EFortDialogRe
 }
 
 
+// Function QuestScreen.QuestScreen_C.DialogResult_E0B996764ED97392157AE8A3D55F864D
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EFortDialogResult              Result                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FName                   ResultName                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UQuestScreen_C::DialogResult_E0B996764ED97392157AE8A3D55F864D(EFortDialogResult Result, const struct FName& ResultName)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function QuestScreen.QuestScreen_C.DialogResult_E0B996764ED97392157AE8A3D55F864D");
+
+	UQuestScreen_C_DialogResult_E0B996764ED97392157AE8A3D55F864D_Params params;
+	params.Result = Result;
+	params.ResultName = ResultName;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function QuestScreen.QuestScreen_C.DialogResult_C35A8CD244DE431DD7750FA526449983
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EFortDialogResult              Result                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FName                   ResultName                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UQuestScreen_C::DialogResult_C35A8CD244DE431DD7750FA526449983(EFortDialogResult Result, const struct FName& ResultName)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function QuestScreen.QuestScreen_C.DialogResult_C35A8CD244DE431DD7750FA526449983");
+
+	UQuestScreen_C_DialogResult_C35A8CD244DE431DD7750FA526449983_Params params;
+	params.Result = Result;
+	params.ResultName = ResultName;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function QuestScreen.QuestScreen_C.DialogResult_C0903C7A4B03E8635AF882BD10F7171B
+// (BlueprintCallable, BlueprintEvent)
+// Parameters:
+// EFortDialogResult              Result                         (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+// struct FName                   ResultName                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UQuestScreen_C::DialogResult_C0903C7A4B03E8635AF882BD10F7171B(EFortDialogResult Result, const struct FName& ResultName)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function QuestScreen.QuestScreen_C.DialogResult_C0903C7A4B03E8635AF882BD10F7171B");
+
+	UQuestScreen_C_DialogResult_C0903C7A4B03E8635AF882BD10F7171B_Params params;
+	params.Result = Result;
+	params.ResultName = ResultName;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function QuestScreen.QuestScreen_C.BndEvt__HorizontalTabList_K2Node_ComponentBoundEvent_150_OnTabButtonCreated__DelegateSignature
 // (BlueprintEvent)
 // Parameters:
@@ -759,23 +863,6 @@ void UQuestScreen_C::BndEvt__QuestsTreeView_K2Node_ComponentBoundEvent_23_OnList
 }
 
 
-// Function QuestScreen.QuestScreen_C.Construct
-// (BlueprintCosmetic, Event, Public, BlueprintEvent)
-
-void UQuestScreen_C::Construct()
-{
-	static auto fn = UObject::FindObject<UFunction>("Function QuestScreen.QuestScreen_C.Construct");
-
-	UQuestScreen_C_Construct_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-}
-
-
 // Function QuestScreen.QuestScreen_C.OnItemSelected
 // (BlueprintCallable, BlueprintEvent)
 // Parameters:
@@ -818,6 +905,40 @@ void UQuestScreen_C::ShowAbandonQuestDialog(class UFortQuestItem* QuestToAbandon
 }
 
 
+// Function QuestScreen.QuestScreen_C.Construct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UQuestScreen_C::Construct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function QuestScreen.QuestScreen_C.Construct");
+
+	UQuestScreen_C_Construct_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function QuestScreen.QuestScreen_C.OnContentMissing
+// (BlueprintCallable, BlueprintEvent)
+
+void UQuestScreen_C::OnContentMissing()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function QuestScreen.QuestScreen_C.OnContentMissing");
+
+	UQuestScreen_C_OnContentMissing_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
 // Function QuestScreen.QuestScreen_C.ExecuteUbergraph_QuestScreen
 // (HasDefaults)
 // Parameters:
@@ -829,6 +950,26 @@ void UQuestScreen_C::ExecuteUbergraph_QuestScreen(int EntryPoint)
 
 	UQuestScreen_C_ExecuteUbergraph_QuestScreen_Params params;
 	params.EntryPoint = EntryPoint;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function QuestScreen.QuestScreen_C.OnCheckingPatch__DelegateSignature
+// (Public, Delegate, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           bStarted                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UQuestScreen_C::OnCheckingPatch__DelegateSignature(bool bStarted)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function QuestScreen.QuestScreen_C.OnCheckingPatch__DelegateSignature");
+
+	UQuestScreen_C_OnCheckingPatch__DelegateSignature_Params params;
+	params.bStarted = bStarted;
 
 	auto flags = fn->FunctionFlags;
 

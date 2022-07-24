@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,31 +11,6 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
-
-// Function HordeTierResultsWidget.HordeTierResultsWidget_C.OnHandleAction
-// (Event, Public, HasOutParms, HasDefaults, BlueprintCallable, BlueprintEvent)
-// Parameters:
-// struct FEventReply             Result                         (Parm, OutParm)
-// bool                           bPassThrough                   (Parm, OutParm, ZeroConstructor, IsPlainOldData)
-
-void UHordeTierResultsWidget_C::OnHandleAction(struct FEventReply* Result, bool* bPassThrough)
-{
-	static auto fn = UObject::FindObject<UFunction>("Function HordeTierResultsWidget.HordeTierResultsWidget_C.OnHandleAction");
-
-	UHordeTierResultsWidget_C_OnHandleAction_Params params;
-
-	auto flags = fn->FunctionFlags;
-
-	UObject::ProcessEvent(fn, &params);
-
-	fn->FunctionFlags = flags;
-
-	if (Result != nullptr)
-		*Result = params.Result;
-	if (bPassThrough != nullptr)
-		*bPassThrough = params.bPassThrough;
-}
-
 
 // Function HordeTierResultsWidget.HordeTierResultsWidget_C.OnEndOfMovieReached
 // (Public, BlueprintCallable, BlueprintEvent)
@@ -104,6 +79,60 @@ void UHordeTierResultsWidget_C::InitializeMovie()
 	static auto fn = UObject::FindObject<UFunction>("Function HordeTierResultsWidget.HordeTierResultsWidget_C.InitializeMovie");
 
 	UHordeTierResultsWidget_C_InitializeMovie_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function HordeTierResultsWidget.HordeTierResultsWidget_C.Construct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UHordeTierResultsWidget_C::Construct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HordeTierResultsWidget.HordeTierResultsWidget_C.Construct");
+
+	UHordeTierResultsWidget_C_Construct_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function HordeTierResultsWidget.HordeTierResultsWidget_C.Destruct
+// (BlueprintCosmetic, Event, Public, BlueprintEvent)
+
+void UHordeTierResultsWidget_C::Destruct()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HordeTierResultsWidget.HordeTierResultsWidget_C.Destruct");
+
+	UHordeTierResultsWidget_C_Destruct_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function HordeTierResultsWidget.HordeTierResultsWidget_C.ExecuteUbergraph_HordeTierResultsWidget
+// ()
+// Parameters:
+// int                            EntryPoint                     (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+
+void UHordeTierResultsWidget_C::ExecuteUbergraph_HordeTierResultsWidget(int EntryPoint)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function HordeTierResultsWidget.HordeTierResultsWidget_C.ExecuteUbergraph_HordeTierResultsWidget");
+
+	UHordeTierResultsWidget_C_ExecuteUbergraph_HordeTierResultsWidget_Params params;
+	params.EntryPoint = EntryPoint;
 
 	auto flags = fn->FunctionFlags;
 

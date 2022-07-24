@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -205,14 +205,14 @@ void UQuestsCountIconTabButton_C::SetTabLabelInfo(const struct FFortTabButtonLab
 }
 
 
-// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnSelected
+// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnSelected
 // (Event, Protected, BlueprintEvent)
 
-void UQuestsCountIconTabButton_C::OnSelected()
+void UQuestsCountIconTabButton_C::BP_OnSelected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnSelected");
+	static auto fn = UObject::FindObject<UFunction>("Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnSelected");
 
-	UQuestsCountIconTabButton_C_OnSelected_Params params;
+	UQuestsCountIconTabButton_C_BP_OnSelected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -222,14 +222,14 @@ void UQuestsCountIconTabButton_C::OnSelected()
 }
 
 
-// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnDeselected
+// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnDeselected
 // (Event, Protected, BlueprintEvent)
 
-void UQuestsCountIconTabButton_C::OnDeselected()
+void UQuestsCountIconTabButton_C::BP_OnDeselected()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnDeselected");
+	static auto fn = UObject::FindObject<UFunction>("Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnDeselected");
 
-	UQuestsCountIconTabButton_C_OnDeselected_Params params;
+	UQuestsCountIconTabButton_C_BP_OnDeselected_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -256,14 +256,14 @@ void UQuestsCountIconTabButton_C::Construct()
 }
 
 
-// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnHovered
+// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnHovered
 // (Event, Protected, BlueprintEvent)
 
-void UQuestsCountIconTabButton_C::OnHovered()
+void UQuestsCountIconTabButton_C::BP_OnHovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnHovered");
+	static auto fn = UObject::FindObject<UFunction>("Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnHovered");
 
-	UQuestsCountIconTabButton_C_OnHovered_Params params;
+	UQuestsCountIconTabButton_C_BP_OnHovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -273,14 +273,14 @@ void UQuestsCountIconTabButton_C::OnHovered()
 }
 
 
-// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnUnhovered
+// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnUnhovered
 // (Event, Protected, BlueprintEvent)
 
-void UQuestsCountIconTabButton_C::OnUnhovered()
+void UQuestsCountIconTabButton_C::BP_OnUnhovered()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnUnhovered");
+	static auto fn = UObject::FindObject<UFunction>("Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnUnhovered");
 
-	UQuestsCountIconTabButton_C_OnUnhovered_Params params;
+	UQuestsCountIconTabButton_C_BP_OnUnhovered_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -307,14 +307,14 @@ void UQuestsCountIconTabButton_C::Handle_Quest_Count_Updated()
 }
 
 
-// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnEnabled
+// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnEnabled
 // (Event, Protected, BlueprintEvent)
 
-void UQuestsCountIconTabButton_C::OnEnabled()
+void UQuestsCountIconTabButton_C::BP_OnEnabled()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnEnabled");
+	static auto fn = UObject::FindObject<UFunction>("Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnEnabled");
 
-	UQuestsCountIconTabButton_C_OnEnabled_Params params;
+	UQuestsCountIconTabButton_C_BP_OnEnabled_Params params;
 
 	auto flags = fn->FunctionFlags;
 
@@ -324,14 +324,14 @@ void UQuestsCountIconTabButton_C::OnEnabled()
 }
 
 
-// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnDisabled
+// Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnDisabled
 // (Event, Protected, BlueprintEvent)
 
-void UQuestsCountIconTabButton_C::OnDisabled()
+void UQuestsCountIconTabButton_C::BP_OnDisabled()
 {
-	static auto fn = UObject::FindObject<UFunction>("Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.OnDisabled");
+	static auto fn = UObject::FindObject<UFunction>("Function QuestsCountIconTabButton.QuestsCountIconTabButton_C.BP_OnDisabled");
 
-	UQuestsCountIconTabButton_C_OnDisabled_Params params;
+	UQuestsCountIconTabButton_C_BP_OnDisabled_Params params;
 
 	auto flags = fn->FunctionFlags;
 

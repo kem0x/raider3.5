@@ -1,4 +1,4 @@
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -11,6 +11,66 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Functions
 //---------------------------------------------------------------------------
+
+// Function AthenaCustomizationTab.AthenaCustomizationTab_C.GetWidgetForFramingViewedItem
+// (Event, Protected, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// class UWidget*                 ReturnValue                    (Parm, OutParm, ZeroConstructor, ReturnParm, InstancedReference, IsPlainOldData)
+
+class UWidget* UAthenaCustomizationTab_C::GetWidgetForFramingViewedItem()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaCustomizationTab.AthenaCustomizationTab_C.GetWidgetForFramingViewedItem");
+
+	UAthenaCustomizationTab_C_GetWidgetForFramingViewedItem_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+
+// Function AthenaCustomizationTab.AthenaCustomizationTab_C.HandleShiftCosmeticTier
+// (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
+// Parameters:
+// bool                           Passthrough                    (Parm, OutParm, ZeroConstructor, IsPlainOldData)
+
+void UAthenaCustomizationTab_C::HandleShiftCosmeticTier(bool* Passthrough)
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaCustomizationTab.AthenaCustomizationTab_C.HandleShiftCosmeticTier");
+
+	UAthenaCustomizationTab_C_HandleShiftCosmeticTier_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+
+	if (Passthrough != nullptr)
+		*Passthrough = params.Passthrough;
+}
+
+
+// Function AthenaCustomizationTab.AthenaCustomizationTab_C.RegisterShiftCosmeticTier
+// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+
+void UAthenaCustomizationTab_C::RegisterShiftCosmeticTier()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaCustomizationTab.AthenaCustomizationTab_C.RegisterShiftCosmeticTier");
+
+	UAthenaCustomizationTab_C_RegisterShiftCosmeticTier_Params params;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
 
 // Function AthenaCustomizationTab.AthenaCustomizationTab_C.HandleFavorite
 // (Public, HasOutParms, BlueprintCallable, BlueprintEvent)
@@ -248,7 +308,7 @@ void UAthenaCustomizationTab_C::EndPickingCustomization(bool RestoreFocus)
 
 
 // Function AthenaCustomizationTab.AthenaCustomizationTab_C.BeginPickingCustomization
-// (Public, HasDefaults, BlueprintCallable, BlueprintEvent)
+// (Public, BlueprintCallable, BlueprintEvent)
 // Parameters:
 // EAthenaCustomizationCategory   Category                       (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 // class UCommonButton*           WidgetToReturnFocusTo          (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, InstancedReference, IsPlainOldData)
@@ -562,6 +622,23 @@ void UAthenaCustomizationTab_C::BndEvt__ButtonConfirm_K2Node_ComponentBoundEvent
 
 	UAthenaCustomizationTab_C_BndEvt__ButtonConfirm_K2Node_ComponentBoundEvent_30_CommonButtonClicked__DelegateSignature_Params params;
 	params.Button = Button;
+
+	auto flags = fn->FunctionFlags;
+
+	UObject::ProcessEvent(fn, &params);
+
+	fn->FunctionFlags = flags;
+}
+
+
+// Function AthenaCustomizationTab.AthenaCustomizationTab_C.ProcessLoadoutChanged
+// (Event, Public, BlueprintEvent)
+
+void UAthenaCustomizationTab_C::ProcessLoadoutChanged()
+{
+	static auto fn = UObject::FindObject<UFunction>("Function AthenaCustomizationTab.AthenaCustomizationTab_C.ProcessLoadoutChanged");
+
+	UAthenaCustomizationTab_C_ProcessLoadoutChanged_Params params;
 
 	auto flags = fn->FunctionFlags;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-// Fortnite (3.1) SDK
+// Fortnite (4.5-CL-4159770) SDK
 
 #ifdef _MSC_VER
 	#pragma pack(push, 0x8)
@@ -13,6 +13,16 @@ namespace SDK
 //---------------------------------------------------------------------------
 //Parameters
 //---------------------------------------------------------------------------
+
+// Function B_Ranged_Generic.B_Ranged_Generic_C.StopScopedAudio
+struct AB_Ranged_Generic_C_StopScopedAudio_Params
+{
+};
+
+// Function B_Ranged_Generic.B_Ranged_Generic_C.StartScopedAudio
+struct AB_Ranged_Generic_C_StartScopedAudio_Params
+{
+};
 
 // Function B_Ranged_Generic.B_Ranged_Generic_C.SetPostProcessParams
 struct AB_Ranged_Generic_C_SetPostProcessParams_Params
@@ -292,6 +302,7 @@ struct AB_Ranged_Generic_C_HideThirdPersonStuff_Params
 // Function B_Ranged_Generic.B_Ranged_Generic_C.UnhideFirstPersonStuffPart2
 struct AB_Ranged_Generic_C_UnhideFirstPersonStuffPart2_Params
 {
+	int                                                Which_Call;                                               // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
 };
 
 // Function B_Ranged_Generic.B_Ranged_Generic_C.UnhideFirstPersonStuffPart1
@@ -306,6 +317,32 @@ struct AB_Ranged_Generic_C_ForceScopeFX_Params
 
 // Function B_Ranged_Generic.B_Ranged_Generic_C.SetupScopePostProcess
 struct AB_Ranged_Generic_C_SetupScopePostProcess_Params
+{
+};
+
+// Function B_Ranged_Generic.B_Ranged_Generic_C.BindFireRateChange
+struct AB_Ranged_Generic_C_BindFireRateChange_Params
+{
+};
+
+// Function B_Ranged_Generic.B_Ranged_Generic_C.PitchUpOnRateOfFireChange
+struct AB_Ranged_Generic_C_PitchUpOnRateOfFireChange_Params
+{
+	float                                              NewRateOfFire;                                            // (BlueprintVisible, BlueprintReadOnly, Parm, ZeroConstructor, IsPlainOldData)
+};
+
+// Function B_Ranged_Generic.B_Ranged_Generic_C.ShellEjectionFixOn
+struct AB_Ranged_Generic_C_ShellEjectionFixOn_Params
+{
+};
+
+// Function B_Ranged_Generic.B_Ranged_Generic_C.Bind on Effects Quality
+struct AB_Ranged_Generic_C_Bind_on_Effects_Quality_Params
+{
+};
+
+// Function B_Ranged_Generic.B_Ranged_Generic_C.ShellEjectionOff
+struct AB_Ranged_Generic_C_ShellEjectionOff_Params
 {
 };
 
