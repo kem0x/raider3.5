@@ -148,8 +148,8 @@ namespace UFunctionHooks
             return false;
         })
 
-        DEFINE_PEHOOK("Function Engine.Actor.ReceiveDestroyed", { // TODO: Figure out why this function gets called a few seconds late. Possibly use a different one.
-            auto Actor = (AActor*)Object;
+        DEFINE_PEHOOK("Function FortniteGame.BuildingActor.OnDeathServer", {
+            auto Actor = (ABuildingActor*)Object;
 
             if (Actor)
             {
