@@ -26,7 +26,7 @@ public:
         this->bRejoinEnabled = bRejoinEnabled;
         
         /* Rejoin can be disabled for certain gamemodes only. To do this, leave the rejoin bool as false, go to the file of the gamemode you want to play (e.g. Playground), and find the line that says "AbstractGameModeBase(PlaylistName, true, 1)"
-        Change it to "AbstractGameModeBase(PlaylistName, true, 1, true)". Now you have rejoins enabled for Playground */
+        Change it to "AbstractGameModeBase(PlaylistName, true, 1, false, true)". Now you have rejoins enabled for Playground */
 
         if (bRespawnEnabled)
         {
