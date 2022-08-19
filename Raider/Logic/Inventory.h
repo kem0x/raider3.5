@@ -494,7 +494,10 @@ namespace Inventory
                         auto entry = AddItemToSlot(Controller, WorldItemDefinition, i, EFortQuickBars::Primary, Params->Pickup->PrimaryPickupItemEntry.Count, &Idx);
                         // auto& Entry = Controller->WorldInventory->Inventory.ReplicatedEntries[Idx];
                         auto Instance = GetInstanceFromGuid(Controller, entry.ItemGuid);
-                        Params->Pickup->K2_DestroyActor();
+                        Params->Pickup->PickupLocationData.PickupTarget = (AFortPawn*)Controller->Pawn;
+                        Params->Pickup->PickupLocationData.FlyTime = 0.40f;
+                        Params->Pickup->PickupLocationData.ItemOwner = (AFortPawn*)Controller->Pawn;
+                        Params->Pickup->OnRep_PickupLocationData();
 
                         Params->Pickup->bPickedUp = true;
                         Params->Pickup->OnRep_bPickedUp();
