@@ -246,81 +246,23 @@ namespace UFunctionHooks
                     auto location = BuildingActor->K2_GetActorLocation();
                     auto rotation = BuildingActor->K2_GetActorRotation();
 
-                    int yaw = (int(rotation.Yaw) + 360) % 360; // Gets the rotation ranging from 0 to 360 degrees
+                    auto ForwardVector = BuildingActor->GetActorForwardVector();
+                    auto RightVector = BuildingActor->GetActorRightVector();
+
+                    int yaw = round(float((int(rotation.Yaw) + 360) % 360) / 10) * 10; // Gets the rotation ranging from 0 to 360 degrees
 
                     if (BuildingActor->BuildingType != EFortBuildingType::Wall) // Centers building pieces if necessary
                     {
-                        switch (yaw)
+                        switch (RotationIterations)
                         {
-                        case 89:
-                        case 90:
-                        case 91: // Sometimes the rotation may differ by 1
-                            switch (RotationIterations)
-                            {
-                            case 1:
-                                location.X += -256;
-                                location.Y += 256;
-                                break;
-                            case 2:
-                                location.X += -512;
-                                break;
-                            case 3:
-                                location.X += -256;
-                                location.Y += -256;
-                            }
-                            yaw = 90;
+                        case 1:
+                            location = location + ForwardVector * 256.0f + RightVector * 256.0f;
                             break;
-                        case 179:
-                        case 180:
-                        case 181:
-                            switch (RotationIterations)
-                            {
-                            case 1:
-                                location.X += -256;
-                                location.Y += -256;
-                                break;
-                            case 2:
-                                location.Y += -512;
-                                break;
-                            case 3:
-                                location.X += 256;
-                                location.Y += -256;
-                            }
-                            yaw = 180;
+                        case 2:
+                            location = location + RightVector * 512.0f;
                             break;
-                        case 269:
-                        case 270:
-                        case 271:
-                            switch (RotationIterations)
-                            {
-                            case 1:
-                                location.X += 256;
-                                location.Y += -256;
-                                break;
-                            case 2:
-                                location.X += 512;
-                                break;
-                            case 3:
-                                location.X += 256;
-                                location.Y += 256;
-                            }
-                            yaw = 270;
-                            break;
-                        default: // 0, 360. etc.
-                            switch (RotationIterations)
-                            {
-                            case 1:
-                                location.X += 256;
-                                location.Y += 256;
-                                break;
-                            case 2:
-                                location.Y += 512;
-                                break;
-                            case 3:
-                                location.X += -256;
-                                location.Y += 256;
-                            }
-                            yaw = 0;
+                        case 3:
+                            location = location + ForwardVector * -256.0f + RightVector * 256.0f;
                         }
                     }
 
