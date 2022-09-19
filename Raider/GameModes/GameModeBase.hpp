@@ -81,11 +81,6 @@ public:
 
     void LoadJoiningPlayer(AFortPlayerControllerAthena* Controller)
     {
-        if (bStartedBus && !bRejoinEnabled) {
-            KickController(Controller, L"The match has already been started, please try again later.");
-            LOG_INFO("{} attempted to join while re-join was off.", Controller->PlayerState->GetPlayerName().ToString());
-            return;
-        }
 
         LOG_INFO("({}) Initializing {} that has just joined!", "GameModeBase", Controller->PlayerState->GetPlayerName().ToString());
 
