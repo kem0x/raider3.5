@@ -95,6 +95,7 @@ namespace GUI
                                 GetKismetSystem()->STATIC_ExecuteConsoleCommand(GetWorld(), L"startaircraft", nullptr);
 
                                 Game::Mode->InitializeGameplay();
+                                Native::OnlineBeacon::PauseBeaconRequests(HostBeacon, true);
                                 LOG_INFO("The bus has been started!")
                                 bStartedBus = true;
                             }
