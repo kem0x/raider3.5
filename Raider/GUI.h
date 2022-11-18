@@ -44,6 +44,7 @@ namespace GUI
                 // This is bad, but works for now.
                 if (currentPlayer)
                 {
+                    auto playerName = currentPlayer->GetPlayerName();
                     if (ZeroGUI::Button(L"<", { 25.0f, 25.0f }))
                     {
                         mtx.lock();
@@ -53,7 +54,7 @@ namespace GUI
 
                     ZeroGUI::NextColumn(90.0f);
 
-                    ZeroGUI::Text(std::format(L"Current Player: {}", currentPlayer->GetPlayerName().c_str()).c_str());
+                    ZeroGUI::Text(std::format(L"Current Player: {}", playerName.c_str()).c_str());
 
                     if (ZeroGUI::Button(L"Kick", { 60.0f, 25.0f }))
                     {
